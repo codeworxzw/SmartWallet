@@ -152,10 +152,6 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
 
-
-
-
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

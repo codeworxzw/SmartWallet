@@ -36,8 +36,8 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
     <string-array name="drawer_menu">
-        <item>First</item>
-        <item>Second</item>
+        <item>Account Summary</item>
+        <item>Charts</item>
         <item>Third</item>
         <item>Fourth</item>
         <item>Settings</item>

@@ -35,11 +35,11 @@ dependencies {
     compile(group: 'com.cloudant', name: 'cloudant-sync-datastore-android', version: 'latest.release')
     compile(group: 'com.cloudant', name: 'cloudant-sync-datastore-core', version: 'latest.release')
     compile(group: 'com.cloudant', name: 'cloudant-sync-datastore-android-encryption', version: 'latest.release')
+
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.google.code.findbugs:jsr305:3.0.0'
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'com.google.android.gms:play-services-auth:8.3.0'
     compile 'com.android.support:support-v4:23.1.1'
-    compile 'com.android.support:recyclerview-v7:+'
 }

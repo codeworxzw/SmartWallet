@@ -6,18 +6,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
-
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,18 +31,18 @@ import com.google.android.gms.common.api.Status;
  */
 public class NavigationDrawerFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener{
     public static final String PREF_FILE = "PrefFile";
-    public static final String USER_LEARNED_DRAWER = "user_learned_drawer";
+
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-    private boolean mLearnedDrawer;
-    private boolean mFromSavedInstanceState;
-    private View mFragmentId;
     private ListView mDrawerList;
     private String[] mListItems;
     private GoogleApiClient mGoogleApiClient;
     private TextView mUserName;
-
     private View mDrawerView;
+    private int fragmentPos;
+    private Fragment mFragment;
+    private FragmentManager FM;
+
     public NavigationDrawerFragment() {
         // Required empty public constructor
     }
@@ -54,10 +51,6 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mLearnedDrawer= Boolean.valueOf(ReadFromSharedPreferences(getActivity(),USER_LEARNED_DRAWER,"false"));
-        if(savedInstanceState != null){
-            mFromSavedInstanceState =true;
-        }
 
         if(savedInstanceState == null) {
             // [START configure_signin]
@@ -79,15 +72,12 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
             mGoogleApiClient.connect();
             // [END build_client]
         }
+
     }
 
 
 
     /* Called whenever we call invalidateOptionsMenu() */
-
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,10 +89,6 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         mUserName = (TextView) mDrawerView.findViewById(R.id.tv_user_name);
         mUserName.setText(getArguments().getString("name"));
 
-
-
-
-      //  mFragmentId = getActivity().findViewById(fragmentId);
         mDrawerList = (ListView) mDrawerView.findViewById(R.id.navigation_drawer_listview);
         mListItems= getResources().getStringArray(R.array.drawer_menu);
 
@@ -120,10 +106,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         ) {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                if(mLearnedDrawer){
-                    mLearnedDrawer=true;
-                    SaveToSharedPreferences(getActivity(), USER_LEARNED_DRAWER, Boolean.toString(mLearnedDrawer));
-                }
+
                 getActivity().invalidateOptionsMenu();
             }
 
@@ -132,10 +115,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
                 getActivity().invalidateOptionsMenu();
             }
         };
-        if(mLearnedDrawer && !mFromSavedInstanceState){
-            mDrawerLayout.openDrawer(mFragmentId);
 
-        }
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerLayout.post(new Runnable() {
@@ -144,6 +124,12 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
                 mDrawerToggle.syncState();
             }
         });
+
+        //Setting up default fragment
+
+        fragmentPos=Integer.valueOf(ReadFromSharedPreferences(getActivity(),"fragmentPos","0"));
+        FM = getFragmentManager();
+        openFragment(fragmentPos);
 
         return mDrawerView;
     }
@@ -157,20 +143,44 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         editor.apply();
     }
 
-    public static String ReadFromSharedPreferences(Context context, String prefName, String defaultfValue){
+    public static String ReadFromSharedPreferences(Context context, String prefName, String defaultValue){
         SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
-        return sharedPref.getString(prefName,defaultfValue);
+        return sharedPref.getString(prefName,defaultValue);
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
+            mDrawerLayout.closeDrawers();
 
-          switch (position) {
-              case 5: signout();
-                  break;
-          }
+           openFragment(position);
         }
+    }
+
+    public void openFragment(int position){
+        if(position >=4){
+            switch (position) {
+                case 5: signout();
+                    break;
+            }
+        }
+        else {
+
+            switch (position) {
+                case 0:
+                    mFragment= new AccountSummary();
+                    break;
+                case 1:
+                    mFragment= new Charts();
+                    break;
+
+
+            }
+            SaveToSharedPreferences(getActivity(),"fragmentPos", Integer.toString(position));
+            FM.beginTransaction().replace(R.id.fragment_container, mFragment).commit();
+
+        }
+
     }
 
     @Override
@@ -186,9 +196,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
                             Intent intent = new Intent(getActivity(), LoginActivity.class);
                             startActivity(intent);
                             getActivity().finish();
-                            // [START_EXCLUDE]
-                            // updateUI(false);
-                            // [END_EXCLUDE]
+
                         }
                     });
         }
