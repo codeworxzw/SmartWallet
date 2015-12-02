@@ -1,7 +1,6 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
-import android.content.Context;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,12 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class ExpenseFragment extends Fragment {
 
-public class AccountSummary extends Fragment {
 
-
-
-    public AccountSummary() {
+    public ExpenseFragment() {
         // Required empty public constructor
     }
 
@@ -23,12 +23,7 @@ public class AccountSummary extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account_summary, container, false);
+        return inflater.inflate(R.layout.fragment_expense, container, false);
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[0]);
-    }
 }

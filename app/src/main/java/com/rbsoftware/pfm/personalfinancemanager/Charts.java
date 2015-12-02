@@ -26,4 +26,10 @@ public class Charts extends Fragment {
         return inflater.inflate(R.layout.fragment_charts, container, false);
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[1]);
+    }
+
 }

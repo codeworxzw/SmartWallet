@@ -34,6 +34,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
+    private Toolbar mToolbar;
     private ListView mDrawerList;
     private String[] mListItems;
     private GoogleApiClient mGoogleApiClient;
@@ -85,7 +86,18 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
         mDrawerView = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         // Inflate the layout for this fragment
+        fragmentPos=Integer.valueOf(ReadFromSharedPreferences(getActivity(), "fragmentPos", "0"));
+
+
+
+        return mDrawerView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         mDrawerLayout = (DrawerLayout)getActivity().findViewById(R.id.drawer_layout);
+        mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         mUserName = (TextView) mDrawerView.findViewById(R.id.tv_user_name);
         mUserName.setText(getArguments().getString("name"));
 
@@ -100,7 +112,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         mDrawerToggle = new ActionBarDrawerToggle(
                 getActivity(),                  /* host Activity */
                 mDrawerLayout,         /* DrawerLayout object */
-                (Toolbar) getActivity().findViewById(R.id.toolbar),  /* nav drawer image to replace 'Up' caret */
+                mToolbar,  /* nav drawer image to replace 'Up' caret */
                 R.string.drawer_open,  /* "open drawer" description for accessibility */
                 R.string.drawer_close  /* "close drawer" description for accessibility */
         ) {
@@ -112,6 +124,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+
                 getActivity().invalidateOptionsMenu();
             }
         };
@@ -124,14 +137,11 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
                 mDrawerToggle.syncState();
             }
         });
-
         //Setting up default fragment
 
-        fragmentPos=Integer.valueOf(ReadFromSharedPreferences(getActivity(),"fragmentPos","0"));
-        FM = getFragmentManager();
-        openFragment(fragmentPos);
 
-        return mDrawerView;
+        mToolbar.setTitle(mListItems[fragmentPos]);
+        openFragment(fragmentPos);
     }
 
 
@@ -158,11 +168,8 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
     }
 
     public void openFragment(int position){
-        if(position >=4){
-            switch (position) {
-                case 5: signout();
-                    break;
-            }
+        if(position == 5){
+            signout();
         }
         else {
 
@@ -176,7 +183,10 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
 
             }
+            fragmentPos = position;
             SaveToSharedPreferences(getActivity(),"fragmentPos", Integer.toString(position));
+            FM = getFragmentManager();
+
             FM.beginTransaction().replace(R.id.fragment_container, mFragment).commit();
 
         }

@@ -60,9 +60,11 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
                 //Document creation
-                createNewFinanceDocument(data);
+                //createNewFinanceDocument(data);
                 //replication start
-                doc.startPushReplication();
+               // doc.startPushReplication();
+                Intent report = new Intent(MainActivity.this, ReportActivity.class);
+                startActivity(report);
             }
         });
     }
