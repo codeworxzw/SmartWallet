@@ -32,7 +32,7 @@ public class IncomeFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         dataInput = (EditText) getActivity().findViewById(R.id.data_input);
-        incomeCommunicator = (IncomeCommunicator) getActivity();
+//        incomeCommunicator = (IncomeCommunicator) getActivity();
     }
 
 //Communicator to activity
