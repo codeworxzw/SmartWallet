@@ -10,11 +10,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -39,6 +41,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
     private String[] mListItems;
     private GoogleApiClient mGoogleApiClient;
     private TextView mUserName;
+    private ImageView mUserPhoto;
     private View mDrawerView;
     private int fragmentPos;
     private Fragment mFragment;
@@ -99,7 +102,11 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         mDrawerLayout = (DrawerLayout)getActivity().findViewById(R.id.drawer_layout);
         mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         mUserName = (TextView) mDrawerView.findViewById(R.id.tv_user_name);
+        mUserPhoto = (ImageView) mDrawerView.findViewById(R.id.user_photo);
         mUserName.setText(getArguments().getString("name"));
+        String photoURL = getArguments().getString("photoURL");
+        new ImageLoad(photoURL,mUserPhoto);
+        Log.d("photo",photoURL+" ");
 
         mDrawerList = (ListView) mDrawerView.findViewById(R.id.navigation_drawer_listview);
         mListItems= getResources().getStringArray(R.array.drawer_menu);

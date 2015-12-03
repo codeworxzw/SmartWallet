@@ -5,6 +5,14 @@
     android:background="#FFF"
     tools:context=".NavigationDrawerFragment">
 
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/user_photo"
+        android:contentDescription="User Photo"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,20 +20,20 @@
         android:textSize="25sp"
         android:id="@+id/tv_user_name"
 
+        android:layout_below="@+id/user_photo"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="61dp" />
+        android:layout_alignParentStart="true" />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/navigation_drawer_listview"
-        android:layout_marginTop="59dp"
-        android:layout_below="@+id/tv_user_name"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tv_user_name">
 
     </ListView>
+
 
 
 

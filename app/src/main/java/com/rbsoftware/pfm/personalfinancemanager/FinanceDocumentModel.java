@@ -101,6 +101,7 @@ public class FinanceDocumentModel {
      */
     public FinanceDocument createDocument(FinanceDocument document) {
         MutableDocumentRevision rev = new MutableDocumentRevision();
+
         rev.body = DocumentBodyFactory.create(document.asMap());
         try {
             BasicDocumentRevision created = this.mDatastore.createDocumentFromRevision(rev);

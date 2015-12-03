@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity implements
             intent.putExtra("name", acct.getDisplayName());
             intent.putExtra("id", acct.getId());
             intent.putExtra("email", acct.getEmail());
-            intent.putExtra("photo", acct.getPhotoUrl());
+            intent.putExtra("photoURL", acct.getPhotoUrl());
             Log.d("USER Pic", acct.getPhotoUrl()+"");
             startActivity(intent);
             finish();

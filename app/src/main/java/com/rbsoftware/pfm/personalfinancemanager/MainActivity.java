@@ -19,9 +19,10 @@ import java.net.URISyntaxException;
 public class MainActivity extends AppCompatActivity  {
 
     private String data;
+    private String userID; //unique user identifier
 
 
-    private static FinanceDocumentModel doc;
+    private FinanceDocumentModel doc;
 
 
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity  {
         //Get intent userdata from login activity
         Intent intent = getIntent();
         data =intent.getExtras().getString("name");
+        userID = intent.getExtras().getString("id");
 
         NavigationDrawerFragment drawerFragment = new NavigationDrawerFragment();
         drawerFragment.setArguments(intent.getExtras());
@@ -49,9 +51,9 @@ public class MainActivity extends AppCompatActivity  {
         // Protect creation of static variable.
         if (doc == null) {
             // Model needs to stay in existence for lifetime of app.
-            this.doc = new FinanceDocumentModel(this.getApplicationContext());
+            doc = new FinanceDocumentModel(getApplicationContext());
         }
-        this.doc.setReplicationListener(this);
+        doc.setReplicationListener(this);
         reloadReplicationSettings();
 
         //FAB declaration and listener
@@ -60,11 +62,11 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
                 //Document creation
-                //createNewFinanceDocument(data);
+               // createNewFinanceDocument(data);
                 //replication start
-               // doc.startPushReplication();
-                Intent report = new Intent(MainActivity.this, ReportActivity.class);
-                startActivity(report);
+                //doc.startPushReplication();
+               Intent report = new Intent(MainActivity.this, ReportActivity.class);
+               startActivity(report);
             }
         });
     }
