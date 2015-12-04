@@ -14,6 +14,7 @@ import com.cloudant.sync.datastore.DatastoreManager;
 import com.cloudant.sync.datastore.DatastoreNotCreatedException;
 import com.cloudant.sync.datastore.DocumentBodyFactory;
 import com.cloudant.sync.datastore.DocumentException;
+import com.cloudant.sync.datastore.DocumentNotFoundException;
 import com.cloudant.sync.datastore.MutableDocumentRevision;
 import com.cloudant.sync.notifications.ReplicationCompleted;
 import com.cloudant.sync.notifications.ReplicationErrored;
@@ -112,6 +113,23 @@ public class FinanceDocumentModel {
             Log.e("Doc", "document was not created");
             return null;
         }
+    }
+
+    /**
+     * Retrieves document by id.
+     * @param docId task to create
+     * @return  revision of the document
+     */
+    public FinanceDocument getDocument(String docId)  {
+
+        BasicDocumentRevision retrieved = null;
+        try {
+            retrieved = mDatastore.getDocument(docId);
+        } catch (DocumentNotFoundException e) {
+            e.printStackTrace();
+            Log.e("Doc", "document was not found");
+        }
+        return FinanceDocument.fromRevision(retrieved);
     }
 
     /**

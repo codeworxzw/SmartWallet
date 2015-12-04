@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity  {
     private String userID; //unique user identifier
 
 
-    private FinanceDocumentModel doc;
+    public static FinanceDocumentModel doc;
 
 
 
@@ -66,12 +66,28 @@ public class MainActivity extends AppCompatActivity  {
                 //replication start
                 //doc.startPushReplication();
                Intent report = new Intent(MainActivity.this, ReportActivity.class);
-               startActivity(report);
+               startActivityForResult(report, 1);
             }
         });
     }
 
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                String result=data.getStringExtra("incomeData");
+                createNewFinanceDocument(result);
+
+
+            }
+            if (resultCode == RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }//onActivityResult
 
 
     //HELPER METHODS
@@ -81,6 +97,14 @@ public class MainActivity extends AppCompatActivity  {
         FinanceDocument t = new FinanceDocument(data);
         doc.createDocument(t);
 
+    }
+    //Retrieving finance document
+    public static String retrieveDataFromDocument(String docId) {
+        String data;
+        FinanceDocument t = doc.getDocument(docId);
+
+        data = t.getData();
+        return data;
     }
 
     //Restarting replication settings
