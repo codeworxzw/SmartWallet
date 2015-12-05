@@ -40,7 +40,7 @@ public class IncomeFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         dataInput = (EditText) getActivity().findViewById(R.id.data_input);
-        incomeCommunicator = (IncomeCommunicator) getActivity();
+        incomeCommunicator = (IncomeCommunicator) getActivity(); //links interface with parent activity
     }
 
     @Override
@@ -48,8 +48,6 @@ public class IncomeFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.report_toolbar_done : {
                 incomeCommunicator.respond(dataInput.getText().toString());
-
-
 
                 return true;
             }
