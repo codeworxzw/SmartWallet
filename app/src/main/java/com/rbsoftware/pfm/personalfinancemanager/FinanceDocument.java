@@ -10,12 +10,14 @@ import java.util.Map;
  */
 public class FinanceDocument {
     static final String DOC_TYPE = "Finance document";
+
     private FinanceDocument() {}
 
-    public FinanceDocument(String data) {
+    public FinanceDocument(String data, int salary) {
 
         this.setType(DOC_TYPE);
         this.setData(data);
+        this.setSalary(salary);
     }
     private String type = DOC_TYPE;
     public String getType() {
@@ -31,6 +33,14 @@ public class FinanceDocument {
     }
     public void setData(String data) {this.data = data;}
 
+    private int salary;
+
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
+    public int getSalary () {
+        return salary;
+    }
     private BasicDocumentRevision rev;
     public BasicDocumentRevision getDocumentRevision() {
         return rev;
@@ -43,6 +53,7 @@ public class FinanceDocument {
         if(map.containsKey("type") && map.get("type").equals(FinanceDocument.DOC_TYPE)) {
             t.setType((String) map.get("type"));
             t.setData((String) map.get("id"));
+            t.setSalary((Integer) map.get("salary"));
             return t;
         }
         return null;
@@ -53,7 +64,9 @@ public class FinanceDocument {
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("type", type);
         map.put("id", data);
+        map.put("salary", salary);
 
         return map;
     }
+
 }

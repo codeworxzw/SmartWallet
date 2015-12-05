@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity  {
 
     //Creation new document from data
     private void createNewFinanceDocument(String data) {
-        FinanceDocument t = new FinanceDocument(data);
+        FinanceDocument t = new FinanceDocument(data, 123);
         doc.createDocument(t);
 
     }
