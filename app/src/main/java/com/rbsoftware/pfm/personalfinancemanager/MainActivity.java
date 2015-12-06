@@ -15,11 +15,13 @@ import android.widget.Toast;
 
 
 import java.net.URISyntaxException;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity  {
 
     private String data;
-    private String userID; //unique user identifier
+    private static String userID; //unique user identifier
+
 
 
     public static FinanceDocumentModel doc;
@@ -54,6 +56,8 @@ public class MainActivity extends AppCompatActivity  {
             doc = new FinanceDocumentModel(getApplicationContext());
         }
         doc.setReplicationListener(this);
+        doc.setIndexManager();
+
         reloadReplicationSettings();
 
         //FAB declaration and listener
@@ -62,13 +66,14 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
                 //Document creation
-               // createNewFinanceDocument(data);
+                // createNewFinanceDocument(data);
                 //replication start
                 //doc.startPushReplication();
-               Intent report = new Intent(MainActivity.this, ReportActivity.class);
-               startActivityForResult(report, 1);
+                Intent report = new Intent(MainActivity.this, ReportActivity.class);
+                startActivityForResult(report, 1);
             }
         });
+
     }
 
 
@@ -98,13 +103,11 @@ public class MainActivity extends AppCompatActivity  {
         doc.createDocument(t);
 
     }
-    //Retrieving finance document
-    public static String retrieveDataFromDocument(String docId) {
-        String data;
-        FinanceDocument t = doc.getDocument(docId);
 
-        data = t.getData();
-        return data;
+
+    // Getter userId
+    public static  String getUserId(){
+        return userID;
     }
 
     //Restarting replication settings

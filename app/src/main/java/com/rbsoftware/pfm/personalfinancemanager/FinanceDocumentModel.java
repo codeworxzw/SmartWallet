@@ -18,6 +18,7 @@ import com.cloudant.sync.datastore.DocumentNotFoundException;
 import com.cloudant.sync.datastore.MutableDocumentRevision;
 import com.cloudant.sync.notifications.ReplicationCompleted;
 import com.cloudant.sync.notifications.ReplicationErrored;
+import com.cloudant.sync.query.IndexManager;
 import com.cloudant.sync.replication.Replicator;
 import com.cloudant.sync.replication.ReplicatorBuilder;
 import com.google.common.eventbus.Subscribe;
@@ -40,6 +41,7 @@ public class FinanceDocumentModel {
     private static final String SETTINGS_CLOUDANT_DB = "data";
     private static final String SETTINGS_CLOUDANT_API_KEY = "sournictsitedincivegains";
     private static final String SETTINGS_CLOUDANT_API_SECRET = "293c6b466286c6aed7216e47f491f59a1ce6a6e0";
+    private static final String FINANCE_DOCUMENT_INDEX_LIST= "FinanceDocumentIndexList";
     private Datastore mDatastore;
     private Replicator mPushReplicator;
     private Replicator mPullReplicator;
@@ -89,6 +91,17 @@ public class FinanceDocumentModel {
 
         // We recommend always using HTTPS to talk to Cloudant.
         return new URI("https", apiKey + ":" + apiSecret, host, 443, "/" + dbName, null, null);
+    }
+
+    //Set index manager
+
+    public void setIndexManager(){
+        IndexManager im = new IndexManager(mDatastore);
+        List<Object> indexList = new ArrayList<>();
+        indexList.add("id");
+        indexList.add("type");
+
+        im.ensureIndexed(indexList, FINANCE_DOCUMENT_INDEX_LIST);
     }
 
     //
