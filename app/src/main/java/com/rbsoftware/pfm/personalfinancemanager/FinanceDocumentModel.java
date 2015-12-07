@@ -98,8 +98,24 @@ public class FinanceDocumentModel {
     public void setIndexManager(){
         IndexManager im = new IndexManager(mDatastore);
         List<Object> indexList = new ArrayList<>();
-        indexList.add("id");
         indexList.add("type");
+        indexList.add("id");
+        indexList.add("date");
+        indexList.add("salary");
+        indexList.add("rental income");
+        indexList.add("interest");
+        indexList.add("gifts");
+        indexList.add("other income");
+        indexList.add("taxes");
+        indexList.add("mortgage");
+        indexList.add("credit card");
+        indexList.add("utilities");
+        indexList.add("food");
+        indexList.add("car payment");
+        indexList.add("personal");
+        indexList.add("activities");
+        indexList.add("other expenses");
+
 
         im.ensureIndexed(indexList, FINANCE_DOCUMENT_INDEX_LIST);
     }
