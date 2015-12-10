@@ -12,12 +12,12 @@ import java.util.Map;
  * Created by burzakovskiy on 11/24/2015.
  */
 public class FinanceDocument {
-    static final Object DOC_TYPE = "Finance document";
+    static final String DOC_TYPE = "Finance document";
     private String date;
 
     private FinanceDocument() {}
 
-    public FinanceDocument(List<Object> params) {
+    public FinanceDocument(List<String> params) {
         /*0 - type, 1 - id, 2 - salary, 3  - rental income, 4 - interest, 5 - gifts, 6 - other income
         7 - taxes, 8 - mortgage, 9 - credit card,
         10 - utilities (Electric bill, Water bill, Gas bill, Phone bill, Internet service, Cable or satellite service),
@@ -29,7 +29,7 @@ public class FinanceDocument {
         */
 
         this.type = params.get(0);
-        this.data = params.get(1);
+        this.userId = params.get(1);
         this.salary = params.get(2);
         this.rental_income = params.get(3);
         this.interest = params.get(4);
@@ -50,7 +50,7 @@ public class FinanceDocument {
 
 
         this.setType(DOC_TYPE);
-        this.setData(data);
+        this.setUserId(userId);
         this.setSalary(salary);
         this.setRental_income(rental_income);
         this.setInterest(interest);
@@ -68,148 +68,148 @@ public class FinanceDocument {
 
     }
 //type
-    private Object type = DOC_TYPE;
-    public Object getType() {
+    private String type = DOC_TYPE;
+    public String getType() {
         return type;
     }
-    public void setType(Object type) {
+    public void setType(String type) {
         this.type = type;
     }
 //data
-    private Object data;
-    public Object getData() {
-        return data;
+    private String userId;
+    public String getuserId() {
+        return userId;
     }
-    public void setData(Object data) {
-        this.data = data;
+    public void setUserId(String data) {
+        this.userId = data;
     }
 //salary
-    private Object salary;
-    public Object getSalary() {
+    private String salary;
+    public String getSalary() {
         return salary;
     }
-    public void setSalary(Object salary) {
+    public void setSalary(String salary) {
         this.salary = salary;
     }
 //rental income
-    private Object rental_income;
-    public Object getRental_income() {
+    private String rental_income;
+    public String getRental_income() {
         return rental_income;
     }
-    public void setRental_income(Object rental_income) {
+    public void setRental_income(String rental_income) {
         this.rental_income = rental_income;
     }
 //interest
-    private Object interest;
-    public Object getInterest() {
+    private String interest;
+    public String getInterest() {
         return interest;
     }
-    public void setInterest(Object interest) {
+    public void setInterest(String interest) {
         this.interest = interest;
     }
 
 //gifts
-    private Object gifts;
-    public Object getGifts() {
+    private String gifts;
+    public String getGifts() {
         return gifts;
     }
-    public void setGifts(Object gifts) {
+    public void setGifts(String gifts) {
         this.gifts = gifts;
     }
 
 //other income
-    private Object other_income;
-    public Object getOther_income() {
+    private String other_income;
+    public String getOther_income() {
         return other_income;
     }
-    public void setOther_income(Object other_income) {
+    public void setOther_income(String other_income) {
         this.other_income = other_income;
     }
 
 //7 - taxes
-    private Object taxes;
-    public Object getTaxes() {
+    private String taxes;
+    public String getTaxes() {
         return taxes;
     }
-    public void setTaxes(Object taxes) {
+    public void setTaxes(String taxes) {
         this.taxes = taxes;
     }
 
 // 8 - mortgage
-    private Object mortgage;
-    public Object getMortgage() {
+    private String mortgage;
+    public String getMortgage() {
         return mortgage;
     }
-    public void setMortgage(Object mortgage) {
+    public void setMortgage(String mortgage) {
         this.mortgage = mortgage;
     }
 
 // 9 - credit card
-    private Object credit_card;
-    public Object getCredit_card() {
+    private String credit_card;
+    public String getCredit_card() {
         return credit_card;
     }
-    public void setCredit_card(Object credit_card) {
+    public void setCredit_card(String credit_card) {
         this.credit_card = credit_card;
     }
 
 //10 - utilities
-    private Object utilities;
-    public Object getUtilities() {
+    private String utilities;
+    public String getUtilities() {
         return utilities;
     }
-    public void setUtilities(Object utilities) {
+    public void setUtilities(String utilities) {
         this.utilities = utilities;
     }
 
 //11 - food
-    private Object food;
-    public Object getFood() {
+    private String food;
+    public String getFood() {
         return food;
     }
-    public void setFood(Object food) {
+    public void setFood(String food) {
         this.food = food;
     }
 
 //12 - car payment
-    private Object car_payment;
-    public Object getCar_payment() {
+    private String car_payment;
+    public String getCar_payment() {
         return car_payment;
     }
-    public void setCar_payment(Object car_payment) {
+    public void setCar_payment(String car_payment) {
         this.car_payment = car_payment;
     }
 
 //13 - personal
-    private Object personal;
-    public Object getPersonal() {
+    private String personal;
+    public String getPersonal() {
         return personal;
     }
-    public void setPersonal(Object personal) {
+    public void setPersonal(String personal) {
         this.personal = personal;
     }
 
 //14 - activities
-    private Object activities;
-    public Object getActivities() {
+    private String activities;
+    public String getActivities() {
         return activities;
     }
-    public void setActivities(Object activities) {
+    public void setActivities(String activities) {
         this.activities = activities;
     }
 
 //15 - other expenses
-    private Object other_expenses;
-    public Object getOther_expenses() {
+    private String other_expenses;
+    public String getOther_expenses() {
         return other_expenses;
     }
-    public void setOther_expenses(Object other_expenses) {
+    public void setOther_expenses(String other_expenses) {
         this.other_expenses = other_expenses;
     }
 
 
     //date
-    public Object getDate() {return date;}
+    public String getDate() {return date;}
     public void setDate (String date){this.date = date;}
 
 
@@ -226,7 +226,7 @@ public class FinanceDocument {
         if(map.containsKey("type") && map.get("type").equals(FinanceDocument.DOC_TYPE)) {
             t.setDate((String) map.get("date"));
             t.setType((String) map.get("type"));
-            t.setData((String) map.get("id"));
+            t.setUserId((String) map.get("id"));
             t.setSalary((String) map.get("salary"));
             t.setRental_income((String) map.get("rental income"));
             t.setInterest((String) map.get("interest"));
@@ -250,7 +250,7 @@ public class FinanceDocument {
         // this could also be done by a fancy object mapper
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("type", type);
-        map.put("id", data);
+        map.put("id", userId);
         map.put("salary", salary);
         map.put("rental income", rental_income);
         map.put("interest", interest);

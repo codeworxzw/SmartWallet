@@ -2,7 +2,6 @@ package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -17,7 +16,7 @@ public class ReportActivity extends AppCompatActivity implements IncomeFragment.
    private Fragment mFragment;
    private ViewPager mPager;
     private FragmentManager FM;
-    private String incomeData;
+    private String salary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +54,9 @@ public class ReportActivity extends AppCompatActivity implements IncomeFragment.
 
     @Override
     public void respond(String text) {
-        incomeData = text;
+        salary = text;
         Intent result =new Intent();
-        result.putExtra("incomeData", incomeData);
+        result.putExtra("salary", salary);
         setResult(RESULT_OK,result);
         finish();
     }

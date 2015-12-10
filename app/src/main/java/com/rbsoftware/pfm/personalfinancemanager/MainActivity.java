@@ -15,10 +15,12 @@ import android.widget.Toast;
 
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity  {
-
+    List<Object> params; //List FinanceDocument constructor parameters
     private String data;
     private static String userID; //unique user identifier
 
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity  {
         Intent intent = getIntent();
         data =intent.getExtras().getString("name");
         userID = intent.getExtras().getString("id");
+        params =new ArrayList<>();
 
         NavigationDrawerFragment drawerFragment = new NavigationDrawerFragment();
         drawerFragment.setArguments(intent.getExtras());
@@ -83,8 +86,9 @@ public class MainActivity extends AppCompatActivity  {
 
         if (requestCode == 1) {
             if(resultCode == RESULT_OK){
-                String result=data.getStringExtra("incomeData");
-                createNewFinanceDocument(result);
+                String salary=data.getStringExtra("salary");
+                params.add(2, salary);
+                createNewFinanceDocument(params);
 
 
             }
@@ -98,8 +102,8 @@ public class MainActivity extends AppCompatActivity  {
     //HELPER METHODS
 
     //Creation new document from data
-    private void createNewFinanceDocument(String data) {
-        FinanceDocument t = new FinanceDocument(data, 123);
+    private void createNewFinanceDocument(List<Object> params) {
+        FinanceDocument t = new FinanceDocument(params);
         doc.createDocument(t);
 
     }
