@@ -29,6 +29,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -150,16 +151,24 @@ public class FinanceDocumentModel {
      * "thisYear"
      * @return list of the documents
      */
-    public List<FinanceDocument> queryDocumentsByPeriod(String timeFrame){
+    public List<FinanceDocument> queryDocumentsByDate(String timeFrame){
         List<FinanceDocument> list= new ArrayList<>();
         cal = Calendar.getInstance();
         long currDate =  cal.getTimeInMillis()/1000;
         Map<String, Object> query = new HashMap<String, Object>();
+        Map<String, Object> gteDate = new HashMap<String, Object>();
 
-        Map<String, Object> period = new HashMap<String, Object>(); //change to use timeFrame
+        Map<String, Object> startClause = new HashMap<String, Object>(); // Start of the period
+        gteDate.put("$gte", startDateBuilder(currDate, timeFrame));      //*
+        startClause.put("date", gteDate);                                //*********
 
-        period.put("$gt", "dummydate");
-        query.put("date", period);
+        Map<String, Object> lteDate = new HashMap<String, Object>();  // End of t/he period
+        Map<String, Object> endClause = new HashMap<String, Object>();  // *
+        lteDate.put("$lte", endDateBuilder(currDate, timeFrame));    //*
+        endClause.put("date", lteDate);    //*********
+
+        query.put("$and", Arrays.<Object>asList(startClause, endClause)); //query
+
         QueryResult result = im.find(query);
         for (DocumentRevision rev : result) {
             list.add(getDocument(rev.getId()));
