@@ -29,6 +29,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,16 @@ public class FinanceDocumentModel {
     private static final String SETTINGS_CLOUDANT_API_KEY = "sournictsitedincivegains";
     private static final String SETTINGS_CLOUDANT_API_SECRET = "293c6b466286c6aed7216e47f491f59a1ce6a6e0";
     private static final String FINANCE_DOCUMENT_INDEX_LIST= "FinanceDocumentIndexList";
+
+    //Query time frames
+    private static final String THIS_WEEK = "thisWeek";
+    private static final String LAST_WEEK = "lastWeek";
+    private static final String THIS_MONTH = "thisMonth";
+    private static final String LAST_MONTH = "lastMonth";
+    private static final String THIS_YEAR = "thisYear";
+    private Calendar cal;
+
+
     private Datastore mDatastore;
     private IndexManager im;
     private Replicator mPushReplicator;
@@ -128,23 +139,79 @@ public class FinanceDocumentModel {
 
     // Document query methods
 
-    public List<FinanceDocument> queryDocumentsByPeriod(){
-
+    /**
+     * Queries docuuments by time period
+     * @param timeFrame
+     * "thisWeek"
+     * "lastWeek"
+     * "thisMonth"
+     * "lastMonth"
+     * "Jan" - "Dec"
+     * "thisYear"
+     * @return list of the documents
+     */
+    public List<FinanceDocument> queryDocumentsByPeriod(String timeFrame){
+        List<FinanceDocument> list= new ArrayList<>();
+        cal = Calendar.getInstance();
+        long currDate =  cal.getTimeInMillis()/1000;
         Map<String, Object> query = new HashMap<String, Object>();
-        Map<String, Object> period = new HashMap<String, Object>();
+
+        Map<String, Object> period = new HashMap<String, Object>(); //change to use timeFrame
+
         period.put("$gt", "dummydate");
         query.put("date", period);
         QueryResult result = im.find(query);
         for (DocumentRevision rev : result) {
-
+            list.add(getDocument(rev.getId()));
 
             // The returned revision object contains all fields for
             // the object. You cannot project certain fields in the
             // current implementation.
         }
-        return null;
+        return list;
     }
 
+    //helper method for setting start date
+    private  long startDateBuilder(long currDate, String timeFrame){
+        long startDate=0;
+        switch (timeFrame){
+            case THIS_WEEK:
+              //  int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+
+              //  long deductTime = dayOfWeek*24*60*60;
+              //  startDate = currDate- deductTime;
+                break;
+            case THIS_MONTH:
+                break;
+            case THIS_YEAR:
+                break;
+            case LAST_WEEK:
+                break;
+            case LAST_MONTH:
+                break;
+
+        }
+        return startDate;
+    }
+    //helper method for setting end date
+    private  long endDateBuilder(long currDate, String timeFrame){
+        long endDate=0;
+        switch (timeFrame){
+            case THIS_WEEK: endDate = currDate;
+                break;
+            case THIS_MONTH: endDate = currDate;
+                break;
+            case THIS_YEAR: endDate = currDate;
+                break;
+            case LAST_WEEK:
+                break;
+            case LAST_MONTH:
+                break;
+
+        }
+
+        return endDate;
+    }
 
 
     //

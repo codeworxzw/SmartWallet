@@ -45,7 +45,7 @@ public class FinanceDocument {
         this.activities = params.get(13);
         this.other_expenses = params.get(14);
 
-        SimpleDateFormat currDate = new SimpleDateFormat("yyyy-mm-dd hh:mm");
+        SimpleDateFormat currDate = new SimpleDateFormat("yyyy-mm-dd");
         this.date = currDate.format(new Date());
 
 
