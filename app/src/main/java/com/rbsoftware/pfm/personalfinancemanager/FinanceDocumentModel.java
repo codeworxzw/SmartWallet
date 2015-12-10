@@ -15,10 +15,12 @@ import com.cloudant.sync.datastore.DatastoreNotCreatedException;
 import com.cloudant.sync.datastore.DocumentBodyFactory;
 import com.cloudant.sync.datastore.DocumentException;
 import com.cloudant.sync.datastore.DocumentNotFoundException;
+import com.cloudant.sync.datastore.DocumentRevision;
 import com.cloudant.sync.datastore.MutableDocumentRevision;
 import com.cloudant.sync.notifications.ReplicationCompleted;
 import com.cloudant.sync.notifications.ReplicationErrored;
 import com.cloudant.sync.query.IndexManager;
+import com.cloudant.sync.query.QueryResult;
 import com.cloudant.sync.replication.Replicator;
 import com.cloudant.sync.replication.ReplicatorBuilder;
 import com.google.common.eventbus.Subscribe;
@@ -27,7 +29,9 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by burzakovskiy on 11/24/2015.
@@ -43,6 +47,7 @@ public class FinanceDocumentModel {
     private static final String SETTINGS_CLOUDANT_API_SECRET = "293c6b466286c6aed7216e47f491f59a1ce6a6e0";
     private static final String FINANCE_DOCUMENT_INDEX_LIST= "FinanceDocumentIndexList";
     private Datastore mDatastore;
+    private IndexManager im;
     private Replicator mPushReplicator;
     private Replicator mPullReplicator;
     private final Context mContext;
@@ -96,7 +101,7 @@ public class FinanceDocumentModel {
     //Set index manager
 
     public void setIndexManager(){
-        IndexManager im = new IndexManager(mDatastore);
+        im = new IndexManager(mDatastore);
         List<Object> indexList = new ArrayList<>();
         indexList.add("type");
         indexList.add("id");
@@ -119,6 +124,28 @@ public class FinanceDocumentModel {
 
         im.ensureIndexed(indexList, FINANCE_DOCUMENT_INDEX_LIST);
     }
+
+
+    // Document query methods
+
+    public List<FinanceDocument> queryDocumentsByPeriod(){
+
+        Map<String, Object> query = new HashMap<String, Object>();
+        Map<String, Object> period = new HashMap<String, Object>();
+        period.put("$gt", "dummydate");
+        query.put("date", period);
+        QueryResult result = im.find(query);
+        for (DocumentRevision rev : result) {
+
+
+            // The returned revision object contains all fields for
+            // the object. You cannot project certain fields in the
+            // current implementation.
+        }
+        return null;
+    }
+
+
 
     //
     // DOCUMENT CRUD

@@ -16,18 +16,17 @@ import android.widget.Toast;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity  {
-    List<Object> params; //List FinanceDocument constructor parameters
+    List<String> params; //List FinanceDocument constructor parameters
     private String data;
     private static String userID; //unique user identifier
 
 
 
-    public static FinanceDocumentModel doc;
-
+    public static FinanceDocumentModel financeDocumentModel;
+    private FinanceDocument financeDocument;
 
 
     @Override
@@ -54,12 +53,14 @@ public class MainActivity extends AppCompatActivity  {
 
 
         // Protect creation of static variable.
-        if (doc == null) {
+        if (financeDocumentModel == null) {
             // Model needs to stay in existence for lifetime of app.
-            doc = new FinanceDocumentModel(getApplicationContext());
+            financeDocumentModel = new FinanceDocumentModel(getApplicationContext());
+            //setup index
+            financeDocumentModel.setIndexManager();
         }
-        doc.setReplicationListener(this);
-        doc.setIndexManager();
+        financeDocumentModel.setReplicationListener(this);
+
 
         reloadReplicationSettings();
 
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity  {
                 //Document creation
                 // createNewFinanceDocument(data);
                 //replication start
-                //doc.startPushReplication();
+                //financeDocumentModel.startPushReplication();
                 Intent report = new Intent(MainActivity.this, ReportActivity.class);
                 startActivityForResult(report, 1);
             }
@@ -87,7 +88,21 @@ public class MainActivity extends AppCompatActivity  {
         if (requestCode == 1) {
             if(resultCode == RESULT_OK){
                 String salary=data.getStringExtra("salary");
-                params.add(2, salary);
+                params.add(0, userID);
+                params.add(1, salary);
+                params.add(2, "");
+                params.add(3, "");
+                params.add(4, "");
+                params.add(5, "");
+                params.add(6, "");
+                params.add(7, "");
+                params.add(8, "");
+                params.add(9, "");
+                params.add(10, "");
+                params.add(11, "");
+                params.add(12, "");
+                params.add(13, "");
+                params.add(14, "");
                 createNewFinanceDocument(params);
 
 
@@ -102,9 +117,10 @@ public class MainActivity extends AppCompatActivity  {
     //HELPER METHODS
 
     //Creation new document from data
-    private void createNewFinanceDocument(List<Object> params) {
-        FinanceDocument t = new FinanceDocument(params);
-        doc.createDocument(t);
+    private void createNewFinanceDocument(List<String> params) {
+        financeDocument = new FinanceDocument(params);
+        financeDocumentModel.createDocument(financeDocument);
+
 
     }
 
@@ -117,7 +133,7 @@ public class MainActivity extends AppCompatActivity  {
     //Restarting replication settings
     private void reloadReplicationSettings() {
         try {
-            this.doc.reloadReplicationSettings();
+            this.financeDocumentModel.reloadReplicationSettings();
         } catch (URISyntaxException e) {
             Log.e(getApplicationContext().toString(), "Unable to construct remote URI from configuration", e);
             Toast.makeText(getApplicationContext(),

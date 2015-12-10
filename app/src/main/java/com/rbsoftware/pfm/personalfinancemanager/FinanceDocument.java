@@ -18,32 +18,32 @@ public class FinanceDocument {
     private FinanceDocument() {}
 
     public FinanceDocument(List<String> params) {
-        /*0 - type, 1 - id, 2 - salary, 3  - rental income, 4 - interest, 5 - gifts, 6 - other income
-        7 - taxes, 8 - mortgage, 9 - credit card,
-        10 - utilities (Electric bill, Water bill, Gas bill, Phone bill, Internet service, Cable or satellite service),
-        11 - food (Groceries, Dining out),
-        12 - car payment (Fuel, Auto insurance, Tires and maintenance, Tag/registration),
-        13 - personal (Clothing, Hair care, Medical expenses),
-        14 - activities (Gym membership, Vacation, Charitable giving, Entertainment,Gifts),
-        15 - other expenses
+        /*  type, 0 - id, 1 - salary, 2  - rental income, 3 - interest, 4 - gifts, 5 - other income
+        6 - taxes, 7 - mortgage, 8 - credit card,
+        9 - utilities (Electric bill, Water bill, Gas bill, Phone bill, Internet service, Cable or satellite service),
+        10 - food (Groceries, Dining out),
+        11 - car payment (Fuel, Auto insurance, Tires and maintenance, Tag/registration),
+        12 - personal (Clothing, Hair care, Medical expenses),
+        13 - activities (Gym membership, Vacation, Charitable giving, Entertainment,Gifts),
+        14 - other expenses
         */
 
-        this.type = params.get(0);
-        this.userId = params.get(1);
-        this.salary = params.get(2);
-        this.rental_income = params.get(3);
-        this.interest = params.get(4);
-        this.gifts = params.get(5);
-        this.other_income = params.get(6);
-        this.taxes = params.get(7);
-        this.mortgage = params.get(8);
-        this.credit_card = params.get(9);
-        this.utilities = params.get(10);
-        this.food = params.get(11);
-        this.car_payment = params.get(12);
-        this.personal = params.get(13);
-        this.activities = params.get(14);
-        this.other_expenses = params.get(15);
+        this.type = DOC_TYPE;
+        this.userId = params.get(0);
+        this.salary = params.get(1);
+        this.rental_income = params.get(2);
+        this.interest = params.get(3);
+        this.gifts = params.get(4);
+        this.other_income = params.get(5);
+        this.taxes = params.get(6);
+        this.mortgage = params.get(7);
+        this.credit_card = params.get(8);
+        this.utilities = params.get(9);
+        this.food = params.get(10);
+        this.car_payment = params.get(11);
+        this.personal = params.get(12);
+        this.activities = params.get(13);
+        this.other_expenses = params.get(14);
 
         SimpleDateFormat currDate = new SimpleDateFormat("yyyy-mm-dd hh:mm");
         this.date = currDate.format(new Date());
