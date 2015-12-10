@@ -13,6 +13,7 @@ import java.util.Map;
  */
 public class FinanceDocument {
     static final Object DOC_TYPE = "Finance document";
+    private String date;
 
     private FinanceDocument() {}
 
@@ -43,6 +44,9 @@ public class FinanceDocument {
         this.personal = params.get(13);
         this.activities = params.get(14);
         this.other_expenses = params.get(15);
+
+        SimpleDateFormat currDate = new SimpleDateFormat("yyyy-mm-dd hh:mm");
+        this.date = currDate.format(new Date());
 
 
         this.setType(DOC_TYPE);
@@ -203,9 +207,12 @@ public class FinanceDocument {
         this.other_expenses = other_expenses;
     }
 
+
     //date
-    SimpleDateFormat currDate = new SimpleDateFormat("yyyy-mm-dd hh:mm");
-    String date = currDate.format(new Date());
+    public Object getDate() {return date;}
+    public void setDate (String date){this.date = date;}
+
+
 
     private BasicDocumentRevision rev;
     public BasicDocumentRevision getDocumentRevision() {
@@ -217,6 +224,7 @@ public class FinanceDocument {
         // this could also be done by a fancy object mapper
         Map<String, Object> map = rev.asMap();
         if(map.containsKey("type") && map.get("type").equals(FinanceDocument.DOC_TYPE)) {
+            t.setDate((String) map.get("date"));
             t.setType((String) map.get("type"));
             t.setData((String) map.get("id"));
             t.setSalary((String) map.get("salary"));
@@ -257,6 +265,7 @@ public class FinanceDocument {
         map.put("personal", personal);
         map.put("activities", activities);
         map.put("other_expenses", other_expenses);
+        map.put("date", date);
 
         return map;
     }
