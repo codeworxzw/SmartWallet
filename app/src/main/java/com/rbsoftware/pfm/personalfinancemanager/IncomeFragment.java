@@ -3,8 +3,6 @@ package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +16,11 @@ import android.widget.EditText;
 public class IncomeFragment extends Fragment {
 
     private IncomeCommunicator incomeCommunicator;
-    private EditText dataInput;
+    private EditText salary;
+    private EditText rentalIncome;
+    private EditText interest;
+    private EditText gifts;
+    private EditText otherIncome;
     public IncomeFragment() {
         // Required empty public constructor
     }
@@ -39,7 +41,11 @@ public class IncomeFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        dataInput = (EditText) getActivity().findViewById(R.id.data_input);
+        salary = (EditText) getActivity().findViewById(R.id.et_income_salary);
+        rentalIncome = (EditText) getActivity().findViewById(R.id.et_income_rental);
+        interest = (EditText) getActivity().findViewById(R.id.et_income_interest);
+        gifts = (EditText) getActivity().findViewById(R.id.et_income_gifts);
+        otherIncome = (EditText) getActivity().findViewById(R.id.et_income_other);
         incomeCommunicator = (IncomeCommunicator) getActivity(); //links interface with parent activity
     }
 
@@ -47,7 +53,7 @@ public class IncomeFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.report_toolbar_done : {
-                incomeCommunicator.respond(dataInput.getText().toString());
+                incomeCommunicator.respond(salary.getText().toString());
 
                 return true;
             }

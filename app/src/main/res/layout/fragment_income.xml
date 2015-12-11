@@ -1,20 +1,61 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#AACC00"
     tools:context="com.rbsoftware.pfm.personalfinancemanager.IncomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
     <EditText
-        android:layout_width="291dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:id="@+id/data_input"
-        android:layout_gravity="center" />
+        android:id="@+id/et_income_salary"
+        android:layout_gravity="center_horizontal|top"
+        android:hint="@string/salary"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/et_income_rental"
+        android:layout_alignStart="@+id/et_income_rental"
+        android:inputType="number"/>
 
-</FrameLayout>
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_income_rental"
+        android:hint="@string/rental_income"
+        android:layout_gravity="center"
+        android:layout_below="@+id/et_income_salary"
+        android:layout_centerHorizontal="true"
+        android:inputType="number"/>
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_income_interest"
+        android:hint="@string/interest"
+        android:layout_gravity="center"
+        android:inputType="number"
+        android:layout_below="@+id/et_income_rental"
+        android:layout_alignLeft="@+id/et_income_rental"
+        android:layout_alignStart="@+id/et_income_rental" />
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_income_gifts"
+        android:hint="@string/gifts"
+        android:layout_gravity="center"
+        android:inputType="number"
+        android:layout_below="@+id/et_income_interest"
+        android:layout_alignLeft="@+id/et_income_interest"
+        android:layout_alignStart="@+id/et_income_interest" />
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_income_other"
+        android:hint="@string/other_income"
+        android:layout_gravity="center"
+        android:inputType="number"
+        android:layout_below="@+id/et_income_gifts"
+        android:layout_alignLeft="@+id/et_income_gifts"
+        android:layout_alignStart="@+id/et_income_gifts" />
+
+</RelativeLayout>
+
+

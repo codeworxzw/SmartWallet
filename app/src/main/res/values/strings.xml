@@ -50,6 +50,20 @@
     <string name="expense">Expense</string>
     <string name="title_activity_report">Report</string>
     <string name="done">Done</string>
+    <string name="salary">Salary</string>
+    <string name="rental_income">Rental income</string>
+    <string name="interest">Interest</string>
+    <string name="gifts">Gifts</string>
+    <string name="other_income">Other income</string>
+    <string name="taxes">Taxes</string>
+    <string name="mortgage">Mortgage</string>
+    <string name="credit_card">Credit card</string>
+    <string name="utilities">Utilities</string>
+    <string name="food">Food</string>
+    <string name="car_payment">Car payment</string>
+    <string name="personal">Personal</string>
+    <string name="activities">Activities</string>
+    <string name="other_expense">Other expense</string>
 
 
 </resources>
