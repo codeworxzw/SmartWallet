@@ -69,11 +69,12 @@ public class ReportActivity extends AppCompatActivity implements IncomeFragment.
         @Override
         public Fragment getItem(int position) {
             if(position == 0){
-                mFragment = new IncomeFragment();
-            }
-            if(position == 1){
                 mFragment = new ExpenseFragment();
             }
+            if(position == 1){
+                mFragment = new IncomeFragment();
+            }
+
             return mFragment;
         }
 
@@ -86,11 +87,12 @@ public class ReportActivity extends AppCompatActivity implements IncomeFragment.
         public CharSequence getPageTitle(int position) {
             String title = new String();
             if(position == 0){
-                title = getResources().getString(R.string.income);
-            }
-            if(position == 1){
                 title =getResources().getString(R.string.expense); ;
             }
+            if(position == 1){
+                title = getResources().getString(R.string.income);
+            }
+
             return  title;
         }
     }

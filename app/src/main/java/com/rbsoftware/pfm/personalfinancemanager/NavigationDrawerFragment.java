@@ -187,6 +187,9 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
                 case 1:
                     mFragment= new Charts();
                     break;
+                case 2:
+                    mFragment= new History();
+                    break;
 
 
             }

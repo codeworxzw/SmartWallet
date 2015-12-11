@@ -38,7 +38,7 @@
     <string-array name="drawer_menu">
         <item>Account Summary</item>
         <item>Charts</item>
-        <item>Third</item>
+        <item>History</item>
         <item>Fourth</item>
         <item>Settings</item>
         <item>Sign out</item>
@@ -64,6 +64,15 @@
     <string name="personal">Personal</string>
     <string name="activities">Activities</string>
     <string name="other_expense">Other expense</string>
+
+
+    <string-array name="account_summary_spinner">
+        <item>This week</item>
+        <item>Last week</item>
+        <item>This month</item>
+        <item>Last month</item>
+        <item>This year</item>
+    </string-array>
 
 
 </resources>

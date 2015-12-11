@@ -226,7 +226,7 @@ public class FinanceDocument {
         if(map.containsKey("type") && map.get("type").equals(FinanceDocument.DOC_TYPE)) {
             t.setDate((String) map.get("date"));
             t.setType((String) map.get("type"));
-            t.setUserId((String) map.get("id"));
+            t.setUserId((String) map.get("userId"));
             t.setSalary((String) map.get("salary"));
             t.setRental_income((String) map.get("rental income"));
             t.setInterest((String) map.get("interest"));
@@ -250,7 +250,7 @@ public class FinanceDocument {
         // this could also be done by a fancy object mapper
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("type", type);
-        map.put("id", userId);
+        map.put("userId", userId);
         map.put("salary", salary);
         map.put("rental income", rental_income);
         map.put("interest", interest);

@@ -151,23 +151,29 @@ public class FinanceDocumentModel {
      * "thisYear"
      * @return list of the documents
      */
-    public List<FinanceDocument> queryDocumentsByDate(String timeFrame){
+    public List<FinanceDocument> queryDocumentsByDate(String timeFrame, String userId){
         List<FinanceDocument> list= new ArrayList<>();
         cal = Calendar.getInstance();
         long currDate =  cal.getTimeInMillis()/1000;
         Map<String, Object> query = new HashMap<String, Object>();
 
-        Map<String, Object> gteDate = new HashMap<String, Object>();     // Start of the period
-        Map<String, Object> startClause = new HashMap<String, Object>(); //*
-        gteDate.put("$gte", startDateBuilder(currDate, timeFrame));      //*
-        startClause.put("date", gteDate);                                //*********
+        Map<String, Object> gteDate = new HashMap<String, Object>();                    // Start of the period
+        Map<String, Object> startClause = new HashMap<String, Object>();                //*
+        gteDate.put("$gte", startDateBuilder(currDate, timeFrame));        //*
+        startClause.put("date", gteDate);                                  //*********
 
-        Map<String, Object> lteDate = new HashMap<String, Object>();     // End of t/he period
-        Map<String, Object> endClause = new HashMap<String, Object>();   // *
-        lteDate.put("$lte", endDateBuilder(currDate, timeFrame));        //*
-        endClause.put("date", lteDate);                                  //*********
+        Map<String, Object> lteDate = new HashMap<String, Object>();      // End of t/he period
+        Map<String, Object> endClause = new HashMap<String, Object>();                 // *
+        lteDate.put("$lte", endDateBuilder(currDate, timeFrame));         //*
+        endClause.put("date", lteDate);                                   //*********
 
-        query.put("$and", Arrays.<Object>asList(startClause, endClause)); //query
+
+        Map<String, Object> eqUserId = new HashMap<String, Object>();       //Query by userId
+        Map<String, Object> userIdClause = new HashMap<String, Object>();               //*
+        eqUserId.put("$eq", userId);                                       //*
+        userIdClause.put("userId", eqUserId);                              //**********************
+
+        query.put("$and", Arrays.<Object>asList(startClause, endClause, userIdClause)); //query
 
         QueryResult result = im.find(query);
         for (DocumentRevision rev : result) {
