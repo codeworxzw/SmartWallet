@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity implements
             Log.d("USER Pic", acct.getPhotoUrl()+"");
             startActivity(intent);
             finish();
-           // mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getId()));
+            // mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getId()));
             //updateUI(true);
         } else {
             // Signed out, show unauthenticated UI.
@@ -163,4 +163,3 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
 }
-
