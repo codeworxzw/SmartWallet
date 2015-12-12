@@ -2,7 +2,6 @@ package com.rbsoftware.pfm.personalfinancemanager;
 
 import com.cloudant.sync.datastore.BasicDocumentRevision;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.Map;
  */
 public class FinanceDocument {
     static final String DOC_TYPE = "Finance document";
-    private String date;
+    private Long date;
 
     private FinanceDocument() {}
 
@@ -45,8 +44,8 @@ public class FinanceDocument {
         this.activities = params.get(13);
         this.other_expenses = params.get(14);
 
-        SimpleDateFormat currDate = new SimpleDateFormat("yyyy-mm-dd");
-        this.date = currDate.format(new Date());
+        Date currDate = new Date();
+        this.date = currDate.getTime() / 1000;
 
 
         this.setType(DOC_TYPE);
@@ -209,8 +208,8 @@ public class FinanceDocument {
 
 
     //date
-    public String getDate() {return date;}
-    public void setDate (String date){this.date = date;}
+    public Long getDate() {return date;}
+    public void setDate (Long date){this.date = date;}
 
 
 
@@ -224,7 +223,7 @@ public class FinanceDocument {
         // this could also be done by a fancy object mapper
         Map<String, Object> map = rev.asMap();
         if(map.containsKey("type") && map.get("type").equals(FinanceDocument.DOC_TYPE)) {
-            t.setDate((String) map.get("date"));
+            t.setDate((Long) map.get("date"));
             t.setType((String) map.get("type"));
             t.setUserId((String) map.get("userId"));
             t.setSalary((String) map.get("salary"));
