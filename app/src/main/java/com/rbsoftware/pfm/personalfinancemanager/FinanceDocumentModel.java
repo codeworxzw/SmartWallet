@@ -34,6 +34,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Created by burzakovskiy on 11/24/2015.
@@ -186,31 +187,106 @@ public class FinanceDocumentModel {
         return list;
     }
 
+    //methods to get first/last day
+    private Long getFirstDateOfCurrentMonth() {
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        cal.set(Calendar.DAY_OF_MONTH, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH));
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTimeInMillis()/1000;
+    }
+
+    private Long getFirstDateOfCurrentWeek() {
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_WEEK));
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTimeInMillis()/1000;
+    }
+
+    private Long getFirstDateOfCurrentYear() {
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        cal.setTimeZone(cal.getTimeZone());
+        cal.set(Calendar.DAY_OF_YEAR, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_YEAR));
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTimeInMillis()/1000;
+    }
+
+    private Long getFirstDateOfPreviousMonth() {
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        cal.set(Calendar.DATE, 1);
+        cal.add(Calendar.MONTH, -1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTimeInMillis()/1000;
+    }
+
+    private Long getLastDateOfPreviousMonth() {
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        cal.set(Calendar.DATE, 1);
+        cal.add(Calendar.DAY_OF_MONTH, -1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTimeInMillis()/1000;
+    }
+
+
+    private Long getFirstDateOfPreviousWeek() {
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        cal.add(Calendar.WEEK_OF_MONTH, -1);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_WEEK));
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTimeInMillis()/1000;
+    }
+
+    private Long getLastDateOfPreviousWeek() {
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_WEEK));
+        cal.add(Calendar.DAY_OF_YEAR, -1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTimeInMillis()/1000;
+    }
+
     //helper method for setting start date
     private  long startDateBuilder(long currDate, String timeFrame){
         long startDate=0;
         switch (timeFrame){
-            case THIS_WEEK:
-              //  int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-
-              //  long deductTime = dayOfWeek*24*60*60;
-              //  startDate = currDate- deductTime;
+            case THIS_WEEK: startDate = getFirstDateOfPreviousWeek();
                 break;
-            case THIS_MONTH:
+            case THIS_MONTH: startDate = getFirstDateOfCurrentMonth();
                 break;
-            case THIS_YEAR:
+            case THIS_YEAR: startDate = getFirstDateOfCurrentYear();
                 break;
-            case LAST_WEEK:
+            case LAST_WEEK: startDate = getFirstDateOfPreviousWeek();
                 break;
-            case LAST_MONTH:
+            case LAST_MONTH: startDate = getFirstDateOfPreviousMonth();
                 break;
 
         }
         return startDate;
     }
+
     //helper method for setting end date
     private  long endDateBuilder(long currDate, String timeFrame){
         long endDate=0;
+
         switch (timeFrame){
             case THIS_WEEK: endDate = currDate;
                 break;
@@ -218,9 +294,9 @@ public class FinanceDocumentModel {
                 break;
             case THIS_YEAR: endDate = currDate;
                 break;
-            case LAST_WEEK:
+            case LAST_WEEK: endDate = getLastDateOfPreviousWeek();
                 break;
-            case LAST_MONTH:
+            case LAST_MONTH: endDate = getLastDateOfPreviousMonth();
                 break;
 
         }
