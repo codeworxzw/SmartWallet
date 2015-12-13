@@ -130,6 +130,8 @@ public class ReportActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Compiles inputs from fields
+    //@return list of strings category-value-currency
     private ArrayList<String> getReportResult() {
         ArrayList<String> list = new ArrayList<>();
         int counter = categorySpinnerId-1000;
