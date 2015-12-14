@@ -139,7 +139,7 @@ public class ReportActivity extends AppCompatActivity {
             Spinner categorySpinner = (Spinner) findViewById(1000+i);
             Spinner currencySpinner = (Spinner) findViewById(2000+i);
             EditText editTextValue = (EditText) findViewById(3000+i);
-            list.add(categorySpinner.getSelectedItem().toString() + "-" + editTextValue.getText().toString() + "-" + currencySpinner.getSelectedItem().toString());
+            list.add(categorySpinner.getSelectedItemPosition()+"-"+categorySpinner.getSelectedItem().toString() + "-" + editTextValue.getText().toString() + "-" + currencySpinner.getSelectedItem().toString());
 
         }
 
