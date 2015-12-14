@@ -24,9 +24,9 @@ public class ReportActivity extends AppCompatActivity {
 
     private ImageButton addNew;
     private LinearLayout mLayout;
-    private int categorySpinnerId =1001;
-    private int currencySpinnerId =2001;
-    private int editTextValueId =3001;
+    private int categorySpinnerId =1001; //IDs of categorySpinner
+    private int currencySpinnerId =2001; //IDs of currencySpinner
+    private int editTextValueId =3001;   //Ids of editText
 
 
     @Override
