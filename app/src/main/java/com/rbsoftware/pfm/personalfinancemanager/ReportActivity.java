@@ -122,9 +122,9 @@ public class ReportActivity extends AppCompatActivity {
         if (id == R.id.report_toolbar_done){
             Intent intent = new Intent();
             intent.putStringArrayListExtra("reportResult", getReportResult());
-
-           // setResult(RESULT_OK, intent);
-           // finish();
+            Log.d("List", getReportResult().toString());
+            setResult(RESULT_OK, intent);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -142,9 +142,8 @@ public class ReportActivity extends AppCompatActivity {
             list.add(categorySpinner.getSelectedItem().toString() + "-" + editTextValue.getText().toString() + "-" + currencySpinner.getSelectedItem().toString());
 
         }
-        Log.d("List", list.toString());
 
-        return null;
+        return list;
     }
 
 

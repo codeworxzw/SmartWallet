@@ -90,9 +90,10 @@ public class MainActivity extends AppCompatActivity  {
 
         if (requestCode == 1) {
             if(resultCode == RESULT_OK){
-                String salary=data.getStringExtra("salary");
+                ArrayList<String> reportResult=data.getStringArrayListExtra("reportResult");
+                Log.d("reportResult", reportResult.toString()+"");
                 params.add(0, userID);
-                params.add(1, salary);
+                params.add(1, "");
                 params.add(2, "");
                 params.add(3, "");
                 params.add(4, "");
