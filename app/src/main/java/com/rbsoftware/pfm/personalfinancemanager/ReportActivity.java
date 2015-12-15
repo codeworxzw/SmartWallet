@@ -1,22 +1,33 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 
-public class ReportActivity extends AppCompatActivity implements IncomeFragment.IncomeCommunicator{
+import java.util.ArrayList;
+import java.util.List;
 
-   private Fragment mFragment;
-   private ViewPager mPager;
-    private FragmentManager FM;
-    private String salary;
+public class ReportActivity extends AppCompatActivity {
+
+
+    private ImageButton addNew;
+    private LinearLayout mLayout;
+    private int categorySpinnerId =1001; //IDs of categorySpinner
+    private int currencySpinnerId =2001; //IDs of currencySpinner
+    private int editTextValueId =3001;   //Ids of editText
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +38,110 @@ public class ReportActivity extends AppCompatActivity implements IncomeFragment.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        FM = getSupportFragmentManager();
-        mPager= (ViewPager) findViewById(R.id.pager);
-        mPager.setAdapter(new CollectionPagerAdapter(FM));
+        mLayout = (LinearLayout) findViewById(R.id.report_item_layout);
+        if(savedInstanceState ==null) {
+            mLayout.addView(createNewCategorySpinner());
+            mLayout.addView(createNewEditText());
+            mLayout.addView(createNewCurrencySpinner());
+        }
+        else{
+            //views states were saved in onSaveInstanceState
+            int counter = savedInstanceState.getInt("counter");
+            for(int i=1; i<counter; i++){
+                mLayout.addView(createNewCategorySpinner());
+                Spinner categorySpinner = (Spinner) findViewById(1000+i);
+                categorySpinner.setSelection(savedInstanceState.getInt("categorySpinner"+i));
+                mLayout.addView(createNewEditText());
+                EditText editTextValue = (EditText) findViewById(3000+i);
+                editTextValue.setText(savedInstanceState.getString("editTextValue"+i));
+                mLayout.addView(createNewCurrencySpinner());
+                Spinner currencySpinner = (Spinner) findViewById(2000+i);
+                currencySpinner.setSelection(savedInstanceState.getInt("currencySpinner"+i));
+
+            }
+
+        }
+
+        addNew = (ImageButton) findViewById(R.id.btn_add_new);
+
+
+
+        addNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLayout.addView(createNewCategorySpinner());
+                mLayout.addView(createNewEditText());
+                mLayout.addView(createNewCurrencySpinner());
+            }
+        });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        int counter = categorySpinnerId - 1000;
+        outState.putInt("counter", counter);
+        for(int i=1;i<counter;i++){
+            Spinner categorySpinner = (Spinner) findViewById(1000+i);
+            outState.putInt("categorySpinner"+i, categorySpinner.getSelectedItemPosition());
+            Spinner currencySpinner = (Spinner) findViewById(2000+i);
+            outState.putInt("currencySpinner"+i, currencySpinner.getSelectedItemPosition());
+            EditText editTextValue = (EditText) findViewById(3000+i);
+            outState.putString("editTextValue"+i, editTextValue.getText().toString());
+            Log.d("counter", " onSaveInstanceState"+ categorySpinner.getSelectedItemPosition() +" "+
+                    currencySpinner.getSelectedItemPosition() +" "+  editTextValue.getText().toString());
+        }
+        Log.d("counter", counter + " onSaveInstanceState");
+
+        super.onSaveInstanceState(outState);
+
+    }
+
+
+
+    //Generates operation category spinner
+    private Spinner createNewCurrencySpinner() {
+        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final Spinner spinner = new Spinner(this);
+        spinner.setLayoutParams(lparams);
+        ArrayAdapter<CharSequence> currencySpinnerAdapter = ArrayAdapter.createFromResource(this,R.array.report_activity_currency_spinner,android.R.layout.simple_spinner_item);
+        currencySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(currencySpinnerAdapter);
+        spinner.setId(currencySpinnerId);
+        spinner.setSaveEnabled(true);
+        Log.d("ID", spinner.getId() + "");
+        currencySpinnerId++;
+        return spinner;
+    }
+
+    //Generates currency type spinner
+
+    private Spinner createNewCategorySpinner() {
+        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final Spinner spinner = new Spinner(this);
+        spinner.setLayoutParams(lparams);
+        ArrayAdapter<CharSequence> categorySpinnerAdapter = ArrayAdapter.createFromResource(this,R.array.report_activity_category_spinner,android.R.layout.simple_spinner_item);
+        categorySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(categorySpinnerAdapter);
+        spinner.setId(categorySpinnerId);
+        spinner.setSaveEnabled(true);
+        Log.d("ID", spinner.getId() + "");
+        categorySpinnerId++;
+        return spinner;
+    }
+
+    //Generates operation input value edit text
+
+    private EditText createNewEditText() {
+        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final EditText editText = new EditText(this);
+        editText.setLayoutParams(lparams);
+        editText.setHint("Value");
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        editText.setId(editTextValueId);
+        editText.setSaveEnabled(true);
+        Log.d("ID", editText.getId() + "");
+        editTextValueId++;
+        return editText;
     }
 
     @Override
@@ -48,52 +160,32 @@ public class ReportActivity extends AppCompatActivity implements IncomeFragment.
         if (id == android.R.id.home) {
             finish();
         }
+        if (id == R.id.report_toolbar_done){
+            Intent intent = new Intent();
+            intent.putStringArrayListExtra("reportResult", getReportResult());
+            Log.d("List", getReportResult().toString());
+            setResult(RESULT_OK, intent);
+            finish();
+        }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void respond(String text) {
-        salary = text;
-        Intent result =new Intent();
-        result.putExtra("salary", salary);
-        setResult(RESULT_OK,result);
-        finish();
+    //Compiles inputs from fields
+    //@return list of strings category-value-currency
+    private ArrayList<String> getReportResult() {
+        ArrayList<String> list = new ArrayList<>();
+        int counter = categorySpinnerId-1000;
+        for(int i=1; i<counter; i++){
+            Spinner categorySpinner = (Spinner) findViewById(1000+i);
+            Spinner currencySpinner = (Spinner) findViewById(2000+i);
+            EditText editTextValue = (EditText) findViewById(3000+i);
+            list.add(categorySpinner.getSelectedItemPosition()+"-"+categorySpinner.getSelectedItem().toString() + "-" + editTextValue.getText().toString() + "-" + currencySpinner.getSelectedItem().toString());
+
+        }
+
+        return list;
     }
 
-    private class CollectionPagerAdapter extends FragmentStatePagerAdapter {
-        public CollectionPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
 
-        @Override
-        public Fragment getItem(int position) {
-            if(position == 0){
-                mFragment = new ExpenseFragment();
-            }
-            if(position == 1){
-                mFragment = new IncomeFragment();
-            }
-
-            return mFragment;
-        }
-
-        @Override
-        public int getCount() {
-            return 2;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            String title = new String();
-            if(position == 0){
-                title =getResources().getString(R.string.expense); ;
-            }
-            if(position == 1){
-                title = getResources().getString(R.string.income);
-            }
-
-            return  title;
-        }
-    }
 }

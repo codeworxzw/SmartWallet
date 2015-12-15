@@ -74,5 +74,29 @@
         <item>This year</item>
     </string-array>
 
+    <string-array name="report_activity_category_spinner">
+        <item>Salary</item>
+        <item>Rental income</item>
+        <item>Interest</item>
+        <item>Gifts</item>
+        <item>Other income</item>
+        <item>Taxes</item>
+        <item>Mortgage</item>
+        <item>Credit card</item>
+        <item>Utilities</item>
+        <item>Food</item>
+        <item>Car payment</item>
+        <item>Personal</item>
+        <item>Activities</item>
+        <item>Other expense</item>
+    </string-array>
+
+    <string-array name="report_activity_currency_spinner">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>UAH</item>
+        <item>RUB</item>
+    </string-array>
+
 
 </resources>
