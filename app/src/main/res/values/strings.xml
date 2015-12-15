@@ -64,6 +64,7 @@
     <string name="personal">Personal</string>
     <string name="activities">Activities</string>
     <string name="other_expense">Other expense</string>
+    <string name="filter">Filter</string>
 
 
     <string-array name="account_summary_spinner">
