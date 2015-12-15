@@ -39,9 +39,28 @@ public class ReportActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         mLayout = (LinearLayout) findViewById(R.id.report_item_layout);
-        mLayout.addView(createNewCategorySpinner());
-        mLayout.addView(createNewEditText());
-        mLayout.addView(createNewCurrencySpinner());
+        if(savedInstanceState ==null) {
+            mLayout.addView(createNewCategorySpinner());
+            mLayout.addView(createNewEditText());
+            mLayout.addView(createNewCurrencySpinner());
+        }
+        else{
+            //views states were saved in onSaveInstanceState
+            int counter = savedInstanceState.getInt("counter");
+            for(int i=1; i<counter; i++){
+                mLayout.addView(createNewCategorySpinner());
+                Spinner categorySpinner = (Spinner) findViewById(1000+i);
+                categorySpinner.setSelection(savedInstanceState.getInt("categorySpinner"+i));
+                mLayout.addView(createNewEditText());
+                EditText editTextValue = (EditText) findViewById(3000+i);
+                editTextValue.setText(savedInstanceState.getString("editTextValue"+i));
+                mLayout.addView(createNewCurrencySpinner());
+                Spinner currencySpinner = (Spinner) findViewById(2000+i);
+                currencySpinner.setSelection(savedInstanceState.getInt("currencySpinner"+i));
+
+            }
+
+        }
 
         addNew = (ImageButton) findViewById(R.id.btn_add_new);
 
@@ -56,6 +75,28 @@ public class ReportActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        int counter = categorySpinnerId - 1000;
+        outState.putInt("counter", counter);
+        for(int i=1;i<counter;i++){
+            Spinner categorySpinner = (Spinner) findViewById(1000+i);
+            outState.putInt("categorySpinner"+i, categorySpinner.getSelectedItemPosition());
+            Spinner currencySpinner = (Spinner) findViewById(2000+i);
+            outState.putInt("currencySpinner"+i, currencySpinner.getSelectedItemPosition());
+            EditText editTextValue = (EditText) findViewById(3000+i);
+            outState.putString("editTextValue"+i, editTextValue.getText().toString());
+            Log.d("counter", " onSaveInstanceState"+ categorySpinner.getSelectedItemPosition() +" "+
+                    currencySpinner.getSelectedItemPosition() +" "+  editTextValue.getText().toString());
+        }
+        Log.d("counter", counter + " onSaveInstanceState");
+
+        super.onSaveInstanceState(outState);
+
+    }
+
+
 
     //Generates operation category spinner
     private Spinner createNewCurrencySpinner() {
