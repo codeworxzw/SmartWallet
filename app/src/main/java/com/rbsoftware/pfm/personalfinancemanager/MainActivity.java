@@ -90,23 +90,26 @@ public class MainActivity extends AppCompatActivity  {
 
         if (requestCode == 1) {
             if(resultCode == RESULT_OK){
-                String salary=data.getStringExtra("salary");
+                ArrayList<String> reportResult=data.getStringArrayListExtra("reportResult");
+
+                Log.d("reportResult", reportResult.toString()+"");
                 params.add(0, userID);
-                params.add(1, salary);
-                params.add(2, "");
-                params.add(3, "");
-                params.add(4, "");
-                params.add(5, "");
-                params.add(6, "");
-                params.add(7, "");
-                params.add(8, "");
-                params.add(9, "");
-                params.add(10, "");
-                params.add(11, "");
-                params.add(12, "");
-                params.add(13, "");
-                params.add(14, "");
+                params.add(1, getItem(reportResult, 0));
+                params.add(2, getItem(reportResult, 1));
+                params.add(3, getItem(reportResult, 2));
+                params.add(4, getItem(reportResult, 3));
+                params.add(5, getItem(reportResult, 4));
+                params.add(6, getItem(reportResult, 5));
+                params.add(7, getItem(reportResult, 6));
+                params.add(8, getItem(reportResult, 7));
+                params.add(9, getItem(reportResult, 8));
+                params.add(10, getItem(reportResult, 9));
+                params.add(11, getItem(reportResult, 10));
+                params.add(12, getItem(reportResult, 11));
+                params.add(13, getItem(reportResult, 12));
+                params.add(14, getItem(reportResult, 13));
                 createNewFinanceDocument(params);
+               // financeDocumentModel.startPushReplication();
 
 
             }
@@ -115,6 +118,20 @@ public class MainActivity extends AppCompatActivity  {
             }
         }
     }//onActivityResult
+
+    private String getItem(ArrayList<String> reportResult, int i) {
+        String item="0";
+        for(String listItem: reportResult){
+            String[] parts = listItem.split("-");
+            int position = Integer.valueOf(parts[0]);
+            if(i == position) {
+                item = parts[2];
+                Log.d("List", position + " " + item);
+            }
+        }
+
+        return item;
+    }
 
 
     //HELPER METHODS

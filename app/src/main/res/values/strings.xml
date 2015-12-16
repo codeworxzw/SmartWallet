@@ -64,6 +64,12 @@
     <string name="personal">Personal</string>
     <string name="activities">Activities</string>
     <string name="other_expense">Other expense</string>
+    <string name="filter">Filter</string>
+    <string name="this_week">This week</string>
+    <string name="this_month">This month</string>
+    <string name="last_week">Last week</string>
+    <string name="last_month">Last month</string>
+    <string name="this_year">This year</string>
 
 
     <string-array name="account_summary_spinner">
@@ -72,6 +78,30 @@
         <item>This month</item>
         <item>Last month</item>
         <item>This year</item>
+    </string-array>
+
+    <string-array name="report_activity_category_spinner">
+        <item>Salary</item>
+        <item>Rental income</item>
+        <item>Interest</item>
+        <item>Gifts</item>
+        <item>Other income</item>
+        <item>Taxes</item>
+        <item>Mortgage</item>
+        <item>Credit card</item>
+        <item>Utilities</item>
+        <item>Food</item>
+        <item>Car payment</item>
+        <item>Personal</item>
+        <item>Activities</item>
+        <item>Other expense</item>
+    </string-array>
+
+    <string-array name="report_activity_currency_spinner">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>UAH</item>
+        <item>RUB</item>
     </string-array>
 
 
