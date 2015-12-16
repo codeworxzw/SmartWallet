@@ -80,7 +80,7 @@ public class Charts extends Fragment {
                 switch (id){
                     case R.id.thisWeek:
                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
-
+                        getValues(financeDocumentList);
                         break;
                     case R.id.thisMonth:
                         financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisMonth", MainActivity.getUserId());
@@ -109,6 +109,26 @@ public class Charts extends Fragment {
         popup.show();
 
     }
+    public void getValues(List<FinanceDocument> list){
+        for(FinanceDocument item : list){
+            Log.d("item",item.getSalary());
+            Log.d("item",item.getRentalIncome());
+            Log.d("item",item.getInterest());
+            Log.d("item",item.getGifts());
+            Log.d("item",item.getOtherIncome());
+            Log.d("item",item.getTaxes());
+            Log.d("item",item.getMortgage());
+            Log.d("item",item.getCreditCard());
+            Log.d("item",item.getUtilities());
+            Log.d("item",item.getFood());
+            Log.d("item",item.getCarPayment());
+            Log.d("item",item.getPersonal());
+            Log.d("item",item.getActivities());
+            Log.d("item",item.getOtherExpenses());
+
+        }
+    }
+
 
 
 }

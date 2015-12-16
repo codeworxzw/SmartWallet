@@ -30,19 +30,19 @@ public class FinanceDocument {
         this.type = DOC_TYPE;
         this.userId = params.get(0);
         this.salary = params.get(1);
-        this.rental_income = params.get(2);
+        this.rentalIncome = params.get(2);
         this.interest = params.get(3);
         this.gifts = params.get(4);
-        this.other_income = params.get(5);
+        this.otherIncome = params.get(5);
         this.taxes = params.get(6);
         this.mortgage = params.get(7);
-        this.credit_card = params.get(8);
+        this.creditCard = params.get(8);
         this.utilities = params.get(9);
         this.food = params.get(10);
-        this.car_payment = params.get(11);
+        this.carPayment = params.get(11);
         this.personal = params.get(12);
         this.activities = params.get(13);
-        this.other_expenses = params.get(14);
+        this.otherExpenses = params.get(14);
 
         Date currDate = new Date();
         this.date = Long.toString(currDate.getTime() / 1000);
@@ -51,19 +51,19 @@ public class FinanceDocument {
         this.setType(DOC_TYPE);
         this.setUserId(userId);
         this.setSalary(salary);
-        this.setRentalIncome(rental_income);
+        this.setRentalIncome(rentalIncome);
         this.setInterest(interest);
         this.setGifts(gifts);
-        this.setOther_income(other_income);
+        this.setOtherIncome(otherIncome);
         this.setTaxes(taxes);
         this.setMortgage(mortgage);
-        this.setCredit_card(credit_card);
+        this.setCreditCard(creditCard);
         this.setUtilities(utilities);
         this.setFood(food);
-        this.setCarPayment(car_payment);
+        this.setCarPayment(carPayment);
         this.setPersonal(personal);
         this.setActivities(activities);
-        this.setOtherExpenses(other_expenses);
+        this.setOtherExpenses(otherExpenses);
 
     }
 //type
@@ -91,12 +91,12 @@ public class FinanceDocument {
         this.salary = salary;
     }
 //rental income
-    private String rental_income;
+    private String rentalIncome;
     public String getRentalIncome() {
-        return rental_income;
+        return rentalIncome;
     }
-    public void setRentalIncome(String rental_income) {
-        this.rental_income = rental_income;
+    public void setRentalIncome(String rentalIncome) {
+        this.rentalIncome = rentalIncome;
     }
 //interest
     private String interest;
@@ -117,12 +117,12 @@ public class FinanceDocument {
     }
 
 //other income
-    private String other_income;
+    private String otherIncome;
     public String getOtherIncome() {
-        return other_income;
+        return otherIncome;
     }
-    public void setOther_income(String other_income) {
-        this.other_income = other_income;
+    public void setOtherIncome(String otherIncome) {
+        this.otherIncome = otherIncome;
     }
 
 //7 - taxes
@@ -144,12 +144,12 @@ public class FinanceDocument {
     }
 
 // 9 - credit card
-    private String credit_card;
+    private String creditCard;
     public String getCreditCard() {
-        return credit_card;
+        return creditCard;
     }
-    public void setCredit_card(String credit_card) {
-        this.credit_card = credit_card;
+    public void setCreditCard(String creditCard) {
+        this.creditCard = creditCard;
     }
 
 //10 - utilities
@@ -171,12 +171,12 @@ public class FinanceDocument {
     }
 
 //12 - car payment
-    private String car_payment;
+    private String carPayment;
     public String getCarPayment() {
-        return car_payment;
+        return carPayment;
     }
-    public void setCarPayment(String car_payment) {
-        this.car_payment = car_payment;
+    public void setCarPayment(String carPayment) {
+        this.carPayment = carPayment;
     }
 
 //13 - personal
@@ -198,12 +198,12 @@ public class FinanceDocument {
     }
 
 //15 - other expenses
-    private String other_expenses;
+    private String otherExpenses;
     public String getOtherExpenses() {
-        return other_expenses;
+        return otherExpenses;
     }
-    public void setOtherExpenses(String other_expenses) {
-        this.other_expenses = other_expenses;
+    public void setOtherExpenses(String otherExpenses) {
+        this.otherExpenses = otherExpenses;
     }
 
 
@@ -228,19 +228,19 @@ public class FinanceDocument {
             t.setType((String) map.get("type"));
             t.setUserId((String) map.get("userId"));
             t.setSalary((String) map.get("salary"));
-            t.setRentalIncome((String) map.get("rental income"));
+            t.setRentalIncome((String) map.get("rentalIncome"));
             t.setInterest((String) map.get("interest"));
             t.setGifts((String) map.get("gifts"));
-            t.setOther_income((String) map.get("other income"));
+            t.setOtherIncome((String) map.get("otherIncome"));
             t.setTaxes((String) map.get("taxes"));
             t.setMortgage((String) map.get("mortgage"));
-            t.setCredit_card((String) map.get("credit card"));
+            t.setCreditCard((String) map.get("creditCard"));
             t.setUtilities((String) map.get("utilities"));
             t.setFood((String) map.get("food"));
-            t.setCarPayment((String) map.get("car payment"));
+            t.setCarPayment((String) map.get("carPayment"));
             t.setPersonal((String) map.get("personal"));
             t.setActivities((String) map.get("activities"));
-            t.setOtherExpenses((String) map.get("other expenses"));
+            t.setOtherExpenses((String) map.get("otherExpenses"));
             return t;
         }
         return null;
@@ -252,19 +252,19 @@ public class FinanceDocument {
         map.put("type", type);
         map.put("userId", userId);
         map.put("salary", salary);
-        map.put("rental income", rental_income);
+        map.put("rentalIncome", rentalIncome);
         map.put("interest", interest);
         map.put("gifts", gifts);
-        map.put("other_income", other_income);
+        map.put("otherIncome", otherIncome);
         map.put("taxes", taxes);
         map.put("mortgage", mortgage);
-        map.put("credit_card", credit_card);
+        map.put("creditCard", creditCard);
         map.put("utilities", utilities);
         map.put("food", food);
-        map.put("car_payment", car_payment);
+        map.put("carPayment", carPayment);
         map.put("personal", personal);
         map.put("activities", activities);
-        map.put("other_expenses", other_expenses);
+        map.put("otherExpenses", otherExpenses);
         map.put("date", date);
 
         return map;

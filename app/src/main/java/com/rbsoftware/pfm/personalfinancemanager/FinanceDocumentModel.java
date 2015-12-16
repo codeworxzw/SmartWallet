@@ -120,19 +120,19 @@ public class FinanceDocumentModel {
         indexList.add("userId");
         indexList.add("date");
         indexList.add("salary");
-        indexList.add("rental income");
+        indexList.add("rentalIncome");
         indexList.add("interest");
         indexList.add("gifts");
-        indexList.add("other income");
+        indexList.add("otherIncome");
         indexList.add("taxes");
         indexList.add("mortgage");
-        indexList.add("credit card");
+        indexList.add("creditCard");
         indexList.add("utilities");
         indexList.add("food");
-        indexList.add("car payment");
+        indexList.add("carPayment");
         indexList.add("personal");
         indexList.add("activities");
-        indexList.add("other expenses");
+        indexList.add("otherExpenses");
 
 
         im.ensureIndexed(indexList, FINANCE_DOCUMENT_INDEX_LIST);
