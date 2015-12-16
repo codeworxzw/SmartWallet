@@ -75,6 +75,8 @@ public class Charts extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
                 Log.d("popup menu", item.getTitle().toString());
+
+
                 switch (id){
                     case R.id.thisWeek:
                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
@@ -100,6 +102,7 @@ public class Charts extends Fragment {
 
                         break;
                 }
+                Log.d("popup menu", financeDocumentList.toString());
                 return false;
             }
         });
