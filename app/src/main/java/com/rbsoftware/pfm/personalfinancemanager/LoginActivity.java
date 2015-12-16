@@ -47,6 +47,8 @@ public class LoginActivity extends AppCompatActivity implements
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
+                .requestId()
+                .requestProfile()
                 .build();
         // [END configure_signin]
 
@@ -140,6 +142,7 @@ public class LoginActivity extends AppCompatActivity implements
     // [START signIn]
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        Log.d(TAG, signInIntent.toString());
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
     // [END signIn]

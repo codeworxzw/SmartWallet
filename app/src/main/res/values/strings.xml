@@ -64,6 +64,12 @@
     <string name="personal">Personal</string>
     <string name="activities">Activities</string>
     <string name="other_expense">Other expense</string>
+    <string name="filter">Filter</string>
+    <string name="this_week">This week</string>
+    <string name="this_month">This month</string>
+    <string name="last_week">Last week</string>
+    <string name="last_month">Last month</string>
+    <string name="this_year">This year</string>
 
 
     <string-array name="account_summary_spinner">

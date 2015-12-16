@@ -117,7 +117,7 @@ public class FinanceDocumentModel {
         im = new IndexManager(mDatastore);
         List<Object> indexList = new ArrayList<>();
         indexList.add("type");
-        indexList.add("id");
+        indexList.add("userId");
         indexList.add("date");
         indexList.add("salary");
         indexList.add("rental income");
@@ -136,6 +136,7 @@ public class FinanceDocumentModel {
 
 
         im.ensureIndexed(indexList, FINANCE_DOCUMENT_INDEX_LIST);
+        Log.d("index manager", "List of indexes " + im.listIndexes().toString());
     }
 
 
