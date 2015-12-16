@@ -51,7 +51,7 @@ public class FinanceDocument {
         this.setType(DOC_TYPE);
         this.setUserId(userId);
         this.setSalary(salary);
-        this.setRental_income(rental_income);
+        this.setRentalIncome(rental_income);
         this.setInterest(interest);
         this.setGifts(gifts);
         this.setOther_income(other_income);
@@ -60,10 +60,10 @@ public class FinanceDocument {
         this.setCredit_card(credit_card);
         this.setUtilities(utilities);
         this.setFood(food);
-        this.setCar_payment(car_payment);
+        this.setCarPayment(car_payment);
         this.setPersonal(personal);
         this.setActivities(activities);
-        this.setOther_expenses(other_expenses);
+        this.setOtherExpenses(other_expenses);
 
     }
 //type
@@ -92,10 +92,10 @@ public class FinanceDocument {
     }
 //rental income
     private String rental_income;
-    public String getRental_income() {
+    public String getRentalIncome() {
         return rental_income;
     }
-    public void setRental_income(String rental_income) {
+    public void setRentalIncome(String rental_income) {
         this.rental_income = rental_income;
     }
 //interest
@@ -118,7 +118,7 @@ public class FinanceDocument {
 
 //other income
     private String other_income;
-    public String getOther_income() {
+    public String getOtherIncome() {
         return other_income;
     }
     public void setOther_income(String other_income) {
@@ -145,7 +145,7 @@ public class FinanceDocument {
 
 // 9 - credit card
     private String credit_card;
-    public String getCredit_card() {
+    public String getCreditCard() {
         return credit_card;
     }
     public void setCredit_card(String credit_card) {
@@ -172,10 +172,10 @@ public class FinanceDocument {
 
 //12 - car payment
     private String car_payment;
-    public String getCar_payment() {
+    public String getCarPayment() {
         return car_payment;
     }
-    public void setCar_payment(String car_payment) {
+    public void setCarPayment(String car_payment) {
         this.car_payment = car_payment;
     }
 
@@ -199,10 +199,10 @@ public class FinanceDocument {
 
 //15 - other expenses
     private String other_expenses;
-    public String getOther_expenses() {
+    public String getOtherExpenses() {
         return other_expenses;
     }
-    public void setOther_expenses(String other_expenses) {
+    public void setOtherExpenses(String other_expenses) {
         this.other_expenses = other_expenses;
     }
 
@@ -228,7 +228,7 @@ public class FinanceDocument {
             t.setType((String) map.get("type"));
             t.setUserId((String) map.get("userId"));
             t.setSalary((String) map.get("salary"));
-            t.setRental_income((String) map.get("rental income"));
+            t.setRentalIncome((String) map.get("rental income"));
             t.setInterest((String) map.get("interest"));
             t.setGifts((String) map.get("gifts"));
             t.setOther_income((String) map.get("other income"));
@@ -237,10 +237,10 @@ public class FinanceDocument {
             t.setCredit_card((String) map.get("credit card"));
             t.setUtilities((String) map.get("utilities"));
             t.setFood((String) map.get("food"));
-            t.setCar_payment((String) map.get("car payment"));
+            t.setCarPayment((String) map.get("car payment"));
             t.setPersonal((String) map.get("personal"));
             t.setActivities((String) map.get("activities"));
-            t.setOther_expenses((String) map.get("other expenses"));
+            t.setOtherExpenses((String) map.get("other expenses"));
             return t;
         }
         return null;
