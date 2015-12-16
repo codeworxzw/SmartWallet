@@ -3,6 +3,8 @@ package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,12 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class Charts extends Fragment {
-
+    private List<FinanceDocument> financeDocumentList;
 
     public Charts() {
         // Required empty public constructor
@@ -52,10 +56,56 @@ public class Charts extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_filter){
-            //Do whatever you want to do
+            showPopup();
             return true;
         }
 
+
         return super.onOptionsItemSelected(item);
     }
+    //Helper methods
+    //Shows filter popup menu
+    public void showPopup(){
+        View menuItemView = getActivity().findViewById(R.id.action_filter);
+        PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
+        MenuInflater inflate = popup.getMenuInflater();
+        inflate.inflate(R.menu.period, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                Log.d("popup menu", item.getTitle().toString());
+                switch (id){
+                    case R.id.thisWeek:
+                       financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
+
+                        break;
+                    case R.id.thisMonth:
+                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisMonth", MainActivity.getUserId());
+
+
+                        break;
+                    case R.id.lastWeek:
+                        Log.d("popup menu", "Last week");
+                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("lastWeek", MainActivity.getUserId());
+
+
+                        break;
+                    case R.id.lastMonth:
+                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("lastMonth", MainActivity.getUserId());
+
+                        break;
+                    case R.id.thisYear:
+                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId());
+
+                        break;
+                }
+                return false;
+            }
+        });
+        popup.show();
+
+    }
+
+
 }
