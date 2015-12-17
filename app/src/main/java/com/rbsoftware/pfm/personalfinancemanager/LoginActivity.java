@@ -19,6 +19,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 
+import java.util.List;
+
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
@@ -34,8 +36,6 @@ public class LoginActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-
 
 
         // Button listeners
@@ -159,11 +159,19 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View v) {
+        Log.d(TAG, "----------------onClick");
         switch (v.getId()) {
             case R.id.sign_in_button:
-                signIn();
+                //signIn();
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra("name", "tester");
+                intent.putExtra("id", 111);
+                intent.putExtra("email", "bohdan.rybachok@gmail.com");
+                //intent.putExtra("photoURL", acct.getPhotoUrl());
+                //Log.d("USER Pic", acct.getPhotoUrl()+"");
+                startActivity(intent);
+                finish();
                 break;
-
         }
     }
 

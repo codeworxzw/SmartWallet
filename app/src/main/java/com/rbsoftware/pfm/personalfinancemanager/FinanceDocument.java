@@ -255,16 +255,16 @@ public class FinanceDocument {
         map.put("rental income", rental_income);
         map.put("interest", interest);
         map.put("gifts", gifts);
-        map.put("other income", other_income);
+        map.put("other_income", other_income);
         map.put("taxes", taxes);
         map.put("mortgage", mortgage);
-        map.put("credit card", credit_card);
+        map.put("credit_card", credit_card);
         map.put("utilities", utilities);
         map.put("food", food);
-        map.put("car payment", car_payment);
+        map.put("car_payment", car_payment);
         map.put("personal", personal);
         map.put("activities", activities);
-        map.put("other expenses", other_expenses);
+        map.put("other_expenses", other_expenses);
         map.put("date", date);
 
         return map;
