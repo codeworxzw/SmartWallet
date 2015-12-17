@@ -1,0 +1,248 @@
+package com.rbsoftware.pfm.personalfinancemanager;
+
+
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.PopupMenu;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import lecho.lib.hellocharts.listener.PieChartOnValueSelectListener;
+import lecho.lib.hellocharts.model.PieChartData;
+import lecho.lib.hellocharts.model.SliceValue;
+import lecho.lib.hellocharts.view.PieChartView;
+
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class IncomeExpenseChart extends Fragment {
+    private List<FinanceDocument> financeDocumentList;
+    private PieChartView chart;
+    private PieChartData data;
+    private String selectedItem= "thisWeek"; //position of selected item in popup menu
+
+    public IncomeExpenseChart() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_income_expense_chart, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        chart = (PieChartView) getActivity().findViewById(R.id.pie_chart);
+        chart.setOnValueTouchListener(new ValueTouchListener());
+        if (savedInstanceState != null){
+            financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(savedInstanceState.getString("selectedItem"), MainActivity.getUserId());
+        }
+        else{
+            //Default period is this week
+            financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
+
+        }
+        generateChartData(getValues(financeDocumentList));
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.filter, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_filter){
+            showPopup();
+            return true;
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("selectedItem", selectedItem);
+    }
+
+    //Helper methods
+    //Shows filter popup menu
+    public void showPopup(){
+        View menuItemView = getActivity().findViewById(R.id.action_filter);
+        PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
+        MenuInflater inflate = popup.getMenuInflater();
+        inflate.inflate(R.menu.period, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                int id = item.getItemId();
+
+                switch (id) {
+                    case R.id.thisWeek:
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
+                        selectedItem = "thisWeek";
+                        break;
+                    case R.id.thisMonth:
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisMonth", MainActivity.getUserId());
+                        selectedItem = "thisMonth";
+                        break;
+                    case R.id.lastWeek:
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("lastWeek", MainActivity.getUserId());
+                        selectedItem = "lastWeek";
+                        break;
+                    case R.id.lastMonth:
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("lastMonth", MainActivity.getUserId());
+                        selectedItem = "lastMonth";
+                        break;
+                    case R.id.thisYear:
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId());
+                        selectedItem = "thisYear";
+                        break;
+                }
+                generateChartData(getValues(financeDocumentList));
+                return false;
+            }
+        });
+        popup.show();
+
+    }
+    //fills chart with data
+    private void generateChartData(HashMap<Integer, Integer> mapSum) {
+        List<SliceValue> values = new ArrayList<SliceValue>();
+        for (int i = 1; i < mapSum.size(); ++i) {
+            int value=mapSum.get(i);
+            if(value !=0) {
+                SliceValue sliceValue = new SliceValue(value, Color.rgb(150 - i * 4, 90 + i * 8, 200 - i*5));
+                sliceValue.setLabel(keyToString(i)+" "+ value);
+                values.add(sliceValue);
+            }
+        }
+        data = new PieChartData(values);
+        data.setHasLabels(true);
+        //data.setHasLabelsOnlyForSelected(true);
+        data.setHasLabelsOutside(true);
+        chart.setPieChartData(data);
+    }
+
+
+
+
+
+    // extracts sums data of FinanceDocuments in the list
+    public HashMap<Integer,Integer> getValues(List<FinanceDocument> list){
+        int salarySum =0;
+        int rentalIncomeSum =0;
+        int interestSum =0;
+        int giftsSum =0;
+        int otherIncomeSum =0;
+        int taxesSum =0;
+        int mortgageSum =0;
+        int creditCardSum =0;
+        int utilitiesSum =0;
+        int foodSum =0;
+        int carPaymentSum =0;
+        int personalSum =0;
+        int activitiesSum =0;
+        int otherExpensesSum =0;
+
+
+        for(FinanceDocument item : list){
+            salarySum += Integer.valueOf(item.getSalary());
+            rentalIncomeSum += Integer.valueOf(item.getRentalIncome());
+            interestSum +=Integer.valueOf(item.getInterest());
+            giftsSum +=Integer.valueOf(item.getGifts());
+            otherIncomeSum +=Integer.valueOf(item.getOtherIncome());
+            taxesSum += Integer.valueOf(item.getTaxes());
+            mortgageSum += Integer.valueOf(item.getMortgage());
+            creditCardSum += Integer.valueOf(item.getCreditCard());
+            utilitiesSum += Integer.valueOf(item.getUtilities());
+            foodSum +=Integer.valueOf(item.getFood());
+            carPaymentSum += Integer.valueOf(item.getCarPayment());
+            personalSum += Integer.valueOf(item.getPersonal());
+            activitiesSum += Integer.valueOf(item.getActivities());
+            otherExpensesSum += Integer.valueOf(item.getOtherExpenses());
+
+        }
+        HashMap<Integer, Integer> mapSum=new HashMap<>();
+        mapSum.put(MainActivity.PARAM_SALARY, salarySum);
+        mapSum.put(MainActivity.PARAM_RENTAL_INCOME, rentalIncomeSum);
+        mapSum.put(MainActivity.PARAM_INTEREST, interestSum);
+        mapSum.put(MainActivity.PARAM_GIFTS, giftsSum);
+        mapSum.put(MainActivity.PARAM_OTHER_INCOME, otherIncomeSum);
+        mapSum.put(MainActivity.PARAM_TAXES, taxesSum);
+        mapSum.put(MainActivity.PARAM_MORTGAGE, mortgageSum);
+        mapSum.put(MainActivity.PARAM_CREDIT_CARD, creditCardSum);
+        mapSum.put(MainActivity.PARAM_UTILITIES, utilitiesSum);
+        mapSum.put(MainActivity.PARAM_FOOD, foodSum);
+        mapSum.put(MainActivity.PARAM_CAR_PAYMENT, carPaymentSum);
+        mapSum.put(MainActivity.PARAM_PERSONAL, personalSum);
+        mapSum.put(MainActivity.PARAM_ACTIVITIES, activitiesSum);
+        mapSum.put(MainActivity.PARAM_OTHER_EXPENSE, otherExpensesSum);
+
+        return mapSum;
+    }
+
+    /* Converts int key to human readable string
+    * @param key value range 1-14
+    * @return string value
+    */
+    public String keyToString(int key){
+        switch (key){
+            case 1: return getResources().getString(R.string.salary);
+            case 2: return getResources().getString(R.string.rental_income);
+            case 3: return getResources().getString(R.string.interest);
+            case 4: return getResources().getString(R.string.gifts);
+            case 5: return getResources().getString(R.string.otherIncome);
+            case 6: return getResources().getString(R.string.taxes);
+            case 7: return getResources().getString(R.string.mortgage);
+            case 8: return getResources().getString(R.string.creditCard);
+            case 9: return getResources().getString(R.string.utilities);
+            case 10: return getResources().getString(R.string.food);
+            case 11: return getResources().getString(R.string.car_payment);
+            case 12: return getResources().getString(R.string.personal);
+            case 13: return getResources().getString(R.string.activities);
+            case 14: return getResources().getString(R.string.other_expense);
+        }
+        return "";
+    }
+    private class ValueTouchListener implements PieChartOnValueSelectListener {
+
+        @Override
+        public void onValueSelected(int arcIndex, SliceValue value) {
+           // Toast.makeText(getActivity(), value.getLabelAsChars() + " " + value.getValue(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onValueDeselected() {
+            // TODO Auto-generated method stub
+
+        }
+    }
+}
