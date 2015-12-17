@@ -183,19 +183,19 @@ public class AccountSummary extends Fragment {
 
         for (FinanceDocument item : list) {
             salarySum += Integer.parseInt(item.getSalary());
-            rentalIncomeSum += Integer.parseInt(item.getRental_income());
+            rentalIncomeSum += Integer.parseInt(item.getRentalIncome());
             interestSum += Integer.parseInt(item.getInterest());
             giftsSum += Integer.parseInt(item.getGifts());
-            otherIncomeSum += Integer.parseInt(item.getOther_income());
+            otherIncomeSum += Integer.parseInt(item.getOtherIncome());
             taxesSum += Integer.parseInt(item.getTaxes());
             mortgageSum += Integer.parseInt(item.getMortgage());
-            creditCardSum += Integer.parseInt(item.getCredit_card());
+            creditCardSum += Integer.parseInt(item.getCreditCard());
             utilitiesSum += Integer.parseInt(item.getUtilities());
             foodSum += Integer.parseInt(item.getFood());
-            carPaymentSum += Integer.parseInt(item.getCar_payment());
+            carPaymentSum += Integer.parseInt(item.getCarPayment());
             personalSum += Integer.parseInt(item.getPersonal());
             activitiesSum += Integer.parseInt(item.getActivities());
-            otherExpensesSum += Integer.parseInt(item.getOther_expenses());
+            otherExpensesSum += Integer.parseInt(item.getOtherExpenses());
         }
 
         //totalIncome = salarySum + rentalIncomeSum +interestSum + giftsSum + otherIncomeSum;

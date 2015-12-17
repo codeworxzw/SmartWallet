@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity  {
         //Get intent userdata from login activity
         Intent intent = getIntent();
         data =intent.getExtras().getString("name");
-        userID = "111";
+        userID = intent.getExtras().getString("id");
         params =new ArrayList<>();
 
         NavigationDrawerFragment drawerFragment = new NavigationDrawerFragment();
