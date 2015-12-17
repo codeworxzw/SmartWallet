@@ -1,6 +1,7 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.PopupMenu;
@@ -11,8 +12,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import lecho.lib.hellocharts.listener.PieChartOnValueSelectListener;
+import lecho.lib.hellocharts.model.PieChartData;
+import lecho.lib.hellocharts.model.SliceValue;
+import lecho.lib.hellocharts.util.ChartUtils;
+import lecho.lib.hellocharts.view.PieChartView;
 
 
 /**
@@ -20,6 +30,9 @@ import java.util.List;
  */
 public class Charts extends Fragment {
     private List<FinanceDocument> financeDocumentList;
+    private PieChartView chart;
+    private PieChartData data;
+
 
     public Charts() {
         // Required empty public constructor
@@ -43,6 +56,11 @@ public class Charts extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[1]);
+
+        chart = (PieChartView) getActivity().findViewById(R.id.pie_chart);
+        chart.setOnValueTouchListener(new ValueTouchListener());
+
+
 
     }
 
@@ -74,57 +92,138 @@ public class Charts extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
-                Log.d("popup menu", item.getTitle().toString());
-
 
                 switch (id){
                     case R.id.thisWeek:
                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
-                        getValues(financeDocumentList);
                         break;
                     case R.id.thisMonth:
                         financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisMonth", MainActivity.getUserId());
-
-
                         break;
                     case R.id.lastWeek:
-                        Log.d("popup menu", "Last week");
                         financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("lastWeek", MainActivity.getUserId());
-
-
                         break;
                     case R.id.lastMonth:
                         financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("lastMonth", MainActivity.getUserId());
-
                         break;
                     case R.id.thisYear:
                         financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId());
-
                         break;
                 }
-                Log.d("popup menu", financeDocumentList.toString());
+                generateChartData(getValues(financeDocumentList));
                 return false;
             }
         });
         popup.show();
 
     }
-    public void getValues(List<FinanceDocument> list){
+
+    //fills chart with data
+    private void generateChartData(HashMap<Integer, Integer> mapSum) {
+        List<SliceValue> values = new ArrayList<SliceValue>();
+        for (int i = 1; i < mapSum.size(); ++i) {
+            int value=mapSum.get(i);
+            if(value !=0) {
+                SliceValue sliceValue = new SliceValue(value, Color.rgb(150+i*4, 90+i*2, 200+i));
+                sliceValue.setLabel(keyToString(i));
+                values.add(sliceValue);
+            }
+        }
+        data = new PieChartData(values);
+        data.setHasLabels(true);
+        //data.setHasLabelsOnlyForSelected(true);
+        data.setHasLabelsOutside(true);
+        chart.setPieChartData(data);
+    }
+
+
+// extracts sums data of FinanceDocuments in the list
+    public HashMap<Integer,Integer> getValues(List<FinanceDocument> list){
+        int salarySum =0;
+        int rentalIncomeSum =0;
+        int interestSum =0;
+        int giftsSum =0;
+        int otherIncomeSum =0;
+        int taxesSum =0;
+        int mortgageSum =0;
+        int creditCardSum =0;
+        int utilitiesSum =0;
+        int foodSum =0;
+        int carPaymentSum =0;
+        int personalSum =0;
+        int activitiesSum =0;
+        int otherExpensesSum =0;
+
+
         for(FinanceDocument item : list){
-            Log.d("item",item.getSalary());
-            Log.d("item",item.getRentalIncome());
-            Log.d("item",item.getInterest());
-            Log.d("item",item.getGifts());
-            Log.d("item",item.getOtherIncome());
-            Log.d("item",item.getTaxes());
-            Log.d("item",item.getMortgage());
-            Log.d("item",item.getCreditCard());
-            Log.d("item",item.getUtilities());
-            Log.d("item",item.getFood());
-            Log.d("item",item.getCarPayment());
-            Log.d("item",item.getPersonal());
-            Log.d("item",item.getActivities());
-            Log.d("item",item.getOtherExpenses());
+            salarySum += Integer.valueOf(item.getSalary());
+            rentalIncomeSum += Integer.valueOf(item.getRentalIncome());
+            interestSum +=Integer.valueOf(item.getInterest());
+            giftsSum +=Integer.valueOf(item.getGifts());
+            otherIncomeSum +=Integer.valueOf(item.getOtherIncome());
+            taxesSum += Integer.valueOf(item.getTaxes());
+            mortgageSum += Integer.valueOf(item.getMortgage());
+            creditCardSum += Integer.valueOf(item.getCreditCard());
+            utilitiesSum += Integer.valueOf(item.getUtilities());
+            foodSum +=Integer.valueOf(item.getFood());
+            carPaymentSum += Integer.valueOf(item.getCarPayment());
+            personalSum += Integer.valueOf(item.getPersonal());
+            activitiesSum += Integer.valueOf(item.getActivities());
+            otherExpensesSum += Integer.valueOf(item.getOtherExpenses());
+
+        }
+            HashMap<Integer, Integer> mapSum=new HashMap<>();
+            mapSum.put(MainActivity.PARAM_SALARY, salarySum);
+            mapSum.put(MainActivity.PARAM_RENTAL_INCOME, rentalIncomeSum);
+            mapSum.put(MainActivity.PARAM_INTEREST, interestSum);
+            mapSum.put(MainActivity.PARAM_GIFTS, giftsSum);
+            mapSum.put(MainActivity.PARAM_OTHER_INCOME, otherIncomeSum);
+            mapSum.put(MainActivity.PARAM_TAXES, taxesSum);
+            mapSum.put(MainActivity.PARAM_MORTGAGE, mortgageSum);
+            mapSum.put(MainActivity.PARAM_CREDIT_CARD, creditCardSum);
+            mapSum.put(MainActivity.PARAM_UTILITIES, utilitiesSum);
+            mapSum.put(MainActivity.PARAM_FOOD, foodSum);
+            mapSum.put(MainActivity.PARAM_CAR_PAYMENT, carPaymentSum);
+            mapSum.put(MainActivity.PARAM_PERSONAL, personalSum);
+            mapSum.put(MainActivity.PARAM_ACTIVITIES, activitiesSum);
+            mapSum.put(MainActivity.PARAM_OTHER_EXPENSE, otherExpensesSum);
+
+        return mapSum;
+    }
+
+    /* Converts int key to human readable string
+    * @param key value range 1-14
+    * @return string value
+    */
+    public String keyToString(int key){
+        switch (key){
+           case 1: return getResources().getString(R.string.salary);
+           case 2: return getResources().getString(R.string.rental_income);
+           case 3: return getResources().getString(R.string.interest);
+           case 4: return getResources().getString(R.string.gifts);
+           case 5: return getResources().getString(R.string.otherIncome);
+           case 6: return getResources().getString(R.string.taxes);
+           case 7: return getResources().getString(R.string.mortgage);
+           case 8: return getResources().getString(R.string.creditCard);
+           case 9: return getResources().getString(R.string.utilities);
+           case 10: return getResources().getString(R.string.food);
+           case 11: return getResources().getString(R.string.car_payment);
+           case 12: return getResources().getString(R.string.personal);
+           case 13: return getResources().getString(R.string.activities);
+           case 14: return getResources().getString(R.string.other_expense);
+        }
+        return "";
+    }
+    private class ValueTouchListener implements PieChartOnValueSelectListener {
+
+        @Override
+        public void onValueSelected(int arcIndex, SliceValue value) {
+            Toast.makeText(getActivity(), "Selected: " + value, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onValueDeselected() {
+            // TODO Auto-generated method stub
 
         }
     }

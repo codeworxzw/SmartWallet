@@ -22,6 +22,21 @@ import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity  {
+    public final static int PARAM_USERID =0;
+    public final static int PARAM_SALARY =1;
+    public final static int PARAM_RENTAL_INCOME =2;
+    public final static int PARAM_INTEREST =3;
+    public final static int PARAM_GIFTS =4;
+    public final static int PARAM_OTHER_INCOME =5;
+    public final static int PARAM_TAXES =6;
+    public final static int PARAM_MORTGAGE =7;
+    public final static int PARAM_CREDIT_CARD =8;
+    public final static int PARAM_UTILITIES =9;
+    public final static int PARAM_FOOD =10;
+    public final static int PARAM_CAR_PAYMENT =11;
+    public final static int PARAM_PERSONAL =12;
+    public final static int PARAM_ACTIVITIES =13;
+    public final static int PARAM_OTHER_EXPENSE =14;
     List<String> params; //List FinanceDocument constructor parameters
     private String data;
     private static String userID; //unique user identifier
@@ -93,21 +108,21 @@ public class MainActivity extends AppCompatActivity  {
                 ArrayList<String> reportResult=data.getStringArrayListExtra("reportResult");
 
                 Log.d("reportResult", reportResult.toString()+"");
-                params.add(0, userID);
-                params.add(1, getItem(reportResult, 0));
-                params.add(2, getItem(reportResult, 1));
-                params.add(3, getItem(reportResult, 2));
-                params.add(4, getItem(reportResult, 3));
-                params.add(5, getItem(reportResult, 4));
-                params.add(6, getItem(reportResult, 5));
-                params.add(7, getItem(reportResult, 6));
-                params.add(8, getItem(reportResult, 7));
-                params.add(9, getItem(reportResult, 8));
-                params.add(10, getItem(reportResult, 9));
-                params.add(11, getItem(reportResult, 10));
-                params.add(12, getItem(reportResult, 11));
-                params.add(13, getItem(reportResult, 12));
-                params.add(14, getItem(reportResult, 13));
+                params.add(PARAM_USERID, userID);
+                params.add(PARAM_SALARY, getItem(reportResult, 0));
+                params.add(PARAM_RENTAL_INCOME, getItem(reportResult, 1));
+                params.add(PARAM_INTEREST, getItem(reportResult, 2));
+                params.add(PARAM_GIFTS, getItem(reportResult, 3));
+                params.add(PARAM_OTHER_INCOME, getItem(reportResult, 4));
+                params.add(PARAM_TAXES, getItem(reportResult, 5));
+                params.add(PARAM_MORTGAGE, getItem(reportResult, 6));
+                params.add(PARAM_CREDIT_CARD, getItem(reportResult, 7));
+                params.add(PARAM_UTILITIES, getItem(reportResult, 8));
+                params.add(PARAM_FOOD, getItem(reportResult, 9));
+                params.add(PARAM_CAR_PAYMENT, getItem(reportResult, 10));
+                params.add(PARAM_PERSONAL, getItem(reportResult, 11));
+                params.add(PARAM_ACTIVITIES, getItem(reportResult, 12));
+                params.add(PARAM_OTHER_EXPENSE, getItem(reportResult, 13));
                 createNewFinanceDocument(params);
                // financeDocumentModel.startPushReplication();
 
