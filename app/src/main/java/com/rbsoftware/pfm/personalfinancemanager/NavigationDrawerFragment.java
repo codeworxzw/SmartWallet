@@ -55,7 +55,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d("Save problem", "NavigationDrawerFragment onCreate");
         if(savedInstanceState == null) {
             // [START configure_signin]
             // Configure sign-in to request the user's ID, email address, and basic
@@ -94,6 +94,12 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
 
         return mDrawerView;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        setRetainInstance(true);
     }
 
     @Override
@@ -180,7 +186,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
             }
             fragmentPos = position;
-            MainActivity.SaveToSharedPreferences(getActivity(),"fragmentPos", Integer.toString(position));
+            MainActivity.SaveToSharedPreferences(getActivity(), "fragmentPos", Integer.toString(position));
             FM = getFragmentManager();
 
             FM.beginTransaction().replace(R.id.fragment_container, mFragment).commit();

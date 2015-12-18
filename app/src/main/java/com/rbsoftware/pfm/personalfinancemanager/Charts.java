@@ -1,6 +1,7 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,12 +27,16 @@ public class Charts extends Fragment {
     private Fragment mFragment;
     private ViewPager mPager;
     private FragmentManager FM;
-
+    private boolean retained = false;
 
     public Charts() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
 
 
@@ -43,21 +48,34 @@ public class Charts extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        setRetainInstance(true);
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[1]);
         FM = getChildFragmentManager();
         mPager= (ViewPager) getActivity().findViewById(R.id.pager);
-        mPager.setAdapter(new CollectionPagerAdapter(FM));
+        if (savedInstanceState == null) {
+            mPager.setAdapter(new CollectionPagerAdapter(FM));
+        }
 
+
+        retained =true;
 
 
 
     }
 
 
-
-
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("retainState", retained);
+    }
 
     private class CollectionPagerAdapter extends FragmentStatePagerAdapter {
         public CollectionPagerAdapter(FragmentManager fm) {

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity  {
     private String data;
     private static String userID; //unique user identifier
     private NavigationDrawerFragment drawerFragment;
+    private boolean retained = false;
 
 
     public static FinanceDocumentModel financeDocumentModel;
@@ -56,19 +58,23 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         //Get intent userdata from login activity
         Intent intent = getIntent();
         data =intent.getExtras().getString("name");
         userID = intent.getExtras().getString("id");
         params =new ArrayList<>();
 
-        drawerFragment = new NavigationDrawerFragment();
-        drawerFragment.setArguments(intent.getExtras());
-        getSupportFragmentManager().beginTransaction().add(R.id.navigation_drawer_fragment,drawerFragment).commit();
+        if(savedInstanceState == null) {
+            drawerFragment = new NavigationDrawerFragment();
+            drawerFragment.setArguments(intent.getExtras());
+            getSupportFragmentManager().beginTransaction().add(R.id.navigation_drawer_fragment, drawerFragment, "DrawerTag").commit();
+        }
+        else{
+            drawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentByTag("DrawerTag");
 
+        }
 
-
+        retained = true;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -101,7 +107,11 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
-
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("retained", retained);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -110,7 +120,6 @@ public class MainActivity extends AppCompatActivity  {
             if(resultCode == RESULT_OK){
                 ArrayList<String> reportResult=data.getStringArrayListExtra("reportResult");
 
-                Log.d("reportResult", reportResult.toString()+"");
                 params.add(PARAM_USERID, userID);
                 params.add(PARAM_SALARY, getItem(reportResult, 0));
                 params.add(PARAM_RENTAL_INCOME, getItem(reportResult, 1));

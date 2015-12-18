@@ -1,6 +1,7 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.Toast;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
@@ -31,10 +32,11 @@ import lecho.lib.hellocharts.view.PieChartView;
  */
 public class IncomeExpenseChart extends Fragment {
     private List<FinanceDocument> financeDocumentList;
-    private PieChartView chart;
+    private PieChartView mPieChart;
     private PieChartData data;
-    private String selectedItem= "thisWeek"; //position of selected item in popup menu
+    private String selectedItem; //position of selected item in popup menu
     private ToggleButton mIncomeExpenseButton;
+    private TextView mTextViewPeriod;
     private int offsetStart;
     private int offsetEnd;
 
@@ -46,6 +48,7 @@ public class IncomeExpenseChart extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
     }
 
     @Override
@@ -56,10 +59,11 @@ public class IncomeExpenseChart extends Fragment {
         return inflater.inflate(R.layout.fragment_income_expense_chart, container, false);
     }
 
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("onActivityCreated", "onActivityCreated");
+        mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period);
         mIncomeExpenseButton = (ToggleButton) getActivity().findViewById(R.id.btn_income_expense);
 
 
@@ -96,17 +100,14 @@ public class IncomeExpenseChart extends Fragment {
         });
 
 
-        chart = (PieChartView) getActivity().findViewById(R.id.pie_chart);
-        chart.setOnValueTouchListener(new ValueTouchListener());
-        if (savedInstanceState != null){
-            financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(savedInstanceState.getString("selectedItem"), MainActivity.getUserId());
+        mPieChart = (PieChartView) getActivity().findViewById(R.id.pie_chart);
+        mPieChart.setOnValueTouchListener(new ValueTouchListener());
 
-        }
-        else{
-            //Default period is this week
-            financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
+            financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.ReadFromSharedPreferences(getActivity(), "period", "thisWeek"), MainActivity.getUserId());
+            mTextViewPeriod.setText(MainActivity.ReadFromSharedPreferences(getActivity(), "periodText", getResources().getString(R.string.this_week)));
 
-        }
+
+
         generateChartData(getValues(financeDocumentList));
     }
 
@@ -128,12 +129,7 @@ public class IncomeExpenseChart extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("selectedItem", selectedItem);
 
-    }
 
     //Helper methods
     //Shows filter popup menu
@@ -152,24 +148,36 @@ public class IncomeExpenseChart extends Fragment {
                     case R.id.thisWeek:
                         financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
                         selectedItem = "thisWeek";
+                        mTextViewPeriod.setText(getResources().getString(R.string.this_week));
                         break;
                     case R.id.thisMonth:
                         financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisMonth", MainActivity.getUserId());
                         selectedItem = "thisMonth";
+                        mTextViewPeriod.setText(getResources().getString(R.string.this_month));
+
                         break;
                     case R.id.lastWeek:
                         financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("lastWeek", MainActivity.getUserId());
                         selectedItem = "lastWeek";
+                        mTextViewPeriod.setText(getResources().getString(R.string.last_week));
+
                         break;
                     case R.id.lastMonth:
                         financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("lastMonth", MainActivity.getUserId());
                         selectedItem = "lastMonth";
+                        mTextViewPeriod.setText(getResources().getString(R.string.last_month));
+
                         break;
                     case R.id.thisYear:
                         financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId());
                         selectedItem = "thisYear";
+                        mTextViewPeriod.setText(getResources().getString(R.string.this_year));
+
                         break;
                 }
+                MainActivity.SaveToSharedPreferences(getActivity(), "period", selectedItem);
+                MainActivity.SaveToSharedPreferences(getActivity(), "periodText", mTextViewPeriod.getText().toString());
+
                 generateChartData(getValues(financeDocumentList));
                 return false;
             }
@@ -177,11 +185,13 @@ public class IncomeExpenseChart extends Fragment {
         popup.show();
 
     }
-    //fills chart with data
+    //fills mPieChart with data
     private void generateChartData(HashMap<Integer, Integer> mapSum) {
         List<SliceValue> values = new ArrayList<SliceValue>();
+        int total=0;
         for (int i = 1+offsetStart; i <= (mapSum.size()-offsetEnd); ++i) {
             int value=mapSum.get(i);
+            total +=value;
             if(value !=0) {
                 SliceValue sliceValue = new SliceValue(value, Color.rgb(150 - i * 4, 90 + i * 8, 200 - i*5));
                 sliceValue.setLabel(keyToString(i)+" "+ value);
@@ -192,7 +202,16 @@ public class IncomeExpenseChart extends Fragment {
         data.setHasLabels(true);
         //data.setHasLabelsOnlyForSelected(true);
         data.setHasLabelsOutside(true);
-        chart.setPieChartData(data);
+        data.setHasCenterCircle(true);
+        data.setCenterText1(Integer.toString(total));
+        if(mIncomeExpenseButton.isChecked()) {
+            data.setCenterCircleColor(getResources().getColor(R.color.income));
+        }
+        else {
+            data.setCenterCircleColor(getResources().getColor(R.color.expense));
+        }
+        mPieChart.setPieChartData(data);
+
     }
 
 
