@@ -1,8 +1,13 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,14 +17,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class Charts extends Fragment {
-    private List<FinanceDocument> financeDocumentList;
+
+    private Fragment mFragment;
+    private ViewPager mPager;
+    private FragmentManager FM;
+    private boolean retained = false;
 
     public Charts() {
         // Required empty public constructor
@@ -28,8 +36,8 @@ public class Charts extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
     }
+
 
 
     @Override
@@ -40,92 +48,66 @@ public class Charts extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        setRetainInstance(true);
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[1]);
-
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.filter, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if(id == R.id.action_filter){
-            showPopup();
-            return true;
+        FM = getChildFragmentManager();
+        mPager= (ViewPager) getActivity().findViewById(R.id.pager);
+        if (savedInstanceState == null) {
+            mPager.setAdapter(new CollectionPagerAdapter(FM));
         }
 
 
-        return super.onOptionsItemSelected(item);
+        retained =true;
+
+
+
     }
-    //Helper methods
-    //Shows filter popup menu
-    public void showPopup(){
-        View menuItemView = getActivity().findViewById(R.id.action_filter);
-        PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
-        MenuInflater inflate = popup.getMenuInflater();
-        inflate.inflate(R.menu.period, popup.getMenu());
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int id = item.getItemId();
-                Log.d("popup menu", item.getTitle().toString());
 
 
-                switch (id){
-                    case R.id.thisWeek:
-                       financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
-                        getValues(financeDocumentList);
-                        break;
-                    case R.id.thisMonth:
-                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisMonth", MainActivity.getUserId());
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("retainState", retained);
+    }
 
+    private class CollectionPagerAdapter extends FragmentStatePagerAdapter {
+        public CollectionPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
 
-                        break;
-                    case R.id.lastWeek:
-                        Log.d("popup menu", "Last week");
-                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("lastWeek", MainActivity.getUserId());
-
-
-                        break;
-                    case R.id.lastMonth:
-                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("lastMonth", MainActivity.getUserId());
-
-                        break;
-                    case R.id.thisYear:
-                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId());
-
-                        break;
-                }
-                Log.d("popup menu", financeDocumentList.toString());
-                return false;
+        @Override
+        public Fragment getItem(int position) {
+            if(position == 0){
+                mFragment = new IncomeExpenseChart();
             }
-        });
-        popup.show();
+            if(position == 1){
+                mFragment = new TrendsChart();
+            }
+            return mFragment;
+        }
 
-    }
-    public void getValues(List<FinanceDocument> list){
-        for(FinanceDocument item : list){
-            Log.d("item",item.getSalary());
-            Log.d("item",item.getRentalIncome());
-            Log.d("item",item.getInterest());
-            Log.d("item",item.getGifts());
-            Log.d("item",item.getOtherIncome());
-            Log.d("item",item.getTaxes());
-            Log.d("item",item.getMortgage());
-            Log.d("item",item.getCreditCard());
-            Log.d("item",item.getUtilities());
-            Log.d("item",item.getFood());
-            Log.d("item",item.getCarPayment());
-            Log.d("item",item.getPersonal());
-            Log.d("item",item.getActivities());
-            Log.d("item",item.getOtherExpenses());
+        @Override
+        public int getCount() {
+            return 2;
+        }
 
+        @Override
+        public CharSequence getPageTitle(int position) {
+            String title = new String();
+            if(position == 0){
+                title = getResources().getString(R.string.overview);
+            }
+            if(position == 1){
+                title =getResources().getString(R.string.trends); ;
+            }
+            return  title;
         }
     }
 

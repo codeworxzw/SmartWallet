@@ -32,7 +32,7 @@ import com.google.android.gms.common.api.Status;
  * A simple {@link Fragment} subclass.
  */
 public class NavigationDrawerFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener{
-    public static final String PREF_FILE = "PrefFile";
+
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
@@ -55,7 +55,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d("Save problem", "NavigationDrawerFragment onCreate");
         if(savedInstanceState == null) {
             // [START configure_signin]
             // Configure sign-in to request the user's ID, email address, and basic
@@ -89,11 +89,17 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
         mDrawerView = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         // Inflate the layout for this fragment
-        fragmentPos=Integer.valueOf(ReadFromSharedPreferences(getActivity(), "fragmentPos", "0"));
+        fragmentPos=Integer.valueOf(MainActivity.ReadFromSharedPreferences(getActivity(), "fragmentPos", "0"));
 
 
 
         return mDrawerView;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        setRetainInstance(true);
     }
 
     @Override
@@ -151,20 +157,6 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         openFragment(fragmentPos);
     }
 
-
-
-    public static void SaveToSharedPreferences(Context context, String prefName, String prefValue){
-        SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE,Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(prefName, prefValue);
-        editor.apply();
-    }
-
-    public static String ReadFromSharedPreferences(Context context, String prefName, String defaultValue){
-        SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
-        return sharedPref.getString(prefName,defaultValue);
-    }
-
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
@@ -194,7 +186,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
             }
             fragmentPos = position;
-            SaveToSharedPreferences(getActivity(),"fragmentPos", Integer.toString(position));
+            MainActivity.SaveToSharedPreferences(getActivity(), "fragmentPos", Integer.toString(position));
             FM = getFragmentManager();
 
             FM.beginTransaction().replace(R.id.fragment_container, mFragment).commit();

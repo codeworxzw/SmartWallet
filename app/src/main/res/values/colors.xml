@@ -9,4 +9,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF5722</color>
     <color name="colorPagerTabStrip">#C5CAE9</color>
+    <color name="income">#A5D6A7</color>
+    <color name="expense">#EF9A9A</color>
 </resources>

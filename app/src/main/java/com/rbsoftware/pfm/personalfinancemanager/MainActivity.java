@@ -1,8 +1,11 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,10 +25,27 @@ import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity  {
+    public static final String PREF_FILE = "PrefFile";
+    public final static int PARAM_USERID =0;
+    public final static int PARAM_SALARY =1;
+    public final static int PARAM_RENTAL_INCOME =2;
+    public final static int PARAM_INTEREST =3;
+    public final static int PARAM_GIFTS =4;
+    public final static int PARAM_OTHER_INCOME =5;
+    public final static int PARAM_TAXES =6;
+    public final static int PARAM_MORTGAGE =7;
+    public final static int PARAM_CREDIT_CARD =8;
+    public final static int PARAM_UTILITIES =9;
+    public final static int PARAM_FOOD =10;
+    public final static int PARAM_CAR_PAYMENT =11;
+    public final static int PARAM_PERSONAL =12;
+    public final static int PARAM_ACTIVITIES =13;
+    public final static int PARAM_OTHER_EXPENSE =14;
     List<String> params; //List FinanceDocument constructor parameters
     private String data;
     private static String userID; //unique user identifier
-
+    private NavigationDrawerFragment drawerFragment;
+    private boolean retained = false;
 
 
     public static FinanceDocumentModel financeDocumentModel;
@@ -38,19 +58,23 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         //Get intent userdata from login activity
         Intent intent = getIntent();
         data =intent.getExtras().getString("name");
         userID = intent.getExtras().getString("id");
         params =new ArrayList<>();
 
-        NavigationDrawerFragment drawerFragment = new NavigationDrawerFragment();
-        drawerFragment.setArguments(intent.getExtras());
-        getSupportFragmentManager().beginTransaction().add(R.id.navigation_drawer_fragment,drawerFragment).commit();
+        if(savedInstanceState == null) {
+            drawerFragment = new NavigationDrawerFragment();
+            drawerFragment.setArguments(intent.getExtras());
+            getSupportFragmentManager().beginTransaction().add(R.id.navigation_drawer_fragment, drawerFragment, "DrawerTag").commit();
+        }
+        else{
+            drawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentByTag("DrawerTag");
 
+        }
 
-
+        retained = true;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -83,7 +107,11 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
-
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("retained", retained);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -92,22 +120,21 @@ public class MainActivity extends AppCompatActivity  {
             if(resultCode == RESULT_OK){
                 ArrayList<String> reportResult=data.getStringArrayListExtra("reportResult");
 
-                Log.d("reportResult", reportResult.toString()+"");
-                params.add(0, userID);
-                params.add(1, getItem(reportResult, 0));
-                params.add(2, getItem(reportResult, 1));
-                params.add(3, getItem(reportResult, 2));
-                params.add(4, getItem(reportResult, 3));
-                params.add(5, getItem(reportResult, 4));
-                params.add(6, getItem(reportResult, 5));
-                params.add(7, getItem(reportResult, 6));
-                params.add(8, getItem(reportResult, 7));
-                params.add(9, getItem(reportResult, 8));
-                params.add(10, getItem(reportResult, 9));
-                params.add(11, getItem(reportResult, 10));
-                params.add(12, getItem(reportResult, 11));
-                params.add(13, getItem(reportResult, 12));
-                params.add(14, getItem(reportResult, 13));
+                params.add(PARAM_USERID, userID);
+                params.add(PARAM_SALARY, getItem(reportResult, 0));
+                params.add(PARAM_RENTAL_INCOME, getItem(reportResult, 1));
+                params.add(PARAM_INTEREST, getItem(reportResult, 2));
+                params.add(PARAM_GIFTS, getItem(reportResult, 3));
+                params.add(PARAM_OTHER_INCOME, getItem(reportResult, 4));
+                params.add(PARAM_TAXES, getItem(reportResult, 5));
+                params.add(PARAM_MORTGAGE, getItem(reportResult, 6));
+                params.add(PARAM_CREDIT_CARD, getItem(reportResult, 7));
+                params.add(PARAM_UTILITIES, getItem(reportResult, 8));
+                params.add(PARAM_FOOD, getItem(reportResult, 9));
+                params.add(PARAM_CAR_PAYMENT, getItem(reportResult, 10));
+                params.add(PARAM_PERSONAL, getItem(reportResult, 11));
+                params.add(PARAM_ACTIVITIES, getItem(reportResult, 12));
+                params.add(PARAM_OTHER_EXPENSE, getItem(reportResult, 13));
                 createNewFinanceDocument(params);
                // financeDocumentModel.startPushReplication();
 
@@ -126,7 +153,6 @@ public class MainActivity extends AppCompatActivity  {
             int position = Integer.valueOf(parts[0]);
             if(i == position) {
                 item = parts[2];
-                Log.d("List", position + " " + item);
             }
         }
 
@@ -185,6 +211,19 @@ public class MainActivity extends AppCompatActivity  {
                 "Replication error",
                 Toast.LENGTH_LONG).show();
 
+    }
+
+    //Static methods for saving an reading sharedpreferences
+    public static void SaveToSharedPreferences(Context context, String prefName, String prefValue){
+        SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(prefName, prefValue);
+        editor.apply();
+    }
+
+    public static String ReadFromSharedPreferences(Context context, String prefName, String defaultValue){
+        SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
+        return sharedPref.getString(prefName,defaultValue);
     }
 
 }
