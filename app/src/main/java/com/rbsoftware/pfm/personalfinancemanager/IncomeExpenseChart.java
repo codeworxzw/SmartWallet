@@ -12,7 +12,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +34,9 @@ public class IncomeExpenseChart extends Fragment {
     private PieChartView chart;
     private PieChartData data;
     private String selectedItem= "thisWeek"; //position of selected item in popup menu
+    private ToggleButton mIncomeExpenseButton;
+    private int offsetStart;
+    private int offsetEnd;
 
     public IncomeExpenseChart() {
         // Required empty public constructor
@@ -47,17 +52,55 @@ public class IncomeExpenseChart extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_income_expense_chart, container, false);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.d("onActivityCreated", "onActivityCreated");
+        mIncomeExpenseButton = (ToggleButton) getActivity().findViewById(R.id.btn_income_expense);
+
+
+            mIncomeExpenseButton.setChecked(Boolean.valueOf(MainActivity.ReadFromSharedPreferences(getActivity(), "toggleButtonState", "true")));
+            if(mIncomeExpenseButton.isChecked()){
+                mIncomeExpenseButton.setTextColor(getResources().getColor(R.color.income));
+                offsetStart=0;
+                offsetEnd=9;
+            }
+            else{
+
+                mIncomeExpenseButton.setTextColor(getResources().getColor(R.color.expense));
+                offsetStart=6;
+                offsetEnd=0;
+            }
+
+        mIncomeExpenseButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    mIncomeExpenseButton.setTextColor(getResources().getColor(R.color.income));
+                    offsetStart=0;
+                    offsetEnd=9;
+                }
+                else{
+                    mIncomeExpenseButton.setTextColor(getResources().getColor(R.color.expense));
+                    offsetStart=6;
+                    offsetEnd=0;
+
+                }
+                MainActivity.SaveToSharedPreferences(getActivity(),"toggleButtonState", Boolean.toString(mIncomeExpenseButton.isChecked()));
+                generateChartData(getValues(financeDocumentList));
+            }
+        });
+
 
         chart = (PieChartView) getActivity().findViewById(R.id.pie_chart);
         chart.setOnValueTouchListener(new ValueTouchListener());
         if (savedInstanceState != null){
             financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(savedInstanceState.getString("selectedItem"), MainActivity.getUserId());
+
         }
         else{
             //Default period is this week
@@ -89,6 +132,7 @@ public class IncomeExpenseChart extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("selectedItem", selectedItem);
+
     }
 
     //Helper methods
@@ -136,7 +180,7 @@ public class IncomeExpenseChart extends Fragment {
     //fills chart with data
     private void generateChartData(HashMap<Integer, Integer> mapSum) {
         List<SliceValue> values = new ArrayList<SliceValue>();
-        for (int i = 1; i < mapSum.size(); ++i) {
+        for (int i = 1+offsetStart; i <= (mapSum.size()-offsetEnd); ++i) {
             int value=mapSum.get(i);
             if(value !=0) {
                 SliceValue sliceValue = new SliceValue(value, Color.rgb(150 - i * 4, 90 + i * 8, 200 - i*5));

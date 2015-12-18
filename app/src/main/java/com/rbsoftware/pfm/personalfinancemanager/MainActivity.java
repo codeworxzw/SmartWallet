@@ -1,7 +1,9 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity  {
+    public static final String PREF_FILE = "PrefFile";
     public final static int PARAM_USERID =0;
     public final static int PARAM_SALARY =1;
     public final static int PARAM_RENTAL_INCOME =2;
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity  {
     List<String> params; //List FinanceDocument constructor parameters
     private String data;
     private static String userID; //unique user identifier
-
+    private NavigationDrawerFragment drawerFragment;
 
 
     public static FinanceDocumentModel financeDocumentModel;
@@ -60,7 +63,7 @@ public class MainActivity extends AppCompatActivity  {
         userID = intent.getExtras().getString("id");
         params =new ArrayList<>();
 
-        NavigationDrawerFragment drawerFragment = new NavigationDrawerFragment();
+        drawerFragment = new NavigationDrawerFragment();
         drawerFragment.setArguments(intent.getExtras());
         getSupportFragmentManager().beginTransaction().add(R.id.navigation_drawer_fragment,drawerFragment).commit();
 
@@ -141,7 +144,6 @@ public class MainActivity extends AppCompatActivity  {
             int position = Integer.valueOf(parts[0]);
             if(i == position) {
                 item = parts[2];
-                Log.d("List", position + " " + item);
             }
         }
 
@@ -200,6 +202,19 @@ public class MainActivity extends AppCompatActivity  {
                 "Replication error",
                 Toast.LENGTH_LONG).show();
 
+    }
+
+    //Static methods for saving an reading sharedpreferences
+    public static void SaveToSharedPreferences(Context context, String prefName, String prefValue){
+        SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(prefName, prefValue);
+        editor.apply();
+    }
+
+    public static String ReadFromSharedPreferences(Context context, String prefName, String defaultValue){
+        SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
+        return sharedPref.getString(prefName,defaultValue);
     }
 
 }

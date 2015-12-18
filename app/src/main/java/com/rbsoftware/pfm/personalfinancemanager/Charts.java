@@ -15,17 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import lecho.lib.hellocharts.listener.PieChartOnValueSelectListener;
-import lecho.lib.hellocharts.model.PieChartData;
-import lecho.lib.hellocharts.model.SliceValue;
-import lecho.lib.hellocharts.util.ChartUtils;
-import lecho.lib.hellocharts.view.PieChartView;
 
 
 /**
@@ -94,7 +84,7 @@ public class Charts extends Fragment {
         public CharSequence getPageTitle(int position) {
             String title = new String();
             if(position == 0){
-                title = getResources().getString(R.string.income);
+                title = getResources().getString(R.string.overview);
             }
             if(position == 1){
                 title =getResources().getString(R.string.trends); ;

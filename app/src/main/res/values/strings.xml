@@ -71,6 +71,7 @@
     <string name="last_month">Last month</string>
     <string name="this_year">This year</string>
     <string name="trends">Trends</string>
+    <string name="overview">Overview</string>
 
 
     <string-array name="account_summary_spinner">
