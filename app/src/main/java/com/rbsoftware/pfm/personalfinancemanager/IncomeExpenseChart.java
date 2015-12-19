@@ -103,13 +103,18 @@ public class IncomeExpenseChart extends Fragment {
         mPieChart = (PieChartView) getActivity().findViewById(R.id.pie_chart);
         mPieChart.setOnValueTouchListener(new ValueTouchListener());
 
-            financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.ReadFromSharedPreferences(getActivity(), "period", "thisWeek"), MainActivity.getUserId());
-            mTextViewPeriod.setText(MainActivity.ReadFromSharedPreferences(getActivity(), "periodText", getResources().getString(R.string.this_week)));
 
+    }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.ReadFromSharedPreferences(getActivity(), "period", "thisWeek"), MainActivity.getUserId());
+        mTextViewPeriod.setText(MainActivity.ReadFromSharedPreferences(getActivity(), "periodText", getResources().getString(R.string.this_week)));
         generateChartData(getValues(financeDocumentList));
     }
+
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
