@@ -115,8 +115,8 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         mDrawerList = (ListView) mDrawerView.findViewById(R.id.navigation_drawer_listview);
         mListItems= getResources().getStringArray(R.array.drawer_menu);
         int[] mListImages = {
-                R.drawable.ic_receipt_black_24dp,
-                R.drawable.ic_insert_chart_black_24dp,
+                R.drawable.ic_bill_black_24dp,
+                R.drawable.ic_statistics_black_24dp,
                 R.drawable.ic_history_black_24dp,
                 android.R.drawable.ic_input_add,
                 R.drawable.ic_settings_black_24dp,
