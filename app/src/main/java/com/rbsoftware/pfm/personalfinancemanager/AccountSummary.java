@@ -33,10 +33,9 @@ public class AccountSummary extends Fragment {
     private TextView personal;
     private TextView activities;
     private TextView otherExpense;
-    //private TextView totalIncome;
-    //private TextView totalExpense;
+    private TextView income;
+    private TextView expense;
 
-   // TextView totalIncome = new TextView(String);
 
     private List<FinanceDocument> financeDocumentList;
     public AccountSummary() {
@@ -61,13 +60,6 @@ public class AccountSummary extends Fragment {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[0]);
 
-       //--------------------------------------------
-       //    for( FinanceDocument item : docList){
-       //    sum=Integer.parseInt(item.getSalary());
-       //    Log.d("data", "sum = " + sum);
-       //    }
-       //--------------------------------------------
-
 
         salary = (TextView) getActivity().findViewById(R.id.tv_income_salary);
         rentalIncome = (TextView) getActivity().findViewById(R.id.tv_income_rental);
@@ -83,8 +75,8 @@ public class AccountSummary extends Fragment {
         personal = (TextView) getActivity().findViewById(R.id.tv_expense_personal);
         activities = (TextView) getActivity().findViewById(R.id.tv_expense_activities);
         otherExpense = (TextView) getActivity().findViewById(R.id.tv_expense_other);
-
-        //totalIncome = (TextView) getActivity().findViewById(R.id.tv_income);
+        income = (TextView) getActivity().findViewById(R.id.tv_income);
+        expense = (TextView) getActivity().findViewById(R.id.tv_expense);
 
     }
 
@@ -122,40 +114,26 @@ public class AccountSummary extends Fragment {
                 switch (id){
                     case R.id.thisWeek:
                         financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
-                        getValue(financeDocumentList);
-
 
                         break;
                     case R.id.thisMonth:
                         financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisMonth", MainActivity.getUserId());
-                        getValue(financeDocumentList);
-
 
                         break;
                     case R.id.lastWeek:
-                        Log.d("popup menu", "Last week");
                         financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("lastWeek", MainActivity.getUserId());
-                        getValue(financeDocumentList);
-
 
                         break;
                     case R.id.lastMonth:
                         financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("lastMonth", MainActivity.getUserId());
-                        getValue(financeDocumentList);
-
 
                         break;
                     case R.id.thisYear:
                         financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId());
-                        getValue(financeDocumentList);
-
-
-                        break;
-                    default: financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
-                        getValue(financeDocumentList);
 
                         break;
                 }
+                getValue(financeDocumentList);
                 Log.d("popup menu", financeDocumentList.toString());
                 return false;
             }
@@ -163,6 +141,7 @@ public class AccountSummary extends Fragment {
         popup.show();
 
     }
+
     public void getValue(List<FinanceDocument> list) {
         int salarySum = 0;
         int rentalIncomeSum = 0;
@@ -178,8 +157,8 @@ public class AccountSummary extends Fragment {
         int personalSum = 0;
         int activitiesSum = 0;
         int otherExpensesSum = 0;
-        //int totalIncome = 0;
-        //int totalExpense = 0;
+        int totalIncome = 0;
+        int totalExpense = 0;
 
         for (FinanceDocument item : list) {
             salarySum += Integer.parseInt(item.getSalary());
@@ -198,24 +177,25 @@ public class AccountSummary extends Fragment {
             otherExpensesSum += Integer.parseInt(item.getOtherExpenses());
         }
 
-        //totalIncome = salarySum + rentalIncomeSum +interestSum + giftsSum + otherIncomeSum;
-        //totalExpense = taxesSum + mortgageSum + creditCardSum + utilitiesSum + foodSum + carPaymentSum + personalSum + activitiesSum + otherIncomeSum;
+        totalIncome = salarySum + rentalIncomeSum +interestSum + giftsSum + otherIncomeSum;
+        totalExpense = taxesSum + mortgageSum + creditCardSum + utilitiesSum + foodSum + carPaymentSum + personalSum + activitiesSum + otherIncomeSum;
 
-        salary.setText(salary.getText() +"  " + Integer.toString(salarySum));
-        rentalIncome.setText(rentalIncome.getText() +"  " + Integer.toString(rentalIncomeSum));
-        interest.setText(interest.getText() +"  " + Integer.toString(interestSum));
-        gifts.setText(gifts.getText() +"  " + Integer.toString(giftsSum));
-        otherIncome.setText(otherIncome.getText() +"  " + Integer.toString(otherIncomeSum));
-        taxes.setText(taxes.getText() +"  " + Integer.toString(taxesSum));
-        mortgage.setText(mortgage.getText() +"  " + Integer.toString(mortgageSum));
-        creditCard.setText(creditCard.getText() +"  " + Integer.toString(creditCardSum));
-        utilities.setText(utilities.getText() +"  " + Integer.toString(utilitiesSum));
-        food.setText(food.getText() +"  " + Integer.toString(foodSum));
-        carPayment.setText(carPayment.getText() +"  " + Integer.toString(carPaymentSum));
-        personal.setText(personal.getText() +"  " + Integer.toString(personalSum));
-        activities.setText(activities.getText() +"  " + Integer.toString(activitiesSum));
-        otherExpense.setText(otherExpense.getText() +"  " + Integer.toString(otherExpensesSum));
-        //totalIncome.setText(totalIncome.getText() + Integer.toString(totalIncome));
+        salary.setText(Integer.toString(salarySum));
+        rentalIncome.setText(Integer.toString(rentalIncomeSum));
+        interest.setText(Integer.toString(interestSum));
+        gifts.setText(Integer.toString(giftsSum));
+        otherIncome.setText(Integer.toString(otherIncomeSum));
+        taxes.setText(Integer.toString(taxesSum));
+        mortgage.setText(Integer.toString(mortgageSum));
+        creditCard.setText(Integer.toString(creditCardSum));
+        utilities.setText(Integer.toString(utilitiesSum));
+        food.setText(Integer.toString(foodSum));
+        carPayment.setText(Integer.toString(carPaymentSum));
+        personal.setText(Integer.toString(personalSum));
+        activities.setText(Integer.toString(activitiesSum));
+        otherExpense.setText(Integer.toString(otherExpensesSum));
+        income.setText(Integer.toString(totalIncome));
+        expense.setText(Integer.toString(totalExpense));
     }
 
 }
