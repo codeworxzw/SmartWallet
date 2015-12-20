@@ -269,7 +269,7 @@ public class FinanceDocumentModel {
     private  long startDateBuilder(long currDate, String timeFrame){
         long startDate=0;
         switch (timeFrame){
-            case THIS_WEEK: startDate = getFirstDateOfPreviousWeek();
+            case THIS_WEEK: startDate = getFirstDateOfCurrentWeek();
                 break;
             case THIS_MONTH: startDate = getFirstDateOfCurrentMonth();
                 break;
