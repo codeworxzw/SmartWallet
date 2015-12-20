@@ -3,7 +3,6 @@ package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -116,8 +114,16 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
         mDrawerList = (ListView) mDrawerView.findViewById(R.id.navigation_drawer_listview);
         mListItems= getResources().getStringArray(R.array.drawer_menu);
+        int[] mListImages = {
+                R.drawable.ic_receipt_black_24dp,
+                R.drawable.ic_insert_chart_black_24dp,
+                R.drawable.ic_history_black_24dp,
+                android.R.drawable.ic_input_add,
+                R.drawable.ic_settings_black_24dp,
+                R.drawable.ic_exit_black_24dp};
 
-        mDrawerList.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mListItems));
+       // mDrawerList.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mListItems));
+        mDrawerList.setAdapter(new DrawerListAdapter(getActivity(), mListImages, mListItems));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // ActionBarDrawerToggle ties together the the proper interactions
@@ -167,6 +173,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
     }
 
     public void openFragment(int position){
+        Log.d("TAG",position+"");
         if(position == 5){
             signout();
         }
@@ -180,6 +187,12 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
                     mFragment= new Charts();
                     break;
                 case 2:
+                    mFragment= new History();
+                    break;
+                case 3:
+                    mFragment= new History();
+                    break;
+                case 4:
                     mFragment= new History();
                     break;
 
