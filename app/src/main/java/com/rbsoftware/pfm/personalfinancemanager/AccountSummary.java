@@ -84,8 +84,8 @@ public class AccountSummary extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.ReadFromSharedPreferences(getActivity(), "period", "thisWeek"), MainActivity.getUserId());
-        mTextViewPeriod.setText(MainActivity.ReadFromSharedPreferences(getActivity(), "periodText", getResources().getString(R.string.this_week)));
+        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.ReadFromSharedPreferences(getActivity(), "periodAccSummary", "thisWeek"), MainActivity.getUserId());
+        mTextViewPeriod.setText(MainActivity.ReadFromSharedPreferences(getActivity(), "periodTextAccSummary", getResources().getString(R.string.this_week)));
         getValue(financeDocumentList);
     }
 
@@ -152,8 +152,8 @@ public class AccountSummary extends Fragment {
 
                         break;
                 }
-                MainActivity.SaveToSharedPreferences(getActivity(), "period", selectedItem);
-                MainActivity.SaveToSharedPreferences(getActivity(), "periodText", mTextViewPeriod.getText().toString());
+                MainActivity.SaveToSharedPreferences(getActivity(), "periodAccSummary", selectedItem);
+                MainActivity.SaveToSharedPreferences(getActivity(), "periodTextAccSummary", mTextViewPeriod.getText().toString());
                 getValue(financeDocumentList);
                 return false;
             }

@@ -206,7 +206,7 @@ public class IncomeExpenseChart extends Fragment {
         data = new PieChartData(values);
         data.setHasLabels(true);
         //data.setHasLabelsOnlyForSelected(true);
-        data.setHasLabelsOutside(true);
+        data.setHasLabelsOutside(false);
         data.setHasCenterCircle(true);
         data.setCenterText1(Integer.toString(total));
         if(mIncomeExpenseButton.isChecked()) {
