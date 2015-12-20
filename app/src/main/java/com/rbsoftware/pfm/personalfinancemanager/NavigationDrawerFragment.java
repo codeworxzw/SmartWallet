@@ -167,18 +167,23 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
             mDrawerLayout.closeDrawers();
+            Log.d("TAG", position + "");
 
-           openFragment(position);
+            if(position ==4){
+                Intent i = new Intent(getActivity(), SettingsActivity.class);
+                startActivityForResult(i, getActivity().RESULT_OK);
+            }
+            else if(position == 5){
+                signout();
+
+            }
+            else {
+                openFragment(position);
+            }
         }
     }
 
     public void openFragment(int position){
-        Log.d("TAG",position+"");
-        if(position == 5){
-            signout();
-        }
-        else {
-
             switch (position) {
                 case 0:
                     mFragment= new AccountSummary();
@@ -192,13 +197,11 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
                 case 3:
                     mFragment= new History();
                     break;
-                case 4:
-                    mFragment= new History();
-                    break;
 
 
             }
             fragmentPos = position;
+
             MainActivity.SaveToSharedPreferences(getActivity(), "fragmentPos", Integer.toString(position));
             FM = getFragmentManager();
 
@@ -206,7 +209,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
         }
 
-    }
+
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
