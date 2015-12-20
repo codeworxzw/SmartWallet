@@ -35,7 +35,8 @@ public class AccountSummary extends Fragment {
     private TextView otherExpense;
     private TextView income;
     private TextView expense;
-
+    private String selectedItem;
+    private TextView mTextViewPeriod;
 
     private List<FinanceDocument> financeDocumentList;
     public AccountSummary() {
@@ -60,7 +61,7 @@ public class AccountSummary extends Fragment {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[0]);
 
-
+        mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period);
         salary = (TextView) getActivity().findViewById(R.id.tv_income_salary);
         rentalIncome = (TextView) getActivity().findViewById(R.id.tv_income_rental);
         interest = (TextView) getActivity().findViewById(R.id.tv_income_interest);
@@ -78,6 +79,14 @@ public class AccountSummary extends Fragment {
         income = (TextView) getActivity().findViewById(R.id.tv_income);
         expense = (TextView) getActivity().findViewById(R.id.tv_expense);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.ReadFromSharedPreferences(getActivity(), "period", "thisWeek"), MainActivity.getUserId());
+        mTextViewPeriod.setText(MainActivity.ReadFromSharedPreferences(getActivity(), "periodText", getResources().getString(R.string.this_week)));
+        getValue(financeDocumentList);
     }
 
     @Override
@@ -114,27 +123,38 @@ public class AccountSummary extends Fragment {
                 switch (id){
                     case R.id.thisWeek:
                         financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
+                        selectedItem = "thisWeek";
+                        mTextViewPeriod.setText(getResources().getString(R.string.this_week));
 
                         break;
                     case R.id.thisMonth:
                         financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisMonth", MainActivity.getUserId());
+                        selectedItem = "thisMonth";
+                        mTextViewPeriod.setText(getResources().getString(R.string.this_month));
 
                         break;
                     case R.id.lastWeek:
                         financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("lastWeek", MainActivity.getUserId());
+                        selectedItem = "lastWeek";
+                        mTextViewPeriod.setText(getResources().getString(R.string.last_week));
 
                         break;
                     case R.id.lastMonth:
                         financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("lastMonth", MainActivity.getUserId());
+                        selectedItem = "lastMonth";
+                        mTextViewPeriod.setText(getResources().getString(R.string.last_month));
 
                         break;
                     case R.id.thisYear:
                         financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId());
+                        selectedItem = "thisYear";
+                        mTextViewPeriod.setText(getResources().getString(R.string.this_year));
 
                         break;
                 }
+                MainActivity.SaveToSharedPreferences(getActivity(), "period", selectedItem);
+                MainActivity.SaveToSharedPreferences(getActivity(), "periodText", mTextViewPeriod.getText().toString());
                 getValue(financeDocumentList);
-                Log.d("popup menu", financeDocumentList.toString());
                 return false;
             }
         });
