@@ -66,7 +66,7 @@ public class FinanceDocument {
         this.setOtherExpenses(otherExpenses);
 
     }
-//type
+    //type
     private String type = DOC_TYPE;
     public String getType() {
         return type;
@@ -74,7 +74,7 @@ public class FinanceDocument {
     public void setType(String type) {
         this.type = type;
     }
-//data
+    //data
     private String userId;
     public String getuserId() {
         return userId;
@@ -82,7 +82,7 @@ public class FinanceDocument {
     public void setUserId(String data) {
         this.userId = data;
     }
-//salary
+    //salary
     private String salary;
     public String getSalary() {
         return salary;
@@ -90,7 +90,7 @@ public class FinanceDocument {
     public void setSalary(String salary) {
         this.salary = salary;
     }
-//rental income
+    //rental income
     private String rentalIncome;
     public String getRentalIncome() {
         return rentalIncome;
@@ -98,7 +98,7 @@ public class FinanceDocument {
     public void setRentalIncome(String rentalIncome) {
         this.rentalIncome = rentalIncome;
     }
-//interest
+    //interest
     private String interest;
     public String getInterest() {
         return interest;
@@ -107,7 +107,7 @@ public class FinanceDocument {
         this.interest = interest;
     }
 
-//gifts
+    //gifts
     private String gifts;
     public String getGifts() {
         return gifts;
@@ -116,7 +116,7 @@ public class FinanceDocument {
         this.gifts = gifts;
     }
 
-//other income
+    //other income
     private String otherIncome;
     public String getOtherIncome() {
         return otherIncome;
@@ -125,7 +125,7 @@ public class FinanceDocument {
         this.otherIncome = otherIncome;
     }
 
-//7 - taxes
+    //7 - taxes
     private String taxes;
     public String getTaxes() {
         return taxes;
@@ -134,7 +134,7 @@ public class FinanceDocument {
         this.taxes = taxes;
     }
 
-// 8 - mortgage
+    // 8 - mortgage
     private String mortgage;
     public String getMortgage() {
         return mortgage;
@@ -143,7 +143,7 @@ public class FinanceDocument {
         this.mortgage = mortgage;
     }
 
-// 9 - credit card
+    // 9 - credit card
     private String creditCard;
     public String getCreditCard() {
         return creditCard;
@@ -152,7 +152,7 @@ public class FinanceDocument {
         this.creditCard = creditCard;
     }
 
-//10 - utilities
+    //10 - utilities
     private String utilities;
     public String getUtilities() {
         return utilities;
@@ -161,7 +161,7 @@ public class FinanceDocument {
         this.utilities = utilities;
     }
 
-//11 - food
+    //11 - food
     private String food;
     public String getFood() {
         return food;
@@ -170,7 +170,7 @@ public class FinanceDocument {
         this.food = food;
     }
 
-//12 - car payment
+    //12 - car payment
     private String carPayment;
     public String getCarPayment() {
         return carPayment;
@@ -179,7 +179,7 @@ public class FinanceDocument {
         this.carPayment = carPayment;
     }
 
-//13 - personal
+    //13 - personal
     private String personal;
     public String getPersonal() {
         return personal;
@@ -188,7 +188,7 @@ public class FinanceDocument {
         this.personal = personal;
     }
 
-//14 - activities
+    //14 - activities
     private String activities;
     public String getActivities() {
         return activities;
@@ -197,7 +197,7 @@ public class FinanceDocument {
         this.activities = activities;
     }
 
-//15 - other expenses
+    //15 - other expenses
     private String otherExpenses;
     public String getOtherExpenses() {
         return otherExpenses;
