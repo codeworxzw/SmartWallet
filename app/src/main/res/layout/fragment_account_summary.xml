@@ -13,6 +13,17 @@
 
         tools:context="com.rbsoftware.pfm.personalfinancemanager.AccountSummary">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:gravity="center"
+            android:text="Small Text"
+            android:id="@+id/tv_period"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -20,15 +31,17 @@
             android:layout_centerHorizontal="true"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/income"
+            android:layout_below="@+id/tv_period"
             android:id="@+id/textView2"
-            android:layout_alignParentTop="true" />
+
+             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="000"
             android:id="@+id/tv_income"
-            android:layout_alignParentTop="true"
+            android:layout_below="@+id/tv_period"
             android:layout_toRightOf="@+id/textView2" />
 
         <TextView
