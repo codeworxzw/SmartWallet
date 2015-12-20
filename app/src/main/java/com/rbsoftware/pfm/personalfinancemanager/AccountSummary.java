@@ -4,16 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.List;
 
 
 public class AccountSummary extends Fragment {
-    private Spinner accountSummarySpinner;
     private TextView salary;
     private TextView rentalIncome;
     private TextView interest;
@@ -28,10 +33,20 @@ public class AccountSummary extends Fragment {
     private TextView personal;
     private TextView activities;
     private TextView otherExpense;
+    private TextView income;
+    private TextView expense;
+
+
+    private List<FinanceDocument> financeDocumentList;
     public AccountSummary() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,10 +60,6 @@ public class AccountSummary extends Fragment {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[0]);
 
-        accountSummarySpinner = (Spinner) getActivity().findViewById(R.id.account_summary_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.account_summary_spinner,android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        accountSummarySpinner.setAdapter(adapter);
 
         salary = (TextView) getActivity().findViewById(R.id.tv_income_salary);
         rentalIncome = (TextView) getActivity().findViewById(R.id.tv_income_rental);
@@ -64,7 +75,127 @@ public class AccountSummary extends Fragment {
         personal = (TextView) getActivity().findViewById(R.id.tv_expense_personal);
         activities = (TextView) getActivity().findViewById(R.id.tv_expense_activities);
         otherExpense = (TextView) getActivity().findViewById(R.id.tv_expense_other);
+        income = (TextView) getActivity().findViewById(R.id.tv_income);
+        expense = (TextView) getActivity().findViewById(R.id.tv_expense);
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.filter, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_filter){
+            showPopup();
+            return true;
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+    //Helper methods
+    //Shows filter popup menu
+    public void showPopup(){
+        View menuItemView = getActivity().findViewById(R.id.action_filter);
+        PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
+        MenuInflater inflate = popup.getMenuInflater();
+        inflate.inflate(R.menu.period, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                Log.d("popup menu", item.getTitle().toString());
+
+
+                switch (id){
+                    case R.id.thisWeek:
+                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
+
+                        break;
+                    case R.id.thisMonth:
+                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisMonth", MainActivity.getUserId());
+
+                        break;
+                    case R.id.lastWeek:
+                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("lastWeek", MainActivity.getUserId());
+
+                        break;
+                    case R.id.lastMonth:
+                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("lastMonth", MainActivity.getUserId());
+
+                        break;
+                    case R.id.thisYear:
+                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId());
+
+                        break;
+                }
+                getValue(financeDocumentList);
+                Log.d("popup menu", financeDocumentList.toString());
+                return false;
+            }
+        });
+        popup.show();
+
+    }
+
+    public void getValue(List<FinanceDocument> list) {
+        int salarySum = 0;
+        int rentalIncomeSum = 0;
+        int interestSum = 0;
+        int giftsSum = 0;
+        int otherIncomeSum = 0;
+        int taxesSum = 0;
+        int mortgageSum = 0;
+        int creditCardSum = 0;
+        int utilitiesSum = 0;
+        int foodSum = 0;
+        int carPaymentSum = 0;
+        int personalSum = 0;
+        int activitiesSum = 0;
+        int otherExpensesSum = 0;
+        int totalIncome = 0;
+        int totalExpense = 0;
+
+        for (FinanceDocument item : list) {
+            salarySum += Integer.parseInt(item.getSalary());
+            rentalIncomeSum += Integer.parseInt(item.getRentalIncome());
+            interestSum += Integer.parseInt(item.getInterest());
+            giftsSum += Integer.parseInt(item.getGifts());
+            otherIncomeSum += Integer.parseInt(item.getOtherIncome());
+            taxesSum += Integer.parseInt(item.getTaxes());
+            mortgageSum += Integer.parseInt(item.getMortgage());
+            creditCardSum += Integer.parseInt(item.getCreditCard());
+            utilitiesSum += Integer.parseInt(item.getUtilities());
+            foodSum += Integer.parseInt(item.getFood());
+            carPaymentSum += Integer.parseInt(item.getCarPayment());
+            personalSum += Integer.parseInt(item.getPersonal());
+            activitiesSum += Integer.parseInt(item.getActivities());
+            otherExpensesSum += Integer.parseInt(item.getOtherExpenses());
+        }
+
+        totalIncome = salarySum + rentalIncomeSum +interestSum + giftsSum + otherIncomeSum;
+        totalExpense = taxesSum + mortgageSum + creditCardSum + utilitiesSum + foodSum + carPaymentSum + personalSum + activitiesSum + otherIncomeSum;
+
+        salary.setText(Integer.toString(salarySum));
+        rentalIncome.setText(Integer.toString(rentalIncomeSum));
+        interest.setText(Integer.toString(interestSum));
+        gifts.setText(Integer.toString(giftsSum));
+        otherIncome.setText(Integer.toString(otherIncomeSum));
+        taxes.setText(Integer.toString(taxesSum));
+        mortgage.setText(Integer.toString(mortgageSum));
+        creditCard.setText(Integer.toString(creditCardSum));
+        utilities.setText(Integer.toString(utilitiesSum));
+        food.setText(Integer.toString(foodSum));
+        carPayment.setText(Integer.toString(carPaymentSum));
+        personal.setText(Integer.toString(personalSum));
+        activities.setText(Integer.toString(activitiesSum));
+        otherExpense.setText(Integer.toString(otherExpensesSum));
+        income.setText(Integer.toString(totalIncome));
+        expense.setText(Integer.toString(totalExpense));
     }
 
 }
