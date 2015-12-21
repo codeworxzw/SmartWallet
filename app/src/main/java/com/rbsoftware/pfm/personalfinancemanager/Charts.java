@@ -11,9 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -27,15 +24,26 @@ public class Charts extends Fragment {
     private Fragment mFragment;
     private ViewPager mPager;
     private FragmentManager FM;
-    private boolean retained = false;
+    private CollectionPagerAdapter adapter;
 
     public Charts() {
         // Required empty public constructor
     }
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FM = getChildFragmentManager();
+        adapter = new CollectionPagerAdapter(FM);
+
+
     }
 
 
@@ -47,25 +55,14 @@ public class Charts extends Fragment {
         return inflater.inflate(R.layout.fragment_charts, container, false);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        setRetainInstance(true);
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[1]);
-        FM = getChildFragmentManager();
+
         mPager= (ViewPager) getActivity().findViewById(R.id.pager);
-        if (savedInstanceState == null) {
-            mPager.setAdapter(new CollectionPagerAdapter(FM));
-        }
-
-
-        retained =true;
-
+        mPager.setAdapter(adapter);
 
 
     }
@@ -74,7 +71,6 @@ public class Charts extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean("retainState", retained);
     }
 
     private class CollectionPagerAdapter extends FragmentStatePagerAdapter {

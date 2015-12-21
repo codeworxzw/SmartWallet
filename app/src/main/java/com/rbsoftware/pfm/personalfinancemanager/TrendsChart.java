@@ -79,8 +79,6 @@ public class TrendsChart extends Fragment {
             default:return super.onOptionsItemSelected(item);
         }
 
-
-
     }
 
 
@@ -129,7 +127,6 @@ public class TrendsChart extends Fragment {
 
                         break;
                 }
-                Log.d("Period", "selectedPeriod " + selectedPeriod);
                 MainActivity.SaveToSharedPreferences(getActivity(), "periodTrend", selectedPeriod);
                 MainActivity.SaveToSharedPreferences(getActivity(), "periodTextTrend", mTextViewPeriod.getText().toString());
 
@@ -141,21 +138,16 @@ public class TrendsChart extends Fragment {
 
     }
     public void showPopupLine(){
-        if(popupLine == null) {
+        if(popupLine == null) { //Checking if PopupMenu object was created
             popupLine = new PopupMenu(getActivity(), getActivity().findViewById(R.id.action_line));
         }
             MenuInflater inflate = popupLine.getMenuInflater();
             inflate.inflate(R.menu.lines, popupLine.getMenu());
 
-
-
         popupLine.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 item.setChecked(!item.isChecked());
-                //     item.setIcon(item.isChecked() ? android.R.drawable.checkbox_on_background : android.R.drawable.checkbox_off_background);
-                //     Log.d("Menuitem", item.getTitle().toString() + item.isChecked());
-
                 switch (item.getItemId()) {
                     case R.id.popupTotalIncome:
 

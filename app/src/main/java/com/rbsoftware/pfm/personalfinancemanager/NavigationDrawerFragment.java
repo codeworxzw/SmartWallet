@@ -160,7 +160,9 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
 
         mToolbar.setTitle(mListItems[fragmentPos]);
-        openFragment(fragmentPos);
+        if(mFragment==null) {   //RetainInstanceState applied. Checking if mFragment is not created yet
+            openFragment(fragmentPos);
+        }
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
