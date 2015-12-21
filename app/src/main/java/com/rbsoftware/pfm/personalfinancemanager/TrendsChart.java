@@ -28,6 +28,7 @@ public class TrendsChart extends Fragment {
     private LineChartView chart;
     private LineChartData data;
     private TextView mTextViewPeriod;
+    PopupMenu popupLine;
     public TrendsChart() {
         // Required empty public constructor
     }
@@ -67,20 +68,26 @@ public class TrendsChart extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.action_filter){
-            showPopup();
-            return true;
+        switch(id){
+            case R.id.action_filter:
+                showPopupPeriod();
+                return true;
+            case R.id.action_line:
+                showPopupLine();
+                return true;
+
+            default:return super.onOptionsItemSelected(item);
         }
 
 
-        return super.onOptionsItemSelected(item);
+
     }
 
 
 
     //Helper methods
-    //Shows filter popup menu
-    public void showPopup(){
+    //Shows period filter popup menu
+    public void showPopupPeriod(){
         View menuItemView = getActivity().findViewById(R.id.action_filter);
         PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
         MenuInflater inflate = popup.getMenuInflater();
@@ -131,6 +138,34 @@ public class TrendsChart extends Fragment {
             }
         });
         popup.show();
+
+    }
+    public void showPopupLine(){
+        if(popupLine == null) {
+            popupLine = new PopupMenu(getActivity(), getActivity().findViewById(R.id.action_line));
+        }
+            MenuInflater inflate = popupLine.getMenuInflater();
+            inflate.inflate(R.menu.lines, popupLine.getMenu());
+
+
+
+        popupLine.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                item.setChecked(!item.isChecked());
+                //     item.setIcon(item.isChecked() ? android.R.drawable.checkbox_on_background : android.R.drawable.checkbox_off_background);
+                //     Log.d("Menuitem", item.getTitle().toString() + item.isChecked());
+
+                switch (item.getItemId()) {
+                    case R.id.popupTotalIncome:
+
+                        return true;
+                }
+
+                return false;
+            }
+        });
+        popupLine.show();
 
     }
 

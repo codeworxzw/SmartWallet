@@ -1,12 +1,10 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -287,10 +285,10 @@ public class IncomeExpenseChart extends Fragment {
             case 2: return getResources().getString(R.string.rental_income);
             case 3: return getResources().getString(R.string.interest);
             case 4: return getResources().getString(R.string.gifts);
-            case 5: return getResources().getString(R.string.otherIncome);
+            case 5: return getResources().getString(R.string.other_income);
             case 6: return getResources().getString(R.string.taxes);
             case 7: return getResources().getString(R.string.mortgage);
-            case 8: return getResources().getString(R.string.creditCard);
+            case 8: return getResources().getString(R.string.credit_card);
             case 9: return getResources().getString(R.string.utilities);
             case 10: return getResources().getString(R.string.food);
             case 11: return getResources().getString(R.string.car_payment);
