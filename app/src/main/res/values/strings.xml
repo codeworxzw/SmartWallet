@@ -165,6 +165,8 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="line">Line</string>
+    <string name="period">Period</string>
+    <string name="value">Value</string>
 
 
 </resources>
