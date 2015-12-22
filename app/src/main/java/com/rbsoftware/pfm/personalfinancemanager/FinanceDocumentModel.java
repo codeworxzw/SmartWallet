@@ -177,7 +177,13 @@ public class FinanceDocumentModel {
 
         query.put("$and", Arrays.<Object>asList(startClause, endClause, userIdClause)); //query
 
-        QueryResult result = im.find(query);
+        //Sorting documents
+        List<Map<String, String>> sortDocument = new ArrayList<Map<String, String>>();
+        Map<String, String> sortByDate = new HashMap<String, String>();
+        sortByDate.put("date", "asc");  //sorting by date
+        sortDocument.add(sortByDate);
+
+        QueryResult result = im.find(query,0,0,null,sortDocument);
         for (DocumentRevision rev : result) {
             list.add(getDocument(rev.getId()));
 

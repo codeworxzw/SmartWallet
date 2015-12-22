@@ -310,6 +310,7 @@ public class TrendsChart extends Fragment {
                 break;
             case R.id.popupSalary:
                 for(FinanceDocument doc : docList){
+                    Log.d("Chartdata", "salary date "+doc.getDate() + " salary value "+doc.getSalary());
                     data.add(Integer.valueOf(doc.getSalary()));
                 }
                 break;
@@ -380,7 +381,7 @@ public class TrendsChart extends Fragment {
                 break;
 
         }
-
+        Log.d("Chartdata",  data.toString());
         return data;
     }
 }
