@@ -198,7 +198,7 @@ public class AccountSummary extends Fragment {
         }
 
         totalIncome = salarySum + rentalIncomeSum +interestSum + giftsSum + otherIncomeSum;
-        totalExpense = taxesSum + mortgageSum + creditCardSum + utilitiesSum + foodSum + carPaymentSum + personalSum + activitiesSum + otherIncomeSum;
+        totalExpense = taxesSum + mortgageSum + creditCardSum + utilitiesSum + foodSum + carPaymentSum + personalSum + activitiesSum + otherExpensesSum;
 
         salary.setText(Integer.toString(salarySum));
         rentalIncome.setText(Integer.toString(rentalIncomeSum));
