@@ -74,7 +74,7 @@ public class IncomeExpenseChart extends Fragment {
             else{
 
                 mIncomeExpenseButton.setTextColor(getResources().getColor(R.color.expense));
-                offsetStart=6;
+                offsetStart=5;
                 offsetEnd=0;
             }
 
@@ -88,7 +88,7 @@ public class IncomeExpenseChart extends Fragment {
                 }
                 else{
                     mIncomeExpenseButton.setTextColor(getResources().getColor(R.color.expense));
-                    offsetStart=6;
+                    offsetStart=5;
                     offsetEnd=0;
 
                 }
