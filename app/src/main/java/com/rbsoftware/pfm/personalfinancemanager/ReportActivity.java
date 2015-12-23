@@ -11,6 +11,7 @@ import android.text.InputType;
 import android.text.Spanned;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,7 @@ public class ReportActivity extends AppCompatActivity {
     private int currencySpinnerId =2001; //IDs of currencySpinner
     private int editTextValueId =3001;   //Ids of editText
     private int textViewRecursId =4001;   //Ids of TextView "Recurs"
+    private int spinnerRecursId =5001;   //Ids of spinner "Recurs"
 
 
     @Override
@@ -49,6 +52,8 @@ public class ReportActivity extends AppCompatActivity {
             mLayout.addView(createNewCategorySpinner());
             mLayout.addView(createNewEditText());
             mLayout.addView(createNewCurrencySpinner());
+            mLayout.addView(createNewRecursTextView());
+            mLayout.addView(createNewRecursSpinner());
         }
         else{
             //views states were saved in onSaveInstanceState
@@ -63,7 +68,10 @@ public class ReportActivity extends AppCompatActivity {
                 mLayout.addView(createNewCurrencySpinner());
                 Spinner currencySpinner = (Spinner) findViewById(2000+i);
                 currencySpinner.setSelection(savedInstanceState.getInt("currencySpinner"+i));
-
+                mLayout.addView(createNewRecursTextView());
+                mLayout.addView(createNewRecursSpinner());
+                Spinner recursSpinner = (Spinner) findViewById(5000+i);
+                recursSpinner.setSelection(savedInstanceState.getInt("recursSpinner" + i));
             }
 
         }
@@ -78,6 +86,9 @@ public class ReportActivity extends AppCompatActivity {
                 mLayout.addView(createNewCategorySpinner());
                 mLayout.addView(createNewEditText());
                 mLayout.addView(createNewCurrencySpinner());
+                mLayout.addView(createNewRecursTextView());
+                mLayout.addView(createNewRecursSpinner());
+
 
             }
         });
@@ -94,10 +105,10 @@ public class ReportActivity extends AppCompatActivity {
             outState.putInt("currencySpinner"+i, currencySpinner.getSelectedItemPosition());
             EditText editTextValue = (EditText) findViewById(3000+i);
             outState.putString("editTextValue"+i, editTextValue.getText().toString());
-            Log.d("counter", " onSaveInstanceState"+ categorySpinner.getSelectedItemPosition() +" "+
-                    currencySpinner.getSelectedItemPosition() +" "+  editTextValue.getText().toString());
+            Spinner recursSpinner = (Spinner) findViewById(5000+i);
+            outState.putInt("recursSpinner"+i, recursSpinner.getSelectedItemPosition());
+
         }
-        Log.d("counter", counter + " onSaveInstanceState");
 
         super.onSaveInstanceState(outState);
 
@@ -110,9 +121,10 @@ public class ReportActivity extends AppCompatActivity {
         final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
         final Spinner spinner = new Spinner(this);
         lparams.addRule(RelativeLayout.END_OF, editTextValueId-1);
-        if(currencySpinnerId > 2001){
-            lparams.addRule(RelativeLayout.BELOW, currencySpinnerId-1);
+        if(categorySpinnerId > 1001){
+            lparams.addRule(RelativeLayout.BELOW, textViewRecursId-1);
         }
+
         spinner.setLayoutParams(lparams);
         ArrayAdapter<CharSequence> currencySpinnerAdapter = ArrayAdapter.createFromResource(this,R.array.report_activity_currency_spinner,android.R.layout.simple_spinner_item);
         currencySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -130,7 +142,7 @@ public class ReportActivity extends AppCompatActivity {
         final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
         final Spinner spinner = new Spinner(this);
         if(categorySpinnerId > 1001){
-            lparams.addRule(RelativeLayout.BELOW, categorySpinnerId-1);
+            lparams.addRule(RelativeLayout.BELOW, textViewRecursId-1);
         }
 
         spinner.setLayoutParams(lparams);
@@ -150,21 +162,57 @@ public class ReportActivity extends AppCompatActivity {
         final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
         final EditText editText = new EditText(this);
         lparams.addRule(RelativeLayout.END_OF, categorySpinnerId - 1);
-        if(editTextValueId > 3001){
-            lparams.addRule(RelativeLayout.BELOW, editTextValueId-1);
+        if(categorySpinnerId > 1001){
+            lparams.addRule(RelativeLayout.BELOW, textViewRecursId-1);
         }
+
         int maxLength = 8;
         InputFilter[] fArray = new InputFilter[1];
         fArray[0] = new InputFilter.LengthFilter(maxLength);
         editText.setFilters(fArray);
         editText.setLayoutParams(lparams);
-        editText.setHint("Value");
+        editText.setHint(getResources().getString(R.string.value));
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         editText.setId(editTextValueId);
         editText.setSaveEnabled(true);
 
         editTextValueId++;
         return editText;
+    }
+
+    //Generates recurs text view
+    private TextView createNewRecursTextView(){
+        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
+        lparams.addRule(RelativeLayout.BELOW, categorySpinnerId - 1);
+        lparams.setMargins(dpToPx(12),dpToPx(8),0,0);
+        final TextView textView = new TextView(this);
+        textView.setLayoutParams(lparams);
+;       textView.setId(textViewRecursId);
+        textView.setText(getResources().getString(R.string.recurs));
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                getResources().getDimension(R.dimen.recurs_text_size));
+        textView.setSaveEnabled(true);
+        textViewRecursId++;
+        return textView;
+    }
+
+
+    //Generates recurring spinner
+    private Spinner createNewRecursSpinner() {
+        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
+        final Spinner spinner = new Spinner(this);
+        lparams.addRule(RelativeLayout.END_OF, textViewRecursId-1);
+        lparams.addRule(RelativeLayout.BELOW, categorySpinnerId - 1);
+        lparams.addRule(RelativeLayout.ALIGN_RIGHT, currencySpinnerId - 1);
+
+        spinner.setLayoutParams(lparams);
+        ArrayAdapter<CharSequence> recursSpinnerAdapter = ArrayAdapter.createFromResource(this,R.array.report_activity_recurs_spinner,android.R.layout.simple_spinner_item);
+        recursSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(recursSpinnerAdapter);
+        spinner.setId(spinnerRecursId);
+        spinner.setSaveEnabled(true);
+        spinnerRecursId++;
+        return spinner;
     }
 
     @Override

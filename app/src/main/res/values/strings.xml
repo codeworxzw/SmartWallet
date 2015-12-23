@@ -105,6 +105,14 @@
         <item>UAH</item>
         <item>RUB</item>
     </string-array>
+
+    <string-array name="report_activity_recurs_spinner">
+        <item>Never</item>
+        <item>Every week</item>
+        <item>Every month</item>
+        <item>Every 3 month</item>
+    </string-array>
+
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
@@ -169,6 +177,7 @@
     <string name="value">Value</string>
     <string name="add_line">Add line</string>
     <string name="text_view_error">Please set value</string>
+    <string name="recurs">Recurs</string>
 
 
 </resources>
