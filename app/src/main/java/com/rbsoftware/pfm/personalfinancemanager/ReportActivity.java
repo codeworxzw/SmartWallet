@@ -2,10 +2,14 @@ package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.content.Intent;
 import android.os.PersistableBundle;
+import android.renderscript.ScriptGroup;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -23,10 +28,11 @@ public class ReportActivity extends AppCompatActivity {
 
 
     private ImageButton addNew;
-    private LinearLayout mLayout;
+    private RelativeLayout mLayout;
     private int categorySpinnerId =1001; //IDs of categorySpinner
     private int currencySpinnerId =2001; //IDs of currencySpinner
     private int editTextValueId =3001;   //Ids of editText
+    private int textViewRecursId =4001;   //Ids of TextView "Recurs"
 
 
     @Override
@@ -38,7 +44,7 @@ public class ReportActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        mLayout = (LinearLayout) findViewById(R.id.report_item_layout);
+        mLayout = (RelativeLayout) findViewById(R.id.report_item_layout);
         if(savedInstanceState ==null) {
             mLayout.addView(createNewCategorySpinner());
             mLayout.addView(createNewEditText());
@@ -53,7 +59,7 @@ public class ReportActivity extends AppCompatActivity {
                 categorySpinner.setSelection(savedInstanceState.getInt("categorySpinner"+i));
                 mLayout.addView(createNewEditText());
                 EditText editTextValue = (EditText) findViewById(3000+i);
-                editTextValue.setText(savedInstanceState.getString("editTextValue"+i));
+                editTextValue.setText(savedInstanceState.getString("editTextValue" + i));
                 mLayout.addView(createNewCurrencySpinner());
                 Spinner currencySpinner = (Spinner) findViewById(2000+i);
                 currencySpinner.setSelection(savedInstanceState.getInt("currencySpinner"+i));
@@ -72,6 +78,7 @@ public class ReportActivity extends AppCompatActivity {
                 mLayout.addView(createNewCategorySpinner());
                 mLayout.addView(createNewEditText());
                 mLayout.addView(createNewCurrencySpinner());
+
             }
         });
     }
@@ -100,8 +107,12 @@ public class ReportActivity extends AppCompatActivity {
 
     //Generates operation category spinner
     private Spinner createNewCurrencySpinner() {
-        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
         final Spinner spinner = new Spinner(this);
+        lparams.addRule(RelativeLayout.END_OF, editTextValueId-1);
+        if(currencySpinnerId > 2001){
+            lparams.addRule(RelativeLayout.BELOW, currencySpinnerId-1);
+        }
         spinner.setLayoutParams(lparams);
         ArrayAdapter<CharSequence> currencySpinnerAdapter = ArrayAdapter.createFromResource(this,R.array.report_activity_currency_spinner,android.R.layout.simple_spinner_item);
         currencySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -116,8 +127,12 @@ public class ReportActivity extends AppCompatActivity {
     //Generates currency type spinner
 
     private Spinner createNewCategorySpinner() {
-        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
         final Spinner spinner = new Spinner(this);
+        if(categorySpinnerId > 1001){
+            lparams.addRule(RelativeLayout.BELOW, categorySpinnerId-1);
+        }
+
         spinner.setLayoutParams(lparams);
         ArrayAdapter<CharSequence> categorySpinnerAdapter = ArrayAdapter.createFromResource(this,R.array.report_activity_category_spinner,android.R.layout.simple_spinner_item);
         categorySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -132,14 +147,22 @@ public class ReportActivity extends AppCompatActivity {
     //Generates operation input value edit text
 
     private EditText createNewEditText() {
-        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
         final EditText editText = new EditText(this);
+        lparams.addRule(RelativeLayout.END_OF, categorySpinnerId - 1);
+        if(editTextValueId > 3001){
+            lparams.addRule(RelativeLayout.BELOW, editTextValueId-1);
+        }
+        int maxLength = 8;
+        InputFilter[] fArray = new InputFilter[1];
+        fArray[0] = new InputFilter.LengthFilter(maxLength);
+        editText.setFilters(fArray);
         editText.setLayoutParams(lparams);
         editText.setHint("Value");
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         editText.setId(editTextValueId);
         editText.setSaveEnabled(true);
-        Log.d("ID", editText.getId() + "");
+
         editTextValueId++;
         return editText;
     }
@@ -180,12 +203,26 @@ public class ReportActivity extends AppCompatActivity {
             Spinner categorySpinner = (Spinner) findViewById(1000+i);
             Spinner currencySpinner = (Spinner) findViewById(2000+i);
             EditText editTextValue = (EditText) findViewById(3000+i);
-            list.add(categorySpinner.getSelectedItemPosition()+"-"+categorySpinner.getSelectedItem().toString() + "-" + editTextValue.getText().toString() + "-" + currencySpinner.getSelectedItem().toString());
+            if(editTextValue.getText().toString().isEmpty()){
+                editTextValue.setText("0");
+            }
+
+                list.add(categorySpinner.getSelectedItemPosition() + "-" + categorySpinner.getSelectedItem().toString() + "-" + editTextValue.getText().toString() + "-" + currencySpinner.getSelectedItem().toString());
+
 
         }
 
         return list;
     }
+
+    // helper method to convert dp to px
+    public int dpToPx(int dp) {
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        return px;
+    }
+
+
 
 
 }

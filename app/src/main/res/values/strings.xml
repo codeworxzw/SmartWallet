@@ -167,7 +167,8 @@
     <string name="line">Line</string>
     <string name="period">Period</string>
     <string name="value">Value</string>
-    <string name="high_spendings">High spendings</string>
+    <string name="add_line">Add line</string>
+    <string name="text_view_error">Please set value</string>
 
 
 </resources>
