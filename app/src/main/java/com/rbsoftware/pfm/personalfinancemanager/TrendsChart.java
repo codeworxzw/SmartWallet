@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
@@ -52,7 +53,6 @@ public class TrendsChart extends Fragment {
             checkedLines.add(Integer.valueOf(MainActivity.ReadFromSharedPreferences(getActivity(),"checkedLine"+i,null)));
 
         }
-        Log.d("ITEM", checkedLines.toString()+" size "+ listLinesSize);
     }
 
     @Override
@@ -74,6 +74,7 @@ public class TrendsChart extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        //Querying list of documents on fragment resume
         financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.ReadFromSharedPreferences(getActivity(), "periodTrend", "thisWeek"), MainActivity.getUserId());
         mTextViewPeriod.setText(MainActivity.ReadFromSharedPreferences(getActivity(), "periodTextTrend", getResources().getString(R.string.this_week)));
         //generateChartData(getValues(financeDocumentList));
@@ -152,9 +153,6 @@ public class TrendsChart extends Fragment {
                 }
                 MainActivity.SaveToSharedPreferences(getActivity(), "periodTrend", selectedPeriod);
                 MainActivity.SaveToSharedPreferences(getActivity(), "periodTextTrend", mTextViewPeriod.getText().toString());
-
-
-                //generateChartData(getValues(financeDocumentList));
                 generateLineChartData();
                 return false;
             }
@@ -163,12 +161,10 @@ public class TrendsChart extends Fragment {
 
     }
     public void showPopupLine(){
-      //  if(popupLine == null) { //Checking if PopupMenu object was created
-            popupLine = new PopupMenu(getActivity(), getActivity().findViewById(R.id.action_line));
 
+            popupLine = new PopupMenu(getActivity(), getActivity().findViewById(R.id.action_line));
             MenuInflater inflate = popupLine.getMenuInflater();
             inflate.inflate(R.menu.lines, popupLine.getMenu());
-       // }
 
         for(int i=0; i<listLinesSize; i++){
             MenuItem item = popupLine.getMenu().findItem(checkedLines.get(i));
@@ -181,7 +177,8 @@ public class TrendsChart extends Fragment {
                 item.setChecked(!item.isChecked());
                 if (item.isChecked()) {
                     checkedLines.add(item.getItemId());
-                } else {
+                }
+                else {
                     int counter = 0;
                     while (counter < checkedLines.size()) {
                         if (checkedLines.get(counter) == item.getItemId()) {
@@ -190,6 +187,7 @@ public class TrendsChart extends Fragment {
                             counter++;
                         }
                     }
+
                 }
                 listLinesSize =checkedLines.size();
                 MainActivity.SaveToSharedPreferences(getActivity(), "listLinesSize", Integer.toString(listLinesSize));
@@ -197,8 +195,8 @@ public class TrendsChart extends Fragment {
                     MainActivity.SaveToSharedPreferences(getActivity(), "checkedLine" + i, Integer.toString(checkedLines.get(i)));
                 }
 
-                Log.d("ITEM", item + "");
                 generateLineChartData();
+
                 return true;
             }
         });
@@ -223,45 +221,20 @@ public class TrendsChart extends Fragment {
 
             line.setFilled(true);
             line.setHasLabels(true);
-            //line.setHasLabelsOnlyForSelected(hasLabelForSelected);
             line.setHasLines(true);
             line.setHasPoints(true);
 
             lines.add(line);
         }
-       /* float[][] lineChartDataArray = new float[checkedLines.size()][getDates(financeDocumentList).size()];
-        for (int i = 0; i < checkedLines.size(); ++i) {
-            for (int j = 0; j < getDates(financeDocumentList).size(); ++j) {
-                lineChartDataArray[i][j] = (float) Math.random() * 100f;
-            }
-        }
-        List<Line> lines = new ArrayList<Line>();
-        for (int i = 0; i < checkedLines.size(); ++i) {
 
-            List<PointValue> values = new ArrayList<PointValue>();
-            for (int j = 0; j < getDates(financeDocumentList).size(); ++j) {
-                values.add(new PointValue(j, lineChartDataArray[i][j]));
-            }
-
-            Line line = new Line(values);
-            line.setColor(Color.rgb(150 - i * 4, 90 + i * 8, 200 - i * 5));
-            line.setShape(ValueShape.CIRCLE);
-
-            line.setFilled(true);
-            line.setHasLabels(true);
-            //line.setHasLabelsOnlyForSelected(hasLabelForSelected);
-            line.setHasLines(true);
-            line.setHasPoints(true);
-
-            lines.add(line);
-        } */
 
         data = new LineChartData(lines);
 
 
             Axis axisX = new Axis();
             Axis axisY = new Axis().setHasLines(true);
-
+              //  axisX.setHasTiltedLabels(true);
+              //  axisX.setValues(getDates(financeDocumentList));
                 axisX.setName(getResources().getString(R.string.period));
                 axisY.setName(getResources().getString(R.string.value));
 
@@ -274,11 +247,14 @@ public class TrendsChart extends Fragment {
 
     }
 
-    public List<Long> getDates(List<FinanceDocument> docList){
-        List<Long> dates = new ArrayList<>();
+    public List<AxisValue> getDates(List<FinanceDocument> docList){
+        List<AxisValue> dates = new ArrayList<>();
         for(FinanceDocument doc : docList){
-            dates.add(Long.valueOf(doc.getDate()));
+            AxisValue value = new AxisValue(Float.valueOf(doc.getDate()));
+            Log.d("Charts data", value.getValue()+"");
+            dates.add(value);
         }
+        Log.d("Charts data", dates.toString());
         return dates;
     }
 
@@ -310,7 +286,6 @@ public class TrendsChart extends Fragment {
                 break;
             case R.id.popupSalary:
                 for(FinanceDocument doc : docList){
-                    Log.d("Chartdata", "salary date "+doc.getDate() + " salary value "+doc.getSalary());
                     data.add(Integer.valueOf(doc.getSalary()));
                 }
                 break;
@@ -381,7 +356,6 @@ public class TrendsChart extends Fragment {
                 break;
 
         }
-        Log.d("Chartdata",  data.toString());
         return data;
     }
 }
