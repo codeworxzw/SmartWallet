@@ -184,12 +184,15 @@ public class FinanceDocumentModel {
         sortDocument.add(sortByDate);
 
         QueryResult result = im.find(query,0,0,null,sortDocument);
-        for (DocumentRevision rev : result) {
-            list.add(getDocument(rev.getId()));
+        if(result != null) {
+            for (DocumentRevision rev : result) {
+                list.add(getDocument(rev.getId()));
 
-            // The returned revision object contains all fields for
-            // the object. You cannot project certain fields in the
-            // current implementation.
+                // The returned revision object contains all fields for
+                // the object. You cannot project certain fields in the
+                // current implementation.
+            }
+
         }
         return list;
     }
