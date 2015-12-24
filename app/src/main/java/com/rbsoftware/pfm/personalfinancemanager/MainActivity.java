@@ -146,6 +146,9 @@ public class MainActivity extends AppCompatActivity  {
         }
     }//onActivityResult
 
+    /*Helper method
+    * Parsing string to retrieve document data
+     */
     private String getItem(ArrayList<String> reportResult, int i) {
         String item="0";
         for(String listItem: reportResult){

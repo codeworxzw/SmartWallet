@@ -177,7 +177,7 @@
     <string name="value">Value</string>
     <string name="add_line">Add line</string>
     <string name="text_view_error">Please set value</string>
-    <string name="recurs">Recurs</string>
+    <string name="recurs">Recurring</string>
 
 
 </resources>

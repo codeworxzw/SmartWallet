@@ -250,14 +250,19 @@ public class ReportActivity extends AppCompatActivity {
         for(int i=1; i<counter; i++){
             Spinner categorySpinner = (Spinner) findViewById(1000+i);
             Spinner currencySpinner = (Spinner) findViewById(2000+i);
+            Spinner recursSpinner = (Spinner) findViewById(5000+i);
             EditText editTextValue = (EditText) findViewById(3000+i);
             if(editTextValue.getText().toString().isEmpty()){
                 editTextValue.setText("0");
             }
 
-                list.add(categorySpinner.getSelectedItemPosition() + "-" + categorySpinner.getSelectedItem().toString() + "-" + editTextValue.getText().toString() + "-" + currencySpinner.getSelectedItem().toString());
+                list.add(categorySpinner.getSelectedItemPosition() + "-"
+                        + categorySpinner.getSelectedItem().toString() + "-"
+                        + editTextValue.getText().toString() + "-"
+                        + currencySpinner.getSelectedItem().toString()+ "-"
+                        + recursSpinner.getSelectedItem().toString());
 
-
+                Log.d("List", list.toString());
         }
 
         return list;
