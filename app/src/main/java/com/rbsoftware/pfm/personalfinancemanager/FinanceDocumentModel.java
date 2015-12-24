@@ -169,7 +169,6 @@ public class FinanceDocumentModel {
         lteDate.put("$lte", endDateBuilder(currDate, timeFrame));         //*
         endClause.put("date", lteDate);                                   //*********
 
-
         Map<String, Object> eqUserId = new HashMap<String, Object>();       //Query by userId
         Map<String, Object> userIdClause = new HashMap<String, Object>();               //*
         eqUserId.put("$eq", userId);                                       //*
@@ -210,7 +209,7 @@ public class FinanceDocumentModel {
 
     private Long getFirstDateOfCurrentWeek() {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_WEEK));
+        cal.set(Calendar.DAY_OF_WEEK, 1);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
@@ -255,7 +254,7 @@ public class FinanceDocumentModel {
     private Long getFirstDateOfPreviousWeek() {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         cal.add(Calendar.WEEK_OF_MONTH, -1);
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_WEEK));
+        cal.set(Calendar.DAY_OF_WEEK, 1);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
