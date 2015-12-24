@@ -2,10 +2,12 @@ package com.rbsoftware.pfm.personalfinancemanager;
 
 import com.cloudant.sync.datastore.BasicDocumentRevision;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Created by burzakovskiy on 11/24/2015.
@@ -212,6 +214,40 @@ public class FinanceDocument {
     public String getDate() {return date;}
     public void setDate (String date){this.date = date;}
 
+    //@return human readable date
+    public String getNormalDate(){
+        Date formatDate = new Date(Long.valueOf(date)*1000L); // *1000 is to convert seconds to milliseconds
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z"); // the format of your date
+        sdf.setTimeZone(TimeZone.getDefault()); // give a timezone reference for formating (see comment at the bottom
+        String normalDate = sdf.format(formatDate);
+        return normalDate;
+    }
+
+    // @return total income
+    public int getTotalIncome(){
+        int totalIncome;
+        totalIncome = Integer.valueOf(salary) +
+                Integer.valueOf(rentalIncome) +
+                Integer.valueOf(interest) +
+                Integer.valueOf(gifts) +
+                Integer.valueOf(otherIncome);
+        return totalIncome;
+    }
+
+    // @return total expense
+    public int getTotalExpense(){
+        int totalExpense;
+        totalExpense = Integer.valueOf(taxes) +
+                Integer.valueOf(mortgage) +
+                Integer.valueOf(creditCard) +
+                Integer.valueOf(utilities) +
+                Integer.valueOf(food)+
+                Integer.valueOf(carPayment)+
+                Integer.valueOf(personal)+
+                Integer.valueOf(activities)+
+                Integer.valueOf(otherExpenses);
+        return totalExpense;
+    }
 
 
     private BasicDocumentRevision rev;
