@@ -12,6 +12,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardExpand;
+import it.gmariotti.cardslib.library.internal.CardHeader;
+import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
+import it.gmariotti.cardslib.library.view.CardViewNative;
+
 /**
  * Created by burzakovskiy on 12/24/2015.
  */
@@ -20,8 +26,6 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
 
     private List<FinanceDocument> documentList;
     private Context mContext;
-    private int mCardHeight;
-
     public HistoryRecyclerAdapter(Context context, List<FinanceDocument> documentList) {
         this.documentList = documentList;
         this.mContext = context;
@@ -29,8 +33,6 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
     @Override
     public HistoryRecyclerAdapter.HistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_list_row, null);
-
-
 
         HistoryViewHolder viewHolder = new HistoryViewHolder(view);
 
@@ -40,69 +42,37 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
     @Override
     public void onBindViewHolder(final HistoryRecyclerAdapter.HistoryViewHolder holder, int position) {
         FinanceDocument doc = documentList.get(position);
-        holder.mDate.setText(doc.getNormalDate());
-        String income = "+"+doc.getTotalIncome();
-        String expense = "-"+doc.getTotalExpense();
-        holder.mIncome.setText(income);
-        holder.mExpense.setText(expense);
 
-        holder.mCard.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                holder.mCard.getViewTreeObserver().removeOnPreDrawListener(this);
-                mCardHeight = (int) mContext.getResources().getDimension(R.dimen
-                        .history_card_max_height);
-                ViewGroup.LayoutParams layoutParams = holder.mCard.getLayoutParams();
+        //Create a Card
+        Card card = new Card(mContext);
 
-                layoutParams.height = (int) mContext.getResources().getDimension(R.dimen
-                        .history_card_min_height);
-                holder.mCard.setLayoutParams(layoutParams);
-                return true;
-            }
+        //Create a CardHeader
+        HistoryHeaderInnerCard header = new HistoryHeaderInnerCard(mContext, doc.getNormalDate(), doc.getTotalIncome(), doc.getTotalExpense());
+        //Add Header to card
 
-        });
-        holder.mCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleHeight(holder.mCard);
-            }
-        });
+        card.addCardHeader(header);
+
+        //This provide a simple (and useless) expand area
+        CardExpand expand = new CardExpand(mContext);
+
+        //Set inner title in Expand Area
+        expand.setTitle("dummy text");
+
+        //Add expand to card
+        card.addCardExpand(expand);
+
+        ViewToClickToExpand viewToClickToExpand =
+                ViewToClickToExpand.builder()
+                        .setupView(holder.mCardView);
+        card.setViewToClickToExpand(viewToClickToExpand);
+        holder.mCardView.setCard(card);
+
+
 
     }
 
-    private void toggleHeight(final CardView mCard){
-        int descriptionViewMinHeight = (int) mContext.getResources().getDimension(R.dimen
-                .history_card_min_height);
-        if (mCard.getHeight() == descriptionViewMinHeight) {
-            // expand
-            ValueAnimator anim = ValueAnimator.ofInt(mCard.getMeasuredHeightAndState(),
-                    mCardHeight);
-            anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    int val = (Integer) valueAnimator.getAnimatedValue();
-                    ViewGroup.LayoutParams layoutParams = mCard.getLayoutParams();
-                    layoutParams.height = val;
-                    mCard.setLayoutParams(layoutParams);
-                }
-            });
-            anim.start();
-        } else {
-            // collapse
-            ValueAnimator anim = ValueAnimator.ofInt(mCard.getMeasuredHeightAndState(),
-                    descriptionViewMinHeight);
-            anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    int val = (Integer) valueAnimator.getAnimatedValue();
-                    ViewGroup.LayoutParams layoutParams = mCard.getLayoutParams();
-                    layoutParams.height = val;
-                    mCard.setLayoutParams(layoutParams);
-                }
-            });
-            anim.start();
-        }
-    }
+
+
     @Override
     public int getItemCount() {
         return (null != documentList ? documentList.size() : 0);
@@ -110,17 +80,13 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
 
 
     public class HistoryViewHolder extends RecyclerView.ViewHolder {
-        protected TextView mDate;
-        protected TextView mIncome;
-        protected TextView mExpense;
-        private CardView mCard;
+
+        private CardViewNative mCardView ;
 
         public HistoryViewHolder(View view) {
             super(view);
-            this.mDate = (TextView) view.findViewById(R.id.textViewDate);
-            this.mIncome = (TextView) view.findViewById(R.id.textViewIncome);
-            this.mExpense = (TextView) view.findViewById(R.id.textViewExpense);
-            this.mCard = (CardView) view.findViewById(R.id.cardViewHistory);
+
+            this.mCardView = (CardViewNative) view.findViewById(R.id.historyCardView);
         }
 
 
@@ -128,4 +94,36 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
 
 
     }
+
+    public class HistoryHeaderInnerCard extends CardHeader {
+        String income;
+        String expense;
+        String date;
+        public HistoryHeaderInnerCard(Context context, String date, int totalIncome, int totalExpense ) {
+            super(context, R.layout.history_list_row_inner_layout);
+            this.date = date;
+            this.income = "+" + Integer.toString(totalIncome);
+            this.expense = "-" + Integer.toString(totalExpense);
+        }
+
+        @Override
+        public void setupInnerViewElements(ViewGroup parent, View view) {
+
+            if (view!=null){
+                TextView dateView = (TextView) view.findViewById(R.id.textViewDate);
+                if (dateView!=null)
+                    dateView.setText(date);
+
+                TextView incomeView = (TextView) view.findViewById(R.id.textViewIncome);
+                if (incomeView!=null)
+                    incomeView.setText(income);
+
+                TextView expenseView = (TextView) view.findViewById(R.id.textViewExpense);
+                if (expenseView!=null)
+                    expenseView.setText(expense);
+            }
+        }
+    }
+
+
 }
