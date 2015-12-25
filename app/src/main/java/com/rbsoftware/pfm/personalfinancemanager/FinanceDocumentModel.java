@@ -162,8 +162,8 @@ public class FinanceDocumentModel {
         Map<String, Object> gteDate = new HashMap<String, Object>();                    // Start of the period
         Map<String, Object> startClause = new HashMap<String, Object>();                //*
         gteDate.put("$gte", startDateBuilder(currDate, timeFrame));        //*
-        startClause.put("date", gteDate);                                  //*********
-
+        startClause.put("date", gteDate);
+                                                                            //*********
         Map<String, Object> lteDate = new HashMap<String, Object>();      // End of t/he period
         Map<String, Object> endClause = new HashMap<String, Object>();                 // *
         lteDate.put("$lte", endDateBuilder(currDate, timeFrame));         //*
@@ -198,7 +198,7 @@ public class FinanceDocumentModel {
 
     //methods to get first/last day
     private Long getFirstDateOfCurrentMonth() {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         cal.set(Calendar.DAY_OF_MONTH, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH));
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
@@ -208,17 +208,17 @@ public class FinanceDocumentModel {
     }
 
     private Long getFirstDateOfCurrentWeek() {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        cal.set(Calendar.DAY_OF_WEEK, 1);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        cal.clear(Calendar.HOUR);
+        cal.clear(Calendar.MINUTE);
+        cal.clear(Calendar.SECOND);
+        cal.clear(Calendar.MILLISECOND);
         return cal.getTimeInMillis()/1000;
     }
 
     private Long getFirstDateOfCurrentYear() {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         cal.setTimeZone(cal.getTimeZone());
         cal.set(Calendar.DAY_OF_YEAR, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_YEAR));
         cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -229,7 +229,7 @@ public class FinanceDocumentModel {
     }
 
     private Long getFirstDateOfPreviousMonth() {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         cal.set(Calendar.DATE, 1);
         cal.add(Calendar.MONTH, -1);
         cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -240,7 +240,7 @@ public class FinanceDocumentModel {
     }
 
     private Long getLastDateOfPreviousMonth() {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         cal.set(Calendar.DATE, 1);
         cal.add(Calendar.DAY_OF_MONTH, -1);
         cal.set(Calendar.HOUR_OF_DAY, 23);
@@ -252,24 +252,25 @@ public class FinanceDocumentModel {
 
 
     private Long getFirstDateOfPreviousWeek() {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        cal.add(Calendar.WEEK_OF_MONTH, -1);
-        cal.set(Calendar.DAY_OF_WEEK, 1);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+        cal.add(Calendar.WEEK_OF_YEAR, -1);
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+
+        cal.clear(Calendar.HOUR);
+        cal.clear(Calendar.MINUTE);
+        cal.clear(Calendar.SECOND);
+        cal.clear(Calendar.MILLISECOND);
         return cal.getTimeInMillis()/1000;
     }
 
     private Long getLastDateOfPreviousWeek() {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_WEEK));
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
         cal.add(Calendar.DAY_OF_YEAR, -1);
-        cal.set(Calendar.HOUR_OF_DAY, 23);
-        cal.set(Calendar.MINUTE, 59);
-        cal.set(Calendar.SECOND, 59);
-        cal.set(Calendar.MILLISECOND, 0);
+        cal.clear(Calendar.HOUR);
+        cal.clear(Calendar.MINUTE);
+        cal.clear(Calendar.SECOND);
+        cal.clear(Calendar.MILLISECOND);
         return cal.getTimeInMillis()/1000;
     }
 
