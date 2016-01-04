@@ -2,6 +2,8 @@ package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.view.ActionMode;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
@@ -82,13 +84,29 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.history_delete:
-                         try {
-                             MainActivity.financeDocumentModel.deleteDocument(doc);
-                             documentList.remove(holder.getAdapterPosition());
-                             notifyItemRemoved(holder.getAdapterPosition());
-                         } catch (ConflictException e) {
-                             e.printStackTrace();
-                         }
+
+                        new AlertDialog.Builder(mContext)
+                                .setTitle(mContext.getString(R.string.delete_dialog_title))
+                                .setMessage(mContext.getString(R.string.delete_dialog_message))
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        try {
+                                            MainActivity.financeDocumentModel.deleteDocument(doc);
+                                            documentList.remove(holder.getAdapterPosition());
+                                            notifyItemRemoved(holder.getAdapterPosition());
+                                        } catch (ConflictException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // do nothing
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+
 
                         mode.finish(); // Action picked, so close the CAB
                         return true;
