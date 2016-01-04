@@ -250,6 +250,31 @@ public class FinanceDocument {
     }
 
 
+    // extracts data of FinanceDocument
+    public HashMap<Integer,Integer> getValuesMap(){
+
+        HashMap<Integer, Integer> mapSum=new HashMap<>();
+        mapSum.put(MainActivity.PARAM_SALARY, Integer.valueOf(this.getSalary()));
+        mapSum.put(MainActivity.PARAM_RENTAL_INCOME, Integer.valueOf(this.getRentalIncome()));
+        mapSum.put(MainActivity.PARAM_INTEREST, Integer.valueOf(this.getInterest()));
+        mapSum.put(MainActivity.PARAM_GIFTS, Integer.valueOf(this.getGifts()));
+        mapSum.put(MainActivity.PARAM_OTHER_INCOME, Integer.valueOf(this.getOtherIncome()));
+
+        mapSum.put(MainActivity.PARAM_TAXES, Integer.valueOf(this.getTaxes()));
+        mapSum.put(MainActivity.PARAM_MORTGAGE, Integer.valueOf(this.getMortgage()));
+        mapSum.put(MainActivity.PARAM_CREDIT_CARD, Integer.valueOf(this.getCreditCard()));
+        mapSum.put(MainActivity.PARAM_UTILITIES, Integer.valueOf(this.getUtilities()));
+        mapSum.put(MainActivity.PARAM_FOOD, Integer.valueOf(this.getFood()));
+        mapSum.put(MainActivity.PARAM_CAR_PAYMENT, Integer.valueOf(this.getCarPayment()));
+        mapSum.put(MainActivity.PARAM_PERSONAL, Integer.valueOf(this.getPersonal()));
+        mapSum.put(MainActivity.PARAM_ACTIVITIES, Integer.valueOf(this.getActivities()));
+        mapSum.put(MainActivity.PARAM_OTHER_EXPENSE, Integer.valueOf(this.getOtherExpenses()));
+
+        return mapSum;
+    }
+
+
+
     private BasicDocumentRevision rev;
     public BasicDocumentRevision getDocumentRevision() {
         return rev;
