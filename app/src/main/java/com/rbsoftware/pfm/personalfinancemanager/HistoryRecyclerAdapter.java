@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.Card;
@@ -53,10 +55,10 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
         card.addCardHeader(header);
 
         //This provide a simple (and useless) expand area
-        CardExpand expand = new CardExpand(mContext);
+        HistoryExpandCard expand = new HistoryExpandCard(mContext, doc);
 
         //Set inner title in Expand Area
-        expand.setTitle("dummy text");
+        //expand.setTitle("dummy text");
 
         //Add expand to card
         card.addCardExpand(expand);
@@ -95,7 +97,9 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
 
     }
 
-    public class HistoryHeaderInnerCard extends CardHeader {
+
+    //Helper class to customize card header
+    private class HistoryHeaderInnerCard extends CardHeader {
         String income;
         String expense;
         String date;
@@ -108,7 +112,7 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
 
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
-
+            super.setupInnerViewElements(parent, view);
             if (view!=null){
                 TextView dateView = (TextView) view.findViewById(R.id.textViewDate);
                 if (dateView!=null)
@@ -123,6 +127,68 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
                     expenseView.setText(expense);
             }
         }
+    }
+
+
+    //Helper class to customize expand card layout
+    private class HistoryExpandCard extends CardExpand {
+        LinearLayout mLayout;
+        FinanceDocument doc;
+        //Use your resource ID for your inner layout
+        public HistoryExpandCard(Context context, FinanceDocument doc) {
+            super(context, R.layout.history_expand_card_layout);
+            this.doc = doc;
+        }
+
+        @Override
+        public void setupInnerViewElements(ViewGroup parent, View view) {
+            super.setupInnerViewElements(parent, view);
+            mLayout = (LinearLayout) view.findViewById(R.id.history_expand_card_layout);
+            for(int i=1;i<=doc.getValuesMap().size(); i++){
+                int value = doc.getValuesMap().get(i);
+                if(value != 0){
+                mLayout.addView(createNewTextView(i, value));
+                }
+            }
+        }
+
+        private TextView createNewTextView(int i, int value){
+
+            final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            final TextView mTextView = new TextView(mContext);
+            String row;
+            mTextView.setLayoutParams(layoutParams);
+            row = keyToString(i) + " " + value;
+            mTextView.setText(row);
+            return mTextView;
+        }
+
+
+        /* Converts int key to human readable string
+        * @param key value range 1-14
+        * @return string value
+        */
+        private String keyToString(int key){
+            switch (key){
+                case 1: return mContext.getResources().getString(R.string.salary);
+                case 2: return mContext.getResources().getString(R.string.rental_income);
+                case 3: return mContext.getResources().getString(R.string.interest);
+                case 4: return mContext.getResources().getString(R.string.gifts);
+                case 5: return mContext.getResources().getString(R.string.other_income);
+                case 6: return mContext.getResources().getString(R.string.taxes);
+                case 7: return mContext.getResources().getString(R.string.mortgage);
+                case 8: return mContext.getResources().getString(R.string.credit_card);
+                case 9: return mContext.getResources().getString(R.string.utilities);
+                case 10: return mContext.getResources().getString(R.string.food);
+                case 11: return mContext.getResources().getString(R.string.car_payment);
+                case 12: return mContext.getResources().getString(R.string.personal);
+                case 13: return mContext.getResources().getString(R.string.activities);
+                case 14: return mContext.getResources().getString(R.string.other_expense);
+            }
+            return "";
+        }
+
+
     }
 
 
