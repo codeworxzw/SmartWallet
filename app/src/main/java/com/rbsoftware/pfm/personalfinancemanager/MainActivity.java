@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        boolean firstTimeOpen;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -104,6 +106,13 @@ public class MainActivity extends AppCompatActivity  {
                 startActivityForResult(report, 1);
             }
         });
+
+        firstTimeOpen = Boolean.valueOf(ReadFromSharedPreferences(this, "firstTimeOpen", "true"));
+        if (firstTimeOpen){
+            Log.d("FirstTimeOpen", "Application started for the first time");
+            firstTimeOpen = false;
+            SaveToSharedPreferences(this, "firstTimeOpen", Boolean.toString(firstTimeOpen));
+        }
 
     }
 
