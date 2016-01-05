@@ -165,20 +165,19 @@ public class TrendsChart extends Fragment {
             popupLine = new PopupMenu(getActivity(), getActivity().findViewById(R.id.action_line));
             MenuInflater inflate = popupLine.getMenuInflater();
             inflate.inflate(R.menu.lines, popupLine.getMenu());
-
-        for(int i=0; i<listLinesSize; i++){
-            MenuItem item = popupLine.getMenu().findItem(checkedLines.get(i));
-            item.setChecked(true);
-        }
-
+            if(listLinesSize != 0) {
+                for (int i = 0; i < listLinesSize; i++) {
+                    MenuItem item = popupLine.getMenu().findItem(checkedLines.get(i));
+                    item.setChecked(true);
+                }
+            }
         popupLine.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 item.setChecked(!item.isChecked());
                 if (item.isChecked()) {
                     checkedLines.add(item.getItemId());
-                }
-                else {
+                } else {
                     int counter = 0;
                     while (counter < checkedLines.size()) {
                         if (checkedLines.get(counter) == item.getItemId()) {
@@ -189,7 +188,7 @@ public class TrendsChart extends Fragment {
                     }
 
                 }
-                listLinesSize =checkedLines.size();
+                listLinesSize = checkedLines.size();
                 MainActivity.SaveToSharedPreferences(getActivity(), "listLinesSize", Integer.toString(listLinesSize));
                 for (int i = 0; i < checkedLines.size(); i++) {
                     MainActivity.SaveToSharedPreferences(getActivity(), "checkedLine" + i, Integer.toString(checkedLines.get(i)));

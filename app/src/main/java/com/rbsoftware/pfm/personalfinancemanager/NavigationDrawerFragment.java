@@ -24,6 +24,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -109,8 +110,13 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         mUserPhoto = (ImageView) mDrawerView.findViewById(R.id.user_photo);
         mUserName.setText(getArguments().getString("name"));
         String photoURL = getArguments().getString("photoURL");
-        new ImageLoad(photoURL,mUserPhoto);
-        Log.d("photo",photoURL+" ");
+        if(photoURL != null) {
+            Picasso.with(getContext()).load(photoURL).into(mUserPhoto);
+        }
+        else{
+            Picasso.with(getContext()).load(R.drawable.user_photo_256px).into(mUserPhoto);
+
+        }
 
         mDrawerList = (ListView) mDrawerView.findViewById(R.id.navigation_drawer_listview);
         mListItems= getResources().getStringArray(R.array.drawer_menu);

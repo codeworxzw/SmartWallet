@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
@@ -42,7 +42,7 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.google.code.findbugs:jsr305:3.0.0'
     compile 'com.jakewharton:butterknife:6.1.0'
-    compile 'com.google.android.gms:play-services-auth:8.3.0'
+    compile 'com.google.android.gms:play-services-auth:8.4.0'
     compile 'com.android.support:support-v4:23.1.1'
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
 
@@ -50,4 +50,8 @@ dependencies {
     compile 'com.github.gabrielemariotti.cards:cardslib-core:2.1.0'
     //Optional for RecyclerView
     compile 'com.github.gabrielemariotti.cards:cardslib-recyclerview:2.1.0'
+    //Picasso library
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }
+
+apply plugin: 'com.google.gms.google-services'
