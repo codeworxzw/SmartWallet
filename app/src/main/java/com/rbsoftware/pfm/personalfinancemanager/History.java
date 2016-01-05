@@ -45,7 +45,7 @@ public class History extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        docList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId());
+        docList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId(), FinanceDocumentModel.ORDER_DESC);
         mAdapter = new HistoryRecyclerAdapter(getActivity(), docList);
         mRecyclerView.setAdapter(mAdapter);
     }

@@ -58,6 +58,8 @@ public class FinanceDocumentModel {
     private static final String THIS_YEAR = "thisYear";
     private Calendar cal;
 
+    public static final String ORDER_ASC = "asc";
+    public static final String ORDER_DESC = "desc";
 
     private Datastore mDatastore;
     private IndexManager im;
@@ -153,7 +155,48 @@ public class FinanceDocumentModel {
      * "thisYear"
      * @return list of the documents
      */
+
+
     public List<FinanceDocument> queryDocumentsByDate(String timeFrame, String userId){
+        List<FinanceDocument> list= new ArrayList<>();
+        cal = Calendar.getInstance();
+        long currDate =  cal.getTimeInMillis()/1000;
+        Map<String, Object> query = new HashMap<String, Object>();
+
+        Map<String, Object> gteDate = new HashMap<String, Object>();                    // Start of the period
+        Map<String, Object> startClause = new HashMap<String, Object>();                //*
+        gteDate.put("$gte", startDateBuilder(currDate, timeFrame));        //*
+        startClause.put("date", gteDate);
+        //*********
+        Map<String, Object> lteDate = new HashMap<String, Object>();      // End of t/he period
+        Map<String, Object> endClause = new HashMap<String, Object>();                 // *
+        lteDate.put("$lte", endDateBuilder(currDate, timeFrame));         //*
+        endClause.put("date", lteDate);                                   //*********
+
+        Map<String, Object> eqUserId = new HashMap<String, Object>();       //Query by userId
+        Map<String, Object> userIdClause = new HashMap<String, Object>();               //*
+        eqUserId.put("$eq", userId);                                       //*
+        userIdClause.put("userId", eqUserId);                              //**********************
+
+        query.put("$and", Arrays.<Object>asList(startClause, endClause, userIdClause)); //query
+
+
+        QueryResult result = im.find(query);
+        if(result != null) {
+            for (DocumentRevision rev : result) {
+                list.add(getDocument(rev.getId()));
+
+                // The returned revision object contains all fields for
+                // the object. You cannot project certain fields in the
+                // current implementation.
+            }
+
+        }
+        return list;
+    }
+
+
+    public List<FinanceDocument> queryDocumentsByDate(String timeFrame, String userId, String order){
         List<FinanceDocument> list= new ArrayList<>();
         cal = Calendar.getInstance();
         long currDate =  cal.getTimeInMillis()/1000;
@@ -179,9 +222,16 @@ public class FinanceDocumentModel {
         //Sorting documents
         List<Map<String, String>> sortDocument = new ArrayList<Map<String, String>>();
         Map<String, String> sortByDate = new HashMap<String, String>();
-        sortByDate.put("date", "asc");  //sorting by date
-        sortDocument.add(sortByDate);
+        if(order.equals(ORDER_ASC)) {
 
+            sortByDate.put("date", "asc");  //sorting by date
+
+        }
+        else
+        {
+            sortByDate.put("date", "desc");  //sorting by date
+        }
+        sortDocument.add(sortByDate);
         QueryResult result = im.find(query,0,0,null,sortDocument);
         if(result != null) {
             for (DocumentRevision rev : result) {

@@ -75,7 +75,7 @@ public class TrendsChart extends Fragment {
     public void onResume() {
         super.onResume();
         //Querying list of documents on fragment resume
-        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.ReadFromSharedPreferences(getActivity(), "periodTrend", "thisWeek"), MainActivity.getUserId());
+        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.ReadFromSharedPreferences(getActivity(), "periodTrend", "thisWeek"), MainActivity.getUserId(), FinanceDocumentModel.ORDER_ASC);
         mTextViewPeriod.setText(MainActivity.ReadFromSharedPreferences(getActivity(), "periodTextTrend", getResources().getString(R.string.this_week)));
         //generateChartData(getValues(financeDocumentList));
         generateLineChartData();
@@ -122,30 +122,30 @@ public class TrendsChart extends Fragment {
 
                 switch (id) {
                     case R.id.thisWeek:
-                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId(), FinanceDocumentModel.ORDER_ASC);
                         selectedPeriod = "thisWeek";
                         mTextViewPeriod.setText(getResources().getString(R.string.this_week));
                         break;
                     case R.id.thisMonth:
-                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisMonth", MainActivity.getUserId());
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisMonth", MainActivity.getUserId(), FinanceDocumentModel.ORDER_ASC);
                         selectedPeriod = "thisMonth";
                         mTextViewPeriod.setText(getResources().getString(R.string.this_month));
 
                         break;
                     case R.id.lastWeek:
-                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("lastWeek", MainActivity.getUserId());
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("lastWeek", MainActivity.getUserId(), FinanceDocumentModel.ORDER_ASC);
                         selectedPeriod = "lastWeek";
                         mTextViewPeriod.setText(getResources().getString(R.string.last_week));
 
                         break;
                     case R.id.lastMonth:
-                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("lastMonth", MainActivity.getUserId());
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("lastMonth", MainActivity.getUserId(), FinanceDocumentModel.ORDER_ASC);
                         selectedPeriod = "lastMonth";
                         mTextViewPeriod.setText(getResources().getString(R.string.last_month));
 
                         break;
                     case R.id.thisYear:
-                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId());
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId(), FinanceDocumentModel.ORDER_ASC);
                         selectedPeriod = "thisYear";
                         mTextViewPeriod.setText(getResources().getString(R.string.this_year));
 
