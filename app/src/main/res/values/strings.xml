@@ -178,6 +178,10 @@
     <string name="add_line">Add line</string>
     <string name="text_view_error">Please set value</string>
     <string name="recurs">Recurring</string>
+    <string name="delete">Delete</string>
+    <string name="delete_dialog_title">Delete entry</string>
+    <string name="delete_dialog_message">Are you sure you want to delete this entry?</string>
+    <string name="share">Share</string>
 
 
 </resources>

@@ -2,20 +2,34 @@ package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
+import android.view.ActionMode;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.cloudant.sync.datastore.ConflictException;
+
+import java.util.HashMap;
 import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
+import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.view.CardViewNative;
 
 /**
@@ -23,7 +37,7 @@ import it.gmariotti.cardslib.library.view.CardViewNative;
  */
 public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecyclerAdapter.HistoryViewHolder> {
 
-
+    private ActionMode mActionMode = null;
     private List<FinanceDocument> documentList;
     private Context mContext;
     public HistoryRecyclerAdapter(Context context, List<FinanceDocument> documentList) {
@@ -41,22 +55,99 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
 
     @Override
     public void onBindViewHolder(final HistoryRecyclerAdapter.HistoryViewHolder holder, int position) {
-        FinanceDocument doc = documentList.get(position);
+        final FinanceDocument doc = documentList.get(position);
 
         //Create a Card
-        Card card = new Card(mContext);
+        final Card card = new Card(mContext);
 
         //Create a CardHeader
         HistoryHeaderInnerCard header = new HistoryHeaderInnerCard(mContext, doc.getNormalDate(), doc.getTotalIncome(), doc.getTotalExpense());
+
+
+        // Callback to card long click
+        final ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                // Inflate a menu resource providing context menu items
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.history_card_menu, menu);
+                return true;
+
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.history_delete:
+
+                        new AlertDialog.Builder(mContext)
+                                .setTitle(mContext.getString(R.string.delete_dialog_title))
+                                .setMessage(mContext.getString(R.string.delete_dialog_message))
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        try {
+                                            MainActivity.financeDocumentModel.deleteDocument(doc);
+                                            documentList.remove(holder.getAdapterPosition());
+                                            notifyItemRemoved(holder.getAdapterPosition());
+                                        } catch (ConflictException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // do nothing
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+
+
+                        mode.finish(); // Action picked, so close the CAB
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                mActionMode = null;
+                if (card!=null)
+                    holder.mCardView.setActivated(false);
+            }
+        };
+
+        // Card long click listener
+        card.setOnLongClickListener(new Card.OnLongCardClickListener() {
+            @Override
+            public boolean onLongClick(Card card, View view) {
+                if (mActionMode != null) {
+                    view.setActivated(false);
+                    mActionMode.finish();
+                    return false;
+                }
+                // Start the CAB using the ActionMode.Callback defined below
+                mActionMode = view.startActionMode(mActionModeCallback);
+                view.setActivated(true);
+                return true;
+
+            }
+        });
         //Add Header to card
 
         card.addCardHeader(header);
 
         //This provide a simple (and useless) expand area
-        CardExpand expand = new CardExpand(mContext);
+        HistoryExpandCard expand = new HistoryExpandCard(mContext, doc);
 
         //Set inner title in Expand Area
-        expand.setTitle("dummy text");
+        //expand.setTitle("dummy text");
 
         //Add expand to card
         card.addCardExpand(expand);
@@ -89,13 +180,12 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
             this.mCardView = (CardViewNative) view.findViewById(R.id.historyCardView);
         }
 
-
-
-
-
     }
 
-    public class HistoryHeaderInnerCard extends CardHeader {
+
+
+    //Helper class to customize card header
+    private class HistoryHeaderInnerCard extends CardHeader {
         String income;
         String expense;
         String date;
@@ -108,8 +198,10 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
 
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
-
+            super.setupInnerViewElements(parent, view);
             if (view!=null){
+
+
                 TextView dateView = (TextView) view.findViewById(R.id.textViewDate);
                 if (dateView!=null)
                     dateView.setText(date);
@@ -123,6 +215,68 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
                     expenseView.setText(expense);
             }
         }
+    }
+
+
+    //Helper class to customize expand card layout
+    private class HistoryExpandCard extends CardExpand {
+        LinearLayout mLayout;
+        FinanceDocument doc;
+        //Use your resource ID for your inner layout
+        public HistoryExpandCard(Context context, FinanceDocument doc) {
+            super(context, R.layout.history_expand_card_layout);
+            this.doc = doc;
+        }
+
+        @Override
+        public void setupInnerViewElements(ViewGroup parent, View view) {
+            super.setupInnerViewElements(parent, view);
+            mLayout = (LinearLayout) view.findViewById(R.id.history_expand_card_layout);
+            for(int i=1;i<=doc.getValuesMap().size(); i++){
+                int value = doc.getValuesMap().get(i);
+                if(value != 0){
+                mLayout.addView(createNewTextView(i, value));
+                }
+            }
+        }
+
+        private TextView createNewTextView(int i, int value){
+
+            final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+            final TextView mTextView = new TextView(mContext);
+            String row;
+            mTextView.setLayoutParams(layoutParams);
+            row = keyToString(i) + " " + value;
+            mTextView.setText(row);
+            return mTextView;
+        }
+
+
+        /* Converts int key to human readable string
+        * @param key value range 1-14
+        * @return string value
+        */
+        private String keyToString(int key){
+            switch (key){
+                case 1: return mContext.getResources().getString(R.string.salary);
+                case 2: return mContext.getResources().getString(R.string.rental_income);
+                case 3: return mContext.getResources().getString(R.string.interest);
+                case 4: return mContext.getResources().getString(R.string.gifts);
+                case 5: return mContext.getResources().getString(R.string.other_income);
+                case 6: return mContext.getResources().getString(R.string.taxes);
+                case 7: return mContext.getResources().getString(R.string.mortgage);
+                case 8: return mContext.getResources().getString(R.string.credit_card);
+                case 9: return mContext.getResources().getString(R.string.utilities);
+                case 10: return mContext.getResources().getString(R.string.food);
+                case 11: return mContext.getResources().getString(R.string.car_payment);
+                case 12: return mContext.getResources().getString(R.string.personal);
+                case 13: return mContext.getResources().getString(R.string.activities);
+                case 14: return mContext.getResources().getString(R.string.other_expense);
+            }
+            return "";
+        }
+
+
     }
 
 

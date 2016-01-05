@@ -376,12 +376,12 @@ public class FinanceDocumentModel {
 
     /**
      * Deletes a Task document within the datastore.
-     * @param task task to delete
+     * @param doc task to delete
      * @throws ConflictException if the task passed in has a rev which doesn't
      *      match the current rev in the datastore.
      */
-    public void deleteDocument(FinanceDocument task) throws ConflictException {
-        this.mDatastore.deleteDocumentFromRevision(task.getDocumentRevision());
+    public void deleteDocument(FinanceDocument doc) throws ConflictException {
+        this.mDatastore.deleteDocumentFromRevision(doc.getDocumentRevision());
     }
 
     /**
