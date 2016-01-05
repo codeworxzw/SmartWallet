@@ -182,6 +182,9 @@
     <string name="delete_dialog_title">Delete entry</string>
     <string name="delete_dialog_message">Are you sure you want to delete this entry?</string>
     <string name="share">Share</string>
+    <string name="daily_reminder_title">Smart Wallet daily reminder</string>
+    <string name="daily_reminder_text">Submit you finance activity</string>
+    <string name="weekly_reminder_text">Check your weekly report</string>
 
 
 </resources>

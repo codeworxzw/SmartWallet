@@ -1,6 +1,10 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity  {
     public static final String PREF_FILE = "PrefFile";
@@ -54,6 +59,8 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        boolean firstTimeOpen;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -104,6 +111,14 @@ public class MainActivity extends AppCompatActivity  {
                 startActivityForResult(report, 1);
             }
         });
+
+        firstTimeOpen = Boolean.valueOf(ReadFromSharedPreferences(this, "firstTimeOpen", "true"));
+        if (firstTimeOpen){
+            Log.d("FirstTimeOpen", "Application started for the first time");
+            firstTimeOpen = false;
+            SaveToSharedPreferences(this, "firstTimeOpen", Boolean.toString(firstTimeOpen));
+            setNotification();
+        }
 
     }
 
@@ -216,6 +231,30 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
+
+    // Sets daily reminder alarm
+
+    private void setNotification(){
+        Intent notificationIntent = new Intent(this , NotificationReceiver.class);
+
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 21);
+
+        Log.d("Alarm", calendar.getTimeInMillis() +"");
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(),
+                1000*24*60*60 ,
+                pendingIntent);
+        Log.d("Alarm", "setnotification was called");
+    }
+
+
     //Static methods for saving an reading sharedpreferences
     public static void SaveToSharedPreferences(Context context, String prefName, String prefValue){
         SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE,Context.MODE_PRIVATE);
@@ -228,5 +267,6 @@ public class MainActivity extends AppCompatActivity  {
         SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
         return sharedPref.getString(prefName,defaultValue);
     }
+
 
 }
