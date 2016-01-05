@@ -26,6 +26,7 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <receiver android:name=".NotificationReceiver"/>
         <activity
             android:name=".ReportActivity"
             android:label="@string/title_activity_report"
