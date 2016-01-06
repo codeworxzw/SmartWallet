@@ -1,12 +1,9 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.view.ActionMode;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,22 +11,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cloudant.sync.datastore.ConflictException;
 
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
-import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.view.CardViewNative;
 
 /**
@@ -108,6 +101,15 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
                                 .show();
 
 
+                        mode.finish(); // Action picked, so close the CAB
+                        return true;
+
+                    case R.id.history_share:
+                        try {
+                            ExportData.exportHistoryAsCsv(mContext, doc);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         mode.finish(); // Action picked, so close the CAB
                         return true;
                     default:

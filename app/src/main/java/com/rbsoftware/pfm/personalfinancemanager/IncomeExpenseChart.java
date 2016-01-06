@@ -116,7 +116,7 @@ public class IncomeExpenseChart extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.filter, menu);
+        getActivity().getMenuInflater().inflate(R.menu.chart_income_expense_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -135,7 +135,7 @@ public class IncomeExpenseChart extends Fragment {
 
 
     //Helper methods
-    //Shows filter popup menu
+    //Shows chart_income_expense_menu popup menu
     public void showPopup(){
         View menuItemView = getActivity().findViewById(R.id.action_filter);
         PopupMenu popup = new PopupMenu(getActivity(), menuItemView);

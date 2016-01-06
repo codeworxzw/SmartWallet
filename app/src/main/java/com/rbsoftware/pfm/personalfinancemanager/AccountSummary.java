@@ -1,7 +1,5 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.PopupMenu;
@@ -12,10 +10,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 
 public class AccountSummary extends Fragment {
@@ -91,23 +92,33 @@ public class AccountSummary extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.filter, menu);
+        getActivity().getMenuInflater().inflate(R.menu.account_summary_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.action_filter){
-            showPopup();
-            return true;
+        switch (id) {
+            case R.id.action_filter:
+                showPopup();
+                return true;
+
+            case R.id.document_share:
+                try {
+                    ExportData.exportSummaryAsCsv(getContext(), prepareCsvData());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
 
-        return super.onOptionsItemSelected(item);
+
     }
     //Helper methods
-    //Shows filter popup menu
+    //Shows account_summary_menu popup menu
     public void showPopup(){
         View menuItemView = getActivity().findViewById(R.id.action_filter);
         PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
@@ -216,6 +227,34 @@ public class AccountSummary extends Fragment {
         otherExpense.setText(Integer.toString(otherExpensesSum));
         income.setText(Integer.toString(totalIncome));
         expense.setText(Integer.toString(totalExpense));
+    }
+
+    // compiles all views data into export ready list
+    private List<String[]> prepareCsvData(){
+        List<String[]> data = new ArrayList<>();
+        data.add(new String[]{getString(R.string.period), mTextViewPeriod.getText().toString()});
+        data.add(new String[]{"",""});
+        data.add(new String[]{getString(R.string.income), income.getText().toString()});
+        data.add(new String[]{"",""});
+        data.add(new String[]{getString(R.string.salary), salary.getText().toString()});
+        data.add(new String[]{getString(R.string.rental_income), rentalIncome.getText().toString()});
+        data.add(new String[]{getString(R.string.interest), interest.getText().toString()});
+        data.add(new String[]{getString(R.string.gifts), gifts.getText().toString()});
+        data.add(new String[]{getString(R.string.other_income), otherIncome.getText().toString()});
+        data.add(new String[]{"",""});
+        data.add(new String[]{getString(R.string.expense), expense.getText().toString()});
+        data.add(new String[]{"",""});
+        data.add(new String[]{getString(R.string.food), food.getText().toString()});
+        data.add(new String[]{getString(R.string.car_payment), carPayment.getText().toString()});
+        data.add(new String[]{getString(R.string.personal), personal.getText().toString()});
+        data.add(new String[]{getString(R.string.activities), activities.getText().toString()});
+        data.add(new String[]{getString(R.string.utilities), utilities.getText().toString()});
+        data.add(new String[]{getString(R.string.credit_card), creditCard.getText().toString()});
+        data.add(new String[]{getString(R.string.taxes), taxes.getText().toString()});
+        data.add(new String[]{getString(R.string.mortgage), mortgage.getText().toString()});
+        data.add(new String[]{getString(R.string.other_expense), otherExpense.getText().toString()});
+
+        return data;
     }
 
 }

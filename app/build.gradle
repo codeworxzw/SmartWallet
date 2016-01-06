@@ -52,6 +52,7 @@ dependencies {
     compile 'com.github.gabrielemariotti.cards:cardslib-recyclerview:2.1.0'
     //Picasso library
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile files('libs/opencsv-3.6.jar')
 }
 
 apply plugin: 'com.google.gms.google-services'

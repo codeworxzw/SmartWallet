@@ -23,7 +23,6 @@ import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.model.ValueShape;
-import lecho.lib.hellocharts.util.ChartUtils;
 import lecho.lib.hellocharts.view.LineChartView;
 
 
@@ -83,7 +82,7 @@ public class TrendsChart extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.trends, menu);
+        getActivity().getMenuInflater().inflate(R.menu.chart_trends_menu, menu);
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -108,7 +107,7 @@ public class TrendsChart extends Fragment {
 
 
     //Helper methods
-    //Shows period filter popup menu
+    //Shows period chart_trends_menu popup menu
     public void showPopupPeriod(){
         View menuItemView = getActivity().findViewById(R.id.action_filter);
         PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
