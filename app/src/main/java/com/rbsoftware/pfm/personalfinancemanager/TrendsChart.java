@@ -12,8 +12,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,7 @@ import lecho.lib.hellocharts.view.LineChartView;
  * A simple {@link Fragment} subclass.
  */
 public class TrendsChart extends Fragment {
+    private RelativeLayout relativeLayout;
     private List<FinanceDocument> financeDocumentList;
     private String selectedPeriod; //position of selected item in popup menu
     private LineChartView chart;
@@ -64,6 +67,7 @@ public class TrendsChart extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.trendsChartLayout);
         mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period_trend);
         chart = (LineChartView) getActivity().findViewById(R.id.trends_chart);
 
@@ -97,9 +101,16 @@ public class TrendsChart extends Fragment {
                 return true;
             case R.id.action_line:
                 showPopupLine();
-                return false;
-
-            default:return super.onOptionsItemSelected(item);
+                return true;
+            case R.id.document_share:
+                try {
+                    ExportData.exportChartAsPng(getContext(),relativeLayout);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
     }

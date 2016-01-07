@@ -12,9 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +31,7 @@ import lecho.lib.hellocharts.view.PieChartView;
  * A simple {@link Fragment} subclass.
  */
 public class IncomeExpenseChart extends Fragment {
+    private RelativeLayout relativeLayout;
     private List<FinanceDocument> financeDocumentList;
     private PieChartView mPieChart;
     private PieChartData data;
@@ -61,6 +64,8 @@ public class IncomeExpenseChart extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.incomeExpenseLayout);
+
         mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period);
         mIncomeExpenseButton = (ToggleButton) getActivity().findViewById(R.id.btn_income_expense);
 
@@ -123,13 +128,24 @@ public class IncomeExpenseChart extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.action_filter){
-            showPopup();
-            return true;
+        switch (id) {
+            case R.id.action_filter:
+                showPopup();
+                return true;
+            case R.id.document_share:
+                try {
+                    ExportData.exportChartAsPng(getContext(),relativeLayout);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
         }
 
 
-        return super.onOptionsItemSelected(item);
+
     }
 
 
