@@ -27,7 +27,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         NotificationManager mNM = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder dailyReminder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
-                .setSmallIcon(android.R.mipmap.sym_def_app_icon)
+                .setSmallIcon(R.drawable.ic_wallet_white_24dp)
                 .setContentTitle(context.getString(R.string.daily_reminder_title))
                 .setContentText(context.getString(R.string.daily_reminder_text))
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
