@@ -35,7 +35,7 @@ public class FinanceDocument {
 
     private FinanceDocument() {}
 
-    public FinanceDocument(List<String> params) {
+    public FinanceDocument(List<Object> params) {
         /*  type, 0 - id, 1 - salary, 2  - rental income, 3 - interest, 4 - gifts, 5 - other income
         6 - taxes, 7 - mortgage, 8 - credit card,
         9 - utilities (Electric bill, Water bill, Gas bill, Phone bill, Internet service, Cable or satellite service),
@@ -47,7 +47,7 @@ public class FinanceDocument {
         */
 
         this.type = DOC_TYPE;
-        this.userId = params.get(0);
+        this.userId = (String) params.get(0);
         //this.salary = params.get(1);
         //this.rentalIncome = params.get(2);
         //this.interest = params.get(3);
@@ -69,20 +69,20 @@ public class FinanceDocument {
 
         this.setType(DOC_TYPE);
         this.setUserId(userId);
-        this.setSalary(params.get(1), "USD", "Never");
-        this.setRentalIncome(params.get(2), "USD", "Never");
-        this.setInterest(params.get(3), "USD", "Never");
-        this.setGifts(params.get(4), "USD", "Never");
-        this.setOtherIncome(params.get(5), "USD", "Never");
-        this.setTaxes(params.get(6), "USD", "Never");
-        this.setMortgage(params.get(7), "USD", "Never");
-        this.setCreditCard(params.get(8), "USD", "Never");
-        this.setUtilities(params.get(9), "USD", "Never");
-        this.setFood(params.get(10), "USD", "Never");
-        this.setCarPayment(params.get(11), "USD", "Never");
-        this.setPersonal(params.get(12), "USD", "Never");
-        this.setActivities(params.get(13), "USD", "Never");
-        this.setOtherExpenses(params.get(14), "USD", "Never");
+        this.setSalary((ArrayList<String>) params.get(1));
+        this.setRentalIncome((ArrayList<String>)params.get(2));
+        this.setInterest((ArrayList<String>)params.get(3));
+        this.setGifts((ArrayList<String>) params.get(4));
+        this.setOtherIncome((ArrayList<String>) params.get(5));
+        this.setTaxes((ArrayList<String>) params.get(6));
+        this.setMortgage((ArrayList<String>) params.get(7));
+        this.setCreditCard((ArrayList<String>) params.get(8));
+        this.setUtilities( (ArrayList<String>)params.get(9));
+        this.setFood((ArrayList<String>) params.get(10));
+        this.setCarPayment((ArrayList<String>) params.get(11));
+        this.setPersonal((ArrayList<String>) params.get(12));
+        this.setActivities((ArrayList<String>) params.get(13));
+        this.setOtherExpenses((ArrayList<String>) params.get(14));
 
     }
     //type
