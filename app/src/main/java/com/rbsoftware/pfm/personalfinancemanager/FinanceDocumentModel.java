@@ -121,7 +121,7 @@ public class FinanceDocumentModel {
         indexList.add("type");
         indexList.add("userId");
         indexList.add("date");
-        indexList.add("salary");
+       /* indexList.add("salary");
         indexList.add("rentalIncome");
         indexList.add("interest");
         indexList.add("gifts");
@@ -134,7 +134,7 @@ public class FinanceDocumentModel {
         indexList.add("carPayment");
         indexList.add("personal");
         indexList.add("activities");
-        indexList.add("otherExpenses");
+        indexList.add("otherExpenses");*/
 
 
         im.ensureIndexed(indexList, FINANCE_DOCUMENT_INDEX_LIST);

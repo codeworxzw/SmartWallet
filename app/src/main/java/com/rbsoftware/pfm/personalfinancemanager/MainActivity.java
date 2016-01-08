@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity  {
                 params.add(PARAM_ACTIVITIES, getItem(reportResult, 12));
                 params.add(PARAM_OTHER_EXPENSE, getItem(reportResult, 13));
                 createNewFinanceDocument(params);
-               // financeDocumentModel.startPushReplication();
+                financeDocumentModel.startPushReplication();
 
 
             }

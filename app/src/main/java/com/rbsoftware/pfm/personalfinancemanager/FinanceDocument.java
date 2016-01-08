@@ -3,6 +3,7 @@ package com.rbsoftware.pfm.personalfinancemanager;
 import com.cloudant.sync.datastore.BasicDocumentRevision;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,22 @@ import java.util.TimeZone;
 public class FinanceDocument {
     static final String DOC_TYPE = "Finance document";
 
+    private List<String> salary= new ArrayList<>();
+    private List<String> rentalIncome = new ArrayList<>();
+    private List<String> interest = new ArrayList<>();
+    private List<String> gifts = new ArrayList<>();
+    private List<String> otherIncome = new ArrayList<>();
+    private List<String> taxes = new ArrayList<>();
+    private List<String> mortgage = new ArrayList<>();
+    private List<String> creditCard = new ArrayList<>();
+    private List<String> utilities  = new ArrayList<>();
+    private List<String> food = new ArrayList<>();
+    private List<String> carPayment = new ArrayList<>();
+    private List<String> personal = new ArrayList<>();
+    private List<String> activities = new ArrayList<>();
+    private List<String> otherExpenses = new ArrayList<>();
+
+    private String date;
 
     private FinanceDocument() {}
 
@@ -31,20 +48,20 @@ public class FinanceDocument {
 
         this.type = DOC_TYPE;
         this.userId = params.get(0);
-        this.salary = params.get(1);
-        this.rentalIncome = params.get(2);
-        this.interest = params.get(3);
-        this.gifts = params.get(4);
-        this.otherIncome = params.get(5);
-        this.taxes = params.get(6);
-        this.mortgage = params.get(7);
-        this.creditCard = params.get(8);
-        this.utilities = params.get(9);
-        this.food = params.get(10);
-        this.carPayment = params.get(11);
-        this.personal = params.get(12);
-        this.activities = params.get(13);
-        this.otherExpenses = params.get(14);
+        //this.salary = params.get(1);
+        //this.rentalIncome = params.get(2);
+        //this.interest = params.get(3);
+       // this.gifts = params.get(4);
+        //this.otherIncome = params.get(5);
+       // this.taxes = params.get(6);
+        //this.mortgage = params.get(7);
+        //this.creditCard = params.get(8);
+        //this.utilities = params.get(9);
+       // this.food = params.get(10);
+        //this.carPayment = params.get(11);
+        //this.personal = params.get(12);
+        //this.activities = params.get(13);
+        //this.otherExpenses = params.get(14);
 
         Date currDate = new Date();
         this.date = Long.toString(currDate.getTime() / 1000);
@@ -52,20 +69,20 @@ public class FinanceDocument {
 
         this.setType(DOC_TYPE);
         this.setUserId(userId);
-        this.setSalary(salary);
-        this.setRentalIncome(rentalIncome);
-        this.setInterest(interest);
-        this.setGifts(gifts);
-        this.setOtherIncome(otherIncome);
-        this.setTaxes(taxes);
-        this.setMortgage(mortgage);
-        this.setCreditCard(creditCard);
-        this.setUtilities(utilities);
-        this.setFood(food);
-        this.setCarPayment(carPayment);
-        this.setPersonal(personal);
-        this.setActivities(activities);
-        this.setOtherExpenses(otherExpenses);
+        this.setSalary(params.get(1), "USD", "Never");
+        this.setRentalIncome(params.get(2), "USD", "Never");
+        this.setInterest(params.get(3), "USD", "Never");
+        this.setGifts(params.get(4), "USD", "Never");
+        this.setOtherIncome(params.get(5), "USD", "Never");
+        this.setTaxes(params.get(6), "USD", "Never");
+        this.setMortgage(params.get(7), "USD", "Never");
+        this.setCreditCard(params.get(8), "USD", "Never");
+        this.setUtilities(params.get(9), "USD", "Never");
+        this.setFood(params.get(10), "USD", "Never");
+        this.setCarPayment(params.get(11), "USD", "Never");
+        this.setPersonal(params.get(12), "USD", "Never");
+        this.setActivities(params.get(13), "USD", "Never");
+        this.setOtherExpenses(params.get(14), "USD", "Never");
 
     }
     //type
@@ -85,132 +102,242 @@ public class FinanceDocument {
         this.userId = data;
     }
     //salary
-    private String salary;
     public String getSalary() {
-        return salary;
+        return salary.get(0);
     }
-    public void setSalary(String salary) {
-        this.salary = salary;
+    public void setSalary(String salary, String currency, String recursion) {
+
+        this.salary.add(0,salary);
+        this.salary.add(1,currency);
+        this.salary.add(2,recursion);
     }
+    public void setSalary(ArrayList<String> salary) {
+
+        this.salary= salary;
+    }
+
     //rental income
-    private String rentalIncome;
+
     public String getRentalIncome() {
-        return rentalIncome;
+        return rentalIncome.get(0);
     }
-    public void setRentalIncome(String rentalIncome) {
-        this.rentalIncome = rentalIncome;
+    public void setRentalIncome(String rentalIncome, String currency, String recursion) {
+        this.rentalIncome.add(0, rentalIncome);
+        this.rentalIncome.add(1, currency);
+        this.rentalIncome.add(2, recursion);
     }
+    public void setRentalIncome(ArrayList<String> rentalIncome) {
+       this.rentalIncome = rentalIncome;
+    }
+
     //interest
-    private String interest;
+
     public String getInterest() {
-        return interest;
+        return interest.get(0);
     }
-    public void setInterest(String interest) {
-        this.interest = interest;
+    public void setInterest(String interest, String currency, String recursion) {
+
+        this.interest.add(0, interest);
+        this.interest.add(1, currency);
+        this.interest.add(2, recursion);
+    }
+    public void setInterest(ArrayList<String> interest) {
+
+        this.interest=interest;
     }
 
     //gifts
-    private String gifts;
+
     public String getGifts() {
-        return gifts;
+
+        return gifts.get(0);
     }
-    public void setGifts(String gifts) {
-        this.gifts = gifts;
+
+    public void setGifts(String gifts, String currency, String recursion) {
+
+        this.gifts.add(0,gifts);
+        this.gifts.add(1,currency);
+        this.gifts.add(2,recursion);
+    }
+    public void setGifts(ArrayList<String> gifts) {
+
+        this.gifts=gifts;
     }
 
     //other income
-    private String otherIncome;
+
     public String getOtherIncome() {
-        return otherIncome;
+
+        return otherIncome.get(0);
     }
-    public void setOtherIncome(String otherIncome) {
-        this.otherIncome = otherIncome;
+    public void setOtherIncome(String otherIncome, String currency, String recursion) {
+
+        this.otherIncome.add(0, otherIncome);
+        this.otherIncome.add(1, currency);
+        this.otherIncome.add(2, recursion);
+    }
+    public void setOtherIncome(ArrayList<String> otherIncome) {
+
+        this.otherIncome=otherIncome;
     }
 
     //7 - taxes
-    private String taxes;
+
     public String getTaxes() {
-        return taxes;
+
+        return taxes.get(0);
     }
-    public void setTaxes(String taxes) {
-        this.taxes = taxes;
+    public void setTaxes(String taxes, String currency, String recursion) {
+
+        this.taxes.add(0, taxes);
+        this.taxes.add(1, currency);
+        this.taxes.add(2, recursion);
+    }
+    public void setTaxes(ArrayList<String> taxes) {
+
+        this.taxes=taxes;
     }
 
     // 8 - mortgage
-    private String mortgage;
+
     public String getMortgage() {
-        return mortgage;
+
+        return mortgage.get(0);
     }
-    public void setMortgage(String mortgage) {
-        this.mortgage = mortgage;
+    public void setMortgage(String mortgage, String currency, String recursion) {
+
+        this.mortgage.add(0, mortgage);
+        this.mortgage.add(1, currency);
+        this.mortgage.add(2, recursion);
+    }
+    public void setMortgage(ArrayList<String> mortgage) {
+
+        this.mortgage=mortgage;
     }
 
+
     // 9 - credit card
-    private String creditCard;
     public String getCreditCard() {
-        return creditCard;
+
+        return creditCard.get(0);
     }
-    public void setCreditCard(String creditCard) {
-        this.creditCard = creditCard;
+    public void setCreditCard(String creditCard, String currency, String recursion) {
+
+        this.creditCard.add(0, creditCard);
+        this.creditCard.add(1, currency);
+        this.creditCard.add(2, recursion);
+    }
+    public void setCreditCard(ArrayList<String> creditCard) {
+
+        this.creditCard=creditCard;
     }
 
     //10 - utilities
-    private String utilities;
+
     public String getUtilities() {
-        return utilities;
+
+        return utilities.get(0);
     }
-    public void setUtilities(String utilities) {
-        this.utilities = utilities;
+    public void setUtilities(String utilities, String currency, String recursion) {
+
+        this.utilities.add(0, utilities);
+        this.utilities.add(1, currency);
+        this.utilities.add(2, recursion);
+    }
+    public void setUtilities(ArrayList<String> utilities) {
+
+        this.utilities= utilities;
     }
 
     //11 - food
-    private String food;
+
     public String getFood() {
-        return food;
+
+        return food.get(0);
     }
-    public void setFood(String food) {
-        this.food = food;
+    public void setFood(String food, String currency, String recursion) {
+
+        this.food.add(0, food);
+        this.food.add(1, currency);
+        this.food.add(2, recursion);
+    }
+    public void setFood(ArrayList<String> food) {
+
+        this.food= food;
     }
 
     //12 - car payment
-    private String carPayment;
+
     public String getCarPayment() {
-        return carPayment;
+
+        return carPayment.get(0);
     }
-    public void setCarPayment(String carPayment) {
-        this.carPayment = carPayment;
+    public void setCarPayment(String carPayment, String currency, String recursion) {
+
+        this.carPayment.add(0, carPayment);
+        this.carPayment.add(1, currency);
+        this.carPayment.add(2, recursion);
+    }
+    public void setCarPayment(ArrayList<String> carPayment) {
+
+        this.carPayment= carPayment;
     }
 
     //13 - personal
-    private String personal;
+
     public String getPersonal() {
-        return personal;
+
+        return personal.get(0);
     }
-    public void setPersonal(String personal) {
-        this.personal = personal;
+    public void setPersonal(String personal, String currency, String recursion) {
+
+        this.personal.add(0, personal);
+        this.personal.add(1, currency);
+        this.personal.add(2, recursion);
+    }
+    public void setPersonal(ArrayList<String> personal) {
+
+        this.personal= personal;
     }
 
     //14 - activities
-    private String activities;
+
     public String getActivities() {
-        return activities;
+
+        return activities.get(0);
     }
-    public void setActivities(String activities) {
-        this.activities = activities;
+    public void setActivities(String activities, String currency, String recursion) {
+
+        this.activities.add(0, activities);
+        this.activities.add(1, currency);
+        this.activities.add(2, recursion);
     }
 
-    //15 - other expenses
-    private String otherExpenses;
-    public String getOtherExpenses() {
-        return otherExpenses;
+    public void setActivities(ArrayList<String> activities) {
+
+        this.activities=activities;
     }
-    public void setOtherExpenses(String otherExpenses) {
-        this.otherExpenses = otherExpenses;
+    //15 - other expenses
+
+    public String getOtherExpenses() {
+
+        return otherExpenses.get(0);
+    }
+    public void setOtherExpenses(String otherExpenses, String currency, String recursion) {
+
+        this.otherExpenses.add(0, otherExpenses);
+        this.otherExpenses.add(1, currency);
+        this.otherExpenses.add(2, recursion);
+    }
+
+    public void setOtherExpenses(ArrayList<String> otherExpenses) {
+
+        this.otherExpenses= otherExpenses;
     }
 
 
     //date
-    private String date;
+
     public String getDate() {return date;}
     public void setDate (String date){this.date = date;}
 
@@ -226,26 +353,26 @@ public class FinanceDocument {
     // @return total income
     public int getTotalIncome(){
         int totalIncome;
-        totalIncome = Integer.valueOf(salary) +
-                Integer.valueOf(rentalIncome) +
-                Integer.valueOf(interest) +
-                Integer.valueOf(gifts) +
-                Integer.valueOf(otherIncome);
+        totalIncome = Integer.valueOf(getSalary()) +
+                Integer.valueOf(getRentalIncome()) +
+                Integer.valueOf(getInterest()) +
+                Integer.valueOf(getGifts()) +
+                Integer.valueOf(getOtherIncome());
         return totalIncome;
     }
 
     // @return total expense
     public int getTotalExpense(){
         int totalExpense;
-        totalExpense = Integer.valueOf(taxes) +
-                Integer.valueOf(mortgage) +
-                Integer.valueOf(creditCard) +
-                Integer.valueOf(utilities) +
-                Integer.valueOf(food)+
-                Integer.valueOf(carPayment)+
-                Integer.valueOf(personal)+
-                Integer.valueOf(activities)+
-                Integer.valueOf(otherExpenses);
+        totalExpense = Integer.valueOf(getTaxes()) +
+                Integer.valueOf(getMortgage()) +
+                Integer.valueOf(getCreditCard()) +
+                Integer.valueOf(getUtilities()) +
+                Integer.valueOf(getFood())+
+                Integer.valueOf(getCarPayment())+
+                Integer.valueOf(getPersonal())+
+                Integer.valueOf(getActivities())+
+                Integer.valueOf(getOtherExpenses());
         return totalExpense;
     }
 
@@ -288,20 +415,21 @@ public class FinanceDocument {
             t.setDate((String) map.get("date"));
             t.setType((String) map.get("type"));
             t.setUserId((String) map.get("userId"));
-            t.setSalary((String) map.get("salary"));
-            t.setRentalIncome((String) map.get("rentalIncome"));
-            t.setInterest((String) map.get("interest"));
-            t.setGifts((String) map.get("gifts"));
-            t.setOtherIncome((String) map.get("otherIncome"));
-            t.setTaxes((String) map.get("taxes"));
-            t.setMortgage((String) map.get("mortgage"));
-            t.setCreditCard((String) map.get("creditCard"));
-            t.setUtilities((String) map.get("utilities"));
-            t.setFood((String) map.get("food"));
-            t.setCarPayment((String) map.get("carPayment"));
-            t.setPersonal((String) map.get("personal"));
-            t.setActivities((String) map.get("activities"));
-            t.setOtherExpenses((String) map.get("otherExpenses"));
+
+            t.setSalary((ArrayList<String>)map.get("salary"));
+            t.setRentalIncome((ArrayList<String>) map.get("rentalIncome"));
+            t.setInterest((ArrayList<String>) map.get("interest"));
+            t.setGifts((ArrayList<String>) map.get("gifts"));
+            t.setOtherIncome((ArrayList<String>) map.get("otherIncome"));
+            t.setTaxes((ArrayList<String>) map.get("taxes"));
+            t.setMortgage((ArrayList<String>) map.get("mortgage"));
+            t.setCreditCard((ArrayList<String>) map.get("creditCard"));
+            t.setUtilities((ArrayList<String>) map.get("utilities"));
+            t.setFood((ArrayList<String>) map.get("food"));
+            t.setCarPayment((ArrayList<String>) map.get("carPayment"));
+            t.setPersonal((ArrayList<String>) map.get("personal"));
+            t.setActivities((ArrayList<String>) map.get("activities"));
+            t.setOtherExpenses((ArrayList<String>) map.get("otherExpenses"));
             return t;
         }
         return null;
