@@ -47,12 +47,14 @@ public class ExportData {
             writer = new CSVWriter(new FileWriter(filePath));
         }
         List<String[]> data = new ArrayList<>();
+        List<String> value = new ArrayList<>();
+
         data.add(new String[]{mContext.getResources().getString(R.string.document_date), document.getNormalDate()});
-        data.add(new String[]{"", ""});
+        data.add(new String[]{"", "", "", ""});
         for(int i=1;i<=document.getValuesMap().size(); i++){
-            int value = document.getValuesMap().get(i);
-            if(value != 0){
-              data.add(new String[] {keyToString(mContext, i), Integer.toString(value)});
+            value = document.getValuesMap().get(i);
+            if(Integer.valueOf(value.get(0)) != 0){
+              data.add(new String[] {keyToString(mContext, i), value.get(0), value.get(1), value.get(2)});
             }
         }
         writer.writeAll(data);

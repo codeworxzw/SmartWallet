@@ -106,6 +106,7 @@
         <item>RUB</item>
     </string-array>
 
+    <string name="never">Never</string>
     <string-array name="report_activity_recurs_spinner">
         <item>Never</item>
         <item>Every week</item>

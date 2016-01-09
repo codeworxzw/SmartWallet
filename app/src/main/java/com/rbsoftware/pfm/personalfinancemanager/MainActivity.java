@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity  {
     public final static int PARAM_PERSONAL =12;
     public final static int PARAM_ACTIVITIES =13;
     public final static int PARAM_OTHER_EXPENSE =14;
+    public final static String DEFAULT_CURRENCY ="USD"; // TODO temporary solution until settings are implemented
+
     List<Object> params; //List FinanceDocument constructor parameters
     private String data;
     private static String userID; //unique user identifier
@@ -151,7 +153,7 @@ public class MainActivity extends AppCompatActivity  {
                 params.add(PARAM_ACTIVITIES, getItem(reportResult, 12));
                 params.add(PARAM_OTHER_EXPENSE, getItem(reportResult, 13));
                 createNewFinanceDocument(params);
-                financeDocumentModel.startPushReplication();
+               // financeDocumentModel.startPushReplication();
 
 
             }
@@ -167,7 +169,7 @@ public class MainActivity extends AppCompatActivity  {
     private ArrayList<String> getItem(ArrayList<String> reportResult, int i) {
         ArrayList<String> item= new ArrayList<>();
         item.add(0,"0");
-        item.add(1,"USD");
+        item.add(1,DEFAULT_CURRENCY);
         item.add(2,"Never");
         for(String listItem: reportResult){
             String[] parts = listItem.split("-");
