@@ -240,12 +240,16 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
                 value = doc.getValuesMap().get(i);
                 if(Integer.valueOf(value.get(0)) != 0){
                     String output="";
+                    /* Recursion disabled in version 1.0
+                    TODO enable recursion in future versions
                     if (!value.get(2).equals(mContext.getString(R.string.never))){
+
                         output = value.get(0)+" "+value.get(1)+" "+mContext.getString(R.string.recurs)+" "+value.get(2);
                     }
                     else{
                         output =value.get(0)+" "+value.get(1);
-                    }
+                    } */
+                    output =value.get(0)+" "+value.get(1);
                 mLayout.addView(createNewTextView(i, output));
                 }
             }

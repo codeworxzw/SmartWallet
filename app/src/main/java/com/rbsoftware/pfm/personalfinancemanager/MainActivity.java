@@ -178,8 +178,11 @@ public class MainActivity extends AppCompatActivity  {
                 item.clear();
                 item.add(0,parts[2]);
                 item.add(1,parts[3]);
+                /* Recursion disabled in version 1.0
+                    TODO enable recursion in future versions
                 item.add(2,parts[4]);
-
+                */
+                item.add(2,"Never");
             }
 
 
