@@ -14,8 +14,10 @@ import java.util.TimeZone;
  * Created by burzakovskiy on 11/24/2015.
  */
 public class FinanceDocument {
-    static final String DOC_TYPE = "Finance document";
-
+    private static final String DOC_TYPE = "Finance document";
+    public static final int DATE_FORMAT_SHORT = 0;
+    public static final int DATE_FORMAT_MEDIUM = 1;
+    public static final int DATE_FORMAT_LONG = 2;
     private List<String> salary= new ArrayList<>();
     private List<String> rentalIncome = new ArrayList<>();
     private List<String> interest = new ArrayList<>();
@@ -342,9 +344,23 @@ public class FinanceDocument {
     public void setDate (String date){this.date = date;}
 
     //@return human readable date
-    public String getNormalDate(){
+    public String getNormalDate(int format){
         Date formatDate = new Date(Long.valueOf(date)*1000L); // *1000 is to convert seconds to milliseconds
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
+        SimpleDateFormat sdf;
+        switch (format){
+            case 0: //short
+                sdf = new SimpleDateFormat("MM-dd"); // the format of your date
+                break;
+            case 1: //medium
+                sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
+                break;
+            case 2: // long
+                sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm"); // the format of your date
+                break;
+            default:
+                sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
+                break;
+         }
         sdf.setTimeZone(TimeZone.getDefault()); // give a timezone reference for formating (see comment at the bottom
         String normalDate = sdf.format(formatDate);
         return normalDate;

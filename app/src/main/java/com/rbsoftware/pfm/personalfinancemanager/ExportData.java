@@ -49,7 +49,7 @@ public class ExportData {
         List<String[]> data = new ArrayList<>();
         List<String> value = new ArrayList<>();
 
-        data.add(new String[]{mContext.getResources().getString(R.string.document_date), document.getNormalDate()});
+        data.add(new String[]{mContext.getResources().getString(R.string.document_date), document.getNormalDate(FinanceDocument.DATE_FORMAT_LONG)});
         data.add(new String[]{"", "", "", ""});
         for(int i=1;i<=document.getValuesMap().size(); i++){
             value = document.getValuesMap().get(i);

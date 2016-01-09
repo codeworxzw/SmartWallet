@@ -268,14 +268,15 @@ public class TrendsChart extends Fragment {
     }
 
     public List<Integer> getDataFromDocument(int lineId, List<FinanceDocument> docList){
+        int value;
         List<Integer> data = new ArrayList<>();
         switch (lineId){
             case R.id.popupTotalIncome:
                 for(FinanceDocument doc : docList){
-                    data.add(Integer.valueOf(doc.getSalary())+
-                            Integer.valueOf(doc.getRentalIncome())+
-                            Integer.valueOf(doc.getInterest())+
-                            Integer.valueOf(doc.getGifts())+
+                    data.add(Integer.valueOf(doc.getSalary()) +
+                            Integer.valueOf(doc.getRentalIncome()) +
+                            Integer.valueOf(doc.getInterest()) +
+                            Integer.valueOf(doc.getGifts()) +
                             Integer.valueOf(doc.getOtherIncome()));
 
                 }
@@ -295,72 +296,86 @@ public class TrendsChart extends Fragment {
                 break;
             case R.id.popupSalary:
                 for(FinanceDocument doc : docList){
-                    data.add(Integer.valueOf(doc.getSalary()));
+                    value =Integer.valueOf(doc.getSalary());
+                    if(value != 0) data.add(value);
                 }
                 break;
             case R.id.popupRentalIncome:
                 for(FinanceDocument doc : docList){
-                    data.add(Integer.valueOf(doc.getRentalIncome()));
+                    value = Integer.valueOf(doc.getRentalIncome());
+                    if(value != 0) data.add(value);
                 }
                 break;
             case R.id.popupInterest:
                 for(FinanceDocument doc : docList){
-                    data.add(Integer.valueOf(doc.getInterest()));
+                    value = Integer.valueOf(doc.getInterest());
+                    if(value != 0) data.add(value);
                 }
                 break;
             case R.id.popupGifts:
                 for(FinanceDocument doc : docList){
-                    data.add(Integer.valueOf(doc.getGifts()));
+                    value = Integer.valueOf(doc.getGifts());
+                    if(value != 0) data.add(value);
                 }
                 break;
             case R.id.popupOtherIncome:
                 for(FinanceDocument doc : docList){
-                    data.add(Integer.valueOf(doc.getOtherIncome()));
+                    value = Integer.valueOf(doc.getOtherIncome());
+                    if(value != 0) data.add(value);
                 }
                 break;
             case R.id.popupTaxes:
                 for(FinanceDocument doc : docList){
-                    data.add(Integer.valueOf(doc.getTaxes()));
+                    value = Integer.valueOf(doc.getTaxes());
+                    if(value != 0) data.add(value);
                 }
                 break;
             case R.id.popupMortgage:
                 for(FinanceDocument doc : docList){
-                    data.add(Integer.valueOf(doc.getMortgage()));
+                    value = Integer.valueOf(doc.getMortgage());
+                    if(value != 0) data.add(value);
                 }
                 break;
             case R.id.popupCreditCard:
                 for(FinanceDocument doc : docList){
-                    data.add(Integer.valueOf(doc.getCreditCard()));
+                    value = Integer.valueOf(doc.getCreditCard());
+                    if(value != 0) data.add(value);
                 }
                 break;
             case R.id.popupUtilities:
                 for(FinanceDocument doc : docList){
-                    data.add(Integer.valueOf(doc.getUtilities()));
+                    value = Integer.valueOf(doc.getUtilities());
+                    if(value != 0) data.add(value);
                 }
                 break;
             case R.id.popupFood:
                 for(FinanceDocument doc : docList){
-                    data.add(Integer.valueOf(doc.getFood()));
+                    value = Integer.valueOf(doc.getFood());
+                    if(value != 0) data.add(value);
                 }
                 break;
             case R.id.popupCarPayment:
                 for(FinanceDocument doc : docList){
-                    data.add(Integer.valueOf(doc.getCarPayment()));
+                    value = Integer.valueOf(doc.getCarPayment());
+                    if(value != 0) data.add(value);
                 }
                 break;
             case R.id.popupPersonal:
                 for(FinanceDocument doc : docList){
-                    data.add(Integer.valueOf(doc.getPersonal()));
+                    value = Integer.valueOf(doc.getPersonal());
+                    if(value != 0) data.add(value);
                 }
                 break;
             case R.id.popupActivities:
                 for(FinanceDocument doc : docList){
-                    data.add(Integer.valueOf(doc.getActivities()));
+                    value = Integer.valueOf(doc.getActivities());
+                    if(value != 0) data.add(value);
                 }
                 break;
             case R.id.popupOtherExpense:
                 for(FinanceDocument doc : docList){
-                    data.add(Integer.valueOf(doc.getOtherExpenses()));
+                    value = Integer.valueOf(doc.getOtherExpenses());
+                    if(value != 0) data.add(value);
                 }
                 break;
 
