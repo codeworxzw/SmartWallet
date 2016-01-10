@@ -225,8 +225,10 @@ public class AccountSummary extends Fragment {
         personal.setText(Integer.toString(personalSum));
         activities.setText(Integer.toString(activitiesSum));
         otherExpense.setText(Integer.toString(otherExpensesSum));
-        income.setText(Integer.toString(totalIncome));
-        expense.setText(Integer.toString(totalExpense));
+        String incomeString = Integer.toString(totalIncome) +" "+MainActivity.DEFAULT_CURRENCY;
+        income.setText(incomeString);
+        String expenseString = Integer.toString(totalExpense) +" "+MainActivity.DEFAULT_CURRENCY;
+        expense.setText(expenseString);
     }
 
     // compiles all views data into export ready list

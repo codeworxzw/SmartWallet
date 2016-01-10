@@ -46,7 +46,9 @@ public class MainActivity extends AppCompatActivity  {
     public final static int PARAM_PERSONAL =12;
     public final static int PARAM_ACTIVITIES =13;
     public final static int PARAM_OTHER_EXPENSE =14;
-    List<String> params; //List FinanceDocument constructor parameters
+    public final static String DEFAULT_CURRENCY ="USD"; // TODO temporary solution until settings are implemented
+
+    List<Object> params; //List FinanceDocument constructor parameters
     private String data;
     private static String userID; //unique user identifier
     private NavigationDrawerFragment drawerFragment;
@@ -164,14 +166,26 @@ public class MainActivity extends AppCompatActivity  {
     /*Helper method
     * Parsing string to retrieve document data
      */
-    private String getItem(ArrayList<String> reportResult, int i) {
-        String item="0";
+    private ArrayList<String> getItem(ArrayList<String> reportResult, int i) {
+        ArrayList<String> item= new ArrayList<>();
+        item.add(0,"0");
+        item.add(1,DEFAULT_CURRENCY);
+        item.add(2,"Never");
         for(String listItem: reportResult){
             String[] parts = listItem.split("-");
             int position = Integer.valueOf(parts[0]);
             if(i == position) {
-                item = parts[2];
+                item.clear();
+                item.add(0,parts[2]);
+                item.add(1,parts[3]);
+                /* Recursion disabled in version 1.0
+                    TODO enable recursion in future versions
+                item.add(2,parts[4]);
+                */
+                item.add(2,"Never");
             }
+
+
         }
 
         return item;
@@ -181,7 +195,7 @@ public class MainActivity extends AppCompatActivity  {
     //HELPER METHODS
 
     //Creation new document from data
-    private void createNewFinanceDocument(List<String> params) {
+    private void createNewFinanceDocument(List<Object> params) {
         financeDocument = new FinanceDocument(params);
         financeDocumentModel.createDocument(financeDocument);
 

@@ -47,12 +47,18 @@ public class ExportData {
             writer = new CSVWriter(new FileWriter(filePath));
         }
         List<String[]> data = new ArrayList<>();
-        data.add(new String[]{mContext.getResources().getString(R.string.document_date), document.getNormalDate()});
-        data.add(new String[]{"", ""});
+        List<String> value = new ArrayList<>();
+
+        data.add(new String[]{mContext.getResources().getString(R.string.document_date), document.getNormalDate(FinanceDocument.DATE_FORMAT_LONG)});
+        data.add(new String[]{"", "", "", ""});
         for(int i=1;i<=document.getValuesMap().size(); i++){
-            int value = document.getValuesMap().get(i);
-            if(value != 0){
-              data.add(new String[] {keyToString(mContext, i), Integer.toString(value)});
+            value = document.getValuesMap().get(i);
+            if(Integer.valueOf(value.get(0)) != 0){
+                 /* Recursion disabled in version 1.0
+                    TODO enable recursion in future versions
+              data.add(new String[] {keyToString(mContext, i), value.get(0), value.get(1), value.get(2)});
+              */
+                data.add(new String[] {keyToString(mContext, i), value.get(0), value.get(1)});
             }
         }
         writer.writeAll(data);

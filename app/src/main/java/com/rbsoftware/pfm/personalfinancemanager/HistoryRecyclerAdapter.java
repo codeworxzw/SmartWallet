@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.cloudant.sync.datastore.ConflictException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.Card;
@@ -54,7 +55,7 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
         final Card card = new Card(mContext);
 
         //Create a CardHeader
-        HistoryHeaderInnerCard header = new HistoryHeaderInnerCard(mContext, doc.getNormalDate(), doc.getTotalIncome(), doc.getTotalExpense());
+        HistoryHeaderInnerCard header = new HistoryHeaderInnerCard(mContext, doc.getNormalDate(FinanceDocument.DATE_FORMAT_LONG), doc.getTotalIncome(), doc.getTotalExpense());
 
 
         // Callback to card long click
@@ -233,16 +234,28 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
             super.setupInnerViewElements(parent, view);
+            List<String> value = new ArrayList<>();
             mLayout = (LinearLayout) view.findViewById(R.id.history_expand_card_layout);
             for(int i=1;i<=doc.getValuesMap().size(); i++){
-                int value = doc.getValuesMap().get(i);
-                if(value != 0){
-                mLayout.addView(createNewTextView(i, value));
+                value = doc.getValuesMap().get(i);
+                if(Integer.valueOf(value.get(0)) != 0){
+                    String output="";
+                    /* Recursion disabled in version 1.0
+                    TODO enable recursion in future versions
+                    if (!value.get(2).equals(mContext.getString(R.string.never))){
+
+                        output = value.get(0)+" "+value.get(1)+" "+mContext.getString(R.string.recurs)+" "+value.get(2);
+                    }
+                    else{
+                        output =value.get(0)+" "+value.get(1);
+                    } */
+                    output =value.get(0)+" "+value.get(1);
+                mLayout.addView(createNewTextView(i, output));
                 }
             }
         }
 
-        private TextView createNewTextView(int i, int value){
+        private TextView createNewTextView(int i, String value){
 
             final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
             final TextView mTextView = new TextView(mContext);
