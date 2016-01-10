@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -349,16 +350,16 @@ public class FinanceDocument {
         SimpleDateFormat sdf;
         switch (format){
             case 0: //short
-                sdf = new SimpleDateFormat("MM-dd"); // the format of your date
+                sdf = new SimpleDateFormat("MM.dd", Locale.getDefault()); // the format of your date
                 break;
             case 1: //medium
-                sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
+                sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // the format of your date
                 break;
             case 2: // long
-                sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm"); // the format of your date
+                sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm", Locale.getDefault()); // the format of your date
                 break;
             default:
-                sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
+                sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // the format of your date
                 break;
          }
         sdf.setTimeZone(TimeZone.getDefault()); // give a timezone reference for formating (see comment at the bottom
