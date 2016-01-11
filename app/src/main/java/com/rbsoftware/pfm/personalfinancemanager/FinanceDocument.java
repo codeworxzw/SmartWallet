@@ -1,7 +1,10 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
+import android.util.Log;
+
 import com.cloudant.sync.datastore.BasicDocumentRevision;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -347,16 +350,21 @@ public class FinanceDocument {
     //@return human readable date
     public String getNormalDate(int format){
         Date formatDate = new Date(Long.valueOf(date)*1000L); // *1000 is to convert seconds to milliseconds
-        SimpleDateFormat sdf;
+        DateFormat sdf;
         switch (format){
             case 0: //short
-                sdf = new SimpleDateFormat("MM.dd", Locale.getDefault()); // the format of your date
+                if(!Locale.getDefault().equals(Locale.US)) {
+                    sdf = new SimpleDateFormat("dd.MM", Locale.getDefault()); // the format of your date
+                }
+                else{
+                    sdf = new SimpleDateFormat("MM.dd", Locale.getDefault()); // the format of your date
+                }
                 break;
             case 1: //medium
                 sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // the format of your date
                 break;
             case 2: // long
-                sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm", Locale.getDefault()); // the format of your date
+                sdf = DateFormat.getDateInstance(DATE_FORMAT_LONG,Locale.getDefault());
                 break;
             default:
                 sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // the format of your date
