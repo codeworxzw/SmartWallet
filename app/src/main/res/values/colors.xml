@@ -5,11 +5,12 @@
     <color name="blue_grey_700">#455A64</color>
     <color name="blue_grey_800">#37474F</color>
     <color name="blue_grey_900">#263238</color>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF5722</color>
-    <color name="colorPagerTabStrip">#C5CAE9</color>
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryDark">#388E3C</color>
+    <color name="colorAccent">#F57C00</color>
+    <color name="colorPagerTabStrip">#C8E6C9</color>
     <color name="income">#A5D6A7</color>
     <color name="expense">#EF9A9A</color>
     <color name="card_backgroundExpand">#FAFAFA</color>
+    <color name="drawer_header">#388E3C</color>
 </resources>

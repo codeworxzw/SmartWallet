@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Personal Finance</string>
+    <string name="app_name">Smart Wallet</string>
     <string name="title_text">Google Sign-In\nQuickstart</string>
 
     <!-- Sign-in status messages -->
@@ -8,11 +8,7 @@
     <string name="signing_in">Signing in…</string>
     <string name="signed_out">Signed out</string>
     <string name="signed_in_err">"Error: please check logs."</string>
-    <string name="error_null_person">
-        Error: Plus.PeopleApi.getCurrentPerson returned null. Ensure that the Google+ API is
-        enabled for your project, you have a properly configured google-services.json file
-        and that your device has an internet connection.
-    </string>
+
 
 
     <!-- Google Play Services error for Toast -->
@@ -39,7 +35,6 @@
         <item>Account Summary</item>
         <item>Charts</item>
         <item>History</item>
-        <item>Fourth</item>
         <item>Settings</item>
         <item>Sign out</item>
     </string-array>
