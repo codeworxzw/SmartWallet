@@ -38,7 +38,7 @@ public class TrendsChart extends Fragment {
     private LineChartView chart;
     private LineChartData data;
     private TextView mTextViewPeriod;
-    private List<Integer> checkedLines; //list of checked lines Ids
+    private List<String> checkedLines; //list of checked lines Ids
     private  int listLinesSize; //size of checked lines list
     PopupMenu popupLine;
     public TrendsChart() {
@@ -52,7 +52,7 @@ public class TrendsChart extends Fragment {
         listLinesSize = Integer.valueOf(MainActivity.ReadFromSharedPreferences(getActivity(), "listLinesSize", "0"));
         checkedLines= new ArrayList<>();
         for(int i=0; i<listLinesSize; i++){
-            checkedLines.add(Integer.valueOf(MainActivity.ReadFromSharedPreferences(getActivity(),"checkedLine"+i,null)));
+            checkedLines.add(MainActivity.ReadFromSharedPreferences(getActivity(),"checkedLine"+i,null));
 
         }
     }
@@ -177,7 +177,7 @@ public class TrendsChart extends Fragment {
             inflate.inflate(R.menu.lines, popupLine.getMenu());
             if(listLinesSize != 0) {
                 for (int i = 0; i < listLinesSize; i++) {
-                    MenuItem item = popupLine.getMenu().findItem(checkedLines.get(i));
+                    MenuItem item = popupLine.getMenu().findItem(findMenuItemByTitle(checkedLines.get(i)));
                     item.setChecked(true);
                 }
             }
@@ -186,11 +186,11 @@ public class TrendsChart extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 item.setChecked(!item.isChecked());
                 if (item.isChecked()) {
-                    checkedLines.add(item.getItemId());
+                    checkedLines.add(item.getTitle().toString());
                 } else {
                     int counter = 0;
                     while (counter < checkedLines.size()) {
-                        if (checkedLines.get(counter) == item.getItemId()) {
+                        if (checkedLines.get(counter).equals(item.getTitle())) {
                             checkedLines.remove(counter);
                         } else {
                             counter++;
@@ -201,7 +201,7 @@ public class TrendsChart extends Fragment {
                 listLinesSize = checkedLines.size();
                 MainActivity.SaveToSharedPreferences(getActivity(), "listLinesSize", Integer.toString(listLinesSize));
                 for (int i = 0; i < checkedLines.size(); i++) {
-                    MainActivity.SaveToSharedPreferences(getActivity(), "checkedLine" + i, Integer.toString(checkedLines.get(i)));
+                    MainActivity.SaveToSharedPreferences(getActivity(), "checkedLine" + i, checkedLines.get(i));
                 }
 
                 generateLineChartData();
@@ -218,7 +218,7 @@ public class TrendsChart extends Fragment {
         List<AxisValue> axisValues =new ArrayList<AxisValue>();
         List<Line> lines = new ArrayList<Line>();
         for (int i = 0; i < checkedLines.size(); ++i) {
-            List<String[]> docData = getDataFromDocument(checkedLines.get(i), financeDocumentList);
+            List<String[]> docData = getDataFromDocument(findMenuItemByTitle(checkedLines.get(i)), financeDocumentList);
             List<PointValue> values = new ArrayList<PointValue>();
             axisValues.clear();
             for (int j = 0; j < docData.size(); ++j) {
@@ -430,5 +430,35 @@ public class TrendsChart extends Fragment {
 
         }
         return data;
+    }
+
+
+    /* Converts menu item title into id
+        @param title of menu item
+        @return resource id
+     */
+    private int findMenuItemByTitle(String title){
+         if(title.equals(getString(R.string.income))) return R.id.popupTotalIncome;
+         if(title.equals(getString(R.string.expense))) return R.id.popupTotalExpense;
+
+         if(title.equals(getString(R.string.salary))) return R.id.popupSalary;
+         if(title.equals(getString(R.string.rental_income))) return R.id.popupRentalIncome;
+         if(title.equals(getString(R.string.interest))) return R.id.popupInterest;
+         if(title.equals(getString(R.string.gifts))) return R.id.popupGifts;
+         if(title.equals(getString(R.string.other_income))) return R.id.popupOtherIncome;
+
+         if(title.equals(getString(R.string.taxes))) return R.id.popupTaxes;
+         if(title.equals(getString(R.string.mortgage))) return R.id.popupMortgage;
+         if(title.equals(getString(R.string.credit_card))) return R.id.popupCreditCard;
+         if(title.equals(getString(R.string.utilities))) return R.id.popupUtilities;
+         if(title.equals(getString(R.string.food))) return R.id.popupFood;
+         if(title.equals(getString(R.string.car_payment))) return R.id.popupCarPayment;
+         if(title.equals(getString(R.string.personal))) return R.id.popupPersonal;
+         if(title.equals(getString(R.string.activities))) return R.id.popupActivities;
+         if(title.equals(getString(R.string.other_expense))) return R.id.popupOtherExpense;
+
+
+
+        return  0;
     }
 }
