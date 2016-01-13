@@ -212,7 +212,8 @@ public class IncomeExpenseChart extends Fragment {
             int value=mapSum.get(i);
             total +=value;
             if(value !=0) {
-                SliceValue sliceValue = new SliceValue(value, Color.rgb(150 - i * 4, 90 + i * 8, 200 - i*5));
+                //SliceValue sliceValue = new SliceValue(value, Color.rgb(150 - i * 4, 90 + i * 8, 200 - i*5));
+                SliceValue sliceValue = new SliceValue(value, getColorPalette(i));
                 sliceValue.setLabel(keyToString(i)+" "+ value);
                 values.add(sliceValue);
             }
@@ -314,6 +315,28 @@ public class IncomeExpenseChart extends Fragment {
             case 14: return getResources().getString(R.string.other_expense);
         }
         return "";
+    }
+
+    private int getColorPalette(int i){
+        switch (i){
+            case 1: return getResources().getColor(R.color.salary);
+            case 2: return getResources().getColor(R.color.rental_income);
+            case 3: return getResources().getColor(R.color.interest);
+            case 4: return getResources().getColor(R.color.gifts);
+            case 5: return getResources().getColor(R.color.other_income);
+            case 6: return getResources().getColor(R.color.taxes);
+            case 7: return getResources().getColor(R.color.mortgage);
+            case 8: return getResources().getColor(R.color.credit_card);
+            case 9: return getResources().getColor(R.color.utilities);
+            case 10: return getResources().getColor(R.color.food);
+            case 11: return getResources().getColor(R.color.car_payment);
+            case 12: return getResources().getColor(R.color.personal);
+            case 13: return getResources().getColor(R.color.activities);
+            case 14: return getResources().getColor(R.color.other_expense);
+            default: return Color.WHITE;
+
+        }
+
     }
     private class ValueTouchListener implements PieChartOnValueSelectListener {
 

@@ -40,10 +40,10 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
     }
     @Override
     public HistoryRecyclerAdapter.HistoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_list_row, null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_list_row, parent, false);
 
         HistoryViewHolder viewHolder = new HistoryViewHolder(view);
-
+        viewHolder.setIsRecyclable(false);
         return viewHolder;
     }
 
@@ -195,8 +195,8 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
         public HistoryHeaderInnerCard(Context context, String date, int totalIncome, int totalExpense ) {
             super(context, R.layout.history_list_row_inner_layout);
             this.date = date;
-            this.income = "+" + Integer.toString(totalIncome);
-            this.expense = "-" + Integer.toString(totalExpense);
+            this.income = "+" + Integer.toString(totalIncome)+" "+MainActivity.DEFAULT_CURRENCY;
+            this.expense = "-" + Integer.toString(totalExpense)+" "+MainActivity.DEFAULT_CURRENCY;
         }
 
         @Override

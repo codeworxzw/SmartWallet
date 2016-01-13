@@ -10,9 +10,9 @@
         android:scrollbars="none"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
-        android:paddingStart="8dp"
-        android:paddingRight="8dp"
-        android:paddingEnd="8dp"/>
+        android:paddingLeft="100dp"
+        android:paddingStart="100dp"
+        android:paddingRight="100dp"
+        android:paddingEnd="100dp"/>
 
 </RelativeLayout>

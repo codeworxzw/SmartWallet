@@ -227,7 +227,8 @@ public class TrendsChart extends Fragment {
             }
 
             Line line = new Line(values);
-            line.setColor(Color.rgb(150 - i * 4, 90 + i * 8, 200 - i * 5));
+            line.setColor(getColorPalette
+                    (findMenuItemByTitle(checkedLines.get(i))));
             line.setShape(ValueShape.CIRCLE);
 
             line.setFilled(true);
@@ -460,5 +461,28 @@ public class TrendsChart extends Fragment {
 
 
         return  0;
+    }
+
+    private int getColorPalette(int i){
+        switch (i){
+            case R.id.popupTotalIncome: return getResources().getColor(R.color.income);
+            case R.id.popupTotalExpense: return getResources().getColor(R.color.expense);
+            case R.id.popupSalary: return getResources().getColor(R.color.salary);
+            case R.id.popupRentalIncome: return getResources().getColor(R.color.rental_income);
+            case R.id.popupInterest: return getResources().getColor(R.color.interest);
+            case R.id.popupGifts: return getResources().getColor(R.color.gifts);
+            case R.id.popupOtherIncome: return getResources().getColor(R.color.other_income);
+            case R.id.popupTaxes: return getResources().getColor(R.color.taxes);
+            case R.id.popupMortgage: return getResources().getColor(R.color.mortgage);
+            case R.id.popupCreditCard: return getResources().getColor(R.color.credit_card);
+            case R.id.popupUtilities: return getResources().getColor(R.color.utilities);
+            case R.id.popupFood: return getResources().getColor(R.color.food);
+            case R.id.popupCarPayment: return getResources().getColor(R.color.car_payment);
+            case R.id.popupPersonal: return getResources().getColor(R.color.personal);
+            case R.id.popupActivities: return getResources().getColor(R.color.activities);
+            case R.id.popupOtherExpense: return getResources().getColor(R.color.other_expense);
+            default: return Color.WHITE;
+
+        }
     }
 }

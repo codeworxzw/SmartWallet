@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -29,7 +30,7 @@ import java.util.List;
 public class ReportActivity extends AppCompatActivity {
 
 
-    private ImageButton addNew;
+    private Button addNew;
     private RelativeLayout mLayout;
     private int categorySpinnerId =1001; //IDs of categorySpinner
     private int currencySpinnerId =2001; //IDs of currencySpinner
@@ -84,7 +85,7 @@ public class ReportActivity extends AppCompatActivity {
 
         }
 
-        addNew = (ImageButton) findViewById(R.id.btn_add_new);
+        addNew = (Button) findViewById(R.id.btn_add_new);
 
 
 

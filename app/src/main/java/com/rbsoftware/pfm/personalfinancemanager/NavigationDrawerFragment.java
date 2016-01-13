@@ -124,7 +124,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
                 R.drawable.ic_bill_black_24dp,
                 R.drawable.ic_statistics_black_24dp,
                 R.drawable.ic_history_black_24dp,
-                android.R.drawable.ic_input_add,
+              //  android.R.drawable.ic_input_add,
                 R.drawable.ic_settings_black_24dp,
                 R.drawable.ic_exit_black_24dp};
 
@@ -177,11 +177,11 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
             mDrawerLayout.closeDrawers();
             Log.d("TAG", position + "");
 
-            if(position ==4){
+            if(position ==3){
                 Intent i = new Intent(getActivity(), SettingsActivity.class);
                 startActivityForResult(i, getActivity().RESULT_OK);
             }
-            else if(position == 5){
+            else if(position == 4){
                 signout();
 
             }
@@ -202,10 +202,10 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
                 case 2:
                     mFragment= new History();
                     break;
-                case 3:
+            /*    case 3:
                     mFragment= new History();
                     break;
-
+*/
 
             }
             fragmentPos = position;

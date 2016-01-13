@@ -13,8 +13,7 @@
         android:id="@+id/img_drawer_row"
         android:src="@drawable/ic_settings_black_24dp"
         android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         />
 

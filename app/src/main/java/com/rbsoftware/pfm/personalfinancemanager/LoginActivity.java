@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        mGoogleApiClient.connect();
+        //mGoogleApiClient.connect();
         // [END build_client]
 
         // [START customize_button]
@@ -110,7 +110,6 @@ public class LoginActivity extends AppCompatActivity implements
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            Log.d(TAG, "data-"+data.getExtras().toString());
             handleSignInResult(result);
         }
     }
@@ -118,7 +117,6 @@ public class LoginActivity extends AppCompatActivity implements
 
     // [START handleSignInResult]
     private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
@@ -127,14 +125,10 @@ public class LoginActivity extends AppCompatActivity implements
             intent.putExtra("id", acct.getId());
             intent.putExtra("email", acct.getEmail());
             intent.putExtra("photoURL", acct.getPhotoUrl());
-            Log.d("USER Pic", acct.getPhotoUrl()+"");
             startActivity(intent);
             finish();
-            // mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getId()));
-            //updateUI(true);
         } else {
             // Signed out, show unauthenticated UI.
-            //updateUI(false);
         }
     }
     // [END handleSignInResult]
@@ -142,7 +136,6 @@ public class LoginActivity extends AppCompatActivity implements
     // [START signIn]
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        Log.d(TAG, signInIntent.toString());
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
     // [END signIn]
@@ -156,6 +149,21 @@ public class LoginActivity extends AppCompatActivity implements
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
 
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage(getString(R.string.loading));
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
+        }
+    }
 
     @Override
     public void onClick(View v) {
