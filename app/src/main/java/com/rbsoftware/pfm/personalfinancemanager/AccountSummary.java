@@ -90,6 +90,7 @@ public class AccountSummary extends Fragment {
         getValue(financeDocumentList);
     }
 
+    //Create options menu
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.account_summary_menu, menu);
