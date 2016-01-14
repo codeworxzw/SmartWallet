@@ -135,6 +135,7 @@ public class ReportActivity extends AppCompatActivity {
     private Spinner createNewCurrencySpinner() {
         final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
         final Spinner spinner = new Spinner(this);
+        int position =0;
         lparams.addRule(RelativeLayout.END_OF, editTextValueId - 1);
 
         if(categorySpinnerId > 1001){
@@ -146,9 +147,16 @@ public class ReportActivity extends AppCompatActivity {
         }
 
         spinner.setLayoutParams(lparams);
-        ArrayAdapter<CharSequence> currencySpinnerAdapter = ArrayAdapter.createFromResource(this,R.array.report_activity_currency_spinner,android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> currencySpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.report_activity_currency_spinner, android.R.layout.simple_spinner_item);
         currencySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        String[] currencyList = getResources().getStringArray(R.array.report_activity_currency_spinner);
+        for(int i=0; i<currencyList.length;i++){
+            if(currencyList[i].equals(MainActivity.defaultCurrency)){
+                position = i;
+            }
+        }
         spinner.setAdapter(currencySpinnerAdapter);
+        spinner.setSelection(position);
         spinner.setId(currencySpinnerId);
         spinner.setSaveEnabled(true);
         Log.d("ID", spinner.getId() + "");

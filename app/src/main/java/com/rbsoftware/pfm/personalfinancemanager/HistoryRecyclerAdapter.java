@@ -195,8 +195,8 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
         public HistoryHeaderInnerCard(Context context, String date, int totalIncome, int totalExpense ) {
             super(context, R.layout.history_list_row_inner_layout);
             this.date = date;
-            this.income = "+" + Integer.toString(totalIncome)+" "+MainActivity.DEFAULT_CURRENCY;
-            this.expense = "-" + Integer.toString(totalExpense)+" "+MainActivity.DEFAULT_CURRENCY;
+            this.income = "+" + Integer.toString(totalIncome)+" "+MainActivity.defaultCurrency;
+            this.expense = "-" + Integer.toString(totalExpense)+" "+MainActivity.defaultCurrency;
         }
 
         @Override

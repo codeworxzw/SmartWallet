@@ -2,14 +2,12 @@ package com.rbsoftware.pfm.personalfinancemanager;
 
 
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,10 +20,8 @@ import android.widget.Toast;
 
 
 import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -46,7 +42,7 @@ public class MainActivity extends AppCompatActivity  {
     public final static int PARAM_PERSONAL =12;
     public final static int PARAM_ACTIVITIES =13;
     public final static int PARAM_OTHER_EXPENSE =14;
-    public final static String DEFAULT_CURRENCY ="USD"; // TODO temporary solution until settings are implemented
+    public static String defaultCurrency;
 
     List<Object> params; //List FinanceDocument constructor parameters
     private String data;
@@ -98,6 +94,8 @@ public class MainActivity extends AppCompatActivity  {
         financeDocumentModel.setReplicationListener(this);
 
 
+
+
         reloadReplicationSettings();
 
         //FAB declaration and listener
@@ -122,6 +120,14 @@ public class MainActivity extends AppCompatActivity  {
             setNotification();
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        //Reading default currency from settings
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        defaultCurrency = sharedPreferences.getString("defaultCurrency", "USD");
+        super.onResume();
     }
 
     @Override
@@ -169,7 +175,7 @@ public class MainActivity extends AppCompatActivity  {
     private ArrayList<String> getItem(ArrayList<String> reportResult, int i) {
         ArrayList<String> item= new ArrayList<>();
         item.add(0,"0");
-        item.add(1,DEFAULT_CURRENCY);
+        item.add(1, defaultCurrency);
         item.add(2,"Never");
         for(String listItem: reportResult){
             String[] parts = listItem.split("-");

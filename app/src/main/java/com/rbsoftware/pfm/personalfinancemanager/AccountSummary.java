@@ -14,9 +14,7 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.TimeZone;
 
 
 public class AccountSummary extends Fragment {
@@ -226,9 +224,9 @@ public class AccountSummary extends Fragment {
         personal.setText(Integer.toString(personalSum));
         activities.setText(Integer.toString(activitiesSum));
         otherExpense.setText(Integer.toString(otherExpensesSum));
-        String incomeString = Integer.toString(totalIncome) +" "+MainActivity.DEFAULT_CURRENCY;
+        String incomeString = Integer.toString(totalIncome) +" "+MainActivity.defaultCurrency;
         income.setText(incomeString);
-        String expenseString = Integer.toString(totalExpense) +" "+MainActivity.DEFAULT_CURRENCY;
+        String expenseString = Integer.toString(totalExpense) +" "+MainActivity.defaultCurrency;
         expense.setText(expenseString);
     }
 

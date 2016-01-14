@@ -184,6 +184,7 @@
     <string name="document_date">Document date</string>
     <string name="your">Your</string>
     <string name="loading">Loading</string>
+    <string name="default_currency">Default currency</string>
 
 
 </resources>
