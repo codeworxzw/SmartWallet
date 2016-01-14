@@ -8,6 +8,7 @@
     <color name="colorPrimary">#4CAF50</color>
     <color name="colorPrimaryDark">#388E3C</color>
     <color name="colorAccent">#F57C00</color>
+    <color name="colorAccentDark">#EF6C00</color>
     <color name="colorPagerTabStrip">#C8E6C9</color>
 
     <color name="income">#99CC00</color>

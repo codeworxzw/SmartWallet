@@ -53,7 +53,7 @@ dependencies {
     //Picasso library
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile files('libs/opencsv-3.6.jar')
-    compile 'com.github.amlcurran.showcaseview:library:5.4.0'
+    compile 'com.github.deano2390:MaterialShowcaseView:1.0.5'
 }
 
 apply plugin: 'com.google.gms.google-services'
