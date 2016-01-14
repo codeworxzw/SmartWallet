@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:gravity="center"
-        android:text="Small Text"
+        android:text="@string/this_week"
         android:id="@+id/tv_period_trend"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"

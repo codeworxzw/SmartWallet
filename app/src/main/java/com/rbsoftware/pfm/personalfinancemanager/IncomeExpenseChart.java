@@ -4,6 +4,7 @@ package com.rbsoftware.pfm.personalfinancemanager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -72,13 +73,13 @@ public class IncomeExpenseChart extends Fragment {
 
             mIncomeExpenseButton.setChecked(Boolean.valueOf(MainActivity.ReadFromSharedPreferences(getActivity(), "toggleButtonState", "true")));
             if(mIncomeExpenseButton.isChecked()){
-                mIncomeExpenseButton.setTextColor(getResources().getColor(R.color.income));
+                mIncomeExpenseButton.setTextColor(ContextCompat.getColor(getContext(),R.color.income));
                 offsetStart=0;
                 offsetEnd=9;
             }
             else{
 
-                mIncomeExpenseButton.setTextColor(getResources().getColor(R.color.expense));
+                mIncomeExpenseButton.setTextColor(ContextCompat.getColor(getContext(), R.color.expense));
                 offsetStart=5;
                 offsetEnd=0;
             }
@@ -87,12 +88,12 @@ public class IncomeExpenseChart extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    mIncomeExpenseButton.setTextColor(getResources().getColor(R.color.income));
+                    mIncomeExpenseButton.setTextColor(ContextCompat.getColor(getContext(), R.color.income));
                     offsetStart=0;
                     offsetEnd=9;
                 }
                 else{
-                    mIncomeExpenseButton.setTextColor(getResources().getColor(R.color.expense));
+                    mIncomeExpenseButton.setTextColor(ContextCompat.getColor(getContext(), R.color.expense));
                     offsetStart=5;
                     offsetEnd=0;
 
@@ -319,20 +320,20 @@ public class IncomeExpenseChart extends Fragment {
 
     private int getColorPalette(int i){
         switch (i){
-            case 1: return getResources().getColor(R.color.salary);
-            case 2: return getResources().getColor(R.color.rental_income);
-            case 3: return getResources().getColor(R.color.interest);
-            case 4: return getResources().getColor(R.color.gifts);
-            case 5: return getResources().getColor(R.color.other_income);
-            case 6: return getResources().getColor(R.color.taxes);
-            case 7: return getResources().getColor(R.color.mortgage);
-            case 8: return getResources().getColor(R.color.credit_card);
-            case 9: return getResources().getColor(R.color.utilities);
-            case 10: return getResources().getColor(R.color.food);
-            case 11: return getResources().getColor(R.color.car_payment);
-            case 12: return getResources().getColor(R.color.personal);
-            case 13: return getResources().getColor(R.color.activities);
-            case 14: return getResources().getColor(R.color.other_expense);
+            case 1: return ContextCompat.getColor(getContext(),R.color.salary);
+            case 2: return ContextCompat.getColor(getContext(), R.color.rental_income);
+            case 3: return ContextCompat.getColor(getContext(), R.color.interest);
+            case 4: return ContextCompat.getColor(getContext(), R.color.gifts);
+            case 5: return ContextCompat.getColor(getContext(), R.color.other_income);
+            case 6: return ContextCompat.getColor(getContext(), R.color.taxes);
+            case 7: return ContextCompat.getColor(getContext(), R.color.mortgage);
+            case 8: return ContextCompat.getColor(getContext(), R.color.credit_card);
+            case 9: return ContextCompat.getColor(getContext(), R.color.utilities);
+            case 10: return ContextCompat.getColor(getContext(),R.color.food);
+            case 11: return ContextCompat.getColor(getContext(),R.color.car_payment);
+            case 12: return ContextCompat.getColor(getContext(),R.color.personal);
+            case 13: return ContextCompat.getColor(getContext(),R.color.activities);
+            case 14: return ContextCompat.getColor(getContext(),R.color.other_expense);
             default: return Color.WHITE;
 
         }

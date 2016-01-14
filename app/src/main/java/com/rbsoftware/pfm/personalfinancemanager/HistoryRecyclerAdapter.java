@@ -43,7 +43,7 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_list_row, parent, false);
 
         HistoryViewHolder viewHolder = new HistoryViewHolder(view);
-        viewHolder.setIsRecyclable(false);
+        viewHolder.setIsRecyclable(false); //TODO fix that in future version
         return viewHolder;
     }
 

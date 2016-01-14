@@ -4,6 +4,7 @@ package com.rbsoftware.pfm.personalfinancemanager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -465,22 +466,22 @@ public class TrendsChart extends Fragment {
 
     private int getColorPalette(int i){
         switch (i){
-            case R.id.popupTotalIncome: return getResources().getColor(R.color.income);
-            case R.id.popupTotalExpense: return getResources().getColor(R.color.expense);
-            case R.id.popupSalary: return getResources().getColor(R.color.salary);
-            case R.id.popupRentalIncome: return getResources().getColor(R.color.rental_income);
-            case R.id.popupInterest: return getResources().getColor(R.color.interest);
-            case R.id.popupGifts: return getResources().getColor(R.color.gifts);
-            case R.id.popupOtherIncome: return getResources().getColor(R.color.other_income);
-            case R.id.popupTaxes: return getResources().getColor(R.color.taxes);
-            case R.id.popupMortgage: return getResources().getColor(R.color.mortgage);
-            case R.id.popupCreditCard: return getResources().getColor(R.color.credit_card);
-            case R.id.popupUtilities: return getResources().getColor(R.color.utilities);
-            case R.id.popupFood: return getResources().getColor(R.color.food);
-            case R.id.popupCarPayment: return getResources().getColor(R.color.car_payment);
-            case R.id.popupPersonal: return getResources().getColor(R.color.personal);
-            case R.id.popupActivities: return getResources().getColor(R.color.activities);
-            case R.id.popupOtherExpense: return getResources().getColor(R.color.other_expense);
+            case R.id.popupTotalIncome: return ContextCompat.getColor(getContext(), R.color.income);
+            case R.id.popupTotalExpense: return ContextCompat.getColor(getContext(), R.color.expense);
+            case R.id.popupSalary: return ContextCompat.getColor(getContext(), R.color.salary);
+            case R.id.popupRentalIncome: return ContextCompat.getColor(getContext(), R.color.rental_income);
+            case R.id.popupInterest: return ContextCompat.getColor(getContext(), R.color.interest);
+            case R.id.popupGifts: return ContextCompat.getColor(getContext(), R.color.gifts);
+            case R.id.popupOtherIncome: return ContextCompat.getColor(getContext(), R.color.other_income);
+            case R.id.popupTaxes: return ContextCompat.getColor(getContext(), R.color.taxes);
+            case R.id.popupMortgage: ContextCompat.getColor(getContext(),R.color.mortgage);
+            case R.id.popupCreditCard: return ContextCompat.getColor(getContext(), R.color.credit_card);
+            case R.id.popupUtilities: return ContextCompat.getColor(getContext(), R.color.utilities);
+            case R.id.popupFood: return ContextCompat.getColor(getContext(), R.color.food);
+            case R.id.popupCarPayment: return ContextCompat.getColor(getContext(), R.color.car_payment);
+            case R.id.popupPersonal: return ContextCompat.getColor(getContext(), R.color.personal);
+            case R.id.popupActivities: return ContextCompat.getColor(getContext(), R.color.activities);
+            case R.id.popupOtherExpense: return ContextCompat.getColor(getContext(), R.color.other_expense);
             default: return Color.WHITE;
 
         }
