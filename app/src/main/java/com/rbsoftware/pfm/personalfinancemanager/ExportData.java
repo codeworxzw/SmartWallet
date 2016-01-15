@@ -69,7 +69,7 @@ public class ExportData {
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(historyFile));
         sendIntent.setType("text/comma-separated-values");
-        mContext.startActivity(Intent.createChooser(sendIntent, "share"));
+        mContext.startActivity(Intent.createChooser(sendIntent, mContext.getString(R.string.share)));
     }
 
 
@@ -100,7 +100,7 @@ public class ExportData {
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(summaryFile));
         sendIntent.setType("text/comma-separated-values");
-        mContext.startActivity(Intent.createChooser(sendIntent, "share"));
+        mContext.startActivity(Intent.createChooser(sendIntent, mContext.getString(R.string.share)));
     }
 
     //Static method to export charts data
@@ -122,7 +122,7 @@ public class ExportData {
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(chartFile));
         sendIntent.setType("image/png");
-        mContext.startActivity(Intent.createChooser(sendIntent, "share"));
+        mContext.startActivity(Intent.createChooser(sendIntent, mContext.getString(R.string.share)));
     }
 
 

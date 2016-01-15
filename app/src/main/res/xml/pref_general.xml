@@ -4,6 +4,6 @@
        android:title="@string/default_currency"
        android:entries="@array/report_activity_currency_spinner"
        android:entryValues="@array/report_activity_currency_spinner"
-       android:defaultValue="0"/>
+       android:defaultValue="USD"/>
 
 </PreferenceScreen>

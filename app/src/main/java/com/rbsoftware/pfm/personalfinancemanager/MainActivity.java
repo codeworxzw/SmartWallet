@@ -266,7 +266,6 @@ public class MainActivity extends AppCompatActivity  {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.HOUR_OF_DAY, 21);
 
-        Log.d("Alarm", calendar.getTimeInMillis() +"");
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
                 calendar.getTimeInMillis(),
                 1000*24*60*60 ,

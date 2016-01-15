@@ -159,7 +159,6 @@ public class ReportActivity extends AppCompatActivity {
         spinner.setSelection(position);
         spinner.setId(currencySpinnerId);
         spinner.setSaveEnabled(true);
-        Log.d("ID", spinner.getId() + "");
         currencySpinnerId++;
         return spinner;
     }
@@ -184,7 +183,6 @@ public class ReportActivity extends AppCompatActivity {
         spinner.setAdapter(categorySpinnerAdapter);
         spinner.setId(categorySpinnerId);
         spinner.setSaveEnabled(true);
-        Log.d("ID", spinner.getId() + "");
         categorySpinnerId++;
         return spinner;
     }
@@ -276,7 +274,6 @@ public class ReportActivity extends AppCompatActivity {
         if (id == R.id.report_toolbar_done){
             Intent intent = new Intent();
             intent.putStringArrayListExtra("reportResult", getReportResult());
-            Log.d("List", getReportResult().toString());
             setResult(RESULT_OK, intent);
             finish();
         }
@@ -310,7 +307,6 @@ public class ReportActivity extends AppCompatActivity {
                         + recursSpinner.getSelectedItem().toString());
              */
 
-                Log.d("List", list.toString());
         }
 
         return list;

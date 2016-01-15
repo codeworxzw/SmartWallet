@@ -54,7 +54,6 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("Save problem", "NavigationDrawerFragment onCreate");
         if(savedInstanceState == null) {
             // [START configure_signin]
             // Configure sign-in to request the user's ID, email address, and basic
@@ -175,7 +174,6 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
             mDrawerLayout.closeDrawers();
-            Log.d("TAG", position + "");
 
             if(position ==3){
                 Intent i = new Intent(getActivity(), SettingsActivity.class);

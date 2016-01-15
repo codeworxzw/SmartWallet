@@ -91,8 +91,9 @@ public class AccountSummary extends Fragment {
     //Create options menu
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.account_summary_menu, menu);
+        inflater.inflate(R.menu.account_summary_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
+
     }
 
     @Override
@@ -127,7 +128,6 @@ public class AccountSummary extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
-                Log.d("popup menu", item.getTitle().toString());
 
 
                 switch (id){

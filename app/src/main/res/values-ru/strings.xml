@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Smart Wallet</string>
+    <string name="activities">Развлечения</string>
+    <string name="add_line">Добавить поле</string>
+    <string name="car_payment">Автомобиль</string>
+    <string name="credit_card">Кредитная карта</string>
+    <string name="daily_reminder_text">Заполните Ваш отчёт</string>
+    <string name="daily_reminder_title">Ежедневное напоминание Smart Wallet</string>
+    <string name="default_currency">Валюта по умолчанию</string>
+    <string name="delete">Удалить</string>
+    <string name="delete_dialog_message">Вы действительно хотите удалить запись?</string>
+    <string name="delete_dialog_title">Удалить запись</string>
+    <string name="document_date">Дата документа</string>
+    <string name="done">Ок</string>
+    <string name="drawer_close">Закрыть</string>
+    <string name="drawer_open">Открыть</string>
+    <string name="expense">Затраты</string>
+    <string name="filter">Фильтр</string>
+    <string name="food">Питание</string>
+    <string name="gifts">Подарки</string>
+    <string name="income">Доходы</string>
+    <string name="interest">Проценты</string>
+    <string name="last_month">Прошлый месяц</string>
+    <string name="last_week">Прошлая неделя</string>
+    <string name="line">Поле</string>
+    <string name="loading">Загрузка</string>
+    <string name="mortgage">Ипотека</string>
+    <string name="never">Никогда</string>
+    <string name="other_expense">Другие затраты</string>
+    <string name="other_income">Другие доходы</string>
+    <string name="overview">Обзор</string>
+    <string name="period">Период</string>
+    <string name="personal">Личные</string>
+    <string name="recurs">Повторяются</string>
+    <string name="rental_income">Доход с оренды</string>
+    <string name="salary">Зарплата</string>
+    <string name="share">Поделиться</string>
+    <string name="taxes">Налоги</string>
+    <string name="text_view_error">Укажите значение</string>
+    <string name="this_month">Текущий месяц</string>
+    <string name="this_week">Текущая неделя</string>
+    <string name="this_year">Текущий год</string>
+    <string name="title_activity_report">Отчёт</string>
+    <string name="title_activity_settings">Настройки</string>
+    <string name="trends">Тенденции</string>
+    <string name="utilities">Коммунальные</string>
+    <string name="value">Знач.</string>
+    <string name="weekly_reminder_text">Просмотрите недельный отчёт</string>
+    <string name="your">Ваш</string>
+
+    <string-array name="drawer_menu">
+        <item>Ощая информация</item>
+        <item>Графики</item>
+        <item>Активность</item>
+        <item>Настройки</item>
+        <item>Выйти</item>
+    </string-array>
+
+
+    <string-array name="report_activity_category_spinner">
+        <item>Зарплата</item>
+        <item>Доход с оренды</item>
+        <item>Проценты</item>
+        <item>Подарки</item>
+        <item>Другие доходы</item>
+        <item>Налоги</item>
+        <item>Ипотека</item>
+        <item>Кредитная карта</item>
+        <item>Коммунальный</item>
+        <item>Питание</item>
+        <item>Автомобиль</item>
+        <item>Личные</item>
+        <item>Развлечения</item>
+        <item>Другие затраты</item>
+    </string-array>
+    <string-array name="report_activity_currency_spinner">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>UAH</item>
+        <item>RUB</item>
+    </string-array>
+</resources>

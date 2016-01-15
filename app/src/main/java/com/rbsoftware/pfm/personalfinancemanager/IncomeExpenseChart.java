@@ -122,7 +122,7 @@ public class IncomeExpenseChart extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.chart_income_expense_menu, menu);
+        inflater.inflate(R.menu.chart_income_expense_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 

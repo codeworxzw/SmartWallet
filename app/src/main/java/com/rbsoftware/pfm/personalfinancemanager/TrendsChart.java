@@ -87,7 +87,7 @@ public class TrendsChart extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.chart_trends_menu, menu);
+        inflater.inflate(R.menu.chart_trends_menu, menu);
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -264,10 +264,8 @@ public class TrendsChart extends Fragment {
         List<AxisValue> dates = new ArrayList<>();
         for(FinanceDocument doc : docList){
             AxisValue value = new AxisValue(Float.valueOf(doc.getDate()));
-            Log.d("Charts data", value.getValue()+"");
             dates.add(value);
         }
-        Log.d("Charts data", dates.toString());
         return dates;
     }
 

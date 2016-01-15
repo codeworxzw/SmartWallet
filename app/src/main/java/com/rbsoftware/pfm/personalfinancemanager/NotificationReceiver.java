@@ -55,7 +55,6 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         dailyReminder.setContentIntent(resultPendingIntent);
         mNM.notify(1, dailyReminder.build());
-        Log.d("Alarm", "NotificationReceiver was called");
 
 
     }
