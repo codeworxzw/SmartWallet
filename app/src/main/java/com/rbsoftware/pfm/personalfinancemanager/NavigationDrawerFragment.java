@@ -38,7 +38,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
     private Toolbar mToolbar;
     private ListView mDrawerList;
     private String[] mListItems;
-    private GoogleApiClient mGoogleApiClient;
+    //private GoogleApiClient mGoogleApiClient;
     private TextView mUserName;
     private ImageView mUserPhoto;
     private View mDrawerView;
@@ -54,7 +54,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState == null) {
+      /*  if(savedInstanceState == null) {
             // [START configure_signin]
             // Configure sign-in to request the user's ID, email address, and basic
             // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -68,12 +68,12 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
             // options specified by gso.
 
             mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                    .enableAutoManage(getActivity() /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                    .enableAutoManage(getActivity() , this )
                     .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                     .build();
             mGoogleApiClient.connect();
             // [END build_client]
-        }
+        }*/
 
     }
 
@@ -222,8 +222,8 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
     }
     public void signout(){
-        if (mGoogleApiClient.isConnected()) {
-            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+        if (LoginActivity.mGoogleApiClient.isConnected()) {
+            Auth.GoogleSignInApi.signOut(LoginActivity.mGoogleApiClient).setResultCallback(
                     new ResultCallback<Status>() {
                         @Override
                         public void onResult(Status status) {
