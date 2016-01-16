@@ -43,7 +43,7 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_list_row, parent, false);
 
         HistoryViewHolder viewHolder = new HistoryViewHolder(view);
-        viewHolder.setIsRecyclable(false); //TODO fix that in future version
+       // viewHolder.setIsRecyclable(false); //TODO fix that in future version
         return viewHolder;
     }
 
@@ -159,8 +159,8 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
                 ViewToClickToExpand.builder()
                         .setupView(holder.mCardView);
         card.setViewToClickToExpand(viewToClickToExpand);
-        holder.mCardView.setCard(card);
 
+        holder.mCardView.setCard(card);
 
 
     }
@@ -181,6 +181,7 @@ public class HistoryRecyclerAdapter extends RecyclerView.Adapter<HistoryRecycler
             super(view);
 
             this.mCardView = (CardViewNative) view.findViewById(R.id.historyCardView);
+
         }
 
     }
