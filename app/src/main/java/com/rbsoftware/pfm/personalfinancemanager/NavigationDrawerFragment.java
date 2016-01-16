@@ -50,6 +50,11 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        setRetainInstance(true);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,10 +99,18 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         return mDrawerView;
     }
 
+
+
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        setRetainInstance(true);
+    public void onStart() {
+        super.onStart();
+        if(!LoginActivity.mGoogleApiClient.isConnected())LoginActivity.mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(!LoginActivity.mGoogleApiClient.isConnected())LoginActivity.mGoogleApiClient.disconnect();
     }
 
     @Override
@@ -107,8 +120,8 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         mUserName = (TextView) mDrawerView.findViewById(R.id.tv_user_name);
         mUserPhoto = (ImageView) mDrawerView.findViewById(R.id.user_photo);
-        mUserName.setText(getArguments().getString("name"));
-        String photoURL = getArguments().getString("photoURL");
+        mUserName.setText(getArguments().getString("name", getArguments().getString("email")));
+        String photoURL = getArguments().getString("photoURL", null);
         if(photoURL != null) {
             Picasso.with(getContext()).load(photoURL).into(mUserPhoto);
         }
@@ -222,6 +235,8 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
     }
     public void signout(){
+      //  Log.d("TAG", LoginActivity.mGoogleApiClient.getConnectionResult(Auth.GOOGLE_SIGN_IN_API).toString());
+
         if (LoginActivity.mGoogleApiClient.isConnected()) {
             Auth.GoogleSignInApi.signOut(LoginActivity.mGoogleApiClient).setResultCallback(
                     new ResultCallback<Status>() {

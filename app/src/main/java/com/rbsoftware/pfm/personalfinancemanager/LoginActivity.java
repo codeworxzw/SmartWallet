@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        mGoogleApiClient.connect();
+        //mGoogleApiClient.connect();
         // [END build_client]
 
         // [START customize_button]

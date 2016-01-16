@@ -33,7 +33,7 @@
     <string name="period">Период</string>
     <string name="personal">Личные</string>
     <string name="recurs">Повторяются</string>
-    <string name="rental_income">Доход с оренды</string>
+    <string name="rental_income">Доход с аренды</string>
     <string name="salary">Зарплата</string>
     <string name="share">Поделиться</string>
     <string name="taxes">Налоги</string>
@@ -50,7 +50,7 @@
     <string name="your">Ваш</string>
 
     <string-array name="drawer_menu">
-        <item>Ощая информация</item>
+        <item>Общая информация</item>
         <item>Графики</item>
         <item>Активность</item>
         <item>Настройки</item>
@@ -60,7 +60,7 @@
 
     <string-array name="report_activity_category_spinner">
         <item>Зарплата</item>
-        <item>Доход с оренды</item>
+        <item>Доход с аренды</item>
         <item>Проценты</item>
         <item>Подарки</item>
         <item>Другие доходы</item>
