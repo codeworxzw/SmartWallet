@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.cloudant.sync.datastore.ConflictException;
 
@@ -32,7 +33,6 @@ import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
  */
 public class History extends Fragment implements Card.OnLongCardClickListener{
     private CardRecyclerView mRecyclerView;
-    private HistoryRecyclerAdapter mAdapter;
     private List<FinanceDocument> docList;
     private ActionMode mActionMode = null;
     private HistoryCardRecyclerViewAdapter mCardArrayAdapter;
@@ -52,9 +52,10 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[2]);
-     //   mRecyclerView = (RecyclerView) getActivity().findViewById(R.id.history_recycler_view);
-     //   mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        mRecyclerView = (CardRecyclerView) getActivity().findViewById(R.id.history_card_recycler_view);
+        mRecyclerView.setHasFixedSize(false);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
     }
@@ -65,12 +66,6 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
 
         super.onResume();
         docList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId(), FinanceDocumentModel.ORDER_DESC);
-       /* if (docList.isEmpty()){
-            Log.d("TAG", "List is empty");
-        }
-        mAdapter = new HistoryRecyclerAdapter(getActivity(), docList);
-        mRecyclerView.setAdapter(mAdapter); */
-
         ArrayList<HistoryCard> cards = new ArrayList<HistoryCard>();
 
 
@@ -85,9 +80,7 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
 
         mCardArrayAdapter = new HistoryCardRecyclerViewAdapter(getActivity(), cards);
         //Staggered grid view
-        mRecyclerView = (CardRecyclerView) getActivity().findViewById(R.id.history_card_recycler_view);
-        mRecyclerView.setHasFixedSize(false);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
 
         //Set the empty view
         if (mRecyclerView != null) {

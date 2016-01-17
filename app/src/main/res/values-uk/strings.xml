@@ -19,7 +19,6 @@
     <string name="filter">Фільтр</string>
     <string name="food">Харчування</string>
     <string name="gifts">Подарунки</string>
-    <string name="hello_blank_fragment"></string>
     <string name="income">Доходи</string>
     <string name="interest">Відсотки</string>
     <string name="last_month">Минулий місяць</string>
@@ -42,7 +41,6 @@
     <string name="this_month">Поточний місяць</string>
     <string name="this_week">Поточний тиждень</string>
     <string name="this_year">Поточний рік</string>
-    <string name="title_activity_main"></string>
     <string name="title_activity_report">Звіт</string>
     <string name="title_activity_settings">Налаштування</string>
     <string name="trends">Тенденції</string>
