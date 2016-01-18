@@ -136,7 +136,6 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
                 R.drawable.ic_bill_black_24dp,
                 R.drawable.ic_statistics_black_24dp,
                 R.drawable.ic_history_black_24dp,
-              //  android.R.drawable.ic_input_add,
                 R.drawable.ic_settings_black_24dp,
                 R.drawable.ic_exit_black_24dp};
 

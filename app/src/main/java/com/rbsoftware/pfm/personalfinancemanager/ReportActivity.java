@@ -1,8 +1,11 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.renderscript.ScriptGroup;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -27,9 +30,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
 public class ReportActivity extends AppCompatActivity {
 
-
+    private final String TAG = "ReportActivity";
     private Button addNew;
     private RelativeLayout mLayout;
     private int categorySpinnerId =1001; //IDs of categorySpinner
@@ -104,6 +110,18 @@ public class ReportActivity extends AppCompatActivity {
 
             }
         });
+
+        int status = getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
+                .getInt("status_"+TAG,0);
+        if(status != -1) {
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startShowcase();
+                }
+            }, 1000);
+        }
     }
 
     @Override
@@ -319,7 +337,21 @@ public class ReportActivity extends AppCompatActivity {
         return px;
     }
 
+    //Runs showcase presentation on fragment start
+    private void startShowcase(){
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500); // half second between each showcase view
+        config.setDismissTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this,TAG);
+        sequence.setConfig(config);
+        sequence.addSequenceItem(findViewById(categorySpinnerId - 1), getString(R.string.data_category), getString(R.string.got_it));
+        sequence.addSequenceItem(findViewById(editTextValueId - 1), getString(R.string.data_value), getString(R.string.got_it));
+        sequence.addSequenceItem(findViewById(currencySpinnerId - 1), getString(R.string.data_currency), getString(R.string.got_it));
+        sequence.addSequenceItem(addNew, getString(R.string.data_add_new), getString(R.string.got_it));
+        sequence.addSequenceItem(findViewById(R.id.report_toolbar_done), getString(R.string.data_done), getString(R.string.ok));
+        sequence.start();
 
+    }
 
 
 }
