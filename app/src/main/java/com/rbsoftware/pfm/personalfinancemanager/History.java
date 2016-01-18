@@ -1,9 +1,13 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +30,9 @@ import java.util.List;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.recyclerview.internal.CardArrayRecyclerViewAdapter;
 import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 
 /**
@@ -37,6 +44,9 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
     private ActionMode mActionMode = null;
     private HistoryCardRecyclerViewAdapter mCardArrayAdapter;
     private HistoryCard card;
+
+    private Context mContext;
+    private Activity mActivity;
     public History() {
         // Required empty public constructor
     }
@@ -56,7 +66,8 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
         mRecyclerView = (CardRecyclerView) getActivity().findViewById(R.id.history_card_recycler_view);
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
+        mContext = getContext();
+        mActivity = getActivity();
 
     }
 
@@ -85,7 +96,35 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
         //Set the empty view
         if (mRecyclerView != null) {
             mRecyclerView.setAdapter(mCardArrayAdapter);
+            if(!docList.isEmpty()){
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startShowcase();
+                    }
+                }, 1000);
+            }
         }
+
+    }
+
+    //Runs showcase presentation on fragment start
+    private void startShowcase(){
+        ((View)card.getCardView()).measure(0, 0);
+        Double r =  ((View)card.getCardView()).getMeasuredWidth() / 1.5;
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500); // half second between each showcase view
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity,"History");
+        sequence.setConfig(config);
+        sequence.addSequenceItem(new MaterialShowcaseView.Builder(mActivity)
+                .setTarget(((View) card.getCardView()))
+                .setUseAutoRadius(false)
+                .setRadius(r.intValue())
+                .setContentText(R.string.history_card)
+                .setDismissText(R.string.ok)
+                .setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent))
+                .build());
+        sequence.start();
 
     }
 

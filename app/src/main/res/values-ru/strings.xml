@@ -49,6 +49,20 @@
     <string name="weekly_reminder_text">Просмотрите недельный отчёт</string>
     <string name="your">Ваш</string>
 
+
+    <string name="action_filter">Отфильтруйте данные за период</string>
+    <string name="got_it">Понятно</string>
+    <string name="document_share">Экспортируйте отчёт в другие приложения</string>
+    <string name="ok">Ok</string>
+    <string name="income_expense_switch">Переключайтесь между графиками доходов и завтрат</string>
+    <string name="action_line">Выберите какой график отобразить</string>
+    <string name="data_category">Выберите категорию</string>
+    <string name="data_value">Укажите значение</string>
+    <string name="data_currency">Выберите валюту операции</string>
+    <string name="data_add_new">Добавьте новое поле для ввода</string>
+    <string name="data_done">Нажмите, чтобы создать отчёт</string>
+    <string name="history_card">Нажмите на карточке для просмотра деталей или задержите палец для вызова меню</string>
+
     <string-array name="drawer_menu">
         <item>Общая информация</item>
         <item>Графики</item>

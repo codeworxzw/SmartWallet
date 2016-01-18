@@ -1,8 +1,11 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
@@ -27,6 +30,8 @@ import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.model.ValueShape;
 import lecho.lib.hellocharts.view.LineChartView;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 
 /**
@@ -41,8 +46,9 @@ public class TrendsChart extends Fragment {
     private TextView mTextViewPeriod;
     private List<Integer> checkedLines; //list of checked lines positions
     private int listLinesSize; //size of checked lines list
-    PopupMenu popupLine;
-
+    private PopupMenu popupLine;
+    private Context mContext;
+    private Activity mActivity;
     public TrendsChart() {
         // Required empty public constructor
     }
@@ -76,7 +82,8 @@ public class TrendsChart extends Fragment {
         mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period_trend);
         chart = (LineChartView) getActivity().findViewById(R.id.trends_chart);
 
-
+        mContext = getContext();
+        mActivity = getActivity();
     }
 
     @Override
@@ -96,7 +103,12 @@ public class TrendsChart extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.chart_trends_menu, menu);
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startShowcase();
+            }
+        }, 1000);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -567,5 +579,17 @@ public class TrendsChart extends Fragment {
                 return Color.WHITE;
 
         }
+    }
+
+    //Runs showcase presentation on fragment start
+    private void startShowcase(){
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500); // half second between each showcase view
+        config.setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, "TrendsChart");
+        sequence.setConfig(config);
+        sequence.addSequenceItem(mActivity.findViewById(R.id.action_line), getString(R.string.action_line), getString(R.string.ok));
+        sequence.start();
+
     }
 }

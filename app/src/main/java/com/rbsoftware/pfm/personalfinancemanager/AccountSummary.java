@@ -1,7 +1,11 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +19,9 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 
 public class AccountSummary extends Fragment {
@@ -36,7 +43,8 @@ public class AccountSummary extends Fragment {
     private TextView expense;
     private String selectedItem;
     private TextView mTextViewPeriod;
-
+    private Context mContext;
+    private Activity mActivity;
     private List<FinanceDocument> financeDocumentList;
     public AccountSummary() {
         // Required empty public constructor
@@ -78,6 +86,8 @@ public class AccountSummary extends Fragment {
         income = (TextView) getActivity().findViewById(R.id.tv_income);
         expense = (TextView) getActivity().findViewById(R.id.tv_expense);
 
+        mContext = getContext();
+        mActivity = getActivity();
     }
 
     @Override
@@ -92,6 +102,14 @@ public class AccountSummary extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.account_summary_menu, menu);
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startShowcase();
+                }
+            }, 1000);
+
         super.onCreateOptionsMenu(menu, inflater);
 
     }
@@ -256,6 +274,20 @@ public class AccountSummary extends Fragment {
         data.add(new String[]{getString(R.string.other_expense), otherExpense.getText().toString()});
 
         return data;
+    }
+
+
+    //Runs showcase presentation on fragment start
+    private void startShowcase(){
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500); // half second between each showcase view
+        config.setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, "AccountSummary");
+        sequence.setConfig(config);
+        sequence.addSequenceItem(mActivity.findViewById(R.id.action_filter), getString(R.string.action_filter), getString(R.string.got_it));
+        sequence.addSequenceItem(mActivity.findViewById(R.id.document_share), getString(R.string.document_share), getString(R.string.ok));
+        sequence.start();
+
     }
 
 }
