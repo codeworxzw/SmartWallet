@@ -38,6 +38,8 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
  * A simple {@link Fragment} subclass.
  */
 public class TrendsChart extends Fragment {
+    private final String TAG = "TrendsChart";
+
     private RelativeLayout relativeLayout;
     private List<FinanceDocument> financeDocumentList;
     private String selectedPeriod; //position of selected item in popup menu
@@ -103,12 +105,17 @@ public class TrendsChart extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.chart_trends_menu, menu);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startShowcase();
-            }
-        }, 1000);
+        int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
+                .getInt("status_"+TAG,0);
+        if(status != -1) {
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startShowcase();
+                }
+            }, 1000);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -586,7 +593,7 @@ public class TrendsChart extends Fragment {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         config.setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, "TrendsChart");
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, TAG);
         sequence.setConfig(config);
         sequence.addSequenceItem(mActivity.findViewById(R.id.action_line), getString(R.string.action_line), getString(R.string.ok));
         sequence.start();

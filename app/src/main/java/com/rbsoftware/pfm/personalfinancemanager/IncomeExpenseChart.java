@@ -39,6 +39,7 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
  * A simple {@link Fragment} subclass.
  */
 public class IncomeExpenseChart extends Fragment {
+    private final String TAG = "IncomeExpenseChart";
     private RelativeLayout relativeLayout;
     private List<FinanceDocument> financeDocumentList;
     private PieChartView mPieChart;
@@ -117,12 +118,18 @@ public class IncomeExpenseChart extends Fragment {
 
         mContext = getContext();
         mActivity = getActivity();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startShowcase();
-            }
-        }, 1000);
+
+        int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
+                .getInt("status_"+TAG,0);
+        if(status != -1) {
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startShowcase();
+                }
+            }, 1000);
+        }
 
     }
 
@@ -363,7 +370,7 @@ public class IncomeExpenseChart extends Fragment {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
 
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, "IncomeExpenseChart");
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, TAG);
         sequence.setConfig(config);
         sequence.addSequenceItem(new MaterialShowcaseView.Builder(mActivity)
                 .setTarget(mIncomeExpenseButton)

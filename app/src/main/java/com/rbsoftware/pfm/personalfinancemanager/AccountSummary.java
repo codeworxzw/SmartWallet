@@ -21,10 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.PrefsManager;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 
 public class AccountSummary extends Fragment {
+
+    private final String TAG = "AccountSummary";
     private TextView salary;
     private TextView rentalIncome;
     private TextView interest;
@@ -102,13 +105,17 @@ public class AccountSummary extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.account_summary_menu, menu);
+            int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
+                    .getInt("status_"+TAG,0);
+            if(status != -1) {
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startShowcase();
-                }
-            }, 1000);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startShowcase();
+                    }
+                }, 1000);
+            }
 
         super.onCreateOptionsMenu(menu, inflater);
 
@@ -282,7 +289,7 @@ public class AccountSummary extends Fragment {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         config.setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, "AccountSummary");
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, TAG);
         sequence.setConfig(config);
         sequence.addSequenceItem(mActivity.findViewById(R.id.action_filter), getString(R.string.action_filter), getString(R.string.got_it));
         sequence.addSequenceItem(mActivity.findViewById(R.id.document_share), getString(R.string.document_share), getString(R.string.ok));

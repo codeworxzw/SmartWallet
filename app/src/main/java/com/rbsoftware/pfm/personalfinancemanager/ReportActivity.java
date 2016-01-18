@@ -1,5 +1,6 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.PersistableBundle;
@@ -34,7 +35,7 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 public class ReportActivity extends AppCompatActivity {
 
-
+    private final String TAG = "ReportActivity";
     private Button addNew;
     private RelativeLayout mLayout;
     private int categorySpinnerId =1001; //IDs of categorySpinner
@@ -110,12 +111,17 @@ public class ReportActivity extends AppCompatActivity {
             }
         });
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startShowcase();
-            }
-        }, 1000);
+        int status = getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
+                .getInt("status_"+TAG,0);
+        if(status != -1) {
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startShowcase();
+                }
+            }, 1000);
+        }
     }
 
     @Override
@@ -336,7 +342,7 @@ public class ReportActivity extends AppCompatActivity {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         config.setDismissTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this,"ReportActivity");
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this,TAG);
         sequence.setConfig(config);
         sequence.addSequenceItem(findViewById(categorySpinnerId - 1), getString(R.string.data_category), getString(R.string.got_it));
         sequence.addSequenceItem(findViewById(editTextValueId - 1), getString(R.string.data_value), getString(R.string.got_it));

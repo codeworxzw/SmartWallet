@@ -39,6 +39,7 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
  * A simple {@link Fragment} subclass.
  */
 public class History extends Fragment implements Card.OnLongCardClickListener{
+    private final String TAG="History";
     private CardRecyclerView mRecyclerView;
     private List<FinanceDocument> docList;
     private ActionMode mActionMode = null;
@@ -97,12 +98,17 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
         if (mRecyclerView != null) {
             mRecyclerView.setAdapter(mCardArrayAdapter);
             if(!docList.isEmpty()){
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        startShowcase();
-                    }
-                }, 1000);
+                int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
+                        .getInt("status_"+TAG,0);
+                if(status != -1) {
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startShowcase();
+                        }
+                    }, 1000);
+                }
             }
         }
 
@@ -114,7 +120,7 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
         Double r =  ((View)card.getCardView()).getMeasuredWidth() / 1.5;
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity,"History");
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity,TAG);
         sequence.setConfig(config);
         sequence.addSequenceItem(new MaterialShowcaseView.Builder(mActivity)
                 .setTarget(((View) card.getCardView()))
