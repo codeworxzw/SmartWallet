@@ -318,7 +318,7 @@ public class ReportActivity extends AppCompatActivity {
 
                 list.add(categorySpinner.getSelectedItemPosition() + "-"
                         + categorySpinner.getSelectedItem().toString() + "-"
-                        + editTextValue.getText().toString() + "-"
+                        + editTextValue.getText().toString().replaceFirst("^0+(?!$)", "") + "-"
                         + currencySpinner.getSelectedItem().toString());
              /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
@@ -344,9 +344,9 @@ public class ReportActivity extends AppCompatActivity {
         config.setDismissTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this,TAG);
         sequence.setConfig(config);
-        sequence.addSequenceItem(findViewById(categorySpinnerId - 1), getString(R.string.data_category), getString(R.string.got_it));
-        sequence.addSequenceItem(findViewById(editTextValueId - 1), getString(R.string.data_value), getString(R.string.got_it));
-        sequence.addSequenceItem(findViewById(currencySpinnerId - 1), getString(R.string.data_currency), getString(R.string.got_it));
+       // sequence.addSequenceItem(findViewById(categorySpinnerId - 1), getString(R.string.data_category), getString(R.string.got_it));
+       // sequence.addSequenceItem(findViewById(editTextValueId - 1), getString(R.string.data_value), getString(R.string.got_it));
+       // sequence.addSequenceItem(findViewById(currencySpinnerId - 1), getString(R.string.data_currency), getString(R.string.got_it));
         sequence.addSequenceItem(addNew, getString(R.string.data_add_new), getString(R.string.got_it));
         sequence.addSequenceItem(findViewById(R.id.report_toolbar_done), getString(R.string.data_done), getString(R.string.ok));
         sequence.start();

@@ -62,6 +62,7 @@
     <string name="data_add_new">Додайте нове поле для вводу</string>
     <string name="data_done">Натисніть, щоб створити звіт</string>
     <string name="history_card">Натисніть на картці для перегляду деталей або затримайте палець для виклику меню</string>
+    <string name="history_is_empty">Активність відсутня...</string>
 
 
     <string-array name="account_summary_spinner">

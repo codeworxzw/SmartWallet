@@ -45,7 +45,7 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
     private ActionMode mActionMode = null;
     private HistoryCardRecyclerViewAdapter mCardArrayAdapter;
     private HistoryCard card;
-
+    private TextView mEmptyView;
     private Context mContext;
     private Activity mActivity;
     public History() {
@@ -65,6 +65,7 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[2]);
 
         mRecyclerView = (CardRecyclerView) getActivity().findViewById(R.id.history_card_recycler_view);
+        mEmptyView = (TextView) getActivity().findViewById(R.id.emptyHistory);
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mContext = getContext();
@@ -92,11 +93,18 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
 
         mCardArrayAdapter = new HistoryCardRecyclerViewAdapter(getActivity(), cards);
         //Staggered grid view
-
+        mCardArrayAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                checkAdapterIsEmpty();
+            }
+        });
 
         //Set the empty view
         if (mRecyclerView != null) {
             mRecyclerView.setAdapter(mCardArrayAdapter);
+            checkAdapterIsEmpty();
             if(!docList.isEmpty()){
                 int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
                         .getInt("status_"+TAG,0);
@@ -112,6 +120,14 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
             }
         }
 
+    }
+
+    private void checkAdapterIsEmpty () {
+        if (mCardArrayAdapter.getItemCount() == 0) {
+            mEmptyView.setVisibility(View.VISIBLE);
+        } else {
+            mEmptyView.setVisibility(View.GONE);
+        }
     }
 
     //Runs showcase presentation on fragment start

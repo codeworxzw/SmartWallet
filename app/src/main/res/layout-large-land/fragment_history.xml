@@ -16,5 +16,12 @@
         android:paddingStart="300dp"
         android:paddingRight="300dp"
         android:paddingEnd="300dp"/>
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="32sp"
+        android:id="@+id/emptyHistory"
+        android:visibility="gone"
+        android:text="@string/history_is_empty"/>
 </RelativeLayout>
