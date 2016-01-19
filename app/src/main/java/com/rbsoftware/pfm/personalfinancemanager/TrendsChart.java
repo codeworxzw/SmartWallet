@@ -52,6 +52,7 @@ public class TrendsChart extends Fragment {
     private PopupMenu popupLine;
     private Context mContext;
     private Activity mActivity;
+
     public TrendsChart() {
         // Required empty public constructor
     }
@@ -108,7 +109,7 @@ public class TrendsChart extends Fragment {
         inflater.inflate(R.menu.chart_trends_menu, menu);
         int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
                 .getInt("status_" + TAG, 0);
-        if(status != -1) {
+        if (status != -1) {
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -146,6 +147,7 @@ public class TrendsChart extends Fragment {
 
 
     //Helper methods
+
     /**
      * Shows period chart_trends_menu popup menu
      */
@@ -266,7 +268,7 @@ public class TrendsChart extends Fragment {
     }
 
     /**
-     *  Fills LineChart with data
+     * Fills LineChart with data
      */
 
     private void generateLineChartData() {
@@ -326,7 +328,8 @@ public class TrendsChart extends Fragment {
 
     /**
      * Fetches values from document fro line chart
-     * @param lineId chart type
+     *
+     * @param lineId  chart type
      * @param docList list of finance documents
      * @return data values and dates list of arrays
      */
@@ -494,9 +497,11 @@ public class TrendsChart extends Fragment {
     }
 
 
-    /** Converts menu item title into id
-     *   @param position of menu item
-      *  @return resource id
+    /**
+     * Converts menu item title into id
+     *
+     * @param position of menu item
+     * @return resource id
      */
     private int findMenuItemByPosition(int position) {
         switch (position) {
@@ -542,35 +547,54 @@ public class TrendsChart extends Fragment {
 
     /**
      * Converts options menu id into position
+     *
      * @param id of resource
      * @return resource position in menu
      */
-    private int getPositionFromId(int id){
+    private int getPositionFromId(int id) {
         switch (id) {
-            case R.id.popupTotalIncome: return 0;
-            case R.id.popupTotalExpense: return 1;
-            case R.id.popupSalary:return 2;
-            case R.id.popupRentalIncome: return 3;
-            case R.id.popupInterest: return 4;
-            case  R.id.popupGifts: return 5;
-            case R.id.popupOtherIncome: return 6;
+            case R.id.popupTotalIncome:
+                return 0;
+            case R.id.popupTotalExpense:
+                return 1;
+            case R.id.popupSalary:
+                return 2;
+            case R.id.popupRentalIncome:
+                return 3;
+            case R.id.popupInterest:
+                return 4;
+            case R.id.popupGifts:
+                return 5;
+            case R.id.popupOtherIncome:
+                return 6;
 
-            case R.id.popupTaxes: return 7;
-            case R.id.popupMortgage: return 8;
-            case R.id.popupCreditCard: return 9;
-            case R.id.popupUtilities: return 10;
-            case R.id.popupFood: return 11;
-            case R.id.popupCarPayment: return 12;
-            case R.id.popupPersonal: return 13;
-            case R.id.popupActivities: return 14;
-            case R.id.popupOtherExpense: return 15;
+            case R.id.popupTaxes:
+                return 7;
+            case R.id.popupMortgage:
+                return 8;
+            case R.id.popupCreditCard:
+                return 9;
+            case R.id.popupUtilities:
+                return 10;
+            case R.id.popupFood:
+                return 11;
+            case R.id.popupCarPayment:
+                return 12;
+            case R.id.popupPersonal:
+                return 13;
+            case R.id.popupActivities:
+                return 14;
+            case R.id.popupOtherExpense:
+                return 15;
 
-            default: return 0;
+            default:
+                return 0;
         }
     }
 
     /**
      * gets chart line color by resource id
+     *
      * @param i resource id
      * @return color of line
      */
@@ -615,10 +639,10 @@ public class TrendsChart extends Fragment {
     }
 
     /**
-     *  Runs showcase presentation on fragment start
+     * Runs showcase presentation on fragment start
      */
 
-    private void startShowcase(){
+    private void startShowcase() {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         config.setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));

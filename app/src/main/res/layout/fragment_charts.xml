@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
 
     tools:context="com.rbsoftware.pfm.personalfinancemanager.Charts">
+
     <android.support.v4.view.ViewPager
 
         android:id="@+id/pager"
@@ -11,12 +12,11 @@
         android:layout_height="match_parent">
 
         <android.support.v4.view.PagerTabStrip
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/title"
-            android:background="@color/colorPagerTabStrip"/>
+            android:background="@color/colorPagerTabStrip" />
     </android.support.v4.view.ViewPager>
-
 
 
 </FrameLayout>

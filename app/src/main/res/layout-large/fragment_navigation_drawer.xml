@@ -4,53 +4,55 @@
     android:layout_height="match_parent"
     android:background="#FFF"
     tools:context=".NavigationDrawerFragment">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingLeft="24dp"
-    android:paddingStart="24dp"
-    android:paddingRight="24dp"
-    android:paddingEnd="24dp"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp"
-    android:id="@+id/drawer_header"
-    android:background="@color/drawer_header">
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:id="@+id/user_photo"
-        android:contentDescription="User Photo"
-        android:background="@drawable/user_photo_256px"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
-    <TextView
+
+    <RelativeLayout
+        android:id="@+id/drawer_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="User Name"
-        android:textSize="25sp"
-        android:id="@+id/tv_user_name"
-        android:textColor="@android:color/white"
-        android:layout_below="@+id/user_photo"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-</RelativeLayout>
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/navigation_drawer_listview"
-        android:paddingLeft="24dp"
-        android:paddingStart="24dp"
-        android:paddingRight="24dp"
-        android:paddingEnd="24dp"
-        android:paddingTop="16dp"
+        android:background="@color/drawer_header"
         android:paddingBottom="16dp"
+        android:paddingEnd="24dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingStart="24dp"
+        android:paddingTop="16dp">
+
+        <ImageView
+            android:id="@+id/user_photo"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/user_photo_256px"
+            android:contentDescription="User Photo" />
+
+        <TextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/user_photo"
+            android:text="User Name"
+            android:textColor="@android:color/white"
+            android:textSize="25sp" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/navigation_drawer_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/drawer_header"
-        android:divider="@null"/>
-
-
+        android:divider="@null"
+        android:paddingBottom="16dp"
+        android:paddingEnd="24dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingStart="24dp"
+        android:paddingTop="16dp" />
 
 
 </RelativeLayout>

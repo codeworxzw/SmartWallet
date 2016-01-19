@@ -1,43 +1,43 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/incomeExpenseLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/incomeExpenseLayout"
     tools:context="com.rbsoftware.pfm.personalfinancemanager.IncomeExpenseChart">
 
     <ToggleButton
+        android:id="@+id/btn_income_expense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textOn="@string/income"
-        android:textOff="@string/expense"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:id="@+id/btn_income_expense"
         android:background="#FFFFFF"
         android:textColor="@color/expense"
-        />
+        android:textOff="@string/expense"
+        android:textOn="@string/income"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
     <lecho.lib.hellocharts.view.PieChartView
+        android:id="@+id/pie_chart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/pie_chart"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_below="@+id/btn_income_expense"
-        android:layout_marginTop="65dp"/>
+        android:layout_marginTop="65dp" />
 
     <TextView
+        android:id="@+id/tv_period"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/btn_income_expense"
         android:gravity="center"
         android:text="@string/this_week"
-        android:id="@+id/tv_period"
-        android:layout_below="@+id/btn_income_expense"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
 </RelativeLayout>

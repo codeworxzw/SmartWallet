@@ -30,26 +30,26 @@ import java.util.TimeZone;
 public class ExportData {
 
     /**
-     *  Static method to export history data
-     *  @param mContext object context
-     *  @param document finance document
-     *  @throws IOException
+     * Static method to export history data
+     *
+     * @param mContext object context
+     * @param document finance document
+     * @throws IOException
      **/
     public static void exportHistoryAsCsv(Context mContext, FinanceDocument document) throws IOException {
         String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-        String fileName = "doc-"+ df.format(calendar.getTimeInMillis())+".csv";
+        String fileName = "doc-" + df.format(calendar.getTimeInMillis()) + ".csv";
 
         String filePath = baseDir + File.separator + fileName;
-        File historyFile = new File(filePath );
+        File historyFile = new File(filePath);
         CSVWriter writer;
 // File exist
-        if(historyFile.exists() && !historyFile.isDirectory()){
-            FileWriter mFileWriter = new FileWriter(filePath , true);
+        if (historyFile.exists() && !historyFile.isDirectory()) {
+            FileWriter mFileWriter = new FileWriter(filePath, true);
             writer = new CSVWriter(mFileWriter);
-        }
-        else {
+        } else {
             writer = new CSVWriter(new FileWriter(filePath));
         }
         List<String[]> data = new ArrayList<>();
@@ -57,14 +57,14 @@ public class ExportData {
 
         data.add(new String[]{mContext.getResources().getString(R.string.document_date), document.getNormalDate(FinanceDocument.DATE_FORMAT_LONG)});
         data.add(new String[]{"", "", "", ""});
-        for(int i=1;i<=document.getValuesMap().size(); i++){
+        for (int i = 1; i <= document.getValuesMap().size(); i++) {
             value = document.getValuesMap().get(i);
-            if(Integer.valueOf(value.get(0)) != 0){
+            if (Integer.valueOf(value.get(0)) != 0) {
                  /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
               data.add(new String[] {keyToString(mContext, i), value.get(0), value.get(1), value.get(2)});
               */
-                data.add(new String[] {keyToString(mContext, i), value.get(0), value.get(1)});
+                data.add(new String[]{keyToString(mContext, i), value.get(0), value.get(1)});
             }
         }
         writer.writeAll(data);
@@ -80,26 +80,26 @@ public class ExportData {
 
 
     /**
-    * Static method to export account summary data
-     *  @param mContext object context
-     *  @param inputData list of account summary fields
-     *  @throws IOException
+     * Static method to export account summary data
+     *
+     * @param mContext  object context
+     * @param inputData list of account summary fields
+     * @throws IOException
      **/
     public static void exportSummaryAsCsv(Context mContext, List<String[]> inputData) throws IOException {
         String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 
-        String fileName = "summary-"+ df.format(calendar.getTimeInMillis())+".csv";
+        String fileName = "summary-" + df.format(calendar.getTimeInMillis()) + ".csv";
         String filePath = baseDir + File.separator + fileName;
-        File summaryFile = new File(filePath );
+        File summaryFile = new File(filePath);
         CSVWriter writer;
 // File exist
-        if(summaryFile.exists() && !summaryFile.isDirectory()){
-            FileWriter mFileWriter = new FileWriter(filePath , true);
+        if (summaryFile.exists() && !summaryFile.isDirectory()) {
+            FileWriter mFileWriter = new FileWriter(filePath, true);
             writer = new CSVWriter(mFileWriter);
-        }
-        else {
+        } else {
             writer = new CSVWriter(new FileWriter(filePath));
         }
 
@@ -115,22 +115,23 @@ public class ExportData {
     }
 
     /**
-    * Static method to export charts data
-    * @param mContext object context
-    * @param view chart to be converted into image
-    * @throws IOException
+     * Static method to export charts data
+     *
+     * @param mContext object context
+     * @param view     chart to be converted into image
+     * @throws IOException
      **/
     public static void exportChartAsPng(Context mContext, View view) throws IOException {
         String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 
-        String fileName = "chart-"+ df.format(calendar.getTimeInMillis())+".png";
+        String fileName = "chart-" + df.format(calendar.getTimeInMillis()) + ".png";
         String filePath = baseDir + File.separator + fileName;
-        File chartFile = new File(filePath );
+        File chartFile = new File(filePath);
 
         OutputStream outStream = new FileOutputStream(chartFile);
-        getBitmapFromView(view).compress(Bitmap.CompressFormat.PNG,100, outStream);
+        getBitmapFromView(view).compress(Bitmap.CompressFormat.PNG, 100, outStream);
         outStream.flush();
         outStream.close();
 
@@ -143,43 +144,59 @@ public class ExportData {
 
 
     /**
-     *  Converts int key to human readable string
-        * @param key value range 1-14
-        * @return string value
-        **/
-    private static String keyToString(Context mContext, int key){
-        switch (key){
-            case 1: return mContext.getResources().getString(R.string.salary);
-            case 2: return mContext.getResources().getString(R.string.rental_income);
-            case 3: return mContext.getResources().getString(R.string.interest);
-            case 4: return mContext.getResources().getString(R.string.gifts);
-            case 5: return mContext.getResources().getString(R.string.other_income);
-            case 6: return mContext.getResources().getString(R.string.taxes);
-            case 7: return mContext.getResources().getString(R.string.mortgage);
-            case 8: return mContext.getResources().getString(R.string.credit_card);
-            case 9: return mContext.getResources().getString(R.string.utilities);
-            case 10: return mContext.getResources().getString(R.string.food);
-            case 11: return mContext.getResources().getString(R.string.car_payment);
-            case 12: return mContext.getResources().getString(R.string.personal);
-            case 13: return mContext.getResources().getString(R.string.activities);
-            case 14: return mContext.getResources().getString(R.string.other_expense);
+     * Converts int key to human readable string
+     *
+     * @param key value range 1-14
+     * @return string value
+     **/
+    private static String keyToString(Context mContext, int key) {
+        switch (key) {
+            case 1:
+                return mContext.getResources().getString(R.string.salary);
+            case 2:
+                return mContext.getResources().getString(R.string.rental_income);
+            case 3:
+                return mContext.getResources().getString(R.string.interest);
+            case 4:
+                return mContext.getResources().getString(R.string.gifts);
+            case 5:
+                return mContext.getResources().getString(R.string.other_income);
+            case 6:
+                return mContext.getResources().getString(R.string.taxes);
+            case 7:
+                return mContext.getResources().getString(R.string.mortgage);
+            case 8:
+                return mContext.getResources().getString(R.string.credit_card);
+            case 9:
+                return mContext.getResources().getString(R.string.utilities);
+            case 10:
+                return mContext.getResources().getString(R.string.food);
+            case 11:
+                return mContext.getResources().getString(R.string.car_payment);
+            case 12:
+                return mContext.getResources().getString(R.string.personal);
+            case 13:
+                return mContext.getResources().getString(R.string.activities);
+            case 14:
+                return mContext.getResources().getString(R.string.other_expense);
         }
         return "";
     }
 
 
     /**
-   * Converts view into bitmap
-   * @param view chart to converted into image
-    **/
+     * Converts view into bitmap
+     *
+     * @param view chart to converted into image
+     **/
     private static Bitmap getBitmapFromView(View view) {
         //Define a bitmap with the same size as the view
-        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
         //Bind a canvas to it
         Canvas canvas = new Canvas(returnedBitmap);
         //Get the view's background
-        Drawable bgDrawable =view.getBackground();
-        if (bgDrawable!=null)
+        Drawable bgDrawable = view.getBackground();
+        if (bgDrawable != null)
             //has background drawable, then draw it on the canvas
             bgDrawable.draw(canvas);
         else

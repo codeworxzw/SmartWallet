@@ -52,6 +52,7 @@ public class AccountSummary extends Fragment {
     private Context mContext;
     private Activity mActivity;
     private List<FinanceDocument> financeDocumentList;
+
     public AccountSummary() {
         // Required empty public constructor
     }
@@ -108,17 +109,17 @@ public class AccountSummary extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.account_summary_menu, menu);
-            int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
-                    .getInt("status_"+TAG,0);
-            if(status != -1) {
+        int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
+                .getInt("status_" + TAG, 0);
+        if (status != -1) {
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        startShowcase();
-                    }
-                }, 1000);
-            }
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startShowcase();
+                }
+            }, 1000);
+        }
 
         super.onCreateOptionsMenu(menu, inflater);
 
@@ -143,13 +144,13 @@ public class AccountSummary extends Fragment {
         }
 
 
-
     }
     //Helper methods
+
     /**
-    * Shows account_summary_menu popup menu
-    **/
-    private void showPopup(){
+     * Shows account_summary_menu popup menu
+     **/
+    private void showPopup() {
         View menuItemView = getActivity().findViewById(R.id.action_filter);
         PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
         MenuInflater inflate = popup.getMenuInflater();
@@ -160,33 +161,33 @@ public class AccountSummary extends Fragment {
                 int id = item.getItemId();
 
 
-                switch (id){
+                switch (id) {
                     case R.id.thisWeek:
-                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
                         selectedItem = "thisWeek";
                         mTextViewPeriod.setText(getResources().getString(R.string.this_week));
 
                         break;
                     case R.id.thisMonth:
-                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisMonth", MainActivity.getUserId());
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisMonth", MainActivity.getUserId());
                         selectedItem = "thisMonth";
                         mTextViewPeriod.setText(getResources().getString(R.string.this_month));
 
                         break;
                     case R.id.lastWeek:
-                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("lastWeek", MainActivity.getUserId());
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("lastWeek", MainActivity.getUserId());
                         selectedItem = "lastWeek";
                         mTextViewPeriod.setText(getResources().getString(R.string.last_week));
 
                         break;
                     case R.id.lastMonth:
-                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("lastMonth", MainActivity.getUserId());
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("lastMonth", MainActivity.getUserId());
                         selectedItem = "lastMonth";
                         mTextViewPeriod.setText(getResources().getString(R.string.last_month));
 
                         break;
                     case R.id.thisYear:
-                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId());
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId());
                         selectedItem = "thisYear";
                         mTextViewPeriod.setText(getResources().getString(R.string.this_year));
 
@@ -202,9 +203,11 @@ public class AccountSummary extends Fragment {
 
     }
 
-    /** Retrieves values from documents list.
-    *  Calculates sums and sets them to text views
-    *   @param list
+    /**
+     * Retrieves values from documents list.
+     * Calculates sums and sets them to text views
+     *
+     * @param list
      **/
 
     private void getValue(List<FinanceDocument> list) {
@@ -242,7 +245,7 @@ public class AccountSummary extends Fragment {
             otherExpensesSum += Integer.parseInt(item.getOtherExpenses());
         }
 
-        totalIncome = salarySum + rentalIncomeSum +interestSum + giftsSum + otherIncomeSum;
+        totalIncome = salarySum + rentalIncomeSum + interestSum + giftsSum + otherIncomeSum;
         totalExpense = taxesSum + mortgageSum + creditCardSum + utilitiesSum + foodSum + carPaymentSum + personalSum + activitiesSum + otherExpensesSum;
 
         salary.setText(Integer.toString(salarySum));
@@ -259,30 +262,31 @@ public class AccountSummary extends Fragment {
         personal.setText(Integer.toString(personalSum));
         activities.setText(Integer.toString(activitiesSum));
         otherExpense.setText(Integer.toString(otherExpensesSum));
-        String incomeString = Integer.toString(totalIncome) +" "+MainActivity.defaultCurrency;
+        String incomeString = Integer.toString(totalIncome) + " " + MainActivity.defaultCurrency;
         income.setText(incomeString);
-        String expenseString = Integer.toString(totalExpense) +" "+MainActivity.defaultCurrency;
+        String expenseString = Integer.toString(totalExpense) + " " + MainActivity.defaultCurrency;
         expense.setText(expenseString);
     }
 
     /**
-    * Compiles all views data into export ready list
-    * @return data
-    **/
-    private List<String[]> prepareCsvData(){
+     * Compiles all views data into export ready list
+     *
+     * @return data
+     **/
+    private List<String[]> prepareCsvData() {
         List<String[]> data = new ArrayList<>();
         data.add(new String[]{getString(R.string.period), mTextViewPeriod.getText().toString()});
-        data.add(new String[]{"",""});
+        data.add(new String[]{"", ""});
         data.add(new String[]{getString(R.string.income), income.getText().toString()});
-        data.add(new String[]{"",""});
+        data.add(new String[]{"", ""});
         data.add(new String[]{getString(R.string.salary), salary.getText().toString()});
         data.add(new String[]{getString(R.string.rental_income), rentalIncome.getText().toString()});
         data.add(new String[]{getString(R.string.interest), interest.getText().toString()});
         data.add(new String[]{getString(R.string.gifts), gifts.getText().toString()});
         data.add(new String[]{getString(R.string.other_income), otherIncome.getText().toString()});
-        data.add(new String[]{"",""});
+        data.add(new String[]{"", ""});
         data.add(new String[]{getString(R.string.expense), expense.getText().toString()});
-        data.add(new String[]{"",""});
+        data.add(new String[]{"", ""});
         data.add(new String[]{getString(R.string.food), food.getText().toString()});
         data.add(new String[]{getString(R.string.car_payment), carPayment.getText().toString()});
         data.add(new String[]{getString(R.string.personal), personal.getText().toString()});
@@ -298,9 +302,9 @@ public class AccountSummary extends Fragment {
 
 
     /**
-    * Runs showcase presentation on fragment start
+     * Runs showcase presentation on fragment start
      **/
-    private void startShowcase(){
+    private void startShowcase() {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         config.setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));

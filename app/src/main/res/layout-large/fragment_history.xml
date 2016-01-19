@@ -1,27 +1,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:card="http://schemas.android.com/apk/res-auto"
     android:background="@color/background"
     tools:context=".History">
 
     <it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    card:list_card_layout_resourceID="@layout/native_recyclerview_card_layout"
-    android:id="@+id/history_card_recycler_view"
-    android:scrollbars="none"
+        android:id="@+id/history_card_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingEnd="80dp"
         android:paddingLeft="80dp"
-        android:paddingStart="80dp"
         android:paddingRight="80dp"
-        android:paddingEnd="80dp"/>
+        android:paddingStart="80dp"
+        android:scrollbars="none"
+        card:list_card_layout_resourceID="@layout/native_recyclerview_card_layout" />
+
     <TextView
+        android:id="@+id/emptyHistory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
+        android:text="@string/history_is_empty"
         android:textSize="32sp"
-        android:id="@+id/emptyHistory"
-        android:visibility="gone"
-        android:text="@string/history_is_empty"/>
+        android:visibility="gone" />
 </RelativeLayout>

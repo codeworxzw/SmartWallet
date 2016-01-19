@@ -18,30 +18,29 @@ import android.view.View;
 import android.widget.Toast;
 
 
-
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
     public static final String PREF_FILE = "PrefFile";
-    public final static int PARAM_USERID =0;
-    public final static int PARAM_SALARY =1;
-    public final static int PARAM_RENTAL_INCOME =2;
-    public final static int PARAM_INTEREST =3;
-    public final static int PARAM_GIFTS =4;
-    public final static int PARAM_OTHER_INCOME =5;
-    public final static int PARAM_TAXES =6;
-    public final static int PARAM_MORTGAGE =7;
-    public final static int PARAM_CREDIT_CARD =8;
-    public final static int PARAM_UTILITIES =9;
-    public final static int PARAM_FOOD =10;
-    public final static int PARAM_CAR_PAYMENT =11;
-    public final static int PARAM_PERSONAL =12;
-    public final static int PARAM_ACTIVITIES =13;
-    public final static int PARAM_OTHER_EXPENSE =14;
+    public final static int PARAM_USERID = 0;
+    public final static int PARAM_SALARY = 1;
+    public final static int PARAM_RENTAL_INCOME = 2;
+    public final static int PARAM_INTEREST = 3;
+    public final static int PARAM_GIFTS = 4;
+    public final static int PARAM_OTHER_INCOME = 5;
+    public final static int PARAM_TAXES = 6;
+    public final static int PARAM_MORTGAGE = 7;
+    public final static int PARAM_CREDIT_CARD = 8;
+    public final static int PARAM_UTILITIES = 9;
+    public final static int PARAM_FOOD = 10;
+    public final static int PARAM_CAR_PAYMENT = 11;
+    public final static int PARAM_PERSONAL = 12;
+    public final static int PARAM_ACTIVITIES = 13;
+    public final static int PARAM_OTHER_EXPENSE = 14;
     public static String defaultCurrency;
 
     private List<Object> params; //List FinanceDocument constructor parameters
@@ -65,16 +64,15 @@ public class MainActivity extends AppCompatActivity  {
         setSupportActionBar(toolbar);
         //Get intent userdata from login activity
         Intent intent = getIntent();
-        data =intent.getExtras().getString("name");
+        data = intent.getExtras().getString("name");
         userID = intent.getExtras().getString("id");
-        params =new ArrayList<>();
+        params = new ArrayList<>();
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             drawerFragment = new NavigationDrawerFragment();
             drawerFragment.setArguments(intent.getExtras());
             getSupportFragmentManager().beginTransaction().add(R.id.navigation_drawer_fragment, drawerFragment, "DrawerTag").commit();
-        }
-        else{
+        } else {
             drawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentByTag("DrawerTag");
 
         }
@@ -94,8 +92,6 @@ public class MainActivity extends AppCompatActivity  {
         financeDocumentModel.setReplicationListener(this);
 
 
-
-
         reloadReplicationSettings();
 
         //FAB declaration and listener
@@ -113,7 +109,7 @@ public class MainActivity extends AppCompatActivity  {
         });
 
         firstTimeOpen = Boolean.valueOf(ReadFromSharedPreferences(this, "firstTimeOpen", "true"));
-        if (firstTimeOpen){
+        if (firstTimeOpen) {
             Log.d("FirstTimeOpen", "Application started for the first time");
             firstTimeOpen = false;
             SaveToSharedPreferences(this, "firstTimeOpen", Boolean.toString(firstTimeOpen));
@@ -140,8 +136,8 @@ public class MainActivity extends AppCompatActivity  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 1) {
-            if(resultCode == RESULT_OK){
-                ArrayList<String> reportResult=data.getStringArrayListExtra("reportResult");
+            if (resultCode == RESULT_OK) {
+                ArrayList<String> reportResult = data.getStringArrayListExtra("reportResult");
 
                 params.add(PARAM_USERID, userID);
                 params.add(PARAM_SALARY, getItem(reportResult, 0));
@@ -159,7 +155,7 @@ public class MainActivity extends AppCompatActivity  {
                 params.add(PARAM_ACTIVITIES, getItem(reportResult, 12));
                 params.add(PARAM_OTHER_EXPENSE, getItem(reportResult, 13));
                 createNewFinanceDocument(params);
-               // financeDocumentModel.startPushReplication();
+                // financeDocumentModel.startPushReplication();
 
 
             }
@@ -170,25 +166,25 @@ public class MainActivity extends AppCompatActivity  {
     }//onActivityResult
 
     /**
-    * Parsing string to retrieve document data
+     * Parsing string to retrieve document data
      */
     private ArrayList<String> getItem(ArrayList<String> reportResult, int i) {
-        ArrayList<String> item= new ArrayList<>();
-        item.add(0,"0");
+        ArrayList<String> item = new ArrayList<>();
+        item.add(0, "0");
         item.add(1, defaultCurrency);
-        item.add(2,"Never");
-        for(String listItem: reportResult){
+        item.add(2, "Never");
+        for (String listItem : reportResult) {
             String[] parts = listItem.split("-");
             int position = Integer.valueOf(parts[0]);
-            if(i == position) {
+            if (i == position) {
                 item.clear();
-                item.add(0,parts[2]);
-                item.add(1,parts[3]);
+                item.add(0, parts[2]);
+                item.add(1, parts[3]);
                 /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
                 item.add(2,parts[4]);
                 */
-                item.add(2,"Never");
+                item.add(2, "Never");
             }
 
 
@@ -203,6 +199,7 @@ public class MainActivity extends AppCompatActivity  {
 
     /**
      * Creation new document from data
+     *
      * @param params list of finance document fieleds
      */
     private void createNewFinanceDocument(List<Object> params) {
@@ -213,12 +210,12 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
-
     /**
      * Getter userId
+     *
      * @return uesrId
      */
-    public static  String getUserId(){
+    public static String getUserId() {
         return userID;
     }
 
@@ -264,14 +261,14 @@ public class MainActivity extends AppCompatActivity  {
 
 
     /**
-     *  Sets daily reminder alarm
+     * Sets daily reminder alarm
      */
 
 
-    private void setNotification(){
-        Intent notificationIntent = new Intent(this , NotificationReceiver.class);
+    private void setNotification() {
+        Intent notificationIntent = new Intent(this, NotificationReceiver.class);
 
-        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
@@ -282,22 +279,21 @@ public class MainActivity extends AppCompatActivity  {
 
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
                 calendar.getTimeInMillis(),
-                1000*24*60*60 ,
+                1000 * 24 * 60 * 60,
                 pendingIntent);
         Log.d("Alarm", "setnotification was called");
     }
 
 
-
-
     /**
      * Static methods for saving to sharedpreferences
-     * @param context application context
-     * @param prefName name variable
+     *
+     * @param context   application context
+     * @param prefName  name variable
      * @param prefValue value
      */
-    public static void SaveToSharedPreferences(Context context, String prefName, String prefValue){
-        SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE,Context.MODE_PRIVATE);
+    public static void SaveToSharedPreferences(Context context, String prefName, String prefValue) {
+        SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(prefName, prefValue);
         editor.apply();
@@ -305,13 +301,14 @@ public class MainActivity extends AppCompatActivity  {
 
     /**
      * Static methods for reading from sharedpreferences
-     * @param context application context
-     * @param prefName name variable
+     *
+     * @param context      application context
+     * @param prefName     name variable
      * @param defaultValue default value
      */
-    public static String ReadFromSharedPreferences(Context context, String prefName, String defaultValue){
+    public static String ReadFromSharedPreferences(Context context, String prefName, String defaultValue) {
         SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
-        return sharedPref.getString(prefName,defaultValue);
+        return sharedPref.getString(prefName, defaultValue);
     }
 
 

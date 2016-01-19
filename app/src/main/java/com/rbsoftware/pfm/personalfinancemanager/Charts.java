@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-
 /**
  * A simple {@link Fragment} subclass.
  * Charts fragment that holds child fragments
@@ -48,7 +47,6 @@ public class Charts extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,7 +60,7 @@ public class Charts extends Fragment {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[1]);
 
-        mPager= (ViewPager) getActivity().findViewById(R.id.pager);
+        mPager = (ViewPager) getActivity().findViewById(R.id.pager);
         mPager.setAdapter(adapter);
 
 
@@ -81,10 +79,10 @@ public class Charts extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            if(position == 0){
+            if (position == 0) {
                 mFragment = new IncomeExpenseChart();
             }
-            if(position == 1){
+            if (position == 1) {
                 mFragment = new TrendsChart();
             }
             return mFragment;
@@ -98,16 +96,16 @@ public class Charts extends Fragment {
         @Override
         public CharSequence getPageTitle(int position) {
             String title = new String();
-            if(position == 0){
+            if (position == 0) {
                 title = getResources().getString(R.string.overview);
             }
-            if(position == 1){
-                title =getResources().getString(R.string.trends); ;
+            if (position == 1) {
+                title = getResources().getString(R.string.trends);
+                ;
             }
-            return  title;
+            return title;
         }
     }
-
 
 
 }

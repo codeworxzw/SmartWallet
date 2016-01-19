@@ -34,7 +34,7 @@ public class NotificationReceiver extends BroadcastReceiver {
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setAutoCancel(true);
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-        if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY){
+        if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
             dailyReminder.setContentText(context.getString(R.string.weekly_reminder_text));
         }
         // Creates an explicit intent for an Activity in your app

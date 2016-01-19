@@ -29,6 +29,7 @@ public class HistoryCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
      */
     protected List<HistoryCard> mCards;
     private ActionMode mActionMode = null;
+
     /**
      * Constructor
      *
@@ -44,11 +45,10 @@ public class HistoryCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     }
 
 
-
     @Override
     public Card getItem(int position) {
         return mCards.get(position);
-}
+    }
 
     @Override
     public int getItemCount() {
@@ -58,6 +58,7 @@ public class HistoryCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
 
     /**
      * Sets the card's list
+     *
      * @param cards list
      */
     public void setCards(List<HistoryCard> cards) {
@@ -68,7 +69,6 @@ public class HistoryCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
      * Appends the specified element to the end of the {@code List}.
      *
      * @param card the object to add.
-     *
      * @return always true.
      */
     @Override
@@ -80,6 +80,7 @@ public class HistoryCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
 
     /**
      * Appends the specified element into the index specified {@code List}.
+     *
      * @param index
      * @param card
      */
@@ -93,7 +94,6 @@ public class HistoryCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
      * Adds the objects in the specified collection to the end of this List. The objects are added in the order in which they are returned from the collection's iterator.
      *
      * @param collection the collection of objects.
-     *
      * @return {@code true} if this {@code List} is modified, {@code false} otherwise.
      */
     public boolean addAll(@NonNull final Collection<? extends Card> collection) {
@@ -104,6 +104,7 @@ public class HistoryCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
 
     /**
      * Check if the list contains the element
+     *
      * @param card
      * @return
      */
@@ -123,6 +124,7 @@ public class HistoryCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
 
     /**
      * Removes the specified element
+     *
      * @param card
      * @return
      */
@@ -135,6 +137,7 @@ public class HistoryCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
 
     /**
      * Removes the element at position
+     *
      * @param position
      * @return
      */

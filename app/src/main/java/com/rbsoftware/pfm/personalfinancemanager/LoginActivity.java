@@ -36,8 +36,6 @@ public class LoginActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_login);
 
 
-
-
         // Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(this);
 
@@ -139,7 +137,6 @@ public class LoginActivity extends AppCompatActivity implements
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
     // [END signIn]
-
 
 
     @Override
