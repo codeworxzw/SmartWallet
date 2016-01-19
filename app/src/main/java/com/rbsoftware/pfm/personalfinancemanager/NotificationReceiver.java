@@ -18,6 +18,7 @@ import java.util.TimeZone;
 
 /**
  * Created by burzakovskiy on 1/5/2016.
+ * Send reminder massage to user
  */
 public class NotificationReceiver extends BroadcastReceiver {
 

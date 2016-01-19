@@ -25,10 +25,16 @@ import java.util.TimeZone;
 
 /**
  * Created by burzakovskiy on 1/6/2016.
- */
+ * Holds static method for data export
+ **/
 public class ExportData {
 
-    //Static method to export history data
+    /**
+     *  Static method to export history data
+     *  @param mContext object context
+     *  @param document finance document
+     *  @throws IOException
+     **/
     public static void exportHistoryAsCsv(Context mContext, FinanceDocument document) throws IOException {
         String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
@@ -73,7 +79,12 @@ public class ExportData {
     }
 
 
-    //Static method to export account summary data
+    /**
+    * Static method to export account summary data
+     *  @param mContext object context
+     *  @param inputData list of account summary fields
+     *  @throws IOException
+     **/
     public static void exportSummaryAsCsv(Context mContext, List<String[]> inputData) throws IOException {
         String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
@@ -103,7 +114,12 @@ public class ExportData {
         mContext.startActivity(Intent.createChooser(sendIntent, mContext.getString(R.string.share)));
     }
 
-    //Static method to export charts data
+    /**
+    * Static method to export charts data
+    * @param mContext object context
+    * @param view chart to be converted into image
+    * @throws IOException
+     **/
     public static void exportChartAsPng(Context mContext, View view) throws IOException {
         String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
@@ -113,7 +129,7 @@ public class ExportData {
         String filePath = baseDir + File.separator + fileName;
         File chartFile = new File(filePath );
 
-        OutputStream outStream =new FileOutputStream(chartFile);
+        OutputStream outStream = new FileOutputStream(chartFile);
         getBitmapFromView(view).compress(Bitmap.CompressFormat.PNG,100, outStream);
         outStream.flush();
         outStream.close();
@@ -126,10 +142,11 @@ public class ExportData {
     }
 
 
-    /* Converts int key to human readable string
+    /**
+     *  Converts int key to human readable string
         * @param key value range 1-14
         * @return string value
-        */
+        **/
     private static String keyToString(Context mContext, int key){
         switch (key){
             case 1: return mContext.getResources().getString(R.string.salary);
@@ -151,7 +168,10 @@ public class ExportData {
     }
 
 
-    //Converts view into bitmap
+    /**
+   * Converts view into bitmap
+   * @param view chart to converted into image
+    **/
     private static Bitmap getBitmapFromView(View view) {
         //Define a bitmap with the same size as the view
         Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);

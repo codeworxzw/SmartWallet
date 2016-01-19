@@ -37,6 +37,7 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 /**
  * A simple {@link Fragment} subclass.
+ * Holds user's history
  */
 public class History extends Fragment implements Card.OnLongCardClickListener{
     private final String TAG="History";
@@ -122,6 +123,10 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
 
     }
 
+    /**
+     * Checks whether recycler view is empty
+     * And switches to empty view
+     */
     private void checkAdapterIsEmpty () {
         if (mCardArrayAdapter.getItemCount() == 0) {
             mEmptyView.setVisibility(View.VISIBLE);
@@ -130,7 +135,10 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
         }
     }
 
-    //Runs showcase presentation on fragment start
+    /**
+     *  Runs showcase presentation on fragment start
+     */
+
     private void startShowcase(){
         ((View)card.getCardView()).measure(0, 0);
         Double r =  ((View)card.getCardView()).getMeasuredWidth() / 1.5;

@@ -29,6 +29,7 @@ import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
+ * Holds navigation drawer elements
  */
 public class NavigationDrawerFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener{
 

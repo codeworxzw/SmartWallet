@@ -36,6 +36,7 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 /**
  * A simple {@link Fragment} subclass.
+ * Hold line chart data
  */
 public class TrendsChart extends Fragment {
     private final String TAG = "TrendsChart";
@@ -106,7 +107,7 @@ public class TrendsChart extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.chart_trends_menu, menu);
         int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
-                .getInt("status_"+TAG,0);
+                .getInt("status_" + TAG, 0);
         if(status != -1) {
 
             new Handler().postDelayed(new Runnable() {
@@ -145,7 +146,10 @@ public class TrendsChart extends Fragment {
 
 
     //Helper methods
-    //Shows period chart_trends_menu popup menu
+    /**
+     * Shows period chart_trends_menu popup menu
+     */
+
     public void showPopupPeriod() {
         View menuItemView = getActivity().findViewById(R.id.action_filter);
         PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
@@ -213,6 +217,9 @@ public class TrendsChart extends Fragment {
 
     }
 
+    /**
+     * Shows lines option menu
+     */
     public void showPopupLine() {
 
         popupLine = new PopupMenu(getActivity(), getActivity().findViewById(R.id.action_line));
@@ -258,7 +265,10 @@ public class TrendsChart extends Fragment {
 
     }
 
-    //Fills LineChart with data
+    /**
+     *  Fills LineChart with data
+     */
+
     private void generateLineChartData() {
         List<AxisValue> axisValues = new ArrayList<AxisValue>();
         List<Line> lines = new ArrayList<Line>();
@@ -314,7 +324,13 @@ public class TrendsChart extends Fragment {
         return dates;
     }
 
-    public List<String[]> getDataFromDocument(int lineId, List<FinanceDocument> docList) {
+    /**
+     * Fetches values from document fro line chart
+     * @param lineId chart type
+     * @param docList list of finance documents
+     * @return data values and dates list of arrays
+     */
+    private List<String[]> getDataFromDocument(int lineId, List<FinanceDocument> docList) {
         int value;
         List<String[]> data = new ArrayList<>();
         switch (lineId) {
@@ -478,9 +494,9 @@ public class TrendsChart extends Fragment {
     }
 
 
-    /* Converts menu item title into id
-        @param title of menu item
-        @return resource id
+    /** Converts menu item title into id
+     *   @param position of menu item
+      *  @return resource id
      */
     private int findMenuItemByPosition(int position) {
         switch (position) {
@@ -524,6 +540,11 @@ public class TrendsChart extends Fragment {
         }
     }
 
+    /**
+     * Converts options menu id into position
+     * @param id of resource
+     * @return resource position in menu
+     */
     private int getPositionFromId(int id){
         switch (id) {
             case R.id.popupTotalIncome: return 0;
@@ -548,6 +569,11 @@ public class TrendsChart extends Fragment {
         }
     }
 
+    /**
+     * gets chart line color by resource id
+     * @param i resource id
+     * @return color of line
+     */
     private int getColorPalette(int i) {
         switch (i) {
             case R.id.popupTotalIncome:
@@ -588,7 +614,10 @@ public class TrendsChart extends Fragment {
         }
     }
 
-    //Runs showcase presentation on fragment start
+    /**
+     *  Runs showcase presentation on fragment start
+     */
+
     private void startShowcase(){
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view

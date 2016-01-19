@@ -37,6 +37,8 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 /**
  * A simple {@link Fragment} subclass.
+ * Child class of (@link Charts) class
+ * Holds pie chart data
  */
 public class IncomeExpenseChart extends Fragment {
     private final String TAG = "IncomeExpenseChart";
@@ -175,7 +177,10 @@ public class IncomeExpenseChart extends Fragment {
 
 
     //Helper methods
-    //Shows chart_income_expense_menu popup menu
+    /**
+     *  Shows chart_income_expense_menu popup menu
+     */
+
     public void showPopup(){
         View menuItemView = getActivity().findViewById(R.id.action_filter);
         PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
@@ -228,7 +233,12 @@ public class IncomeExpenseChart extends Fragment {
         popup.show();
 
     }
-    //fills mPieChart with data
+
+    /**
+     * fills mPieChart with data
+     * @param mapSum hash map of data types and values
+     */
+
     private void generateChartData(HashMap<Integer, Integer> mapSum) {
         List<SliceValue> values = new ArrayList<SliceValue>();
         int total=0;
@@ -260,10 +270,11 @@ public class IncomeExpenseChart extends Fragment {
     }
 
 
-
-
-
-    // extracts sums data of FinanceDocuments in the list
+    /**
+     *     extracts sums data of FinanceDocuments in the list
+     *     @param list finance documents list
+     *     @return map of data types and values
+     */
     public HashMap<Integer,Integer> getValues(List<FinanceDocument> list){
         int salarySum =0;
         int rentalIncomeSum =0;
@@ -317,10 +328,10 @@ public class IncomeExpenseChart extends Fragment {
         return mapSum;
     }
 
-    /* Converts int key to human readable string
+    /** Converts int key to human readable string
     * @param key value range 1-14
     * @return string value
-    */
+    **/
     public String keyToString(int key){
         switch (key){
             case 1: return getResources().getString(R.string.salary);
@@ -341,6 +352,11 @@ public class IncomeExpenseChart extends Fragment {
         return "";
     }
 
+    /**
+     * Gets color bu data type key
+     * @param i data type key
+     * @return color
+     */
     private int getColorPalette(int i){
         switch (i){
             case 1: return ContextCompat.getColor(getContext(),R.color.salary);
@@ -363,7 +379,10 @@ public class IncomeExpenseChart extends Fragment {
 
     }
 
-    //Runs showcase presentation on fragment start
+    /**
+     * Runs showcase presentation on fragment start
+     */
+
     private void startShowcase(){
         mIncomeExpenseButton.measure(0, 0);
         Double r = mIncomeExpenseButton.getMeasuredWidth() / 1.5;

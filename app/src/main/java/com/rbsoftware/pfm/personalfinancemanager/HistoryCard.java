@@ -16,6 +16,7 @@ import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
 
 /**
  * Created by burzakovskiy on 1/16/2016.
+ * Custom @link Card layout
  */
 public class HistoryCard extends Card {
     private FinanceDocument doc;
@@ -51,7 +52,10 @@ public class HistoryCard extends Card {
     }
 
 
-    //Helper class to customize card header
+    /**
+     * Helper class to customize card header
+     */
+
     private class HistoryHeaderInnerCard extends CardHeader {
         String income;
         String expense;
@@ -84,7 +88,10 @@ public class HistoryCard extends Card {
         }
     }
 
-    //Helper class to customize expand card layout
+    /**
+     *  Helper class to customize expand card layout
+     */
+
     private class HistoryExpandCard extends CardExpand {
         LinearLayout mLayout;
         FinanceDocument doc;
@@ -132,7 +139,8 @@ public class HistoryCard extends Card {
         }
 
 
-        /* Converts int key to human readable string
+        /**
+         *  Converts int key to human readable string
         * @param key value range 1-14
         * @return string value
         */

@@ -18,7 +18,8 @@ import android.view.ViewGroup;
 
 /**
  * A simple {@link Fragment} subclass.
- */
+ * Charts fragment that holds child fragments
+ **/
 public class Charts extends Fragment {
 
     private Fragment mFragment;

@@ -24,7 +24,10 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.PrefsManager;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
-
+/**
+ * A simple {@link Fragment} subclass.
+ * Account summary fragment holds account data
+ **/
 public class AccountSummary extends Fragment {
 
     private final String TAG = "AccountSummary";
@@ -143,8 +146,10 @@ public class AccountSummary extends Fragment {
 
     }
     //Helper methods
-    //Shows account_summary_menu popup menu
-    public void showPopup(){
+    /**
+    * Shows account_summary_menu popup menu
+    **/
+    private void showPopup(){
         View menuItemView = getActivity().findViewById(R.id.action_filter);
         PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
         MenuInflater inflate = popup.getMenuInflater();
@@ -197,7 +202,12 @@ public class AccountSummary extends Fragment {
 
     }
 
-    public void getValue(List<FinanceDocument> list) {
+    /** Retrieves values from documents list.
+    *  Calculates sums and sets them to text views
+    *   @param list
+     **/
+
+    private void getValue(List<FinanceDocument> list) {
         int salarySum = 0;
         int rentalIncomeSum = 0;
         int interestSum = 0;
@@ -255,7 +265,10 @@ public class AccountSummary extends Fragment {
         expense.setText(expenseString);
     }
 
-    // compiles all views data into export ready list
+    /**
+    * Compiles all views data into export ready list
+    * @return data
+    **/
     private List<String[]> prepareCsvData(){
         List<String[]> data = new ArrayList<>();
         data.add(new String[]{getString(R.string.period), mTextViewPeriod.getText().toString()});
@@ -284,7 +297,9 @@ public class AccountSummary extends Fragment {
     }
 
 
-    //Runs showcase presentation on fragment start
+    /**
+    * Runs showcase presentation on fragment start
+     **/
     private void startShowcase(){
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view

@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity  {
     public final static int PARAM_OTHER_EXPENSE =14;
     public static String defaultCurrency;
 
-    List<Object> params; //List FinanceDocument constructor parameters
+    private List<Object> params; //List FinanceDocument constructor parameters
     private String data;
     private static String userID; //unique user identifier
     private NavigationDrawerFragment drawerFragment;
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity  {
         }
     }//onActivityResult
 
-    /*Helper method
+    /**
     * Parsing string to retrieve document data
      */
     private ArrayList<String> getItem(ArrayList<String> reportResult, int i) {
@@ -200,7 +200,11 @@ public class MainActivity extends AppCompatActivity  {
 
     //HELPER METHODS
 
-    //Creation new document from data
+
+    /**
+     * Creation new document from data
+     * @param params list of finance document fieleds
+     */
     private void createNewFinanceDocument(List<Object> params) {
         financeDocument = new FinanceDocument(params);
         financeDocumentModel.createDocument(financeDocument);
@@ -209,12 +213,19 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
-    // Getter userId
+
+    /**
+     * Getter userId
+     * @return uesrId
+     */
     public static  String getUserId(){
         return userID;
     }
 
-    //Restarting replication settings
+    /**
+     * Restarting replication settings
+     */
+
     private void reloadReplicationSettings() {
         try {
             this.financeDocumentModel.reloadReplicationSettings();
@@ -252,7 +263,10 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
-    // Sets daily reminder alarm
+    /**
+     *  Sets daily reminder alarm
+     */
+
 
     private void setNotification(){
         Intent notificationIntent = new Intent(this , NotificationReceiver.class);
@@ -274,7 +288,14 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
-    //Static methods for saving an reading sharedpreferences
+
+
+    /**
+     * Static methods for saving to sharedpreferences
+     * @param context application context
+     * @param prefName name variable
+     * @param prefValue value
+     */
     public static void SaveToSharedPreferences(Context context, String prefName, String prefValue){
         SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -282,6 +303,12 @@ public class MainActivity extends AppCompatActivity  {
         editor.apply();
     }
 
+    /**
+     * Static methods for reading from sharedpreferences
+     * @param context application context
+     * @param prefName name variable
+     * @param defaultValue default value
+     */
     public static String ReadFromSharedPreferences(Context context, String prefName, String defaultValue){
         SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
         return sharedPref.getString(prefName,defaultValue);

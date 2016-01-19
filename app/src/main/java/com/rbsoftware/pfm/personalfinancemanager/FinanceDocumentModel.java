@@ -38,7 +38,8 @@ import java.util.TimeZone;
 
 /**
  * Created by burzakovskiy on 11/24/2015.
- */
+ * Holds methods for CRUD and querying finance documents
+ **/
 public class FinanceDocumentModel {
     private static final String LOG_TAG = "FinanceDocumentModel";
     private static final String DATASTORE_MANGER_DIR = "data";
@@ -113,7 +114,9 @@ public class FinanceDocumentModel {
         return new URI("https", apiKey + ":" + apiSecret, host, 443, "/" + dbName, null, null);
     }
 
-    //Set index manager
+    /**
+      *  Set index manager
+     **/
 
     public void setIndexManager(){
         im = new IndexManager(mDatastore);
@@ -153,8 +156,9 @@ public class FinanceDocumentModel {
      * "lastMonth"
      * "Jan" - "Dec"
      * "thisYear"
+     * @param userId id of current user
      * @return list of the documents
-     */
+     **/
 
 
     public List<FinanceDocument> queryDocumentsByDate(String timeFrame, String userId){
@@ -195,6 +199,19 @@ public class FinanceDocumentModel {
         return list;
     }
 
+    /**
+     * Queries docuuments by time period and sort
+     * @param timeFrame
+     * "thisWeek"
+     * "lastWeek"
+     * "thisMonth"
+     * "lastMonth"
+     * "Jan" - "Dec"
+     * "thisYear"
+     * @param userId id of current user
+     * @param order asc or desc
+     * @return list of the documents
+    **/
 
     public List<FinanceDocument> queryDocumentsByDate(String timeFrame, String userId, String order){
         List<FinanceDocument> list= new ArrayList<>();
@@ -246,7 +263,9 @@ public class FinanceDocumentModel {
         return list;
     }
 
-    //methods to get first/last day
+    /**
+        methods to get first/last day
+     **/
     private Long getFirstDateOfCurrentMonth() {
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         cal.set(Calendar.DAY_OF_MONTH, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH));
@@ -324,7 +343,10 @@ public class FinanceDocumentModel {
         return cal.getTimeInMillis()/1000;
     }
 
-    //helper method for setting start date
+    /**
+     *
+        helper method for setting start date
+     */
     private  long startDateBuilder(long currDate, String timeFrame){
         long startDate=0;
         switch (timeFrame){
@@ -373,7 +395,7 @@ public class FinanceDocumentModel {
      * Creates a task, assigning an ID.
      * @param document task to create
      * @return new revision of the document
-     */
+     **/
     public FinanceDocument createDocument(FinanceDocument document) {
         MutableDocumentRevision rev = new MutableDocumentRevision();
 

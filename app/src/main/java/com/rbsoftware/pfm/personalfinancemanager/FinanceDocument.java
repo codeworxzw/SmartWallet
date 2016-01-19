@@ -16,6 +16,7 @@ import java.util.TimeZone;
 
 /**
  * Created by burzakovskiy on 11/24/2015.
+ * Holds structure of finance document
  */
 public class FinanceDocument {
     private static final String DOC_TYPE = "Finance document";
@@ -36,7 +37,7 @@ public class FinanceDocument {
     private List<String> personal = new ArrayList<>();
     private List<String> activities = new ArrayList<>();
     private List<String> otherExpenses = new ArrayList<>();
-
+    private BasicDocumentRevision rev;
     private String date;
 
     private FinanceDocument() {}
@@ -54,20 +55,7 @@ public class FinanceDocument {
 
         this.type = DOC_TYPE;
         this.userId = (String) params.get(0);
-        //this.salary = params.get(1);
-        //this.rentalIncome = params.get(2);
-        //this.interest = params.get(3);
-       // this.gifts = params.get(4);
-        //this.otherIncome = params.get(5);
-       // this.taxes = params.get(6);
-        //this.mortgage = params.get(7);
-        //this.creditCard = params.get(8);
-        //this.utilities = params.get(9);
-       // this.food = params.get(10);
-        //this.carPayment = params.get(11);
-        //this.personal = params.get(12);
-        //this.activities = params.get(13);
-        //this.otherExpenses = params.get(14);
+
 
         Date currDate = new Date();
         this.date = Long.toString(currDate.getTime() / 1000);
@@ -347,7 +335,12 @@ public class FinanceDocument {
     public String getDate() {return date;}
     public void setDate (String date){this.date = date;}
 
-    //@return human readable date
+    /**
+     * Converts unix date inot human readable
+     * @param format date of the date
+     * @return human readable date
+     */
+
     public String getNormalDate(int format){
         Date formatDate = new Date(Long.valueOf(date)*1000L); // *1000 is to convert seconds to milliseconds
         DateFormat sdf;
@@ -375,7 +368,11 @@ public class FinanceDocument {
         return normalDate;
     }
 
-    // @return total income
+    /**
+     * Gets total income
+     * @return total income
+      */
+
     public int getTotalIncome(){
         int totalIncome;
         totalIncome = Integer.valueOf(getSalary()) +
@@ -386,7 +383,12 @@ public class FinanceDocument {
         return totalIncome;
     }
 
-    // @return total expense
+
+
+    /**
+     * Gets total expense
+     * @return total expense
+     */
     public int getTotalExpense(){
         int totalExpense;
         totalExpense = Integer.valueOf(getTaxes()) +
@@ -402,7 +404,11 @@ public class FinanceDocument {
     }
 
 
-    // extracts data of FinanceDocument
+
+    /**
+     * extracts data of FinanceDocument
+     * @return hashmap of data types and values
+     */
     public HashMap<Integer,List<String>> getValuesMap(){
 
         HashMap<Integer, List<String>> mapSum=new HashMap<>();
@@ -427,10 +433,16 @@ public class FinanceDocument {
 
 
 
-    private BasicDocumentRevision rev;
+
     public BasicDocumentRevision getDocumentRevision() {
         return rev;
     }
+
+    /**
+     * Creates finaince document from revision
+     * @param rev document revision
+     * @return finance document
+     */
     public static FinanceDocument fromRevision(BasicDocumentRevision rev) {
         FinanceDocument t = new FinanceDocument();
         t.rev = rev;
@@ -460,6 +472,10 @@ public class FinanceDocument {
         return null;
     }
 
+    /**
+     * Creates hash map of data types and values
+     * @return map of data types and values
+     */
     public Map<String, Object> asMap() {
         // this could also be done by a fancy object mapper
         HashMap<String, Object> map = new HashMap<String, Object>();

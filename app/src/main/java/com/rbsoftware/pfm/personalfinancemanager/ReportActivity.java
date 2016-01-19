@@ -148,8 +148,11 @@ public class ReportActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Generates operation category spinner
+     * @return currency spinner
+     */
 
-    //Generates operation category spinner
     private Spinner createNewCurrencySpinner() {
         final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
         final Spinner spinner = new Spinner(this);
@@ -181,7 +184,11 @@ public class ReportActivity extends AppCompatActivity {
         return spinner;
     }
 
-    //Generates currency type spinner
+    /**
+     *   Generates currency type spinner
+     *   @return category spinner
+     */
+
 
     private Spinner createNewCategorySpinner() {
         final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
@@ -205,7 +212,11 @@ public class ReportActivity extends AppCompatActivity {
         return spinner;
     }
 
-    //Generates operation input value edit text
+    /**
+     * Generates operation input value edit text
+     * @return edit text field
+     */
+
 
     private EditText createNewEditText() {
         final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
@@ -299,8 +310,11 @@ public class ReportActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //Compiles inputs from fields
-    //@return list of strings category-value-currency
+    /**
+     *  Compiles inputs from fields
+     *  @return list of strings category-value-currency
+     */
+
     private ArrayList<String> getReportResult() {
         ArrayList<String> list = new ArrayList<>();
         int counter = categorySpinnerId-1000;
@@ -330,14 +344,22 @@ public class ReportActivity extends AppCompatActivity {
         return list;
     }
 
-    // helper method to convert dp to px
+
+    /**
+     * Converts dp to px
+     * @param dp density pixels
+     * @return pixels
+     */
     public int dpToPx(int dp) {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         return px;
     }
 
-    //Runs showcase presentation on fragment start
+    /**
+     * Runs showcase presentation on fragment start
+     */
+
     private void startShowcase(){
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view

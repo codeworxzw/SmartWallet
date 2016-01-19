@@ -14,7 +14,10 @@ import android.widget.TextView;
 
 import java.util.List;
 
-
+/**
+ * A simple {@link BaseAdapter} subclass.
+ * Holds list of navigation drawer items
+ **/
 
 public class DrawerListAdapter extends BaseAdapter {
     private int[] imageArray;
