@@ -257,11 +257,11 @@ public class IncomeExpenseChart extends Fragment {
         data.setHasCenterCircle(true);
         data.setCenterText1(Integer.toString(total));
         data.setCenterText2(MainActivity.defaultCurrency);
-        if (mIncomeExpenseButton.isChecked()) {
+     /*   if (mIncomeExpenseButton.isChecked()) {
             data.setCenterCircleColor(getResources().getColor(R.color.income));
         } else {
             data.setCenterCircleColor(getResources().getColor(R.color.expense));
-        }
+        }*/
         mPieChart.setPieChartData(data);
 
     }

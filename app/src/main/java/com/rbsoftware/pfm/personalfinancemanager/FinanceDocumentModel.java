@@ -149,7 +149,7 @@ public class FinanceDocumentModel {
     // Document query methods
 
     /**
-     * Queries docuuments by time period
+     * Queries documents by time period
      *
      * @param timeFrame "thisWeek"
      *                  "lastWeek"
@@ -201,7 +201,7 @@ public class FinanceDocumentModel {
     }
 
     /**
-     * Queries docuuments by time period and sort
+     * Queries documents by time period and sort
      *
      * @param timeFrame "thisWeek"
      *                  "lastWeek"

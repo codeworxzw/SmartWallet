@@ -65,7 +65,8 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginStart="50dp"
-                android:background="@drawable/salary_gradient"
+                android:background="@drawable/salary_background"
+                android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp">
 
@@ -76,7 +77,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:text="@string/salary"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
 
                 <TextView
@@ -84,7 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
             </LinearLayout>
 
@@ -95,7 +96,8 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginStart="50dp"
-                android:background="@drawable/rental_income_gradient"
+                android:background="@drawable/rental_income_background"
+                android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp">
 
@@ -106,7 +108,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:text="@string/rental_income"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
 
                 <TextView
@@ -114,7 +116,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
 
             </LinearLayout>
@@ -126,7 +128,8 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginStart="50dp"
-                android:background="@drawable/interest_gradient"
+                android:background="@drawable/interest_background"
+                android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp">
 
@@ -137,7 +140,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:text="@string/interest"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
 
                 <TextView
@@ -145,7 +148,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
             </LinearLayout>
 
@@ -156,7 +159,8 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginStart="50dp"
-                android:background="@drawable/gifts_gradient"
+                android:background="@drawable/gifts_background"
+                android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp">
 
@@ -167,7 +171,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:text="@string/gifts"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
 
                 <TextView
@@ -175,7 +179,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
             </LinearLayout>
 
@@ -186,7 +190,8 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginStart="50dp"
-                android:background="@drawable/other_income_gradient"
+                android:background="@drawable/other_income_background"
+                android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp">
 
@@ -197,7 +202,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:text="@string/other_income"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
 
                 <TextView
@@ -205,7 +210,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
             </LinearLayout>
         </LinearLayout>
@@ -251,7 +256,8 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginStart="50dp"
-                android:background="@drawable/food_gradient"
+                android:background="@drawable/food_background"
+                android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp">
 
@@ -262,7 +268,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:text="@string/food"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
 
                 <TextView
@@ -270,7 +276,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
             </LinearLayout>
 
@@ -281,7 +287,8 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginStart="50dp"
-                android:background="@drawable/car_payment_gradient"
+                android:background="@drawable/car_payment_background"
+                android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp">
 
@@ -292,7 +299,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:text="@string/car_payment"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
 
                 <TextView
@@ -300,7 +307,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
             </LinearLayout>
 
@@ -311,7 +318,8 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginStart="50dp"
-                android:background="@drawable/personal_gradient"
+                android:background="@drawable/personal_background"
+                android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp">
 
@@ -322,7 +330,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:text="@string/personal"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
 
                 <TextView
@@ -330,7 +338,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
             </LinearLayout>
 
@@ -341,7 +349,8 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginStart="50dp"
-                android:background="@drawable/activities_gradient"
+                android:background="@drawable/activities_background"
+                android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp">
 
@@ -352,7 +361,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:text="@string/activities"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
 
                 <TextView
@@ -360,7 +369,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
             </LinearLayout>
 
@@ -371,7 +380,8 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginStart="50dp"
-                android:background="@drawable/utilities_gradient"
+                android:background="@drawable/utilities_background"
+                android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp">
 
@@ -382,7 +392,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:text="@string/utilities"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
 
                 <TextView
@@ -390,7 +400,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
             </LinearLayout>
 
@@ -401,7 +411,8 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginStart="50dp"
-                android:background="@drawable/credit_card_gradient"
+                android:background="@drawable/credit_card_background"
+                android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp">
 
@@ -412,7 +423,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:text="@string/credit_card"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
 
                 <TextView
@@ -420,7 +431,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
             </LinearLayout>
 
@@ -431,7 +442,8 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginStart="50dp"
-                android:background="@drawable/taxes_gradient"
+                android:background="@drawable/taxes_background"
+                android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp">
 
@@ -442,7 +454,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:text="@string/taxes"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
 
                 <TextView
@@ -450,7 +462,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
             </LinearLayout>
 
@@ -461,7 +473,8 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginStart="50dp"
-                android:background="@drawable/mortgage_gradient"
+                android:background="@drawable/mortgage_background"
+                android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp">
 
@@ -472,7 +485,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:text="@string/mortgage"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
 
                 <TextView
@@ -480,7 +493,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
             </LinearLayout>
 
@@ -491,7 +504,8 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:layout_marginStart="50dp"
-                android:background="@drawable/other_expenses_gradient"
+                android:background="@drawable/other_expenses_background"
+                android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp">
 
@@ -502,7 +516,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:text="@string/other_expense"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
 
                 <TextView
@@ -510,7 +524,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="000"
-                    android:textColor="@android:color/primary_text_dark"
+                    android:textColor="@android:color/tertiary_text_dark"
                     android:textSize="24sp" />
             </LinearLayout>
         </LinearLayout>

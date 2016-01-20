@@ -98,7 +98,7 @@
     <string name="delete_dialog_message">Are you sure you want to delete this entry?</string>
     <string name="share">Share</string>
     <string name="daily_reminder_title">Smart Wallet daily reminder</string>
-    <string name="daily_reminder_text">Submit you finance activity</string>
+    <string name="daily_reminder_text">Submit your finance activity</string>
     <string name="weekly_reminder_text">Check your weekly report</string>
     <string name="document_date">Document date</string>
     <string name="your">Your</string>
@@ -118,7 +118,7 @@
     <string name="data_add_new">Click if more input fields required</string>
     <string name="data_done">Click to submit your report</string>
     <string name="history_card">Click on the card to see operation details or hold your finger to call card menu</string>
-    <string name="history_is_empty">History is empty...</string>
+    <string name="history_is_empty">History is empty&#8230;</string>
 
 
 </resources>
