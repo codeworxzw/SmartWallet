@@ -112,10 +112,10 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
     @Override
     public void onStop() {
         super.onStop();
-        if (LoginActivity.mGoogleApiClient != null) {
+       /* if (LoginActivity.mGoogleApiClient != null) {
             if (!LoginActivity.mGoogleApiClient.isConnected())
                 LoginActivity.mGoogleApiClient.disconnect();
-        }
+        }*/
     }
 
     @Override

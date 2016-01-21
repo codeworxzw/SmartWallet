@@ -15,12 +15,14 @@
         android:layout_alignParentStart="true"
         android:gravity="center"
         android:text="@string/this_week"
+        android:background="@android:color/white"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <lecho.lib.hellocharts.view.LineChartView
         android:id="@+id/trends_chart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"></lecho.lib.hellocharts.view.LineChartView>
+        android:background="@android:color/white"
+        android:layout_marginTop="15dp"/>
 
 </RelativeLayout>
