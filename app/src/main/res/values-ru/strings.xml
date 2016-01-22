@@ -72,6 +72,13 @@
         <item>Выйти</item>
     </string-array>
 
+    <string-array name="account_summary_spinner">
+        <item>Текущая неделя</item>
+        <item>Прошлая неделя</item>
+        <item>Текущий месяц</item>
+        <item>Прошлый месяц</item>
+        <item>Текущий год</item>
+    </string-array>
 
     <string-array name="report_activity_category_spinner">
         <item>Зарплата</item>

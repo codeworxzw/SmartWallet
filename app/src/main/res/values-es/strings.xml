@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Smart Wallet</string>
+    <string name="action_filter">Filtrar los datos por período</string>
+    <string name="action_line">Seleccione el tipo de gráfico para mostrar</string>
+    <string name="activities">Entretenimiento</string>
+    <string name="add_line">Añadir línea</string>
+    <string name="car_payment">Coche</string>
+    <string name="credit_card">Tarjeta de crédito</string>
+    <string name="daily_reminder_text">Rellene su informe</string>
+    <string name="daily_reminder_title">Recordatorio diario Smart Wallet</string>
+    <string name="data_add_new">Haga clic para añadir una entrada</string>
+    <string name="data_done">Haga clic para crear un  informe</string>
+    <string name="data_value">Establezca el valor</string>
+    <string name="default_currency">Moneda predeterminada</string>
+    <string name="delete">Borrar</string>
+    <string name="delete_dialog_message">¿Seguro que quiere eliminar esta entrada?</string>
+    <string name="delete_dialog_title">Borrar entrada</string>
+    <string name="document_date">Fecha del documento</string>
+    <string name="document_share">Exportar datos del informe a otras aplicaciones</string>
+    <string name="done">Hecho</string>
+    <string name="drawer_open">Abrir</string>
+    <string name="drawer_close">Cerrar</string>
+    <string name="expense">Gastos</string>
+    <string name="filter">Filtrar</string>
+    <string name="food">Comida</string>
+    <string name="gifts">Regalos</string>
+    <string name="got_it">Entendído</string>
+    <string name="history_card">Haga clic en la tarjeta para ver los detalles de la operación o mantenga el dedo para abrir el menú de la tarjeta</string>
+    <string name="history_is_empty">No hay actividad…</string>
+    <string name="income">Ingresos</string>
+    <string name="income_expense_switch">Haga clic para cambiar entre las gráficas de ingresos y gastos</string>
+    <string name="interest">Intereses</string>
+    <string name="last_month">Mes pasado</string>
+    <string name="last_week">Semana pasada</string>
+    <string name="line">Línea</string>
+    <string name="loading">Cargando</string>
+    <string name="mortgage">Hipoteca</string>
+    <string name="ok">Hecho</string>
+    <string name="other_income">Otros ingresos</string>
+    <string name="other_expense">Otros gastos</string>
+    <string name="overview">Resumen</string>
+    <string name="period">Período</string>
+    <string name="personal">Gastos personales</string>
+    <string name="recurs">Repetido</string>
+    <string name="rental_income">Ingresos de alquiler</string>
+    <string name="salary">Salario</string>
+    <string name="share">Compartir</string>
+    <string name="taxes">Impuestos</string>
+    <string name="text_view_error">Por favor, establezca el valor</string>
+    <string name="this_month">Mes actual</string>
+    <string name="this_week">Semana actual</string>
+    <string name="this_year">Año actual</string>
+    <string name="title_activity_report">Informe</string>
+    <string name="title_activity_settings">Ajustes</string>
+    <string name="trends">Tendencias</string>
+    <string name="utilities">Recibos</string>
+    <string name="value">Valor</string>
+    <string name="weekly_reminder_text">Revise su informe semanal</string>
+    <string name="your">Suyo</string>
+    <string name="data_category">Seleccionar categoría de datos</string>
+    <string name="data_currency">Seleccione la moneda</string>
+    <string name="never">Nunca</string>
+
+
+    <string-array name="drawer_menu">
+        <item>Información  general</item>
+        <item>Gráficas</item>
+        <item>Actividad</item>
+        <item>Ajustes</item>
+        <item>Desconectar</item>
+    </string-array>
+    <string-array name="account_summary_spinner">
+        <item>Semana actual</item>
+        <item>Semana pasada</item>
+        <item>Mes actual</item>
+        <item>Mes pasado</item>
+        <item>Año actual</item>
+    </string-array>
+
+    <string-array name="report_activity_category_spinner">
+        <item>Salario</item>
+        <item>Ingresos de alquiler</item>
+        <item>Intereses</item>
+        <item>Regalos</item>
+        <item>Otros ingresos</item>
+        <item>Impuestos</item>
+        <item>Hipoteca</item>
+        <item>Tarjeta de crédito</item>
+        <item>Recibos</item>
+        <item>Comida</item>
+        <item>Coche</item>
+        <item>Gastos personales</item>
+        <item>Entretenimiento</item>
+        <item>Otros gastos</item>
+    </string-array>
+    <string-array name="report_activity_currency_spinner">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>UAH</item>
+        <item>RUB</item>
+    </string-array>
+</resources>
