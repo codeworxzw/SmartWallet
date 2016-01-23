@@ -1,11 +1,13 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,11 +20,10 @@ import android.widget.Toast;
 
 
 import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity  {
     public static final String PREF_FILE = "PrefFile";
@@ -41,7 +42,9 @@ public class MainActivity extends AppCompatActivity  {
     public final static int PARAM_PERSONAL =12;
     public final static int PARAM_ACTIVITIES =13;
     public final static int PARAM_OTHER_EXPENSE =14;
-    List<String> params; //List FinanceDocument constructor parameters
+    public static String defaultCurrency;
+
+    List<Object> params; //List FinanceDocument constructor parameters
     private String data;
     private static String userID; //unique user identifier
     private NavigationDrawerFragment drawerFragment;
@@ -54,6 +57,8 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        boolean firstTimeOpen;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -89,6 +94,8 @@ public class MainActivity extends AppCompatActivity  {
         financeDocumentModel.setReplicationListener(this);
 
 
+
+
         reloadReplicationSettings();
 
         //FAB declaration and listener
@@ -105,6 +112,22 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
+        firstTimeOpen = Boolean.valueOf(ReadFromSharedPreferences(this, "firstTimeOpen", "true"));
+        if (firstTimeOpen){
+            Log.d("FirstTimeOpen", "Application started for the first time");
+            firstTimeOpen = false;
+            SaveToSharedPreferences(this, "firstTimeOpen", Boolean.toString(firstTimeOpen));
+            setNotification();
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        //Reading default currency from settings
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        defaultCurrency = sharedPreferences.getString("defaultCurrency", "USD");
+        super.onResume();
     }
 
     @Override
@@ -146,14 +169,29 @@ public class MainActivity extends AppCompatActivity  {
         }
     }//onActivityResult
 
-    private String getItem(ArrayList<String> reportResult, int i) {
-        String item="0";
+    /*Helper method
+    * Parsing string to retrieve document data
+     */
+    private ArrayList<String> getItem(ArrayList<String> reportResult, int i) {
+        ArrayList<String> item= new ArrayList<>();
+        item.add(0,"0");
+        item.add(1, defaultCurrency);
+        item.add(2,"Never");
         for(String listItem: reportResult){
             String[] parts = listItem.split("-");
             int position = Integer.valueOf(parts[0]);
             if(i == position) {
-                item = parts[2];
+                item.clear();
+                item.add(0,parts[2]);
+                item.add(1,parts[3]);
+                /* Recursion disabled in version 1.0
+                    TODO enable recursion in future versions
+                item.add(2,parts[4]);
+                */
+                item.add(2,"Never");
             }
+
+
         }
 
         return item;
@@ -163,7 +201,7 @@ public class MainActivity extends AppCompatActivity  {
     //HELPER METHODS
 
     //Creation new document from data
-    private void createNewFinanceDocument(List<String> params) {
+    private void createNewFinanceDocument(List<Object> params) {
         financeDocument = new FinanceDocument(params);
         financeDocumentModel.createDocument(financeDocument);
 
@@ -213,6 +251,29 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
+
+    // Sets daily reminder alarm
+
+    private void setNotification(){
+        Intent notificationIntent = new Intent(this , NotificationReceiver.class);
+
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 21);
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(),
+                1000*24*60*60 ,
+                pendingIntent);
+        Log.d("Alarm", "setnotification was called");
+    }
+
+
     //Static methods for saving an reading sharedpreferences
     public static void SaveToSharedPreferences(Context context, String prefName, String prefValue){
         SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE,Context.MODE_PRIVATE);
@@ -225,5 +286,6 @@ public class MainActivity extends AppCompatActivity  {
         SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
         return sharedPref.getString(prefName,defaultValue);
     }
+
 
 }

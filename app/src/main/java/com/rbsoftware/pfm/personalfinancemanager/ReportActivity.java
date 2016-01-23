@@ -1,33 +1,51 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.PersistableBundle;
+import android.renderscript.ScriptGroup;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
 public class ReportActivity extends AppCompatActivity {
 
-
-    private ImageButton addNew;
-    private LinearLayout mLayout;
+    private final String TAG = "ReportActivity";
+    private Button addNew;
+    private RelativeLayout mLayout;
     private int categorySpinnerId =1001; //IDs of categorySpinner
     private int currencySpinnerId =2001; //IDs of currencySpinner
     private int editTextValueId =3001;   //Ids of editText
-
+     /* Recursion disabled in version 1.0
+                    TODO enable recursion in future versions
+    private int textViewRecursId =4001;   //Ids of TextView "Recurs"
+    private int spinnerRecursId =5001;   //Ids of spinner "Recurs"
+    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +56,16 @@ public class ReportActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        mLayout = (LinearLayout) findViewById(R.id.report_item_layout);
+        mLayout = (RelativeLayout) findViewById(R.id.report_item_layout);
         if(savedInstanceState ==null) {
             mLayout.addView(createNewCategorySpinner());
             mLayout.addView(createNewEditText());
             mLayout.addView(createNewCurrencySpinner());
+             /* Recursion disabled in version 1.0
+                    TODO enable recursion in future versions
+            mLayout.addView(createNewRecursTextView());
+            mLayout.addView(createNewRecursSpinner());
+            */
         }
         else{
             //views states were saved in onSaveInstanceState
@@ -53,16 +76,22 @@ public class ReportActivity extends AppCompatActivity {
                 categorySpinner.setSelection(savedInstanceState.getInt("categorySpinner"+i));
                 mLayout.addView(createNewEditText());
                 EditText editTextValue = (EditText) findViewById(3000+i);
-                editTextValue.setText(savedInstanceState.getString("editTextValue"+i));
+                editTextValue.setText(savedInstanceState.getString("editTextValue" + i));
                 mLayout.addView(createNewCurrencySpinner());
                 Spinner currencySpinner = (Spinner) findViewById(2000+i);
                 currencySpinner.setSelection(savedInstanceState.getInt("currencySpinner"+i));
-
+                 /* Recursion disabled in version 1.0
+                    TODO enable recursion in future versions
+                mLayout.addView(createNewRecursTextView());
+                mLayout.addView(createNewRecursSpinner());
+                Spinner recursSpinner = (Spinner) findViewById(5000+i);
+                recursSpinner.setSelection(savedInstanceState.getInt("recursSpinner" + i));
+                */
             }
 
         }
 
-        addNew = (ImageButton) findViewById(R.id.btn_add_new);
+        addNew = (Button) findViewById(R.id.btn_add_new);
 
 
 
@@ -72,8 +101,27 @@ public class ReportActivity extends AppCompatActivity {
                 mLayout.addView(createNewCategorySpinner());
                 mLayout.addView(createNewEditText());
                 mLayout.addView(createNewCurrencySpinner());
+                 /* Recursion disabled in version 1.0
+                    TODO enable recursion in future versions
+                mLayout.addView(createNewRecursTextView());
+                mLayout.addView(createNewRecursSpinner());
+                */
+
+
             }
         });
+
+        int status = getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
+                .getInt("status_"+TAG,0);
+        if(status != -1) {
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startShowcase();
+                }
+            }, 1000);
+        }
     }
 
     @Override
@@ -87,10 +135,13 @@ public class ReportActivity extends AppCompatActivity {
             outState.putInt("currencySpinner"+i, currencySpinner.getSelectedItemPosition());
             EditText editTextValue = (EditText) findViewById(3000+i);
             outState.putString("editTextValue"+i, editTextValue.getText().toString());
-            Log.d("counter", " onSaveInstanceState"+ categorySpinner.getSelectedItemPosition() +" "+
-                    currencySpinner.getSelectedItemPosition() +" "+  editTextValue.getText().toString());
+             /* Recursion disabled in version 1.0
+                    TODO enable recursion in future versions
+            Spinner recursSpinner = (Spinner) findViewById(5000+i);
+            outState.putInt("recursSpinner"+i, recursSpinner.getSelectedItemPosition());
+            */
+
         }
-        Log.d("counter", counter + " onSaveInstanceState");
 
         super.onSaveInstanceState(outState);
 
@@ -100,15 +151,32 @@ public class ReportActivity extends AppCompatActivity {
 
     //Generates operation category spinner
     private Spinner createNewCurrencySpinner() {
-        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
         final Spinner spinner = new Spinner(this);
+        int position =0;
+        lparams.addRule(RelativeLayout.END_OF, editTextValueId - 1);
+
+        if(categorySpinnerId > 1001){
+             /* Recursion disabled in version 1.0
+                    TODO enable recursion in future versions
+            lparams.addRule(RelativeLayout.BELOW, textViewRecursId-1);
+             */
+            lparams.addRule(RelativeLayout.BELOW, currencySpinnerId-1);
+        }
+
         spinner.setLayoutParams(lparams);
-        ArrayAdapter<CharSequence> currencySpinnerAdapter = ArrayAdapter.createFromResource(this,R.array.report_activity_currency_spinner,android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> currencySpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.report_activity_currency_spinner, android.R.layout.simple_spinner_item);
         currencySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        String[] currencyList = getResources().getStringArray(R.array.report_activity_currency_spinner);
+        for(int i=0; i<currencyList.length;i++){
+            if(currencyList[i].equals(MainActivity.defaultCurrency)){
+                position = i;
+            }
+        }
         spinner.setAdapter(currencySpinnerAdapter);
+        spinner.setSelection(position);
         spinner.setId(currencySpinnerId);
         spinner.setSaveEnabled(true);
-        Log.d("ID", spinner.getId() + "");
         currencySpinnerId++;
         return spinner;
     }
@@ -116,15 +184,23 @@ public class ReportActivity extends AppCompatActivity {
     //Generates currency type spinner
 
     private Spinner createNewCategorySpinner() {
-        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
         final Spinner spinner = new Spinner(this);
+
+        if(categorySpinnerId > 1001){
+             /* Recursion disabled in version 1.0
+                    TODO enable recursion in future versions
+            lparams.addRule(RelativeLayout.BELOW, textViewRecursId-1);
+             */
+            lparams.addRule(RelativeLayout.BELOW, categorySpinnerId-1);
+        }
+
         spinner.setLayoutParams(lparams);
         ArrayAdapter<CharSequence> categorySpinnerAdapter = ArrayAdapter.createFromResource(this,R.array.report_activity_category_spinner,android.R.layout.simple_spinner_item);
         categorySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(categorySpinnerAdapter);
         spinner.setId(categorySpinnerId);
         spinner.setSaveEnabled(true);
-        Log.d("ID", spinner.getId() + "");
         categorySpinnerId++;
         return spinner;
     }
@@ -132,18 +208,71 @@ public class ReportActivity extends AppCompatActivity {
     //Generates operation input value edit text
 
     private EditText createNewEditText() {
-        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
         final EditText editText = new EditText(this);
+        lparams.addRule(RelativeLayout.END_OF, categorySpinnerId - 1);
+
+        if(categorySpinnerId > 1001){
+            /* Recursion disabled in version 1.0
+                    TODO enable recursion in future versions
+            lparams.addRule(RelativeLayout.BELOW, textViewRecursId-1);
+             */
+            lparams.addRule(RelativeLayout.BELOW, editTextValueId-1);
+        }
+
+        int maxLength = 8;
+        InputFilter[] fArray = new InputFilter[1];
+        fArray[0] = new InputFilter.LengthFilter(maxLength);
+        editText.setFilters(fArray);
         editText.setLayoutParams(lparams);
-        editText.setHint("Value");
+        editText.setHint(getResources().getString(R.string.value));
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         editText.setId(editTextValueId);
         editText.setSaveEnabled(true);
-        Log.d("ID", editText.getId() + "");
+
         editTextValueId++;
         return editText;
     }
 
+     /* Recursion disabled in version 1.0
+                    TODO enable recursion in future versions
+    //Generates recurs text view
+    private TextView createNewRecursTextView(){
+        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
+        lparams.addRule(RelativeLayout.BELOW, categorySpinnerId - 1);
+        lparams.setMargins(dpToPx(12),dpToPx(8),0,0);
+        final TextView textView = new TextView(this);
+        textView.setLayoutParams(lparams);
+;       textView.setId(textViewRecursId);
+        textView.setText(getResources().getString(R.string.recurs));
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                getResources().getDimension(R.dimen.recurs_text_size));
+        textView.setSaveEnabled(true);
+        textViewRecursId++;
+        return textView;
+    }
+    */
+
+     /* Recursion disabled in version 1.0
+                    TODO enable recursion in future versions
+    //Generates recurring spinner
+    private Spinner createNewRecursSpinner() {
+        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
+        final Spinner spinner = new Spinner(this);
+        lparams.addRule(RelativeLayout.END_OF, textViewRecursId-1);
+        lparams.addRule(RelativeLayout.BELOW, categorySpinnerId - 1);
+        lparams.addRule(RelativeLayout.ALIGN_RIGHT, currencySpinnerId - 1);
+
+        spinner.setLayoutParams(lparams);
+        ArrayAdapter<CharSequence> recursSpinnerAdapter = ArrayAdapter.createFromResource(this,R.array.report_activity_recurs_spinner,android.R.layout.simple_spinner_item);
+        recursSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(recursSpinnerAdapter);
+        spinner.setId(spinnerRecursId);
+        spinner.setSaveEnabled(true);
+        spinnerRecursId++;
+        return spinner;
+    }
+    */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.report_toolbar_menu, menu);
@@ -163,7 +292,6 @@ public class ReportActivity extends AppCompatActivity {
         if (id == R.id.report_toolbar_done){
             Intent intent = new Intent();
             intent.putStringArrayListExtra("reportResult", getReportResult());
-            Log.d("List", getReportResult().toString());
             setResult(RESULT_OK, intent);
             finish();
         }
@@ -179,12 +307,50 @@ public class ReportActivity extends AppCompatActivity {
         for(int i=1; i<counter; i++){
             Spinner categorySpinner = (Spinner) findViewById(1000+i);
             Spinner currencySpinner = (Spinner) findViewById(2000+i);
+             /* Recursion disabled in version 1.0
+                    TODO enable recursion in future versions
+            Spinner recursSpinner = (Spinner) findViewById(5000+i);
+            */
             EditText editTextValue = (EditText) findViewById(3000+i);
-            list.add(categorySpinner.getSelectedItemPosition()+"-"+categorySpinner.getSelectedItem().toString() + "-" + editTextValue.getText().toString() + "-" + currencySpinner.getSelectedItem().toString());
+            if(editTextValue.getText().toString().isEmpty()){
+                editTextValue.setText("0");
+            }
+
+                list.add(categorySpinner.getSelectedItemPosition() + "-"
+                        + categorySpinner.getSelectedItem().toString() + "-"
+                        + editTextValue.getText().toString() + "-"
+                        + currencySpinner.getSelectedItem().toString());
+             /* Recursion disabled in version 1.0
+                    TODO enable recursion in future versions
+                        + recursSpinner.getSelectedItem().toString());
+             */
 
         }
 
         return list;
+    }
+
+    // helper method to convert dp to px
+    public int dpToPx(int dp) {
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        return px;
+    }
+
+    //Runs showcase presentation on fragment start
+    private void startShowcase(){
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500); // half second between each showcase view
+        config.setDismissTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this,TAG);
+        sequence.setConfig(config);
+        sequence.addSequenceItem(findViewById(categorySpinnerId - 1), getString(R.string.data_category), getString(R.string.got_it));
+        sequence.addSequenceItem(findViewById(editTextValueId - 1), getString(R.string.data_value), getString(R.string.got_it));
+        sequence.addSequenceItem(findViewById(currencySpinnerId - 1), getString(R.string.data_currency), getString(R.string.got_it));
+        sequence.addSequenceItem(addNew, getString(R.string.data_add_new), getString(R.string.got_it));
+        sequence.addSequenceItem(findViewById(R.id.report_toolbar_done), getString(R.string.data_done), getString(R.string.ok));
+        sequence.start();
+
     }
 
 

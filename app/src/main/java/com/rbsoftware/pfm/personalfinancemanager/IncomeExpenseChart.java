@@ -1,9 +1,14 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,9 +17,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,12 +30,17 @@ import lecho.lib.hellocharts.listener.PieChartOnValueSelectListener;
 import lecho.lib.hellocharts.model.PieChartData;
 import lecho.lib.hellocharts.model.SliceValue;
 import lecho.lib.hellocharts.view.PieChartView;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class IncomeExpenseChart extends Fragment {
+    private final String TAG = "IncomeExpenseChart";
+    private RelativeLayout relativeLayout;
     private List<FinanceDocument> financeDocumentList;
     private PieChartView mPieChart;
     private PieChartData data;
@@ -37,7 +49,8 @@ public class IncomeExpenseChart extends Fragment {
     private TextView mTextViewPeriod;
     private int offsetStart;
     private int offsetEnd;
-
+    private Context mContext;
+    private Activity mActivity;
     public IncomeExpenseChart() {
         // Required empty public constructor
     }
@@ -61,20 +74,22 @@ public class IncomeExpenseChart extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.incomeExpenseLayout);
+
         mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period);
         mIncomeExpenseButton = (ToggleButton) getActivity().findViewById(R.id.btn_income_expense);
 
 
             mIncomeExpenseButton.setChecked(Boolean.valueOf(MainActivity.ReadFromSharedPreferences(getActivity(), "toggleButtonState", "true")));
             if(mIncomeExpenseButton.isChecked()){
-                mIncomeExpenseButton.setTextColor(getResources().getColor(R.color.income));
+                mIncomeExpenseButton.setTextColor(ContextCompat.getColor(getContext(),R.color.income));
                 offsetStart=0;
                 offsetEnd=9;
             }
             else{
 
-                mIncomeExpenseButton.setTextColor(getResources().getColor(R.color.expense));
-                offsetStart=6;
+                mIncomeExpenseButton.setTextColor(ContextCompat.getColor(getContext(), R.color.expense));
+                offsetStart=5;
                 offsetEnd=0;
             }
 
@@ -82,13 +97,13 @@ public class IncomeExpenseChart extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    mIncomeExpenseButton.setTextColor(getResources().getColor(R.color.income));
+                    mIncomeExpenseButton.setTextColor(ContextCompat.getColor(getContext(), R.color.income));
                     offsetStart=0;
                     offsetEnd=9;
                 }
                 else{
-                    mIncomeExpenseButton.setTextColor(getResources().getColor(R.color.expense));
-                    offsetStart=6;
+                    mIncomeExpenseButton.setTextColor(ContextCompat.getColor(getContext(), R.color.expense));
+                    offsetStart=5;
                     offsetEnd=0;
 
                 }
@@ -101,6 +116,20 @@ public class IncomeExpenseChart extends Fragment {
         mPieChart = (PieChartView) getActivity().findViewById(R.id.pie_chart);
         mPieChart.setOnValueTouchListener(new ValueTouchListener());
 
+        mContext = getContext();
+        mActivity = getActivity();
+
+        int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
+                .getInt("status_"+TAG,0);
+        if(status != -1) {
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startShowcase();
+                }
+            }, 1000);
+        }
 
     }
 
@@ -116,26 +145,37 @@ public class IncomeExpenseChart extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.filter, menu);
+        inflater.inflate(R.menu.chart_income_expense_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.action_filter){
-            showPopup();
-            return true;
+        switch (id) {
+            case R.id.action_filter:
+                showPopup();
+                return true;
+            case R.id.document_share:
+                try {
+                    ExportData.exportChartAsPng(getContext(),relativeLayout);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
         }
 
 
-        return super.onOptionsItemSelected(item);
+
     }
 
 
 
     //Helper methods
-    //Shows filter popup menu
+    //Shows chart_income_expense_menu popup menu
     public void showPopup(){
         View menuItemView = getActivity().findViewById(R.id.action_filter);
         PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
@@ -196,7 +236,8 @@ public class IncomeExpenseChart extends Fragment {
             int value=mapSum.get(i);
             total +=value;
             if(value !=0) {
-                SliceValue sliceValue = new SliceValue(value, Color.rgb(150 - i * 4, 90 + i * 8, 200 - i*5));
+                //SliceValue sliceValue = new SliceValue(value, Color.rgb(150 - i * 4, 90 + i * 8, 200 - i*5));
+                SliceValue sliceValue = new SliceValue(value, getColorPalette(i));
                 sliceValue.setLabel(keyToString(i)+" "+ value);
                 values.add(sliceValue);
             }
@@ -207,6 +248,7 @@ public class IncomeExpenseChart extends Fragment {
         data.setHasLabelsOutside(false);
         data.setHasCenterCircle(true);
         data.setCenterText1(Integer.toString(total));
+        data.setCenterText2(MainActivity.defaultCurrency);
         if(mIncomeExpenseButton.isChecked()) {
             data.setCenterCircleColor(getResources().getColor(R.color.income));
         }
@@ -297,6 +339,49 @@ public class IncomeExpenseChart extends Fragment {
             case 14: return getResources().getString(R.string.other_expense);
         }
         return "";
+    }
+
+    private int getColorPalette(int i){
+        switch (i){
+            case 1: return ContextCompat.getColor(getContext(),R.color.salary);
+            case 2: return ContextCompat.getColor(getContext(), R.color.rental_income);
+            case 3: return ContextCompat.getColor(getContext(), R.color.interest);
+            case 4: return ContextCompat.getColor(getContext(), R.color.gifts);
+            case 5: return ContextCompat.getColor(getContext(), R.color.other_income);
+            case 6: return ContextCompat.getColor(getContext(), R.color.taxes);
+            case 7: return ContextCompat.getColor(getContext(), R.color.mortgage);
+            case 8: return ContextCompat.getColor(getContext(), R.color.credit_card);
+            case 9: return ContextCompat.getColor(getContext(), R.color.utilities);
+            case 10: return ContextCompat.getColor(getContext(), R.color.food);
+            case 11: return ContextCompat.getColor(getContext(), R.color.car_payment);
+            case 12: return ContextCompat.getColor(getContext(), R.color.personal);
+            case 13: return ContextCompat.getColor(getContext(), R.color.activities);
+            case 14: return ContextCompat.getColor(getContext(), R.color.other_expense);
+            default: return Color.WHITE;
+
+        }
+
+    }
+
+    //Runs showcase presentation on fragment start
+    private void startShowcase(){
+        mIncomeExpenseButton.measure(0, 0);
+        Double r = mIncomeExpenseButton.getMeasuredWidth() / 1.5;
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500); // half second between each showcase view
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, TAG);
+        sequence.setConfig(config);
+        sequence.addSequenceItem(new MaterialShowcaseView.Builder(mActivity)
+                .setTarget(mIncomeExpenseButton)
+                .setUseAutoRadius(false)
+                .setRadius(r.intValue())
+                .setContentText(R.string.income_expense_switch)
+                .setDismissText(R.string.ok)
+                .setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent))
+                .build());
+        sequence.start();
+
     }
     private class ValueTouchListener implements PieChartOnValueSelectListener {
 

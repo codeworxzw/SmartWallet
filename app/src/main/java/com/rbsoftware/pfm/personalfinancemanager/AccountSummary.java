@@ -1,9 +1,11 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
+import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,13 +14,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.PrefsManager;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 
 public class AccountSummary extends Fragment {
+
+    private final String TAG = "AccountSummary";
     private TextView salary;
     private TextView rentalIncome;
     private TextView interest;
@@ -37,7 +46,8 @@ public class AccountSummary extends Fragment {
     private TextView expense;
     private String selectedItem;
     private TextView mTextViewPeriod;
-
+    private Context mContext;
+    private Activity mActivity;
     private List<FinanceDocument> financeDocumentList;
     public AccountSummary() {
         // Required empty public constructor
@@ -79,6 +89,8 @@ public class AccountSummary extends Fragment {
         income = (TextView) getActivity().findViewById(R.id.tv_income);
         expense = (TextView) getActivity().findViewById(R.id.tv_expense);
 
+        mContext = getContext();
+        mActivity = getActivity();
     }
 
     @Override
@@ -89,25 +101,49 @@ public class AccountSummary extends Fragment {
         getValue(financeDocumentList);
     }
 
+    //Create options menu
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.filter, menu);
+        inflater.inflate(R.menu.account_summary_menu, menu);
+            int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
+                    .getInt("status_"+TAG,0);
+            if(status != -1) {
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startShowcase();
+                    }
+                }, 1000);
+            }
+
         super.onCreateOptionsMenu(menu, inflater);
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.action_filter){
-            showPopup();
-            return true;
+        switch (id) {
+            case R.id.action_filter:
+                showPopup();
+                return true;
+
+            case R.id.document_share:
+                try {
+                    ExportData.exportSummaryAsCsv(getContext(), prepareCsvData());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
 
-        return super.onOptionsItemSelected(item);
+
     }
     //Helper methods
-    //Shows filter popup menu
+    //Shows account_summary_menu popup menu
     public void showPopup(){
         View menuItemView = getActivity().findViewById(R.id.action_filter);
         PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
@@ -117,7 +153,6 @@ public class AccountSummary extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
-                Log.d("popup menu", item.getTitle().toString());
 
 
                 switch (id){
@@ -214,8 +249,52 @@ public class AccountSummary extends Fragment {
         personal.setText(Integer.toString(personalSum));
         activities.setText(Integer.toString(activitiesSum));
         otherExpense.setText(Integer.toString(otherExpensesSum));
-        income.setText(Integer.toString(totalIncome));
-        expense.setText(Integer.toString(totalExpense));
+        String incomeString = Integer.toString(totalIncome) +" "+MainActivity.defaultCurrency;
+        income.setText(incomeString);
+        String expenseString = Integer.toString(totalExpense) +" "+MainActivity.defaultCurrency;
+        expense.setText(expenseString);
+    }
+
+    // compiles all views data into export ready list
+    private List<String[]> prepareCsvData(){
+        List<String[]> data = new ArrayList<>();
+        data.add(new String[]{getString(R.string.period), mTextViewPeriod.getText().toString()});
+        data.add(new String[]{"",""});
+        data.add(new String[]{getString(R.string.income), income.getText().toString()});
+        data.add(new String[]{"",""});
+        data.add(new String[]{getString(R.string.salary), salary.getText().toString()});
+        data.add(new String[]{getString(R.string.rental_income), rentalIncome.getText().toString()});
+        data.add(new String[]{getString(R.string.interest), interest.getText().toString()});
+        data.add(new String[]{getString(R.string.gifts), gifts.getText().toString()});
+        data.add(new String[]{getString(R.string.other_income), otherIncome.getText().toString()});
+        data.add(new String[]{"",""});
+        data.add(new String[]{getString(R.string.expense), expense.getText().toString()});
+        data.add(new String[]{"",""});
+        data.add(new String[]{getString(R.string.food), food.getText().toString()});
+        data.add(new String[]{getString(R.string.car_payment), carPayment.getText().toString()});
+        data.add(new String[]{getString(R.string.personal), personal.getText().toString()});
+        data.add(new String[]{getString(R.string.activities), activities.getText().toString()});
+        data.add(new String[]{getString(R.string.utilities), utilities.getText().toString()});
+        data.add(new String[]{getString(R.string.credit_card), creditCard.getText().toString()});
+        data.add(new String[]{getString(R.string.taxes), taxes.getText().toString()});
+        data.add(new String[]{getString(R.string.mortgage), mortgage.getText().toString()});
+        data.add(new String[]{getString(R.string.other_expense), otherExpense.getText().toString()});
+
+        return data;
+    }
+
+
+    //Runs showcase presentation on fragment start
+    private void startShowcase(){
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500); // half second between each showcase view
+        config.setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, TAG);
+        sequence.setConfig(config);
+        sequence.addSequenceItem(mActivity.findViewById(R.id.action_filter), getString(R.string.action_filter), getString(R.string.got_it));
+        sequence.addSequenceItem(mActivity.findViewById(R.id.document_share), getString(R.string.document_share), getString(R.string.ok));
+        sequence.start();
+
     }
 
 }

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Smart Wallet</string>
+    <string name="activities">Розваги</string>
+    <string name="add_line">Додати поле</string>
+    <string name="car_payment">Автомобіль</string>
+    <string name="credit_card">Кредитна карта</string>
+    <string name="daily_reminder_text">Заповніть Ваш звіт</string>
+    <string name="daily_reminder_title">Щоденне нагадування Smart Wallet</string>
+    <string name="default_currency">Валюта за замовчуванням</string>
+    <string name="delete">Видалити</string>
+    <string name="delete_dialog_message">Ви дійсно хочете видалити цей запис?</string>
+    <string name="delete_dialog_title">Видалити запис</string>
+    <string name="document_date">Дата документа</string>
+    <string name="done">Ок</string>
+    <string name="drawer_close">Закрити</string>
+    <string name="drawer_open">Відкрити</string>
+    <string name="expense">Витрати</string>
+    <string name="filter">Фільтр</string>
+    <string name="food">Харчування</string>
+    <string name="gifts">Подарунки</string>
+    <string name="income">Доходи</string>
+    <string name="interest">Відсотки</string>
+    <string name="last_month">Минулий місяць</string>
+    <string name="last_week">Минулий тиждень</string>
+    <string name="line">Поле</string>
+    <string name="loading">Завантаження</string>
+    <string name="mortgage">Іпотека</string>
+    <string name="never">Ніколи</string>
+    <string name="other_expense">Інші витрати</string>
+    <string name="other_income">Інші доходи</string>
+    <string name="overview">Огляд</string>
+    <string name="period">Період</string>
+    <string name="personal">Особисті</string>
+    <string name="recurs">Повторюються</string>
+    <string name="rental_income">Доходи від оренди</string>
+    <string name="salary">Зарплата</string>
+    <string name="share">Поділитись</string>
+    <string name="taxes">Податки</string>
+    <string name="text_view_error">Вкажіть значення</string>
+    <string name="this_month">Поточний місяць</string>
+    <string name="this_week">Поточний тиждень</string>
+    <string name="this_year">Поточний рік</string>
+    <string name="title_activity_report">Звіт</string>
+    <string name="title_activity_settings">Налаштування</string>
+    <string name="trends">Тенденції</string>
+    <string name="utilities">Комунальні</string>
+    <string name="value">Значення</string>
+    <string name="weekly_reminder_text">Перегляньте тижневий звіт</string>
+    <string name="your">Ваш</string>
+
+
+    <string name="action_filter">Відфільтруйте дані за період</string>
+    <string name="got_it">Зрозуміло</string>
+    <string name="document_share">Експортуйте звіт до інших додатків</string>
+    <string name="ok">Ok</string>
+    <string name="income_expense_switch">Перемикайтесть між графіками доходів та витрат</string>
+    <string name="action_line">Оберіть графік для відображення</string>
+    <string name="data_category">Оберіть категорію даних</string>
+    <string name="data_value">Укажіть значення</string>
+    <string name="data_currency">Виберіть валюту операції</string>
+    <string name="data_add_new">Додайте нове поле для вводу</string>
+    <string name="data_done">Натисніть, щоб створити звіт</string>
+    <string name="history_card">Натисніть на картці для перегляду деталей або затримайте палець для виклику меню</string>
+
+
+    <string-array name="account_summary_spinner">
+        <item>Поточний тиждень</item>
+        <item>Минулий тиждень</item>
+        <item>Поточний місяць</item>
+        <item>Минулий місяць</item>
+        <item>Поточний рік</item>
+    </string-array>
+
+    <string-array name="drawer_menu">
+        <item>Загальний огляд</item>
+        <item>Графіки</item>
+        <item>Активність</item>
+        <item>Налаштування</item>
+        <item>Вийти</item>
+    </string-array>
+
+
+    <string-array name="report_activity_category_spinner">
+        <item>Зарплата</item>
+        <item>Дохід з оренди</item>
+        <item>Відсотки</item>
+        <item>Подарунки</item>
+        <item>Інші доходи</item>
+        <item>Податки</item>
+        <item>Іпотека</item>
+        <item>Кредитна карта</item>
+        <item>Комунальні</item>
+        <item>Харчування</item>
+        <item>Автомобіль</item>
+        <item>Особисті</item>
+        <item>Розваги</item>
+        <item>Інші витрати</item>
+    </string-array>
+    <string-array name="report_activity_currency_spinner">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>UAH</item>
+        <item>RUB</item>
+    </string-array>
+</resources>

@@ -5,10 +5,32 @@
     <color name="blue_grey_700">#455A64</color>
     <color name="blue_grey_800">#37474F</color>
     <color name="blue_grey_900">#263238</color>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF5722</color>
-    <color name="colorPagerTabStrip">#C5CAE9</color>
-    <color name="income">#A5D6A7</color>
-    <color name="expense">#EF9A9A</color>
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryDark">#388E3C</color>
+    <color name="colorAccent">#F57C00</color>
+    <color name="colorAccentDark">#EF6C00</color>
+    <color name="colorPagerTabStrip">#C8E6C9</color>
+
+    <color name="income">#99CC00</color>
+    <color name="salary">#004358</color>
+    <color name="rental_income">#1F8A70</color>
+    <color name="gifts">#6E9949</color>
+    <color name="interest">#FFE11A</color>
+    <color name="other_income">#FD7400</color>
+
+
+    <color name="expense">#FF4444</color>
+    <color name="taxes">#7F1637</color>
+    <color name="mortgage">#047878</color>
+    <color name="credit_card">#FFB733</color>
+    <color name="utilities">#F57336</color>
+    <color name="food">#C22121</color>
+    <color name="car_payment">#F25252</color>
+    <color name="personal">#F27649</color>
+    <color name="activities">#F29D35</color>
+    <color name="other_expense">#F2C12E</color>
+
+    <color name="card_backgroundExpand">#FAFAFA</color>
+    <color name="drawer_header">#388E3C</color>
+    <color name="background">#E8F5E9</color>
 </resources>

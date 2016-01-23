@@ -58,6 +58,8 @@ public class FinanceDocumentModel {
     private static final String THIS_YEAR = "thisYear";
     private Calendar cal;
 
+    public static final String ORDER_ASC = "asc";
+    public static final String ORDER_DESC = "desc";
 
     private Datastore mDatastore;
     private IndexManager im;
@@ -119,7 +121,7 @@ public class FinanceDocumentModel {
         indexList.add("type");
         indexList.add("userId");
         indexList.add("date");
-        indexList.add("salary");
+       /* indexList.add("salary");
         indexList.add("rentalIncome");
         indexList.add("interest");
         indexList.add("gifts");
@@ -132,7 +134,7 @@ public class FinanceDocumentModel {
         indexList.add("carPayment");
         indexList.add("personal");
         indexList.add("activities");
-        indexList.add("otherExpenses");
+        indexList.add("otherExpenses");*/
 
 
         im.ensureIndexed(indexList, FINANCE_DOCUMENT_INDEX_LIST);
@@ -153,6 +155,8 @@ public class FinanceDocumentModel {
      * "thisYear"
      * @return list of the documents
      */
+
+
     public List<FinanceDocument> queryDocumentsByDate(String timeFrame, String userId){
         List<FinanceDocument> list= new ArrayList<>();
         cal = Calendar.getInstance();
@@ -162,8 +166,47 @@ public class FinanceDocumentModel {
         Map<String, Object> gteDate = new HashMap<String, Object>();                    // Start of the period
         Map<String, Object> startClause = new HashMap<String, Object>();                //*
         gteDate.put("$gte", startDateBuilder(currDate, timeFrame));        //*
-        startClause.put("date", gteDate);                                  //*********
+        startClause.put("date", gteDate);
+        //*********
+        Map<String, Object> lteDate = new HashMap<String, Object>();      // End of t/he period
+        Map<String, Object> endClause = new HashMap<String, Object>();                 // *
+        lteDate.put("$lte", endDateBuilder(currDate, timeFrame));         //*
+        endClause.put("date", lteDate);                                   //*********
 
+        Map<String, Object> eqUserId = new HashMap<String, Object>();       //Query by userId
+        Map<String, Object> userIdClause = new HashMap<String, Object>();               //*
+        eqUserId.put("$eq", userId);                                       //*
+        userIdClause.put("userId", eqUserId);                              //**********************
+
+        query.put("$and", Arrays.<Object>asList(startClause, endClause, userIdClause)); //query
+
+
+        QueryResult result = im.find(query);
+        if(result != null) {
+            for (DocumentRevision rev : result) {
+                list.add(getDocument(rev.getId()));
+
+                // The returned revision object contains all fields for
+                // the object. You cannot project certain fields in the
+                // current implementation.
+            }
+
+        }
+        return list;
+    }
+
+
+    public List<FinanceDocument> queryDocumentsByDate(String timeFrame, String userId, String order){
+        List<FinanceDocument> list= new ArrayList<>();
+        cal = Calendar.getInstance();
+        long currDate =  cal.getTimeInMillis()/1000;
+        Map<String, Object> query = new HashMap<String, Object>();
+
+        Map<String, Object> gteDate = new HashMap<String, Object>();                    // Start of the period
+        Map<String, Object> startClause = new HashMap<String, Object>();                //*
+        gteDate.put("$gte", startDateBuilder(currDate, timeFrame));        //*
+        startClause.put("date", gteDate);
+                                                                            //*********
         Map<String, Object> lteDate = new HashMap<String, Object>();      // End of t/he period
         Map<String, Object> endClause = new HashMap<String, Object>();                 // *
         lteDate.put("$lte", endDateBuilder(currDate, timeFrame));         //*
@@ -179,9 +222,16 @@ public class FinanceDocumentModel {
         //Sorting documents
         List<Map<String, String>> sortDocument = new ArrayList<Map<String, String>>();
         Map<String, String> sortByDate = new HashMap<String, String>();
-        sortByDate.put("date", "asc");  //sorting by date
-        sortDocument.add(sortByDate);
+        if(order.equals(ORDER_ASC)) {
 
+            sortByDate.put("date", "asc");  //sorting by date
+
+        }
+        else
+        {
+            sortByDate.put("date", "desc");  //sorting by date
+        }
+        sortDocument.add(sortByDate);
         QueryResult result = im.find(query,0,0,null,sortDocument);
         if(result != null) {
             for (DocumentRevision rev : result) {
@@ -198,7 +248,7 @@ public class FinanceDocumentModel {
 
     //methods to get first/last day
     private Long getFirstDateOfCurrentMonth() {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         cal.set(Calendar.DAY_OF_MONTH, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH));
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
@@ -208,17 +258,17 @@ public class FinanceDocumentModel {
     }
 
     private Long getFirstDateOfCurrentWeek() {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        cal.set(Calendar.DAY_OF_WEEK, 1);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        cal.clear(Calendar.HOUR);
+        cal.clear(Calendar.MINUTE);
+        cal.clear(Calendar.SECOND);
+        cal.clear(Calendar.MILLISECOND);
         return cal.getTimeInMillis()/1000;
     }
 
     private Long getFirstDateOfCurrentYear() {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         cal.setTimeZone(cal.getTimeZone());
         cal.set(Calendar.DAY_OF_YEAR, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_YEAR));
         cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -229,7 +279,7 @@ public class FinanceDocumentModel {
     }
 
     private Long getFirstDateOfPreviousMonth() {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         cal.set(Calendar.DATE, 1);
         cal.add(Calendar.MONTH, -1);
         cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -240,7 +290,7 @@ public class FinanceDocumentModel {
     }
 
     private Long getLastDateOfPreviousMonth() {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         cal.set(Calendar.DATE, 1);
         cal.add(Calendar.DAY_OF_MONTH, -1);
         cal.set(Calendar.HOUR_OF_DAY, 23);
@@ -252,24 +302,25 @@ public class FinanceDocumentModel {
 
 
     private Long getFirstDateOfPreviousWeek() {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        cal.add(Calendar.WEEK_OF_MONTH, -1);
-        cal.set(Calendar.DAY_OF_WEEK, 1);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+        cal.add(Calendar.WEEK_OF_YEAR, -1);
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+
+        cal.clear(Calendar.HOUR);
+        cal.clear(Calendar.MINUTE);
+        cal.clear(Calendar.SECOND);
+        cal.clear(Calendar.MILLISECOND);
         return cal.getTimeInMillis()/1000;
     }
 
     private Long getLastDateOfPreviousWeek() {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        cal.set(Calendar.DAY_OF_WEEK, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_WEEK));
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
         cal.add(Calendar.DAY_OF_YEAR, -1);
-        cal.set(Calendar.HOUR_OF_DAY, 23);
-        cal.set(Calendar.MINUTE, 59);
-        cal.set(Calendar.SECOND, 59);
-        cal.set(Calendar.MILLISECOND, 0);
+        cal.clear(Calendar.HOUR);
+        cal.clear(Calendar.MINUTE);
+        cal.clear(Calendar.SECOND);
+        cal.clear(Calendar.MILLISECOND);
         return cal.getTimeInMillis()/1000;
     }
 
@@ -375,12 +426,12 @@ public class FinanceDocumentModel {
 
     /**
      * Deletes a Task document within the datastore.
-     * @param task task to delete
+     * @param doc task to delete
      * @throws ConflictException if the task passed in has a rev which doesn't
      *      match the current rev in the datastore.
      */
-    public void deleteDocument(FinanceDocument task) throws ConflictException {
-        this.mDatastore.deleteDocumentFromRevision(task.getDocumentRevision());
+    public void deleteDocument(FinanceDocument doc) throws ConflictException {
+        this.mDatastore.deleteDocumentFromRevision(doc.getDocumentRevision());
     }
 
     /**
