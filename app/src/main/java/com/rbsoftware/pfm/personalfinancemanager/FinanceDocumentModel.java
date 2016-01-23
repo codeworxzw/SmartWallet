@@ -390,6 +390,26 @@ public class FinanceDocumentModel {
     }
 
     /**
+     * Creates a task, assigning an ID.
+     * @param document task to create
+     * @return new revision of the document
+     */
+    public Currency createDocument(Currency document) {
+        MutableDocumentRevision rev = new MutableDocumentRevision();
+        rev.docId = "CurrencyID";
+        rev.body = DocumentBodyFactory.create(document.asMap());
+        try {
+            BasicDocumentRevision created = this.mDatastore.createDocumentFromRevision(rev);
+
+            return Currency.fromRevision(created);
+
+        } catch (DocumentException de) {
+            Log.e("Doc", "document was not created");
+            return null;
+        }
+    }
+
+    /**
      * Retrieves document by id.
      * @param docId task to create
      * @return  revision of the document
@@ -406,6 +426,23 @@ public class FinanceDocumentModel {
         return FinanceDocument.fromRevision(retrieved);
     }
 
+
+    /**
+     * Retrieves document by id.
+     * @param docId task to create
+     * @return  revision of the document
+     */
+    /*public Currency getDocument(String docId,String a)  {
+
+        BasicDocumentRevision retrieved = null;
+        try {
+            retrieved = mDatastore.getDocument(docId);
+        } catch (DocumentNotFoundException e) {
+            e.printStackTrace();
+            Log.e("Doc", "document was not found");
+        }
+        return Currency.fromRevision(retrieved);
+    }*/
     /**
      * Updates a Task document within the datastore.
      * @param document document to update
@@ -424,6 +461,25 @@ public class FinanceDocumentModel {
         }
     }
 
+    /**
+     * Updates a Task document within the datastore.
+     * @param document document to update
+     * @return the updated revision of the Task
+     * @throws ConflictException if the document passed in has a rev which doesn't
+     *      match the current rev in the datastore.
+     */
+    /*public Currency updateDocument(Currency document) throws ConflictException {
+        MutableDocumentRevision rev = document.getDocumentRevision().mutableCopy();
+        rev.body = DocumentBodyFactory.create(document.asMap());
+        try {
+            BasicDocumentRevision updated = this.mDatastore.updateDocumentFromRevision(rev);
+            return Currency.fromRevision(updated);
+        } catch (DocumentException de) {
+            return null;
+        }
+    }
+
+*/
     /**
      * Deletes a Task document within the datastore.
      * @param doc task to delete

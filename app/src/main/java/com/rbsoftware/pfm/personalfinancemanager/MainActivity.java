@@ -25,7 +25,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity implements CurrencyConversion.OnTaskCompleted {
     public static final String PREF_FILE = "PrefFile";
     public final static int PARAM_USERID =0;
     public final static int PARAM_SALARY =1;
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity  {
 
     public static FinanceDocumentModel financeDocumentModel;
     private FinanceDocument financeDocument;
+    public CurrencyConversion currencyConversion;
 
 
     @Override
@@ -92,8 +93,7 @@ public class MainActivity extends AppCompatActivity  {
             financeDocumentModel.setIndexManager();
         }
         financeDocumentModel.setReplicationListener(this);
-
-
+        currencyConversion = new CurrencyConversion(this,this);
 
 
         reloadReplicationSettings();
@@ -107,8 +107,11 @@ public class MainActivity extends AppCompatActivity  {
                 // createNewFinanceDocument(data);
                 //replication start
                 //financeDocumentModel.startPushReplication();
-                Intent report = new Intent(MainActivity.this, ReportActivity.class);
-                startActivityForResult(report, 1);
+                //Intent report = new Intent(MainActivity.this, ReportActivity.class);
+                //startActivityForResult(report, 1);
+
+
+                currencyConversion.execute();
             }
         });
 
@@ -268,7 +271,7 @@ public class MainActivity extends AppCompatActivity  {
 
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
                 calendar.getTimeInMillis(),
-                1000*24*60*60 ,
+                1000 * 24 * 60 * 60,
                 pendingIntent);
         Log.d("Alarm", "setnotification was called");
     }
@@ -288,4 +291,8 @@ public class MainActivity extends AppCompatActivity  {
     }
 
 
+    @Override
+    public void onTaskCompleted() {
+        financeDocumentModel.startPushReplication();
+    }
 }
