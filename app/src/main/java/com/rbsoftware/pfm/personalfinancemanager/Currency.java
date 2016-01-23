@@ -3,87 +3,90 @@ package com.rbsoftware.pfm.personalfinancemanager;
 import android.util.Log;
 
 import com.cloudant.sync.datastore.BasicDocumentRevision;
-import com.cloudant.sync.datastore.ConflictException;
-import com.cloudant.sync.datastore.DocumentBodyFactory;
-import com.cloudant.sync.datastore.DocumentException;
-import com.cloudant.sync.datastore.DocumentNotFoundException;
-import com.cloudant.sync.datastore.MutableDocumentRevision;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * Created by Bohdan on 1/5/2016.
+ * Created by Bogdan on 1/5/2016.
  */
 public class Currency {
-    static final String DOC_TYPE = "Currency  document";
 
+    static final String DOC_TYPE = "CurrencyDocument";
+    private String type = DOC_TYPE;
     private String input;
 
-    private String ccy;
-    private String base_ccy;
-    private double buy;
-    private double sale;
-
-    private double EUR;
-    private double USD;
-    private double RUR;
+    private Double EUR = new Double(0);
+    private Double USD = new Double(0);
+    private Double RUR = new Double(0);
 
     //UAH
-    private double EURtoUAH = EUR;
-    private double USDtoUAH = USD;
-    private double RURtoUAH = RUR;
+    private String EURtoUAH;
+    private String USDtoUAH;
+    private String RURtoUAH;
 
     //USD
-    private double EURtoUSD = EUR/USD;   // if I want to sell EUR and buy USD then I need to use EURtoUSD
-    private double RURtoUSD = RUR/USD;
-    private double UAHtoUSD = 1/USD;     // if I want to sell UAH and buy USD then I need to use UAHtoUSD
+    private String EURtoUSD;   // if I want to sell EUR and buy USD then I need to use EURtoUSD
+    private String RURtoUSD;
+    private String UAHtoUSD;   // if I want to sell UAH and buy USD then I need to use UAHtoUSD
 
     //EUR
-    private double USDtoEUR = USD/EUR;
-    private double RURtoEUR = RUR/EUR;
-    private double UAHtoEUR = 1/EUR;
+    private String USDtoEUR;
+    private String RURtoEUR;
+    private String UAHtoEUR;
 
     //RUR
-    private double EURtoRUR = EUR/RUR;
-    private double USDtoRUR = USD/RUR;
-    private double UAHtoRUR = 1/RUR;
+    private String EURtoRUR;
+    private String USDtoRUR;
+    private String UAHtoRUR;
 
-
+    private Currency() {}
 
     public Currency(String input) {
-
         this.input = input;
-
-            /*this.setCcy(ccy);
-            this.setBase_ccy(base_ccy);
-            this.setBuy(buy);
-            this.setSale(sale);*/
+        parser();
     }
 
-    /*
-        public String getCcy() {return ccy;}
-        public void setCcy(String ccy) {
-            this.ccy = ccy;
-        }
 
-        public String getBase_ccy() {return base_ccy;}
-        public void setBase_ccy(String base_ccy) {
-            this.base_ccy = base_ccy;
-        }
+    public  void setEURtoUSD (String EURtoUSD ){this.EURtoUSD = EURtoUSD;}
+    public  void setEURtoRUR (String EURtoRUR ){this.EURtoRUR = EURtoRUR;}
+    public  void setEURtoUAH (String EURtoUAH ){this.EURtoUAH = EURtoUAH;}
+    public  void setUSDtoEUR (String USDtoEUR ){this.USDtoEUR = USDtoEUR;}
+    public  void setUSDtoRUR (String USDtoRUR ){this.USDtoRUR = USDtoRUR;}
+    public  void setUSDtoUAH (String USDtoUAH ){this.USDtoUAH = USDtoUAH;}
+    public  void setRURtoEUR (String RURtoEUR ){this.RURtoEUR = RURtoEUR;}
+    public  void setRURtoUSD (String RURtoUSD ){this.RURtoUSD = RURtoUSD;}
+    public  void setRURtoUAH (String RURtoUAH ){this.RURtoUAH = RURtoUAH;}
+    public  void setUAHtoEUR (String UAHtoEUR ){this.UAHtoEUR = UAHtoEUR;}
+    public  void setUAHtoRUR (String UAHtoRUR ){this.UAHtoRUR = UAHtoRUR;}
+    public  void setUAHtoUSD (String UAHtoUSD ){this.UAHtoUSD = UAHtoUSD;}
 
-        public double getBuy() {return buy;}
-        public void setBuy(double buy) {
-            this.buy = buy;
-        }
 
-        public double getSale() {return sale;}
-        public void setSale(double sale) {
-            this.sale = sale;
-        }
-    */
-    public void Parser() {
+    public Double getEURtoUSD() {return Double.valueOf(EURtoUSD);}
+    public Double getEURtoRUR() {return Double.valueOf(EURtoRUR);}
+    public Double getEURtoUAH() {return Double.valueOf(EURtoUAH);}
+    public Double getUSDtoEUR() {return Double.valueOf(USDtoEUR);}
+    public Double getUSDtoRUR() {return Double.valueOf(USDtoRUR);}
+    public Double getUSDtoUAH() {return Double.valueOf(USDtoUAH);}
+    public Double getRURtoEUR() {return Double.valueOf(RURtoEUR);}
+    public Double getRURtoUSD() {return Double.valueOf(RURtoUSD);}
+    public Double getRURtoUAH() {return Double.valueOf(RURtoUAH);}
+    public Double getUAHtoEUR() {return Double.valueOf(UAHtoEUR);}
+    public Double getUAHtoUSD() {return Double.valueOf(UAHtoUSD);}
+    public Double getUAHtoRUR() {return Double.valueOf(UAHtoRUR);}
+
+
+
+    public void parser() {
+        String ccy;
+//        String base_ccy;
+        double buy;
+        double sale;
+
         try {
             JSONArray jArray = new JSONArray(input);
             for (int i = 0; i < jArray.length(); i++) {
@@ -91,11 +94,9 @@ public class Currency {
                 JSONObject jObject = jArray.getJSONObject(i);
 
                 ccy = jObject.getString("ccy");
-                base_ccy = jObject.getString("base_ccy");
+//                base_ccy = jObject.getString("base_ccy");
                 buy = jObject.getDouble("buy");
                 sale = jObject.getDouble("sale");
-
-                Log.d("TAG", ccy + "   " + base_ccy + "   " + buy + "   " + sale);
 
                 if (ccy.equals("EUR")) {
                     EUR = (sale + buy) / 2;
@@ -106,7 +107,6 @@ public class Currency {
                 if (ccy.equals("RUR")) {
                     RUR = (sale + buy) / 2;
                 }
-
             } // End Loop
         } catch (JSONException e) {
             Log.e("JSONException", "Error: " + e.toString());
@@ -115,64 +115,71 @@ public class Currency {
         Log.d("TAG", EUR + " ");
         Log.d("TAG", USD + " ");
         Log.d("TAG", RUR + " ");
-    } // public void Parser()
 
 
+        EURtoUAH = Double.toString(EUR);
+        USDtoUAH = Double.toString(USD);
+        RURtoUAH = Double.toString(RUR);
+        EURtoUSD = Double.toString(EUR/USD);
+        RURtoUSD = Double.toString(RUR/USD);
+        UAHtoUSD = Double.toString(1/USD);
+        USDtoEUR = Double.toString(USD/EUR);
+        RURtoEUR = Double.toString(RUR/EUR);
+        UAHtoEUR = Double.toString(1/EUR);
+        EURtoRUR = Double.toString(EUR/RUR);
+        USDtoRUR = Double.toString(USD/RUR);
+        UAHtoRUR = Double.toString(1/RUR);
+
+    } // public void parser()
+
+    /**
+     * Map
+     * @return map of
+     */
+    public Map<String, Object> asMap() {
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("EURtoUSD", EURtoUSD);
+        map.put("EURtoRUR", EURtoRUR);
+        map.put("EURtoUAH", EURtoUAH);
+        map.put("USDtoEUR", USDtoEUR);
+        map.put("USDtoRUR", USDtoRUR);
+        map.put("USDtoUAH", USDtoUAH);
+        map.put("RURtoEUR", RURtoEUR);
+        map.put("RURtoUSD", RURtoUSD);
+        map.put("RURtoUAH", RURtoUAH);
+        map.put("UAHtoEUR", UAHtoEUR);
+        map.put("UAHtoUSD", UAHtoUSD);
+        map.put("UAHtoRUR", UAHtoRUR);
+        map.put("type", type);
+
+        return map;
+    }
+
+    private BasicDocumentRevision rev;
+    public BasicDocumentRevision getDocumentRevision() {
+        return rev;
+    }
+
+    public static Currency fromRevision(BasicDocumentRevision rev) {
+        Currency t = new Currency();
+        t.rev = rev;
+        Map<String, Object> map = rev.asMap();
+        if(map.containsKey("type") && map.get("type").equals(Currency.DOC_TYPE)) {
+            t.setEURtoUSD((String) map.get("EURtoUSD"));
+            t.setEURtoRUR((String) map.get("EURtoRUR"));
+            t.setEURtoUAH((String) map.get("EURtoUAH"));
+            t.setUSDtoEUR((String) map.get("USDtoEUR"));
+            t.setUSDtoRUR((String) map.get("USDtoRUR"));
+            t.setUSDtoUAH((String) map.get("USDtoUAH"));
+            t.setRURtoEUR((String) map.get("RURtoEUR"));
+            t.setRURtoUSD((String) map.get("RURtoUSD"));
+            t.setRURtoUAH((String) map.get("RURtoRUR"));
+            t.setUAHtoEUR((String) map.get("UAHtoEUR"));
+            t.setUAHtoUSD((String) map.get("UAHtoUSD"));
+            t.setUAHtoRUR((String) map.get("UAHtoRUR"));
+
+            return t;
+        }
+        return null;
+    }
 }
-    /**
-     * Creates a task, assigning an ID.
-     * @param document task to create
-     * @return new revision of the document
-     */
-/*
-    public Currency createDocument(Currency document) {
-        MutableDocumentRevision rev = new MutableDocumentRevision();
-
-        rev.body = DocumentBodyFactory.create(document.asMap());
-        try {
-            BasicDocumentRevision created = this.mDatastore.createDocumentFromRevision(rev);
-
-            return Currency.fromRevision(created);
-
-        } catch (DocumentException de) {
-            Log.e("Doc", "document was not created");
-            return null;
-        }
-    }
-*/
-
-    /**
-     * Updates a Task document within the datastore.
-     * @param document document to update
-     * @return the updated revision of the Task
-     * @throws ConflictException if the document passed in has a rev which doesn't
-     *      match the current rev in the datastore.
-     */
-    /*public FinanceDocument updateDocument(FinanceDocument document) throws ConflictException {
-        MutableDocumentRevision rev = document.getDocumentRevision().mutableCopy();
-        rev.body = DocumentBodyFactory.create(document.asMap());
-        try {
-            BasicDocumentRevision updated = this.mDatastore.updateDocumentFromRevision(rev);
-            return FinanceDocument.fromRevision(updated);
-        } catch (DocumentException de) {
-            return null;
-        }
-    }
-*/
-    /**
-     * Retrieves document by id.
-     * @param docId task to create
-     * @return  revision of the document
-     */
-  /*  public FinanceDocument getDocument(String docId)  {
-
-        BasicDocumentRevision retrieved = null;
-        try {
-            retrieved = mDatastore.getDocument(docId);
-        } catch (DocumentNotFoundException e) {
-            e.printStackTrace();
-            Log.e("Doc", "document was not found");
-        }
-        return FinanceDocument.fromRevision(retrieved);
-    }
-}*/
