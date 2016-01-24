@@ -142,7 +142,7 @@ public class History extends Fragment implements Card.OnLongCardClickListener {
 
     private void startShowcase() {
         ((View) card.getCardView()).measure(0, 0);
-        Double r = ((View) card.getCardView()).getMeasuredWidth() / 1.5;
+        Double r = ((View) card.getCardView()).getMeasuredWidth() / 2.2;
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, TAG);
