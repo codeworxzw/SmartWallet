@@ -105,7 +105,7 @@ public class FinanceDocument {
 
     //salary
     public String getSalary() {
-        return salary.get(0);
+        return CurrencyConversion.convertCurrency(Integer.valueOf(salary.get(0)), salary.get(1), MainActivity.defaultCurrency);
     }
 
     public void setSalary(String salary, String currency, String recursion) {
@@ -123,7 +123,7 @@ public class FinanceDocument {
     //rental income
 
     public String getRentalIncome() {
-        return rentalIncome.get(0);
+        return CurrencyConversion.convertCurrency(Integer.valueOf(rentalIncome.get(0)), rentalIncome.get(1), MainActivity.defaultCurrency);
     }
 
     public void setRentalIncome(String rentalIncome, String currency, String recursion) {
@@ -139,7 +139,7 @@ public class FinanceDocument {
     //interest
 
     public String getInterest() {
-        return interest.get(0);
+        return CurrencyConversion.convertCurrency(Integer.valueOf(interest.get(0)), interest.get(1), MainActivity.defaultCurrency);
     }
 
     public void setInterest(String interest, String currency, String recursion) {
@@ -158,7 +158,7 @@ public class FinanceDocument {
 
     public String getGifts() {
 
-        return gifts.get(0);
+        return CurrencyConversion.convertCurrency(Integer.valueOf(gifts.get(0)), gifts.get(1), MainActivity.defaultCurrency);
     }
 
     public void setGifts(String gifts, String currency, String recursion) {
@@ -177,7 +177,7 @@ public class FinanceDocument {
 
     public String getOtherIncome() {
 
-        return otherIncome.get(0);
+        return CurrencyConversion.convertCurrency(Integer.valueOf(otherIncome.get(0)), otherIncome.get(1), MainActivity.defaultCurrency);
     }
 
     public void setOtherIncome(String otherIncome, String currency, String recursion) {
@@ -196,7 +196,7 @@ public class FinanceDocument {
 
     public String getTaxes() {
 
-        return taxes.get(0);
+        return CurrencyConversion.convertCurrency(Integer.valueOf(taxes.get(0)), taxes.get(1), MainActivity.defaultCurrency);
     }
 
     public void setTaxes(String taxes, String currency, String recursion) {
@@ -215,7 +215,7 @@ public class FinanceDocument {
 
     public String getMortgage() {
 
-        return mortgage.get(0);
+        return CurrencyConversion.convertCurrency(Integer.valueOf(mortgage.get(0)), mortgage.get(1), MainActivity.defaultCurrency);
     }
 
     public void setMortgage(String mortgage, String currency, String recursion) {
@@ -234,7 +234,7 @@ public class FinanceDocument {
     // 9 - credit card
     public String getCreditCard() {
 
-        return creditCard.get(0);
+        return CurrencyConversion.convertCurrency(Integer.valueOf(creditCard.get(0)), creditCard.get(1), MainActivity.defaultCurrency);
     }
 
     public void setCreditCard(String creditCard, String currency, String recursion) {
@@ -253,7 +253,7 @@ public class FinanceDocument {
 
     public String getUtilities() {
 
-        return utilities.get(0);
+        return CurrencyConversion.convertCurrency(Integer.valueOf(utilities.get(0)), utilities.get(1), MainActivity.defaultCurrency);
     }
 
     public void setUtilities(String utilities, String currency, String recursion) {
@@ -272,7 +272,7 @@ public class FinanceDocument {
 
     public String getFood() {
 
-        return food.get(0);
+        return CurrencyConversion.convertCurrency(Integer.valueOf(food.get(0)), food.get(1), MainActivity.defaultCurrency);
     }
 
     public void setFood(String food, String currency, String recursion) {
@@ -291,7 +291,7 @@ public class FinanceDocument {
 
     public String getCarPayment() {
 
-        return carPayment.get(0);
+        return CurrencyConversion.convertCurrency(Integer.valueOf(carPayment.get(0)), carPayment.get(1), MainActivity.defaultCurrency);
     }
 
     public void setCarPayment(String carPayment, String currency, String recursion) {
@@ -310,7 +310,7 @@ public class FinanceDocument {
 
     public String getPersonal() {
 
-        return personal.get(0);
+        return CurrencyConversion.convertCurrency(Integer.valueOf(personal.get(0)), personal.get(1), MainActivity.defaultCurrency);
     }
 
     public void setPersonal(String personal, String currency, String recursion) {
@@ -329,7 +329,7 @@ public class FinanceDocument {
 
     public String getActivities() {
 
-        return activities.get(0);
+        return CurrencyConversion.convertCurrency(Integer.valueOf(activities.get(0)), activities.get(1), MainActivity.defaultCurrency);
     }
 
     public void setActivities(String activities, String currency, String recursion) {
@@ -347,7 +347,7 @@ public class FinanceDocument {
 
     public String getOtherExpenses() {
 
-        return otherExpenses.get(0);
+        return CurrencyConversion.convertCurrency(Integer.valueOf(otherExpenses.get(0)), otherExpenses.get(1), MainActivity.defaultCurrency);
     }
 
     public void setOtherExpenses(String otherExpenses, String currency, String recursion) {

@@ -59,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
         boolean firstTimeOpen;
 
         super.onCreate(savedInstanceState);
+
+        reloadCurrency();
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -115,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
             SaveToSharedPreferences(this, "firstTimeOpen", Boolean.toString(firstTimeOpen));
             setNotification();
         }
+
 
     }
 
@@ -284,6 +288,14 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Alarm", "setnotification was called");
     }
 
+
+    //TODO enable check whether document was created and shcedule fetching
+    /**
+     * Fetches last currency rates from internet
+     */
+    private void reloadCurrency(){
+        new CurrencyConversion().execute();
+    }
 
     /**
      * Static methods for saving to sharedpreferences
