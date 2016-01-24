@@ -321,11 +321,11 @@ public class TrendsChart extends Fragment {
             case R.id.popupTotalIncome:
                 for (FinanceDocument doc : docList) {
                     data.add(new String[]{
-                            Integer.toString(Integer.valueOf(doc.getSalary()) +
-                                    Integer.valueOf(doc.getRentalIncome()) +
-                                    Integer.valueOf(doc.getInterest()) +
-                                    Integer.valueOf(doc.getGifts()) +
-                                    Integer.valueOf(doc.getOtherIncome())),
+                            Integer.toString(doc.getSalary() +
+                                   doc.getRentalIncome() +
+                                    doc.getInterest() +
+                                    doc.getGifts() +
+                                    doc.getOtherIncome()),
                             doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)});
 
                 }
@@ -333,22 +333,22 @@ public class TrendsChart extends Fragment {
             case R.id.popupTotalExpense:
                 for (FinanceDocument doc : docList) {
                     data.add(new String[]{
-                            Integer.toString(Integer.valueOf(doc.getTaxes()) +
-                                    Integer.valueOf(doc.getMortgage()) +
-                                    Integer.valueOf(doc.getCreditCard()) +
-                                    Integer.valueOf(doc.getUtilities()) +
-                                    Integer.valueOf(doc.getFood()) +
-                                    Integer.valueOf(doc.getCarPayment()) +
-                                    Integer.valueOf(doc.getPersonal()) +
-                                    Integer.valueOf(doc.getActivities()) +
-                                    Integer.valueOf(doc.getOtherExpenses())),
+                            Integer.toString(doc.getTaxes() +
+                                    doc.getMortgage() +
+                                    doc.getCreditCard() +
+                                    doc.getUtilities() +
+                                    doc.getFood() +
+                                    doc.getCarPayment() +
+                                    doc.getPersonal() +
+                                    doc.getActivities() +
+                                    doc.getOtherExpenses()),
                             doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
                     });
                 }
                 break;
             case R.id.popupSalary:
                 for (FinanceDocument doc : docList) {
-                    value = Integer.valueOf(doc.getSalary());
+                    value = doc.getSalary();
                     if (value != 0) data.add(new String[]{
                             Integer.toString(value),
                             doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
@@ -357,7 +357,7 @@ public class TrendsChart extends Fragment {
                 break;
             case R.id.popupRentalIncome:
                 for (FinanceDocument doc : docList) {
-                    value = Integer.valueOf(doc.getRentalIncome());
+                    value = doc.getRentalIncome();
                     if (value != 0) data.add(new String[]{
                             Integer.toString(value),
                             doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
@@ -366,7 +366,7 @@ public class TrendsChart extends Fragment {
                 break;
             case R.id.popupInterest:
                 for (FinanceDocument doc : docList) {
-                    value = Integer.valueOf(doc.getInterest());
+                    value = doc.getInterest();
                     if (value != 0) data.add(new String[]{
                             Integer.toString(value),
                             doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
@@ -375,7 +375,7 @@ public class TrendsChart extends Fragment {
                 break;
             case R.id.popupGifts:
                 for (FinanceDocument doc : docList) {
-                    value = Integer.valueOf(doc.getGifts());
+                    value = doc.getGifts();
                     if (value != 0) data.add(new String[]{
                             Integer.toString(value),
                             doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
@@ -384,7 +384,7 @@ public class TrendsChart extends Fragment {
                 break;
             case R.id.popupOtherIncome:
                 for (FinanceDocument doc : docList) {
-                    value = Integer.valueOf(doc.getOtherIncome());
+                    value = doc.getOtherIncome();
                     if (value != 0) data.add(new String[]{
                             Integer.toString(value),
                             doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
@@ -393,7 +393,7 @@ public class TrendsChart extends Fragment {
                 break;
             case R.id.popupTaxes:
                 for (FinanceDocument doc : docList) {
-                    value = Integer.valueOf(doc.getTaxes());
+                    value = doc.getTaxes();
                     if (value != 0) data.add(new String[]{
                             Integer.toString(value),
                             doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
@@ -402,7 +402,7 @@ public class TrendsChart extends Fragment {
                 break;
             case R.id.popupMortgage:
                 for (FinanceDocument doc : docList) {
-                    value = Integer.valueOf(doc.getMortgage());
+                    value = doc.getMortgage();
                     if (value != 0) data.add(new String[]{
                             Integer.toString(value),
                             doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
@@ -411,7 +411,7 @@ public class TrendsChart extends Fragment {
                 break;
             case R.id.popupCreditCard:
                 for (FinanceDocument doc : docList) {
-                    value = Integer.valueOf(doc.getCreditCard());
+                    value = doc.getCreditCard();
                     if (value != 0) data.add(new String[]{
                             Integer.toString(value),
                             doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
@@ -420,7 +420,7 @@ public class TrendsChart extends Fragment {
                 break;
             case R.id.popupUtilities:
                 for (FinanceDocument doc : docList) {
-                    value = Integer.valueOf(doc.getUtilities());
+                    value = doc.getUtilities();
                     if (value != 0) data.add(new String[]{
                             Integer.toString(value),
                             doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
@@ -429,7 +429,7 @@ public class TrendsChart extends Fragment {
                 break;
             case R.id.popupFood:
                 for (FinanceDocument doc : docList) {
-                    value = Integer.valueOf(doc.getFood());
+                    value = doc.getFood();
                     if (value != 0) data.add(new String[]{
                             Integer.toString(value),
                             doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
@@ -438,7 +438,7 @@ public class TrendsChart extends Fragment {
                 break;
             case R.id.popupCarPayment:
                 for (FinanceDocument doc : docList) {
-                    value = Integer.valueOf(doc.getCarPayment());
+                    value = doc.getCarPayment();
                     if (value != 0) data.add(new String[]{
                             Integer.toString(value),
                             doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
@@ -447,7 +447,7 @@ public class TrendsChart extends Fragment {
                 break;
             case R.id.popupPersonal:
                 for (FinanceDocument doc : docList) {
-                    value = Integer.valueOf(doc.getPersonal());
+                    value = doc.getPersonal();
                     if (value != 0) data.add(new String[]{
                             Integer.toString(value),
                             doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
@@ -456,7 +456,7 @@ public class TrendsChart extends Fragment {
                 break;
             case R.id.popupActivities:
                 for (FinanceDocument doc : docList) {
-                    value = Integer.valueOf(doc.getActivities());
+                    value = doc.getActivities();
                     if (value != 0) data.add(new String[]{
                             Integer.toString(value),
                             doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
@@ -465,7 +465,7 @@ public class TrendsChart extends Fragment {
                 break;
             case R.id.popupOtherExpense:
                 for (FinanceDocument doc : docList) {
-                    value = Integer.valueOf(doc.getOtherExpenses());
+                    value = doc.getOtherExpenses();
                     if (value != 0) data.add(new String[]{
                             Integer.toString(value),
                             doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)

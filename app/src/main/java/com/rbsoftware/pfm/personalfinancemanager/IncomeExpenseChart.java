@@ -37,6 +37,8 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 /**
  * A simple {@link Fragment} subclass.
+ * Child class of (@link Charts) class
+ * Holds pie chart data
  */
 public class IncomeExpenseChart extends Fragment {
     private final String TAG = "IncomeExpenseChart";
@@ -51,6 +53,7 @@ public class IncomeExpenseChart extends Fragment {
     private int offsetEnd;
     private Context mContext;
     private Activity mActivity;
+
     public IncomeExpenseChart() {
         // Required empty public constructor
     }
@@ -80,34 +83,32 @@ public class IncomeExpenseChart extends Fragment {
         mIncomeExpenseButton = (ToggleButton) getActivity().findViewById(R.id.btn_income_expense);
 
 
-            mIncomeExpenseButton.setChecked(Boolean.valueOf(MainActivity.ReadFromSharedPreferences(getActivity(), "toggleButtonState", "true")));
-            if(mIncomeExpenseButton.isChecked()){
-                mIncomeExpenseButton.setTextColor(ContextCompat.getColor(getContext(),R.color.income));
-                offsetStart=0;
-                offsetEnd=9;
-            }
-            else{
+        mIncomeExpenseButton.setChecked(Boolean.valueOf(MainActivity.ReadFromSharedPreferences(getActivity(), "toggleButtonState", "true")));
+        if (mIncomeExpenseButton.isChecked()) {
+            mIncomeExpenseButton.setTextColor(ContextCompat.getColor(getContext(), R.color.income));
+            offsetStart = 0;
+            offsetEnd = 9;
+        } else {
 
-                mIncomeExpenseButton.setTextColor(ContextCompat.getColor(getContext(), R.color.expense));
-                offsetStart=5;
-                offsetEnd=0;
-            }
+            mIncomeExpenseButton.setTextColor(ContextCompat.getColor(getContext(), R.color.expense));
+            offsetStart = 5;
+            offsetEnd = 0;
+        }
 
         mIncomeExpenseButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     mIncomeExpenseButton.setTextColor(ContextCompat.getColor(getContext(), R.color.income));
-                    offsetStart=0;
-                    offsetEnd=9;
-                }
-                else{
+                    offsetStart = 0;
+                    offsetEnd = 9;
+                } else {
                     mIncomeExpenseButton.setTextColor(ContextCompat.getColor(getContext(), R.color.expense));
-                    offsetStart=5;
-                    offsetEnd=0;
+                    offsetStart = 5;
+                    offsetEnd = 0;
 
                 }
-                MainActivity.SaveToSharedPreferences(getActivity(),"toggleButtonState", Boolean.toString(mIncomeExpenseButton.isChecked()));
+                MainActivity.SaveToSharedPreferences(getActivity(), "toggleButtonState", Boolean.toString(mIncomeExpenseButton.isChecked()));
                 generateChartData(getValues(financeDocumentList));
             }
         });
@@ -120,8 +121,8 @@ public class IncomeExpenseChart extends Fragment {
         mActivity = getActivity();
 
         int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
-                .getInt("status_"+TAG,0);
-        if(status != -1) {
+                .getInt("status_" + TAG, 0);
+        if (status != -1) {
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -142,7 +143,6 @@ public class IncomeExpenseChart extends Fragment {
     }
 
 
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.chart_income_expense_menu, menu);
@@ -158,7 +158,7 @@ public class IncomeExpenseChart extends Fragment {
                 return true;
             case R.id.document_share:
                 try {
-                    ExportData.exportChartAsPng(getContext(),relativeLayout);
+                    ExportData.exportChartAsPng(getContext(), relativeLayout);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -169,14 +169,16 @@ public class IncomeExpenseChart extends Fragment {
         }
 
 
-
     }
 
 
-
     //Helper methods
-    //Shows chart_income_expense_menu popup menu
-    public void showPopup(){
+
+    /**
+     * Shows chart_income_expense_menu popup menu
+     */
+
+    public void showPopup() {
         View menuItemView = getActivity().findViewById(R.id.action_filter);
         PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
         MenuInflater inflate = popup.getMenuInflater();
@@ -228,17 +230,23 @@ public class IncomeExpenseChart extends Fragment {
         popup.show();
 
     }
-    //fills mPieChart with data
+
+    /**
+     * fills mPieChart with data
+     *
+     * @param mapSum hash map of data types and values
+     */
+
     private void generateChartData(HashMap<Integer, Integer> mapSum) {
         List<SliceValue> values = new ArrayList<SliceValue>();
-        int total=0;
-        for (int i = 1+offsetStart; i <= (mapSum.size()-offsetEnd); ++i) {
-            int value=mapSum.get(i);
-            total +=value;
-            if(value !=0) {
+        int total = 0;
+        for (int i = 1 + offsetStart; i <= (mapSum.size() - offsetEnd); ++i) {
+            int value = mapSum.get(i);
+            total += value;
+            if (value != 0) {
                 //SliceValue sliceValue = new SliceValue(value, Color.rgb(150 - i * 4, 90 + i * 8, 200 - i*5));
                 SliceValue sliceValue = new SliceValue(value, getColorPalette(i));
-                sliceValue.setLabel(keyToString(i)+" "+ value);
+                sliceValue.setLabel(keyToString(i) + " " + value);
                 values.add(sliceValue);
             }
         }
@@ -249,56 +257,57 @@ public class IncomeExpenseChart extends Fragment {
         data.setHasCenterCircle(true);
         data.setCenterText1(Integer.toString(total));
         data.setCenterText2(MainActivity.defaultCurrency);
-        if(mIncomeExpenseButton.isChecked()) {
+     /*   if (mIncomeExpenseButton.isChecked()) {
             data.setCenterCircleColor(getResources().getColor(R.color.income));
-        }
-        else {
+        } else {
             data.setCenterCircleColor(getResources().getColor(R.color.expense));
-        }
+        }*/
         mPieChart.setPieChartData(data);
 
     }
 
 
+    /**
+     * extracts sums data of FinanceDocuments in the list
+     *
+     * @param list finance documents list
+     * @return map of data types and values
+     */
+    public HashMap<Integer, Integer> getValues(List<FinanceDocument> list) {
+        int salarySum = 0;
+        int rentalIncomeSum = 0;
+        int interestSum = 0;
+        int giftsSum = 0;
+        int otherIncomeSum = 0;
+        int taxesSum = 0;
+        int mortgageSum = 0;
+        int creditCardSum = 0;
+        int utilitiesSum = 0;
+        int foodSum = 0;
+        int carPaymentSum = 0;
+        int personalSum = 0;
+        int activitiesSum = 0;
+        int otherExpensesSum = 0;
 
 
-
-    // extracts sums data of FinanceDocuments in the list
-    public HashMap<Integer,Integer> getValues(List<FinanceDocument> list){
-        int salarySum =0;
-        int rentalIncomeSum =0;
-        int interestSum =0;
-        int giftsSum =0;
-        int otherIncomeSum =0;
-        int taxesSum =0;
-        int mortgageSum =0;
-        int creditCardSum =0;
-        int utilitiesSum =0;
-        int foodSum =0;
-        int carPaymentSum =0;
-        int personalSum =0;
-        int activitiesSum =0;
-        int otherExpensesSum =0;
-
-
-        for(FinanceDocument item : list){
-            salarySum += Integer.valueOf(item.getSalary());
-            rentalIncomeSum += Integer.valueOf(item.getRentalIncome());
-            interestSum +=Integer.valueOf(item.getInterest());
-            giftsSum +=Integer.valueOf(item.getGifts());
-            otherIncomeSum +=Integer.valueOf(item.getOtherIncome());
-            taxesSum += Integer.valueOf(item.getTaxes());
-            mortgageSum += Integer.valueOf(item.getMortgage());
-            creditCardSum += Integer.valueOf(item.getCreditCard());
-            utilitiesSum += Integer.valueOf(item.getUtilities());
-            foodSum +=Integer.valueOf(item.getFood());
-            carPaymentSum += Integer.valueOf(item.getCarPayment());
-            personalSum += Integer.valueOf(item.getPersonal());
-            activitiesSum += Integer.valueOf(item.getActivities());
-            otherExpensesSum += Integer.valueOf(item.getOtherExpenses());
+        for (FinanceDocument item : list) {
+            salarySum += item.getSalary();
+            rentalIncomeSum += item.getRentalIncome();
+            interestSum += item.getInterest();
+            giftsSum += item.getGifts();
+            otherIncomeSum += item.getOtherIncome();
+            taxesSum += item.getTaxes();
+            mortgageSum += item.getMortgage();
+            creditCardSum += item.getCreditCard();
+            utilitiesSum += item.getUtilities();
+            foodSum += item.getFood();
+            carPaymentSum += item.getCarPayment();
+            personalSum += item.getPersonal();
+            activitiesSum += item.getActivities();
+            otherExpensesSum += item.getOtherExpenses();
 
         }
-        HashMap<Integer, Integer> mapSum=new HashMap<>();
+        HashMap<Integer, Integer> mapSum = new HashMap<>();
         mapSum.put(MainActivity.PARAM_SALARY, salarySum);
         mapSum.put(MainActivity.PARAM_RENTAL_INCOME, rentalIncomeSum);
         mapSum.put(MainActivity.PARAM_INTEREST, interestSum);
@@ -317,54 +326,94 @@ public class IncomeExpenseChart extends Fragment {
         return mapSum;
     }
 
-    /* Converts int key to human readable string
-    * @param key value range 1-14
-    * @return string value
-    */
-    public String keyToString(int key){
-        switch (key){
-            case 1: return getResources().getString(R.string.salary);
-            case 2: return getResources().getString(R.string.rental_income);
-            case 3: return getResources().getString(R.string.interest);
-            case 4: return getResources().getString(R.string.gifts);
-            case 5: return getResources().getString(R.string.other_income);
-            case 6: return getResources().getString(R.string.taxes);
-            case 7: return getResources().getString(R.string.mortgage);
-            case 8: return getResources().getString(R.string.credit_card);
-            case 9: return getResources().getString(R.string.utilities);
-            case 10: return getResources().getString(R.string.food);
-            case 11: return getResources().getString(R.string.car_payment);
-            case 12: return getResources().getString(R.string.personal);
-            case 13: return getResources().getString(R.string.activities);
-            case 14: return getResources().getString(R.string.other_expense);
+    /**
+     * Converts int key to human readable string
+     *
+     * @param key value range 1-14
+     * @return string value
+     **/
+    public String keyToString(int key) {
+        switch (key) {
+            case 1:
+                return getResources().getString(R.string.salary);
+            case 2:
+                return getResources().getString(R.string.rental_income);
+            case 3:
+                return getResources().getString(R.string.interest);
+            case 4:
+                return getResources().getString(R.string.gifts);
+            case 5:
+                return getResources().getString(R.string.other_income);
+            case 6:
+                return getResources().getString(R.string.taxes);
+            case 7:
+                return getResources().getString(R.string.mortgage);
+            case 8:
+                return getResources().getString(R.string.credit_card);
+            case 9:
+                return getResources().getString(R.string.utilities);
+            case 10:
+                return getResources().getString(R.string.food);
+            case 11:
+                return getResources().getString(R.string.car_payment);
+            case 12:
+                return getResources().getString(R.string.personal);
+            case 13:
+                return getResources().getString(R.string.activities);
+            case 14:
+                return getResources().getString(R.string.other_expense);
         }
         return "";
     }
 
-    private int getColorPalette(int i){
-        switch (i){
-            case 1: return ContextCompat.getColor(getContext(),R.color.salary);
-            case 2: return ContextCompat.getColor(getContext(), R.color.rental_income);
-            case 3: return ContextCompat.getColor(getContext(), R.color.interest);
-            case 4: return ContextCompat.getColor(getContext(), R.color.gifts);
-            case 5: return ContextCompat.getColor(getContext(), R.color.other_income);
-            case 6: return ContextCompat.getColor(getContext(), R.color.taxes);
-            case 7: return ContextCompat.getColor(getContext(), R.color.mortgage);
-            case 8: return ContextCompat.getColor(getContext(), R.color.credit_card);
-            case 9: return ContextCompat.getColor(getContext(), R.color.utilities);
-            case 10: return ContextCompat.getColor(getContext(), R.color.food);
-            case 11: return ContextCompat.getColor(getContext(), R.color.car_payment);
-            case 12: return ContextCompat.getColor(getContext(), R.color.personal);
-            case 13: return ContextCompat.getColor(getContext(), R.color.activities);
-            case 14: return ContextCompat.getColor(getContext(), R.color.other_expense);
-            default: return Color.WHITE;
+    /**
+     * Gets color bu data type key
+     *
+     * @param i data type key
+     * @return color
+     */
+    private int getColorPalette(int i) {
+        switch (i) {
+            case 1:
+                return ContextCompat.getColor(getContext(), R.color.salary);
+            case 2:
+                return ContextCompat.getColor(getContext(), R.color.rental_income);
+            case 3:
+                return ContextCompat.getColor(getContext(), R.color.interest);
+            case 4:
+                return ContextCompat.getColor(getContext(), R.color.gifts);
+            case 5:
+                return ContextCompat.getColor(getContext(), R.color.other_income);
+            case 6:
+                return ContextCompat.getColor(getContext(), R.color.taxes);
+            case 7:
+                return ContextCompat.getColor(getContext(), R.color.mortgage);
+            case 8:
+                return ContextCompat.getColor(getContext(), R.color.credit_card);
+            case 9:
+                return ContextCompat.getColor(getContext(), R.color.utilities);
+            case 10:
+                return ContextCompat.getColor(getContext(), R.color.food);
+            case 11:
+                return ContextCompat.getColor(getContext(), R.color.car_payment);
+            case 12:
+                return ContextCompat.getColor(getContext(), R.color.personal);
+            case 13:
+                return ContextCompat.getColor(getContext(), R.color.activities);
+            case 14:
+                return ContextCompat.getColor(getContext(), R.color.other_expense);
+            default:
+                return Color.WHITE;
 
         }
 
     }
 
-    //Runs showcase presentation on fragment start
-    private void startShowcase(){
+    /**
+     * Runs showcase presentation on fragment start
+     */
+
+    private void startShowcase() {
         mIncomeExpenseButton.measure(0, 0);
         Double r = mIncomeExpenseButton.getMeasuredWidth() / 1.5;
         ShowcaseConfig config = new ShowcaseConfig();
@@ -383,11 +432,12 @@ public class IncomeExpenseChart extends Fragment {
         sequence.start();
 
     }
+
     private class ValueTouchListener implements PieChartOnValueSelectListener {
 
         @Override
         public void onValueSelected(int arcIndex, SliceValue value) {
-           // Toast.makeText(getActivity(), value.getLabelAsChars() + " " + value.getValue(), Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getActivity(), value.getLabelAsChars() + " " + value.getValue(), Toast.LENGTH_SHORT).show();
         }
 
         @Override

@@ -1,10 +1,8 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.cloudant.sync.datastore.BasicDocumentRevision;
@@ -38,8 +36,10 @@ import java.util.TimeZone;
 
 /**
  * Created by burzakovskiy on 11/24/2015.
- */
+ * Holds methods for CRUD and querying finance documents
+ **/
 public class FinanceDocumentModel {
+    public final static String CURRENCY_ID = "CurrencyID";
     private static final String LOG_TAG = "FinanceDocumentModel";
     private static final String DATASTORE_MANGER_DIR = "data";
     private static final String DOCUMENT_DATASTORE = "documents";
@@ -48,7 +48,7 @@ public class FinanceDocumentModel {
     private static final String SETTINGS_CLOUDANT_DB = "data";
     private static final String SETTINGS_CLOUDANT_API_KEY = "sournictsitedincivegains";
     private static final String SETTINGS_CLOUDANT_API_SECRET = "293c6b466286c6aed7216e47f491f59a1ce6a6e0";
-    private static final String FINANCE_DOCUMENT_INDEX_LIST= "FinanceDocumentIndexList";
+    private static final String FINANCE_DOCUMENT_INDEX_LIST = "FinanceDocumentIndexList";
 
     //Query time frames
     private static final String THIS_WEEK = "thisWeek";
@@ -88,16 +88,17 @@ public class FinanceDocumentModel {
         Log.d(LOG_TAG, "Set up database at " + path.getAbsolutePath());
 
 
-
         // Allow us to switch code called by the ReplicationListener into
         // the main thread so the UI can update safely.
         this.mHandler = new Handler(Looper.getMainLooper());
 
         Log.d(LOG_TAG, "FinanceDocumentModel set up " + path.getAbsolutePath());
     }
+
     public void setReplicationListener(MainActivity listener) {
         this.mListener = listener;
     }
+
     private URI createServerURI()
             throws URISyntaxException {
         // We store this in plain text for the purposes of simple demonstration,
@@ -113,9 +114,11 @@ public class FinanceDocumentModel {
         return new URI("https", apiKey + ":" + apiSecret, host, 443, "/" + dbName, null, null);
     }
 
-    //Set index manager
+    /**
+     * Set index manager
+     **/
 
-    public void setIndexManager(){
+    public void setIndexManager() {
         im = new IndexManager(mDatastore);
         List<Object> indexList = new ArrayList<>();
         indexList.add("type");
@@ -145,22 +148,23 @@ public class FinanceDocumentModel {
     // Document query methods
 
     /**
-     * Queries docuuments by time period
-     * @param timeFrame
-     * "thisWeek"
-     * "lastWeek"
-     * "thisMonth"
-     * "lastMonth"
-     * "Jan" - "Dec"
-     * "thisYear"
+     * Queries documents by time period
+     *
+     * @param timeFrame "thisWeek"
+     *                  "lastWeek"
+     *                  "thisMonth"
+     *                  "lastMonth"
+     *                  "Jan" - "Dec"
+     *                  "thisYear"
+     * @param userId    id of current user
      * @return list of the documents
-     */
+     **/
 
 
-    public List<FinanceDocument> queryDocumentsByDate(String timeFrame, String userId){
-        List<FinanceDocument> list= new ArrayList<>();
+    public List<FinanceDocument> queryDocumentsByDate(String timeFrame, String userId) {
+        List<FinanceDocument> list = new ArrayList<>();
         cal = Calendar.getInstance();
-        long currDate =  cal.getTimeInMillis()/1000;
+        long currDate = cal.getTimeInMillis() / 1000;
         Map<String, Object> query = new HashMap<String, Object>();
 
         Map<String, Object> gteDate = new HashMap<String, Object>();                    // Start of the period
@@ -182,9 +186,9 @@ public class FinanceDocumentModel {
 
 
         QueryResult result = im.find(query);
-        if(result != null) {
+        if (result != null) {
             for (DocumentRevision rev : result) {
-                list.add(getDocument(rev.getId()));
+                list.add(getFinanceDocument(rev.getId()));
 
                 // The returned revision object contains all fields for
                 // the object. You cannot project certain fields in the
@@ -195,18 +199,31 @@ public class FinanceDocumentModel {
         return list;
     }
 
+    /**
+     * Queries documents by time period and sort
+     *
+     * @param timeFrame "thisWeek"
+     *                  "lastWeek"
+     *                  "thisMonth"
+     *                  "lastMonth"
+     *                  "Jan" - "Dec"
+     *                  "thisYear"
+     * @param userId    id of current user
+     * @param order     asc or desc
+     * @return list of the documents
+     **/
 
-    public List<FinanceDocument> queryDocumentsByDate(String timeFrame, String userId, String order){
-        List<FinanceDocument> list= new ArrayList<>();
+    public List<FinanceDocument> queryDocumentsByDate(String timeFrame, String userId, String order) {
+        List<FinanceDocument> list = new ArrayList<>();
         cal = Calendar.getInstance();
-        long currDate =  cal.getTimeInMillis()/1000;
+        long currDate = cal.getTimeInMillis() / 1000;
         Map<String, Object> query = new HashMap<String, Object>();
 
         Map<String, Object> gteDate = new HashMap<String, Object>();                    // Start of the period
         Map<String, Object> startClause = new HashMap<String, Object>();                //*
         gteDate.put("$gte", startDateBuilder(currDate, timeFrame));        //*
         startClause.put("date", gteDate);
-                                                                            //*********
+        //*********
         Map<String, Object> lteDate = new HashMap<String, Object>();      // End of t/he period
         Map<String, Object> endClause = new HashMap<String, Object>();                 // *
         lteDate.put("$lte", endDateBuilder(currDate, timeFrame));         //*
@@ -222,20 +239,18 @@ public class FinanceDocumentModel {
         //Sorting documents
         List<Map<String, String>> sortDocument = new ArrayList<Map<String, String>>();
         Map<String, String> sortByDate = new HashMap<String, String>();
-        if(order.equals(ORDER_ASC)) {
+        if (order.equals(ORDER_ASC)) {
 
             sortByDate.put("date", "asc");  //sorting by date
 
-        }
-        else
-        {
+        } else {
             sortByDate.put("date", "desc");  //sorting by date
         }
         sortDocument.add(sortByDate);
-        QueryResult result = im.find(query,0,0,null,sortDocument);
-        if(result != null) {
+        QueryResult result = im.find(query, 0, 0, null, sortDocument);
+        if (result != null) {
             for (DocumentRevision rev : result) {
-                list.add(getDocument(rev.getId()));
+                list.add(getFinanceDocument(rev.getId()));
 
                 // The returned revision object contains all fields for
                 // the object. You cannot project certain fields in the
@@ -246,7 +261,9 @@ public class FinanceDocumentModel {
         return list;
     }
 
-    //methods to get first/last day
+    /**
+     * methods to get first/last day
+     **/
     private Long getFirstDateOfCurrentMonth() {
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         cal.set(Calendar.DAY_OF_MONTH, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH));
@@ -254,7 +271,7 @@ public class FinanceDocumentModel {
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis()/1000;
+        return cal.getTimeInMillis() / 1000;
     }
 
     private Long getFirstDateOfCurrentWeek() {
@@ -264,7 +281,7 @@ public class FinanceDocumentModel {
         cal.clear(Calendar.MINUTE);
         cal.clear(Calendar.SECOND);
         cal.clear(Calendar.MILLISECOND);
-        return cal.getTimeInMillis()/1000;
+        return cal.getTimeInMillis() / 1000;
     }
 
     private Long getFirstDateOfCurrentYear() {
@@ -275,7 +292,7 @@ public class FinanceDocumentModel {
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis()/1000;
+        return cal.getTimeInMillis() / 1000;
     }
 
     private Long getFirstDateOfPreviousMonth() {
@@ -286,7 +303,7 @@ public class FinanceDocumentModel {
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis()/1000;
+        return cal.getTimeInMillis() / 1000;
     }
 
     private Long getLastDateOfPreviousMonth() {
@@ -297,7 +314,7 @@ public class FinanceDocumentModel {
         cal.set(Calendar.MINUTE, 59);
         cal.set(Calendar.SECOND, 59);
         cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis()/1000;
+        return cal.getTimeInMillis() / 1000;
     }
 
 
@@ -310,7 +327,7 @@ public class FinanceDocumentModel {
         cal.clear(Calendar.MINUTE);
         cal.clear(Calendar.SECOND);
         cal.clear(Calendar.MILLISECOND);
-        return cal.getTimeInMillis()/1000;
+        return cal.getTimeInMillis() / 1000;
     }
 
     private Long getLastDateOfPreviousWeek() {
@@ -321,22 +338,29 @@ public class FinanceDocumentModel {
         cal.clear(Calendar.MINUTE);
         cal.clear(Calendar.SECOND);
         cal.clear(Calendar.MILLISECOND);
-        return cal.getTimeInMillis()/1000;
+        return cal.getTimeInMillis() / 1000;
     }
 
-    //helper method for setting start date
-    private  long startDateBuilder(long currDate, String timeFrame){
-        long startDate=0;
-        switch (timeFrame){
-            case THIS_WEEK: startDate = getFirstDateOfCurrentWeek();
+    /**
+     * helper method for setting start date
+     */
+    private long startDateBuilder(long currDate, String timeFrame) {
+        long startDate = 0;
+        switch (timeFrame) {
+            case THIS_WEEK:
+                startDate = getFirstDateOfCurrentWeek();
                 break;
-            case THIS_MONTH: startDate = getFirstDateOfCurrentMonth();
+            case THIS_MONTH:
+                startDate = getFirstDateOfCurrentMonth();
                 break;
-            case THIS_YEAR: startDate = getFirstDateOfCurrentYear();
+            case THIS_YEAR:
+                startDate = getFirstDateOfCurrentYear();
                 break;
-            case LAST_WEEK: startDate = getFirstDateOfPreviousWeek();
+            case LAST_WEEK:
+                startDate = getFirstDateOfPreviousWeek();
                 break;
-            case LAST_MONTH: startDate = getFirstDateOfPreviousMonth();
+            case LAST_MONTH:
+                startDate = getFirstDateOfPreviousMonth();
                 break;
 
         }
@@ -344,19 +368,24 @@ public class FinanceDocumentModel {
     }
 
     //helper method for setting end date
-    private  long endDateBuilder(long currDate, String timeFrame){
-        long endDate=0;
+    private long endDateBuilder(long currDate, String timeFrame) {
+        long endDate = 0;
 
-        switch (timeFrame){
-            case THIS_WEEK: endDate = currDate;
+        switch (timeFrame) {
+            case THIS_WEEK:
+                endDate = currDate;
                 break;
-            case THIS_MONTH: endDate = currDate;
+            case THIS_MONTH:
+                endDate = currDate;
                 break;
-            case THIS_YEAR: endDate = currDate;
+            case THIS_YEAR:
+                endDate = currDate;
                 break;
-            case LAST_WEEK: endDate = getLastDateOfPreviousWeek();
+            case LAST_WEEK:
+                endDate = getLastDateOfPreviousWeek();
                 break;
-            case LAST_MONTH: endDate = getLastDateOfPreviousMonth();
+            case LAST_MONTH:
+                endDate = getLastDateOfPreviousMonth();
                 break;
 
         }
@@ -371,9 +400,10 @@ public class FinanceDocumentModel {
 
     /**
      * Creates a task, assigning an ID.
+     *
      * @param document task to create
      * @return new revision of the document
-     */
+     **/
     public FinanceDocument createDocument(FinanceDocument document) {
         MutableDocumentRevision rev = new MutableDocumentRevision();
 
@@ -396,7 +426,7 @@ public class FinanceDocumentModel {
      */
     public Currency createDocument(Currency document) {
         MutableDocumentRevision rev = new MutableDocumentRevision();
-        rev.docId = "CurrencyID";
+        rev.docId = CURRENCY_ID;
         rev.body = DocumentBodyFactory.create(document.asMap());
         try {
             BasicDocumentRevision created = this.mDatastore.createDocumentFromRevision(rev);
@@ -411,10 +441,11 @@ public class FinanceDocumentModel {
 
     /**
      * Retrieves document by id.
+     *
      * @param docId task to create
-     * @return  revision of the document
+     * @return revision of the document
      */
-    public FinanceDocument getDocument(String docId)  {
+    public FinanceDocument getFinanceDocument(String docId) {
 
         BasicDocumentRevision retrieved = null;
         try {
@@ -426,13 +457,13 @@ public class FinanceDocumentModel {
         return FinanceDocument.fromRevision(retrieved);
     }
 
-
     /**
      * Retrieves document by id.
+     *
      * @param docId task to create
-     * @return  revision of the document
+     * @return revision of the document
      */
-    /*public Currency getDocument(String docId,String a)  {
+    public Currency getCurrencyDocument(String docId) {
 
         BasicDocumentRevision retrieved = null;
         try {
@@ -440,15 +471,20 @@ public class FinanceDocumentModel {
         } catch (DocumentNotFoundException e) {
             e.printStackTrace();
             Log.e("Doc", "document was not found");
+            return null;
         }
         return Currency.fromRevision(retrieved);
-    }*/
+    }
+
+
+
     /**
-     * Updates a Task document within the datastore.
+     * Updates a Document document within the datastore.
+     *
      * @param document document to update
      * @return the updated revision of the Task
      * @throws ConflictException if the document passed in has a rev which doesn't
-     *      match the current rev in the datastore.
+     *                           match the current rev in the datastore.
      */
     public FinanceDocument updateDocument(FinanceDocument document) throws ConflictException {
         MutableDocumentRevision rev = document.getDocumentRevision().mutableCopy();
@@ -462,13 +498,13 @@ public class FinanceDocumentModel {
     }
 
     /**
-     * Updates a Task document within the datastore.
+     * Updates a Document document within the datastore.
      * @param document document to update
      * @return the updated revision of the Task
      * @throws ConflictException if the document passed in has a rev which doesn't
      *      match the current rev in the datastore.
      */
-    /*public Currency updateDocument(Currency document) throws ConflictException {
+    public Currency updateDocument(Currency document) throws ConflictException {
         MutableDocumentRevision rev = document.getDocumentRevision().mutableCopy();
         rev.body = DocumentBodyFactory.create(document.asMap());
         try {
@@ -479,12 +515,13 @@ public class FinanceDocumentModel {
         }
     }
 
-*/
+
     /**
      * Deletes a Task document within the datastore.
+     *
      * @param doc task to delete
      * @throws ConflictException if the task passed in has a rev which doesn't
-     *      match the current rev in the datastore.
+     *                           match the current rev in the datastore.
      */
     public void deleteDocument(FinanceDocument doc) throws ConflictException {
         this.mDatastore.deleteDocumentFromRevision(doc.getDocumentRevision());
@@ -499,7 +536,7 @@ public class FinanceDocumentModel {
         List<FinanceDocument> tasks = new ArrayList<FinanceDocument>();
 
         // Filter all documents down to those of type Task.
-        for(BasicDocumentRevision rev : all) {
+        for (BasicDocumentRevision rev : all) {
             FinanceDocument t = FinanceDocument.fromRevision(rev);
             if (t != null) {
                 tasks.add(t);
@@ -515,7 +552,7 @@ public class FinanceDocumentModel {
 
     /**
      * <p>Stops running replications.</p>
-     *
+     * <p/>
      * <p>The stop() methods stops the replications asynchronously, see the
      * replicator docs for more information.</p>
      */

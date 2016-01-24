@@ -15,36 +15,37 @@ import java.util.Map;
  * Created by Bogdan on 1/5/2016.
  */
 public class Currency {
-
+    private BasicDocumentRevision rev;
     static final String DOC_TYPE = "CurrencyDocument";
     private String type = DOC_TYPE;
     private String input;
 
-    private Double EUR = new Double(0);
-    private Double USD = new Double(0);
-    private Double RUR = new Double(0);
+    private Double EUR = 1.0;
+    private Double USD = 1.0;
+    private Double RUB = 1.0;
 
     //UAH
     private String EURtoUAH;
     private String USDtoUAH;
-    private String RURtoUAH;
+    private String RUBtoUAH;
 
     //USD
     private String EURtoUSD;   // if I want to sell EUR and buy USD then I need to use EURtoUSD
-    private String RURtoUSD;
+    private String RUBtoUSD;
     private String UAHtoUSD;   // if I want to sell UAH and buy USD then I need to use UAHtoUSD
 
     //EUR
     private String USDtoEUR;
-    private String RURtoEUR;
+    private String RUBtoEUR;
     private String UAHtoEUR;
 
-    //RUR
-    private String EURtoRUR;
-    private String USDtoRUR;
-    private String UAHtoRUR;
+    //RUB
+    private String EURtoRUB;
+    private String USDtoRUB;
+    private String UAHtoRUB;
 
-    private Currency() {}
+    private Currency() {
+    }
 
     public Currency(String input) {
         this.input = input;
@@ -52,33 +53,102 @@ public class Currency {
     }
 
 
-    public  void setEURtoUSD (String EURtoUSD ){this.EURtoUSD = EURtoUSD;}
-    public  void setEURtoRUR (String EURtoRUR ){this.EURtoRUR = EURtoRUR;}
-    public  void setEURtoUAH (String EURtoUAH ){this.EURtoUAH = EURtoUAH;}
-    public  void setUSDtoEUR (String USDtoEUR ){this.USDtoEUR = USDtoEUR;}
-    public  void setUSDtoRUR (String USDtoRUR ){this.USDtoRUR = USDtoRUR;}
-    public  void setUSDtoUAH (String USDtoUAH ){this.USDtoUAH = USDtoUAH;}
-    public  void setRURtoEUR (String RURtoEUR ){this.RURtoEUR = RURtoEUR;}
-    public  void setRURtoUSD (String RURtoUSD ){this.RURtoUSD = RURtoUSD;}
-    public  void setRURtoUAH (String RURtoUAH ){this.RURtoUAH = RURtoUAH;}
-    public  void setUAHtoEUR (String UAHtoEUR ){this.UAHtoEUR = UAHtoEUR;}
-    public  void setUAHtoRUR (String UAHtoRUR ){this.UAHtoRUR = UAHtoRUR;}
-    public  void setUAHtoUSD (String UAHtoUSD ){this.UAHtoUSD = UAHtoUSD;}
+    public void setEURtoUSD(String EURtoUSD) {
+        this.EURtoUSD = EURtoUSD;
+    }
+
+    public void setEURtoRUB(String EURtoRUB) {
+        this.EURtoRUB = EURtoRUB;
+    }
+
+    public void setEURtoUAH(String EURtoUAH) {
+        this.EURtoUAH = EURtoUAH;
+    }
+
+    public void setUSDtoEUR(String USDtoEUR) {
+        this.USDtoEUR = USDtoEUR;
+    }
+
+    public void setUSDtoRUB(String USDtoRUB) {
+        this.USDtoRUB = USDtoRUB;
+    }
+
+    public void setUSDtoUAH(String USDtoUAH) {
+        this.USDtoUAH = USDtoUAH;
+    }
+
+    public void setRUBtoEUR(String RUBtoEUR) {
+        this.RUBtoEUR = RUBtoEUR;
+    }
+
+    public void setRUBtoUSD(String RUBtoUSD) {
+        this.RUBtoUSD = RUBtoUSD;
+    }
+
+    public void setRUBtoUAH(String RUBtoUAH) {
+        this.RUBtoUAH = RUBtoUAH;
+    }
+
+    public void setUAHtoEUR(String UAHtoEUR) {
+        this.UAHtoEUR = UAHtoEUR;
+    }
+
+    public void setUAHtoRUB(String UAHtoRUB) {
+        this.UAHtoRUB = UAHtoRUB;
+    }
+
+    public void setUAHtoUSD(String UAHtoUSD) {
+        this.UAHtoUSD = UAHtoUSD;
+    }
 
 
-    public Double getEURtoUSD() {return Double.valueOf(EURtoUSD);}
-    public Double getEURtoRUR() {return Double.valueOf(EURtoRUR);}
-    public Double getEURtoUAH() {return Double.valueOf(EURtoUAH);}
-    public Double getUSDtoEUR() {return Double.valueOf(USDtoEUR);}
-    public Double getUSDtoRUR() {return Double.valueOf(USDtoRUR);}
-    public Double getUSDtoUAH() {return Double.valueOf(USDtoUAH);}
-    public Double getRURtoEUR() {return Double.valueOf(RURtoEUR);}
-    public Double getRURtoUSD() {return Double.valueOf(RURtoUSD);}
-    public Double getRURtoUAH() {return Double.valueOf(RURtoUAH);}
-    public Double getUAHtoEUR() {return Double.valueOf(UAHtoEUR);}
-    public Double getUAHtoUSD() {return Double.valueOf(UAHtoUSD);}
-    public Double getUAHtoRUR() {return Double.valueOf(UAHtoRUR);}
+    public Double getEURtoUSD() {
+        return Double.valueOf(EURtoUSD);
+    }
 
+    public Double getEURtoRUB() {
+        return Double.valueOf(EURtoRUB);
+    }
+
+    public Double getEURtoUAH() {
+        return Double.valueOf(EURtoUAH);
+    }
+
+    public Double getUSDtoEUR() {
+        return Double.valueOf(USDtoEUR);
+    }
+
+    public Double getUSDtoRUB() {
+        return Double.valueOf(USDtoRUB);
+    }
+
+    public Double getUSDtoUAH() {
+        return Double.valueOf(USDtoUAH);
+    }
+
+    public Double getRUBtoEUR() {
+        return Double.valueOf(RUBtoEUR);
+    }
+
+    public Double getRUBtoUSD() {
+        return Double.valueOf(RUBtoUSD);
+    }
+
+    public Double getRUBtoUAH() {
+        return Double.valueOf(RUBtoUAH);
+    }
+
+    public Double getUAHtoEUR() {
+        return Double.valueOf(UAHtoEUR);
+    }
+
+    public Double getUAHtoUSD() {
+        return Double.valueOf(UAHtoUSD);
+    }
+
+    public Double getUAHtoRUB() {
+        return Double.valueOf(UAHtoRUB);
+    }
 
 
     public void parser() {
@@ -105,7 +175,7 @@ public class Currency {
                     USD = (sale + buy) / 2;
                 }
                 if (ccy.equals("RUR")) {
-                    RUR = (sale + buy) / 2;
+                    RUB = (sale + buy) / 2;
                 }
             } // End Loop
         } catch (JSONException e) {
@@ -114,48 +184,50 @@ public class Currency {
 
         Log.d("TAG", EUR + " ");
         Log.d("TAG", USD + " ");
-        Log.d("TAG", RUR + " ");
+        Log.d("TAG", RUB + " ");
 
 
         EURtoUAH = Double.toString(EUR);
         USDtoUAH = Double.toString(USD);
-        RURtoUAH = Double.toString(RUR);
-        EURtoUSD = Double.toString(EUR/USD);
-        RURtoUSD = Double.toString(RUR/USD);
-        UAHtoUSD = Double.toString(1/USD);
-        USDtoEUR = Double.toString(USD/EUR);
-        RURtoEUR = Double.toString(RUR/EUR);
-        UAHtoEUR = Double.toString(1/EUR);
-        EURtoRUR = Double.toString(EUR/RUR);
-        USDtoRUR = Double.toString(USD/RUR);
-        UAHtoRUR = Double.toString(1/RUR);
+        RUBtoUAH = Double.toString(RUB);
+        EURtoUSD = Double.toString(EUR / USD);
+        RUBtoUSD = Double.toString(RUB / USD);
+        UAHtoUSD = Double.toString(1 / USD);
+        USDtoEUR = Double.toString(USD / EUR);
+        RUBtoEUR = Double.toString(RUB / EUR);
+        UAHtoEUR = Double.toString(1 / EUR);
+        EURtoRUB = Double.toString(EUR / RUB);
+        USDtoRUB = Double.toString(USD / RUB);
+        UAHtoRUB = Double.toString(1 / RUB);
 
     } // public void parser()
 
     /**
      * Map
+     *
      * @return map of
      */
     public Map<String, Object> asMap() {
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("EURtoUSD", EURtoUSD);
-        map.put("EURtoRUR", EURtoRUR);
+        map.put("EURtoRUB", EURtoRUB);
         map.put("EURtoUAH", EURtoUAH);
         map.put("USDtoEUR", USDtoEUR);
-        map.put("USDtoRUR", USDtoRUR);
+        map.put("USDtoRUB", USDtoRUB);
         map.put("USDtoUAH", USDtoUAH);
-        map.put("RURtoEUR", RURtoEUR);
-        map.put("RURtoUSD", RURtoUSD);
-        map.put("RURtoUAH", RURtoUAH);
+        map.put("RUBtoEUR", RUBtoEUR);
+        map.put("RUBtoUSD", RUBtoUSD);
+        map.put("RUBtoUAH", RUBtoUAH);
         map.put("UAHtoEUR", UAHtoEUR);
         map.put("UAHtoUSD", UAHtoUSD);
-        map.put("UAHtoRUR", UAHtoRUR);
+        map.put("UAHtoRUB", UAHtoRUB);
         map.put("type", type);
 
         return map;
     }
 
-    private BasicDocumentRevision rev;
+
+
     public BasicDocumentRevision getDocumentRevision() {
         return rev;
     }
@@ -164,19 +236,19 @@ public class Currency {
         Currency t = new Currency();
         t.rev = rev;
         Map<String, Object> map = rev.asMap();
-        if(map.containsKey("type") && map.get("type").equals(Currency.DOC_TYPE)) {
+        if (map.containsKey("type") && map.get("type").equals(Currency.DOC_TYPE)) {
             t.setEURtoUSD((String) map.get("EURtoUSD"));
-            t.setEURtoRUR((String) map.get("EURtoRUR"));
+            t.setEURtoRUB((String) map.get("EURtoRUB"));
             t.setEURtoUAH((String) map.get("EURtoUAH"));
             t.setUSDtoEUR((String) map.get("USDtoEUR"));
-            t.setUSDtoRUR((String) map.get("USDtoRUR"));
+            t.setUSDtoRUB((String) map.get("USDtoRUB"));
             t.setUSDtoUAH((String) map.get("USDtoUAH"));
-            t.setRURtoEUR((String) map.get("RURtoEUR"));
-            t.setRURtoUSD((String) map.get("RURtoUSD"));
-            t.setRURtoUAH((String) map.get("RURtoRUR"));
+            t.setRUBtoEUR((String) map.get("RUBtoEUR"));
+            t.setRUBtoUSD((String) map.get("RUBtoUSD"));
+            t.setRUBtoUAH((String) map.get("RUBtoUAH"));
             t.setUAHtoEUR((String) map.get("UAHtoEUR"));
             t.setUAHtoUSD((String) map.get("UAHtoUSD"));
-            t.setUAHtoRUR((String) map.get("UAHtoRUR"));
+            t.setUAHtoRUB((String) map.get("UAHtoRUB"));
 
             return t;
         }

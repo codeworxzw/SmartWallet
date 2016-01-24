@@ -1,10 +1,7 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-
-import com.cloudant.sync.datastore.ConflictException;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -13,16 +10,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class CurrencyConversion  extends AsyncTask<String, String, String> {
-
+public class CurrencyConversion extends AsyncTask<String, String, String> {
+    private static final String TAG = "CurrencyConvertion";
     HttpURLConnection urlConnection;
     private Currency currency;
-    private Double calcResult = 0.0;
-    private final Context mContext;
 
-    public CurrencyConversion(Context context, OnTaskCompleted listener) {
-        this.mContext = context;
-        this.listener = listener;
+
+    public CurrencyConversion() {
+
+
     }
 
     @Override
@@ -41,10 +37,9 @@ public class CurrencyConversion  extends AsyncTask<String, String, String> {
             while ((line = reader.readLine()) != null) {
                 result.append(line);
             }
-        }catch( Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             urlConnection.disconnect();
         }
 
@@ -53,68 +48,88 @@ public class CurrencyConversion  extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String output) {
-
         currency = new Currency(output);
-        /*if (MainActivity.financeDocumentModel.getDocument("CurrencyID") == null){
+        //TODO check if document exist
+        if(MainActivity.financeDocumentModel.getCurrencyDocument(FinanceDocumentModel.CURRENCY_ID)==null) {
             MainActivity.financeDocumentModel.createDocument(currency);
-        } else {
-            Log.d("TAG", "Document exists");
-            try {
-                MainActivity.financeDocumentModel.updateDocument(currency);
-            } catch (ConflictException e) {
-                e.printStackTrace();
-            }
-        }*/
-        listener.onTaskCompleted();
+        }
+        else{
+            Log.d(TAG, "Document exist");
+        }
+
     } // protected void onPostExecute(Void v)
 
 
     /**
-     *
      * @param in
      * @param curr
      * @param defaultCurr
      * @return calcResult
      */
-    public Double getCalculation (Double in, String curr, String defaultCurr) {
-
-        if (defaultCurr.equals("USD")){
-            if(curr.equals("EUR")){calcResult = in*currency.getEURtoUSD();}
-            if(curr.equals("USD")){calcResult = in;}
-            if(curr.equals("RUR")){calcResult = in*currency.getRURtoUSD();}
-            if(curr.equals("UAH")){calcResult = in*currency.getUAHtoUSD();}
+    public static int convertCurrency(int in, String curr, String defaultCurr) {
+        Double calcResult = (double) in;
+        Currency convCurr = MainActivity.financeDocumentModel.getCurrencyDocument(FinanceDocumentModel.CURRENCY_ID);
+        if (defaultCurr.equals("USD")) {
+            if (curr.equals("EUR")) {
+                calcResult = in * convCurr.getEURtoUSD();
+            }
+            if (curr.equals("USD")) {
+                calcResult = (double) in;
+            }
+            if (curr.equals("RUB")) {
+                calcResult = in * convCurr.getRUBtoUSD();
+            }
+            if (curr.equals("UAH")) {
+                calcResult = in * convCurr.getUAHtoUSD();
+            }
         }
 
-        if (defaultCurr.equals("EUR")){
-            if(curr.equals("EUR")){calcResult = in;}
-            if(curr.equals("USD")){calcResult = in*currency.getUSDtoEUR();}
-            if(curr.equals("RUR")){calcResult = in*currency.getRURtoEUR();}
-            if(curr.equals("UAH")){calcResult = in*currency.getUAHtoEUR();}
+        if (defaultCurr.equals("EUR")) {
+            if (curr.equals("EUR")) {
+                calcResult = (double) in;
+            }
+            if (curr.equals("USD")) {
+                calcResult = in * convCurr.getUSDtoEUR();
+            }
+            if (curr.equals("RUB")) {
+                calcResult = in * convCurr.getRUBtoEUR();
+            }
+            if (curr.equals("UAH")) {
+                calcResult = in * convCurr.getUAHtoEUR();
+            }
         }
 
-        if (defaultCurr.equals("RUR")){
-            if(curr.equals("EUR")){calcResult = in*currency.getEURtoRUR();}
-            if(curr.equals("USD")){calcResult = in*currency.getUSDtoRUR();}
-            if(curr.equals("RUR")){calcResult = in;}
-            if(curr.equals("UAH")){calcResult = in*currency.getUAHtoRUR();}
+        if (defaultCurr.equals("RUB")) {
+            if (curr.equals("EUR")) {
+                calcResult = in * convCurr.getEURtoRUB();
+            }
+            if (curr.equals("USD")) {
+                calcResult = in * convCurr.getUSDtoRUB();
+            }
+            if (curr.equals("RUB")) {
+                calcResult = (double) in;
+            }
+            if (curr.equals("UAH")) {
+                calcResult = in * convCurr.getUAHtoRUB();
+            }
         }
 
-        if (defaultCurr.equals("UAH")){
-            if(curr.equals("EUR")){calcResult = in*currency.getEURtoUAH();}
-            if(curr.equals("USD")){calcResult = in*currency.getUSDtoUAH();}
-            if(curr.equals("RUR")){calcResult = in*currency.getRURtoUAH();}
-            if(curr.equals("UAH")){calcResult = in;}
+        if (defaultCurr.equals("UAH")) {
+            if (curr.equals("EUR")) {
+                calcResult = in * convCurr.getEURtoUAH();
+            }
+            if (curr.equals("USD")) {
+                calcResult = in * convCurr.getUSDtoUAH();
+            }
+            if (curr.equals("RUB")) {
+                calcResult = in * convCurr.getRUBtoUAH();
+            }
+            if (curr.equals("UAH")) {
+                calcResult = (double) in;
+            }
         }
-      return calcResult;
+        return (int)Math.round(calcResult);
     }
-
-
-    public interface OnTaskCompleted{
-        void onTaskCompleted();
-    }
-
-
-    private OnTaskCompleted listener;
 
 
 } //class MyAsyncTask extends AsyncTask<String, String, Void>
