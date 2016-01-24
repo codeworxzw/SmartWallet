@@ -1,10 +1,7 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-
-import com.cloudant.sync.datastore.ConflictException;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -52,8 +49,13 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
     @Override
     protected void onPostExecute(String output) {
         currency = new Currency(output);
-        //TODO check if
-        MainActivity.financeDocumentModel.createDocument(currency);
+        //TODO check if document exist
+        if(MainActivity.financeDocumentModel.getCurrencyDocument(FinanceDocumentModel.CURRENCY_ID)==null) {
+            MainActivity.financeDocumentModel.createDocument(currency);
+        }
+        else{
+            Log.d(TAG, "Document exist");
+        }
 
     } // protected void onPostExecute(Void v)
 
@@ -64,7 +66,7 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
      * @param defaultCurr
      * @return calcResult
      */
-    public static String convertCurrency(int in, String curr, String defaultCurr) {
+    public static int convertCurrency(int in, String curr, String defaultCurr) {
         Double calcResult = (double) in;
         Currency convCurr = MainActivity.financeDocumentModel.getCurrencyDocument(FinanceDocumentModel.CURRENCY_ID);
         if (defaultCurr.equals("USD")) {
@@ -75,7 +77,7 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
                 calcResult = (double) in;
             }
             if (curr.equals("RUB")) {
-                calcResult = in * convCurr.getRURtoUSD();
+                calcResult = in * convCurr.getRUBtoUSD();
             }
             if (curr.equals("UAH")) {
                 calcResult = in * convCurr.getUAHtoUSD();
@@ -90,7 +92,7 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
                 calcResult = in * convCurr.getUSDtoEUR();
             }
             if (curr.equals("RUB")) {
-                calcResult = in * convCurr.getRURtoEUR();
+                calcResult = in * convCurr.getRUBtoEUR();
             }
             if (curr.equals("UAH")) {
                 calcResult = in * convCurr.getUAHtoEUR();
@@ -99,16 +101,16 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
 
         if (defaultCurr.equals("RUB")) {
             if (curr.equals("EUR")) {
-                calcResult = in * convCurr.getEURtoRUR();
+                calcResult = in * convCurr.getEURtoRUB();
             }
             if (curr.equals("USD")) {
-                calcResult = in * convCurr.getUSDtoRUR();
+                calcResult = in * convCurr.getUSDtoRUB();
             }
             if (curr.equals("RUB")) {
                 calcResult = (double) in;
             }
             if (curr.equals("UAH")) {
-                calcResult = in * convCurr.getUAHtoRUR();
+                calcResult = in * convCurr.getUAHtoRUB();
             }
         }
 
@@ -120,13 +122,13 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
                 calcResult = in * convCurr.getUSDtoUAH();
             }
             if (curr.equals("RUB")) {
-                calcResult = in * convCurr.getRURtoUAH();
+                calcResult = in * convCurr.getRUBtoUAH();
             }
             if (curr.equals("UAH")) {
                 calcResult = (double) in;
             }
         }
-        return Integer.toString(calcResult.intValue());
+        return (int)Math.round(calcResult);
     }
 
 

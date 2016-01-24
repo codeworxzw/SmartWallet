@@ -471,6 +471,7 @@ public class FinanceDocumentModel {
         } catch (DocumentNotFoundException e) {
             e.printStackTrace();
             Log.e("Doc", "document was not found");
+            return null;
         }
         return Currency.fromRevision(retrieved);
     }
