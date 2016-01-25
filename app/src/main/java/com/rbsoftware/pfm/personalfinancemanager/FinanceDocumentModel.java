@@ -469,7 +469,7 @@ public class FinanceDocumentModel {
         try {
             retrieved = mDatastore.getDocument(docId);
         } catch (DocumentNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             Log.e("Doc", "document was not found");
             return null;
         }

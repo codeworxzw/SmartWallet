@@ -2,8 +2,10 @@ package com.rbsoftware.pfm.personalfinancemanager;
 
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -29,7 +31,8 @@ public class LoginActivity extends AppCompatActivity implements
     public static GoogleApiClient mGoogleApiClient;
 
     private ProgressDialog mProgressDialog;
-
+    // Connection detector class
+    ConnectionDetector mConnectionDetector;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +75,7 @@ public class LoginActivity extends AppCompatActivity implements
         signInButton.setSize(SignInButton.SIZE_WIDE);
         signInButton.setScopes(gso.getScopeArray());
         // [END customize_button]
+        mConnectionDetector = new ConnectionDetector(getApplicationContext());
     }
 
     @Override
@@ -133,8 +137,10 @@ public class LoginActivity extends AppCompatActivity implements
 
     // [START signIn]
     private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+
     }
     // [END signIn]
 
@@ -166,10 +172,28 @@ public class LoginActivity extends AppCompatActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_in_button:
+                if(mConnectionDetector.isConnectingToInternet()) {
                 signIn();
+                }
+                else{
+                    showNoNetworkDialog();
+                }
                 break;
 
         }
+    }
+    private void showNoNetworkDialog(){
+        AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+        alertDialog.setTitle(getString(R.string.no_network_title));
+        alertDialog.setMessage(getString(R.string.no_network_message));
+        alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(android.R.string.ok),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 
 }

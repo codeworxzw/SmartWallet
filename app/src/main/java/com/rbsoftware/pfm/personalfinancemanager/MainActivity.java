@@ -297,18 +297,23 @@ public class MainActivity extends AppCompatActivity {
      * Fetches last currency rates from internet
      */
     private void reloadCurrency() {
-        Calendar c = Calendar.getInstance(TimeZone.getDefault());
+        ConnectionDetector mConnectionDetector = new ConnectionDetector(getApplicationContext());
+        if (mConnectionDetector.isConnectingToInternet()) {
+            Calendar c = Calendar.getInstance(TimeZone.getDefault());
+            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+            String currentDate = df.format(c.getTime());
+            String updatedDate = ReadFromSharedPreferences(this, "updatedDate", "");
+            Log.d(TAG, "Last time currency rates were updated on" + updatedDate);
+            if (!updatedDate.equals(currentDate) || (financeDocumentModel.getCurrencyDocument(FinanceDocumentModel.CURRENCY_ID) == null)) {
+                Log.d(TAG, "Updating currency rates");
+                new CurrencyConversion(this).execute();
 
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        String currentDate = df.format(c.getTime());
-        String updatedDate = ReadFromSharedPreferences(this, "updatedDate", "");
-        if (!updatedDate.equals(currentDate) || (financeDocumentModel.getCurrencyDocument(FinanceDocumentModel.CURRENCY_ID) == null)) {
-            Log.d(TAG, "Updating currency rates");
-            new CurrencyConversion(this).execute();
 
-
+            } else {
+                Log.d(TAG, "Currency rates were updated today");
+            }
         } else {
-            Log.d(TAG, "Currency rates were updated today");
+            Log.e(TAG, "Can't update currency rates. No internet connection");
         }
     }
 
