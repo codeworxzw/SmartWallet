@@ -55,6 +55,8 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
         }
         else{
             Log.d(TAG, "Document exist");
+            MainActivity.financeDocumentModel.updateDocument(currency);
+            Log.d(TAG, "Document updated");
         }
 
     } // protected void onPostExecute(Void v)

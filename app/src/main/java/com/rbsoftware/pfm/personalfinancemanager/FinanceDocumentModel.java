@@ -497,6 +497,7 @@ public class FinanceDocumentModel {
         }
     }
 
+
     /**
      * Updates a Document document within the datastore.
      * @param document document to update
@@ -504,13 +505,16 @@ public class FinanceDocumentModel {
      * @throws ConflictException if the document passed in has a rev which doesn't
      *      match the current rev in the datastore.
      */
-    public Currency updateDocument(Currency document) throws ConflictException {
-        MutableDocumentRevision rev = document.getDocumentRevision().mutableCopy();
+    public Currency updateDocument(Currency document) {
+
+        MutableDocumentRevision rev = new MutableDocumentRevision();
+        rev.docId = CURRENCY_ID;
         rev.body = DocumentBodyFactory.create(document.asMap());
         try {
             BasicDocumentRevision updated = this.mDatastore.updateDocumentFromRevision(rev);
             return Currency.fromRevision(updated);
         } catch (DocumentException de) {
+            Log.e("Doc", "document was not updated");
             return null;
         }
     }
