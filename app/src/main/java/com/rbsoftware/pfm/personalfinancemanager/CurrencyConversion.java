@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.cloudant.sync.datastore.ConflictException;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -57,11 +59,17 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         String currentDate = df.format(c.getTime());
-        //TODO check if document exist
+
         if (MainActivity.financeDocumentModel.getCurrencyDocument(FinanceDocumentModel.CURRENCY_ID) == null) {
             MainActivity.financeDocumentModel.createDocument(currency);
         } else {
-            Log.d(TAG, "Document exist");
+
+            try {
+                MainActivity.financeDocumentModel.updateCurrencyDocument(MainActivity.financeDocumentModel.getCurrencyDocument(FinanceDocumentModel.CURRENCY_ID), currency);
+                Log.d(TAG, "Currency rates were updated successfully");
+            } catch (ConflictException e) {
+                e.printStackTrace();
+            }
         }
         MainActivity.SaveToSharedPreferences(mContext, "updatedDate", currentDate);
 
