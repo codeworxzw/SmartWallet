@@ -1,7 +1,10 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.cloudant.sync.datastore.ConflictException;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -9,16 +12,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class CurrencyConversion extends AsyncTask<String, String, String> {
     private static final String TAG = "CurrencyConvertion";
     HttpURLConnection urlConnection;
     private Currency currency;
+    private Context mContext;
 
+    public CurrencyConversion(Context context) {
 
-    public CurrencyConversion() {
-
-
+        mContext = context;
     }
 
     @Override
@@ -49,24 +55,34 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
     @Override
     protected void onPostExecute(String output) {
         currency = new Currency(output);
-        //TODO check if document exist
-        if(MainActivity.financeDocumentModel.getCurrencyDocument(FinanceDocumentModel.CURRENCY_ID)==null) {
+        Calendar c = Calendar.getInstance(TimeZone.getDefault());
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        String currentDate = df.format(c.getTime());
+
+        if (MainActivity.financeDocumentModel.getCurrencyDocument(FinanceDocumentModel.CURRENCY_ID) == null) {
             MainActivity.financeDocumentModel.createDocument(currency);
+        } else {
+
+            try {
+                MainActivity.financeDocumentModel.updateCurrencyDocument(MainActivity.financeDocumentModel.getCurrencyDocument(FinanceDocumentModel.CURRENCY_ID), currency);
+                Log.d(TAG, "Currency rates were updated successfully");
+            } catch (ConflictException e) {
+                e.printStackTrace();
+            }
         }
-        else{
-            Log.d(TAG, "Document exist");
-            MainActivity.financeDocumentModel.updateDocument(currency);
-            Log.d(TAG, "Document updated");
-        }
+        MainActivity.SaveToSharedPreferences(mContext, "updatedDate", currentDate);
 
     } // protected void onPostExecute(Void v)
 
 
     /**
-     * @param in
-     * @param curr
-     * @param defaultCurr
-     * @return calcResult
+     * Static method for currency convertion
+     *
+     * @param in          input value
+     * @param curr        input currency
+     * @param defaultCurr default currency
+     * @return converted to default currency value
      */
     public static int convertCurrency(int in, String curr, String defaultCurr) {
         Double calcResult = (double) in;
@@ -130,7 +146,7 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
                 calcResult = (double) in;
             }
         }
-        return (int)Math.round(calcResult);
+        return (int) Math.round(calcResult);
     }
 
 

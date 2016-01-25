@@ -37,17 +37,19 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 /**
  * A simple {@link Fragment} subclass.
+ * Holds user's history
  */
-public class History extends Fragment implements Card.OnLongCardClickListener{
-    private final String TAG="History";
+public class History extends Fragment implements Card.OnLongCardClickListener {
+    private final String TAG = "History";
     private CardRecyclerView mRecyclerView;
     private List<FinanceDocument> docList;
     private ActionMode mActionMode = null;
     private HistoryCardRecyclerViewAdapter mCardArrayAdapter;
     private HistoryCard card;
-
+    private TextView mEmptyView;
     private Context mContext;
     private Activity mActivity;
+
     public History() {
         // Required empty public constructor
     }
@@ -59,12 +61,14 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_history, container, false);
     }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[2]);
 
         mRecyclerView = (CardRecyclerView) getActivity().findViewById(R.id.history_card_recycler_view);
+        mEmptyView = (TextView) getActivity().findViewById(R.id.emptyHistory);
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mContext = getContext();
@@ -81,9 +85,8 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
         ArrayList<HistoryCard> cards = new ArrayList<HistoryCard>();
 
 
-
-        for(int i=0; i < docList.size();i++){
-            card = new HistoryCard(getContext(),docList.get(i));
+        for (int i = 0; i < docList.size(); i++) {
+            card = new HistoryCard(getContext(), docList.get(i));
             card.setHeader();
             card.setExpand();
             card.setOnLongClickListener(this);
@@ -92,15 +95,22 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
 
         mCardArrayAdapter = new HistoryCardRecyclerViewAdapter(getActivity(), cards);
         //Staggered grid view
-
+        mCardArrayAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                checkAdapterIsEmpty();
+            }
+        });
 
         //Set the empty view
         if (mRecyclerView != null) {
             mRecyclerView.setAdapter(mCardArrayAdapter);
-            if(!docList.isEmpty()){
+            checkAdapterIsEmpty();
+            if (!docList.isEmpty()) {
                 int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
-                        .getInt("status_"+TAG,0);
-                if(status != -1) {
+                        .getInt("status_" + TAG, 0);
+                if (status != -1) {
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -114,13 +124,28 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
 
     }
 
-    //Runs showcase presentation on fragment start
-    private void startShowcase(){
-        ((View)card.getCardView()).measure(0, 0);
-        Double r =  ((View)card.getCardView()).getMeasuredWidth() / 1.5;
+    /**
+     * Checks whether recycler view is empty
+     * And switches to empty view
+     */
+    private void checkAdapterIsEmpty() {
+        if (mCardArrayAdapter.getItemCount() == 0) {
+            mEmptyView.setVisibility(View.VISIBLE);
+        } else {
+            mEmptyView.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * Runs showcase presentation on fragment start
+     */
+
+    private void startShowcase() {
+        ((View) card.getCardView()).measure(0, 0);
+        Double r = ((View) card.getCardView()).getMeasuredWidth() / 2.2;
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity,TAG);
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, TAG);
         sequence.setConfig(config);
         sequence.addSequenceItem(new MaterialShowcaseView.Builder(mActivity)
                 .setTarget(((View) card.getCardView()))
@@ -168,7 +193,7 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         try {
-                                            MainActivity.financeDocumentModel.deleteDocument(((HistoryCard)card).getDocument());
+                                            MainActivity.financeDocumentModel.deleteDocument(((HistoryCard) card).getDocument());
                                             mCardArrayAdapter.remove(card);
                                         } catch (ConflictException e) {
                                             e.printStackTrace();
@@ -189,7 +214,7 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
 
                     case R.id.history_share:
                         try {
-                            ExportData.exportHistoryAsCsv(getContext(), ((HistoryCard)card).getDocument());
+                            ExportData.exportHistoryAsCsv(getContext(), ((HistoryCard) card).getDocument());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -203,7 +228,7 @@ public class History extends Fragment implements Card.OnLongCardClickListener{
             @Override
             public void onDestroyActionMode(ActionMode mode) {
                 mActionMode = null;
-                if (card!=null)
+                if (card != null)
                     view.setActivated(false);
 
             }

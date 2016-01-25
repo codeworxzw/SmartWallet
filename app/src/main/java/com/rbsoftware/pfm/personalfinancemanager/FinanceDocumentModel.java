@@ -469,7 +469,7 @@ public class FinanceDocumentModel {
         try {
             retrieved = mDatastore.getDocument(docId);
         } catch (DocumentNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             Log.e("Doc", "document was not found");
             return null;
         }
@@ -486,7 +486,7 @@ public class FinanceDocumentModel {
      * @throws ConflictException if the document passed in has a rev which doesn't
      *                           match the current rev in the datastore.
      */
-    public FinanceDocument updateDocument(FinanceDocument document) throws ConflictException {
+    public FinanceDocument updateFinanceDocument(FinanceDocument document) throws ConflictException {
         MutableDocumentRevision rev = document.getDocumentRevision().mutableCopy();
         rev.body = DocumentBodyFactory.create(document.asMap());
         try {
@@ -497,24 +497,21 @@ public class FinanceDocumentModel {
         }
     }
 
-
     /**
      * Updates a Document document within the datastore.
-     * @param document document to update
+     * @param oldDocument document to update
+     * @param newDocument new document
      * @return the updated revision of the Task
      * @throws ConflictException if the document passed in has a rev which doesn't
      *      match the current rev in the datastore.
      */
-    public Currency updateDocument(Currency document) {
-
-        MutableDocumentRevision rev = new MutableDocumentRevision();
-        rev.docId = CURRENCY_ID;
-        rev.body = DocumentBodyFactory.create(document.asMap());
+    public Currency updateCurrencyDocument(Currency oldDocument, Currency newDocument) throws ConflictException {
+        MutableDocumentRevision rev = oldDocument.getDocumentRevision().mutableCopy();
+        rev.body = DocumentBodyFactory.create(newDocument.asMap());
         try {
             BasicDocumentRevision updated = this.mDatastore.updateDocumentFromRevision(rev);
             return Currency.fromRevision(updated);
         } catch (DocumentException de) {
-            Log.e("Doc", "document was not updated");
             return null;
         }
     }
