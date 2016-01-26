@@ -40,7 +40,7 @@ import java.util.TimeZone;
  **/
 public class FinanceDocumentModel {
     public final static String CURRENCY_ID = "CurrencyID";
-    private static final String LOG_TAG = "FinanceDocumentModel";
+    private static final String TAG = "FinanceDocumentModel";
     private static final String DATASTORE_MANGER_DIR = "data";
     private static final String DOCUMENT_DATASTORE = "documents";
 
@@ -82,17 +82,17 @@ public class FinanceDocumentModel {
         try {
             this.mDatastore = manager.openDatastore(DOCUMENT_DATASTORE);
         } catch (DatastoreNotCreatedException dnce) {
-            Log.e(LOG_TAG, "Unable to open Datastore", dnce);
+            Log.e(TAG, "Unable to open Datastore", dnce);
         }
 
-        Log.d(LOG_TAG, "Set up database at " + path.getAbsolutePath());
+        Log.d(TAG, "Set up database at " + path.getAbsolutePath());
 
 
         // Allow us to switch code called by the ReplicationListener into
         // the main thread so the UI can update safely.
         this.mHandler = new Handler(Looper.getMainLooper());
 
-        Log.d(LOG_TAG, "FinanceDocumentModel set up " + path.getAbsolutePath());
+        Log.d(TAG, "FinanceDocumentModel set up " + path.getAbsolutePath());
     }
 
     public void setReplicationListener(MainActivity listener) {
@@ -124,21 +124,6 @@ public class FinanceDocumentModel {
         indexList.add("type");
         indexList.add("userId");
         indexList.add("date");
-       /* indexList.add("salary");
-        indexList.add("rentalIncome");
-        indexList.add("interest");
-        indexList.add("gifts");
-        indexList.add("otherIncome");
-        indexList.add("taxes");
-        indexList.add("mortgage");
-        indexList.add("creditCard");
-        indexList.add("utilities");
-        indexList.add("food");
-        indexList.add("carPayment");
-        indexList.add("personal");
-        indexList.add("activities");
-        indexList.add("otherExpenses");*/
-
 
         im.ensureIndexed(indexList, FINANCE_DOCUMENT_INDEX_LIST);
         Log.d("index manager", "List of indexes " + im.listIndexes().toString());
@@ -176,7 +161,6 @@ public class FinanceDocumentModel {
         Map<String, Object> endClause = new HashMap<String, Object>();                 // *
         lteDate.put("$lte", endDateBuilder(currDate, timeFrame));         //*
         endClause.put("date", lteDate);                                   //*********
-
         Map<String, Object> eqUserId = new HashMap<String, Object>();       //Query by userId
         Map<String, Object> userIdClause = new HashMap<String, Object>();               //*
         eqUserId.put("$eq", userId);                                       //*
@@ -228,7 +212,6 @@ public class FinanceDocumentModel {
         Map<String, Object> endClause = new HashMap<String, Object>();                 // *
         lteDate.put("$lte", endDateBuilder(currDate, timeFrame));         //*
         endClause.put("date", lteDate);                                   //*********
-
         Map<String, Object> eqUserId = new HashMap<String, Object>();       //Query by userId
         Map<String, Object> userIdClause = new HashMap<String, Object>();               //*
         eqUserId.put("$eq", userId);                                       //*
@@ -262,10 +245,13 @@ public class FinanceDocumentModel {
     }
 
     /**
-     * methods to get first/last day
-     **/
+     * Calculates the first day of current month
+     *
+     * @return the first day of current month
+     */
     private Long getFirstDateOfCurrentMonth() {
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+
         cal.set(Calendar.DAY_OF_MONTH, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH));
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
@@ -274,16 +260,26 @@ public class FinanceDocumentModel {
         return cal.getTimeInMillis() / 1000;
     }
 
+    /**
+     * Calculates the first day of current week
+     *
+     * @return the first day of current week
+     */
     private Long getFirstDateOfCurrentWeek() {
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
-        cal.clear(Calendar.HOUR);
-        cal.clear(Calendar.MINUTE);
-        cal.clear(Calendar.SECOND);
-        cal.clear(Calendar.MILLISECOND);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
         return cal.getTimeInMillis() / 1000;
     }
 
+    /**
+     * Calculates the first day of current year
+     *
+     * @return the first day of current year
+     */
     private Long getFirstDateOfCurrentYear() {
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         cal.setTimeZone(cal.getTimeZone());
@@ -295,6 +291,11 @@ public class FinanceDocumentModel {
         return cal.getTimeInMillis() / 1000;
     }
 
+    /**
+     * Calculates the first day of last month
+     *
+     * @return the first day of last month
+     */
     private Long getFirstDateOfPreviousMonth() {
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         cal.set(Calendar.DATE, 1);
@@ -306,6 +307,11 @@ public class FinanceDocumentModel {
         return cal.getTimeInMillis() / 1000;
     }
 
+    /**
+     * Calculates the last day of last month
+     *
+     * @return the last day of last month
+     */
     private Long getLastDateOfPreviousMonth() {
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         cal.set(Calendar.DATE, 1);
@@ -317,32 +323,45 @@ public class FinanceDocumentModel {
         return cal.getTimeInMillis() / 1000;
     }
 
-
+    /**
+     * Calculates the first day of last week
+     *
+     * @return the first day of last week
+     */
     private Long getFirstDateOfPreviousWeek() {
         Calendar cal = Calendar.getInstance(TimeZone.getDefault());
         cal.add(Calendar.WEEK_OF_YEAR, -1);
         cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
 
-        cal.clear(Calendar.HOUR);
-        cal.clear(Calendar.MINUTE);
-        cal.clear(Calendar.SECOND);
-        cal.clear(Calendar.MILLISECOND);
-        return cal.getTimeInMillis() / 1000;
-    }
-
-    private Long getLastDateOfPreviousWeek() {
-        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
-        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
-        cal.add(Calendar.DAY_OF_YEAR, -1);
-        cal.clear(Calendar.HOUR);
-        cal.clear(Calendar.MINUTE);
-        cal.clear(Calendar.SECOND);
-        cal.clear(Calendar.MILLISECOND);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
         return cal.getTimeInMillis() / 1000;
     }
 
     /**
-     * helper method for setting start date
+     * Calculates the last day of last week
+     *
+     * @return the last day of last week
+     */
+    private Long getLastDateOfPreviousWeek() {
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        cal.add(Calendar.DAY_OF_YEAR, -1);
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTimeInMillis() / 1000;
+    }
+
+    /**
+     * Calculates start date for query
+     *
+     * @param currDate  current date in milliseconds
+     * @param timeFrame time frame
+     * @return start date for query
      */
     private long startDateBuilder(long currDate, String timeFrame) {
         long startDate = 0;
@@ -367,7 +386,13 @@ public class FinanceDocumentModel {
         return startDate;
     }
 
-    //helper method for setting end date
+    /**
+     * Calculates end date for query
+     *
+     * @param currDate  current date in milliseconds
+     * @param timeFrame time frame
+     * @return end date for query
+     */
     private long endDateBuilder(long currDate, String timeFrame) {
         long endDate = 0;
 
@@ -421,6 +446,7 @@ public class FinanceDocumentModel {
 
     /**
      * Creates a task, assigning an ID.
+     *
      * @param document task to create
      * @return new revision of the document
      */
@@ -477,7 +503,6 @@ public class FinanceDocumentModel {
     }
 
 
-
     /**
      * Updates a Document document within the datastore.
      *
@@ -499,11 +524,12 @@ public class FinanceDocumentModel {
 
     /**
      * Updates a Document document within the datastore.
+     *
      * @param oldDocument document to update
      * @param newDocument new document
      * @return the updated revision of the Task
      * @throws ConflictException if the document passed in has a rev which doesn't
-     *      match the current rev in the datastore.
+     *                           match the current rev in the datastore.
      */
     public Currency updateCurrencyDocument(Currency oldDocument, Currency newDocument) throws ConflictException {
         MutableDocumentRevision rev = oldDocument.getDocumentRevision().mutableCopy();
@@ -615,7 +641,7 @@ public class FinanceDocumentModel {
         mPushReplicator.getEventBus().register(this);
         mPullReplicator.getEventBus().register(this);
 
-        Log.d(LOG_TAG, "Set up replicators for URI:" + uri.toString());
+        Log.d(TAG, "Set up replicators for URI:" + uri.toString());
     }
 
     /**
@@ -642,7 +668,7 @@ public class FinanceDocumentModel {
      */
     @Subscribe
     public void error(ReplicationErrored re) {
-        Log.e(LOG_TAG, "Replication error:", re.errorInfo.getException());
+        Log.e(TAG, "Replication error:", re.errorInfo.getException());
         mHandler.post(new Runnable() {
             @Override
             public void run() {

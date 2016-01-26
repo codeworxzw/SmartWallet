@@ -182,6 +182,10 @@ public class LoginActivity extends AppCompatActivity implements
 
         }
     }
+
+    /**
+     * Shows alert dialog if no network connection
+     */
     private void showNoNetworkDialog(){
         AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
         alertDialog.setTitle(getString(R.string.no_network_title));
