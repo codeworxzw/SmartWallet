@@ -20,6 +20,7 @@ import java.util.TimeZone;
  */
 public class FinanceDocument {
     private static final String DOC_TYPE = "Finance document";
+    private static final String MAIN_ACCOUNT = "mainAccount";
     public static final int DATE_FORMAT_SHORT = 0;
     public static final int DATE_FORMAT_MEDIUM = 1;
     public static final int DATE_FORMAT_LONG = 2;
@@ -39,6 +40,8 @@ public class FinanceDocument {
     private List<String> otherExpenses = new ArrayList<>();
     private BasicDocumentRevision rev;
     private String date;
+    private String account;
+    private String type;
 
     private FinanceDocument() {
     }
@@ -64,6 +67,7 @@ public class FinanceDocument {
 
         this.setType(DOC_TYPE);
         this.setUserId(userId);
+        this.setAccount(MAIN_ACCOUNT);
         this.setSalary((ArrayList<String>) params.get(1));
         this.setRentalIncome((ArrayList<String>) params.get(2));
         this.setInterest((ArrayList<String>) params.get(3));
@@ -81,8 +85,16 @@ public class FinanceDocument {
 
     }
 
+    //account
+    private void setAccount(String account) {
+        this.account = account;
+    }
+
+    private String getAccount() {
+        return this.account;
+    }
     //type
-    private String type = DOC_TYPE;
+
 
     public String getType() {
         return type;
@@ -418,7 +430,7 @@ public class FinanceDocument {
                 getRentalIncome() +
                 getInterest() +
                 getGifts() +
-               getOtherIncome();
+                getOtherIncome();
         return totalIncome;
     }
 
@@ -490,7 +502,7 @@ public class FinanceDocument {
             t.setDate((String) map.get("date"));
             t.setType((String) map.get("type"));
             t.setUserId((String) map.get("userId"));
-
+            t.setAccount((String) map.get("account"));
             t.setSalary((ArrayList<String>) map.get("salary"));
             t.setRentalIncome((ArrayList<String>) map.get("rentalIncome"));
             t.setInterest((ArrayList<String>) map.get("interest"));
@@ -520,6 +532,7 @@ public class FinanceDocument {
         HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("type", type);
         map.put("userId", userId);
+        map.put("account", account);
         map.put("salary", salary);
         map.put("rentalIncome", rentalIncome);
         map.put("interest", interest);
