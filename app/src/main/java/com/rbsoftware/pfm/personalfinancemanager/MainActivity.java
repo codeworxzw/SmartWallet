@@ -19,12 +19,14 @@ import android.widget.Toast;
 
 
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
+    private final static String TAG = "MainActivity";
     public static final String PREF_FILE = "PrefFile";
     public final static int PARAM_USERID = 0;
     public final static int PARAM_SALARY = 1;
@@ -59,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
         boolean firstTimeOpen;
 
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -94,6 +98,9 @@ public class MainActivity extends AppCompatActivity {
 
         reloadReplicationSettings();
 
+        //Updating currency rates
+        reloadCurrency();
+
         //FAB declaration and listener
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
             SaveToSharedPreferences(this, "firstTimeOpen", Boolean.toString(firstTimeOpen));
             setNotification();
         }
+
 
     }
 
@@ -284,6 +292,30 @@ public class MainActivity extends AppCompatActivity {
         Log.d("Alarm", "setnotification was called");
     }
 
+
+    /**
+     * Fetches last currency rates from internet
+     */
+    private void reloadCurrency() {
+        ConnectionDetector mConnectionDetector = new ConnectionDetector(getApplicationContext());
+        if (mConnectionDetector.isConnectingToInternet()) {
+            Calendar c = Calendar.getInstance(TimeZone.getDefault());
+            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+            String currentDate = df.format(c.getTime());
+            String updatedDate = ReadFromSharedPreferences(this, "updatedDate", "");
+            Log.d(TAG, "Last time currency rates were updated on" + updatedDate);
+            if (!updatedDate.equals(currentDate) || (financeDocumentModel.getCurrencyDocument(FinanceDocumentModel.CURRENCY_ID) == null)) {
+                Log.d(TAG, "Updating currency rates");
+                new CurrencyConversion(this).execute();
+
+
+            } else {
+                Log.d(TAG, "Currency rates were updated today");
+            }
+        } else {
+            Log.e(TAG, "Can't update currency rates. No internet connection");
+        }
+    }
 
     /**
      * Static methods for saving to sharedpreferences

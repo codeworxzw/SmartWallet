@@ -63,6 +63,8 @@
     <string name="data_done">Нажмите, чтобы создать отчёт</string>
     <string name="history_card">Нажмите на карточке для просмотра деталей или задержите палец для вызова меню</string>
     <string name="history_is_empty">Активность отсутствует&#8230;</string>
+    <string name="no_network_title">Нет сети</string>
+    <string name="no_network_message">Невозможно подключиться к сети</string>
 
     <string-array name="drawer_menu">
         <item>Общая информация</item>

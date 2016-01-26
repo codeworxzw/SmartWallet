@@ -119,6 +119,8 @@
     <string name="data_done">Click to submit your report</string>
     <string name="history_card">Click on the card to see operation details or hold your finger to call card menu</string>
     <string name="history_is_empty">History is empty&#8230;</string>
+    <string name="no_network_title">No network</string>
+    <string name="no_network_message">Can\'t connect to internet</string>
 
 
 </resources>

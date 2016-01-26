@@ -61,6 +61,8 @@
     <string name="data_category">Seleccionar categoría de datos</string>
     <string name="data_currency">Seleccione la moneda</string>
     <string name="never">Nunca</string>
+    <string name="no_network_title">Sin red</string>
+    <string name="no_network_message">No puede conectarse a Internet</string>
 
 
     <string-array name="drawer_menu">

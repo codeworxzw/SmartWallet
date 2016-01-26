@@ -229,20 +229,20 @@ public class AccountSummary extends Fragment {
         int totalExpense = 0;
 
         for (FinanceDocument item : list) {
-            salarySum += Integer.parseInt(item.getSalary());
-            rentalIncomeSum += Integer.parseInt(item.getRentalIncome());
-            interestSum += Integer.parseInt(item.getInterest());
-            giftsSum += Integer.parseInt(item.getGifts());
-            otherIncomeSum += Integer.parseInt(item.getOtherIncome());
-            taxesSum += Integer.parseInt(item.getTaxes());
-            mortgageSum += Integer.parseInt(item.getMortgage());
-            creditCardSum += Integer.parseInt(item.getCreditCard());
-            utilitiesSum += Integer.parseInt(item.getUtilities());
-            foodSum += Integer.parseInt(item.getFood());
-            carPaymentSum += Integer.parseInt(item.getCarPayment());
-            personalSum += Integer.parseInt(item.getPersonal());
-            activitiesSum += Integer.parseInt(item.getActivities());
-            otherExpensesSum += Integer.parseInt(item.getOtherExpenses());
+            salarySum += item.getSalary();
+            rentalIncomeSum += item.getRentalIncome();
+            interestSum += item.getInterest();
+            giftsSum += item.getGifts();
+            otherIncomeSum += item.getOtherIncome();
+            taxesSum += item.getTaxes();
+            mortgageSum += item.getMortgage();
+            creditCardSum += item.getCreditCard();
+            utilitiesSum += item.getUtilities();
+            foodSum += item.getFood();
+            carPaymentSum += item.getCarPayment();
+            personalSum += item.getPersonal();
+            activitiesSum += item.getActivities();
+            otherExpensesSum += item.getOtherExpenses();
         }
 
         totalIncome = salarySum + rentalIncomeSum + interestSum + giftsSum + otherIncomeSum;

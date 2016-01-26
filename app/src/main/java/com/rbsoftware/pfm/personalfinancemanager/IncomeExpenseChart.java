@@ -291,20 +291,20 @@ public class IncomeExpenseChart extends Fragment {
 
 
         for (FinanceDocument item : list) {
-            salarySum += Integer.valueOf(item.getSalary());
-            rentalIncomeSum += Integer.valueOf(item.getRentalIncome());
-            interestSum += Integer.valueOf(item.getInterest());
-            giftsSum += Integer.valueOf(item.getGifts());
-            otherIncomeSum += Integer.valueOf(item.getOtherIncome());
-            taxesSum += Integer.valueOf(item.getTaxes());
-            mortgageSum += Integer.valueOf(item.getMortgage());
-            creditCardSum += Integer.valueOf(item.getCreditCard());
-            utilitiesSum += Integer.valueOf(item.getUtilities());
-            foodSum += Integer.valueOf(item.getFood());
-            carPaymentSum += Integer.valueOf(item.getCarPayment());
-            personalSum += Integer.valueOf(item.getPersonal());
-            activitiesSum += Integer.valueOf(item.getActivities());
-            otherExpensesSum += Integer.valueOf(item.getOtherExpenses());
+            salarySum += item.getSalary();
+            rentalIncomeSum += item.getRentalIncome();
+            interestSum += item.getInterest();
+            giftsSum += item.getGifts();
+            otherIncomeSum += item.getOtherIncome();
+            taxesSum += item.getTaxes();
+            mortgageSum += item.getMortgage();
+            creditCardSum += item.getCreditCard();
+            utilitiesSum += item.getUtilities();
+            foodSum += item.getFood();
+            carPaymentSum += item.getCarPayment();
+            personalSum += item.getPersonal();
+            activitiesSum += item.getActivities();
+            otherExpensesSum += item.getOtherExpenses();
 
         }
         HashMap<Integer, Integer> mapSum = new HashMap<>();
