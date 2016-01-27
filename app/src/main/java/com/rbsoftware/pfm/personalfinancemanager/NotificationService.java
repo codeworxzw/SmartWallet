@@ -13,13 +13,15 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 /**
- * Created by burzakovskiy on 1/27/2016.
+ * Background services that fires notification at scheduled time
+ *
+ * @author Roman Burzakovskiy
  */
 public class NotificationService extends WakefulIntentService {
     private final static String TAG = "NotificationService";
+
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
      */
     public NotificationService() {
 
@@ -27,19 +29,19 @@ public class NotificationService extends WakefulIntentService {
     }
 
 
-
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        Log.d(TAG, "onHandleIntent called");
+
         Intent notificationIntent = new Intent(this, NotificationReceiver.class);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.HOUR_OF_DAY, 21);
-
+        Log.d(TAG, "onHandleIntent called. Notification will be fired on " + calendar.getTimeInMillis());
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                 calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY,

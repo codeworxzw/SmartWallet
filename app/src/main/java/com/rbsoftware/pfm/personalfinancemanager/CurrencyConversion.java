@@ -62,6 +62,7 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
 
         if (MainActivity.financeDocumentModel.getCurrencyDocument(FinanceDocumentModel.CURRENCY_ID) == null) {
             MainActivity.financeDocumentModel.createDocument(currency);
+            Log.d(TAG, "Currency document was created successfully");
         } else {
 
             try {

@@ -17,8 +17,9 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 /**
- * Created by burzakovskiy on 1/5/2016.
  * Send reminder massage to user
+ *
+ * @author Roman Burzakovskiy
  */
 public class NotificationReceiver extends BroadcastReceiver {
     private final static String TAG = "NotificationReceiver";
@@ -57,7 +58,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         dailyReminder.setContentIntent(resultPendingIntent);
         mNM.notify(1, dailyReminder.build());
-       context.startService(new Intent(context, NotificationService.class)); //start NotificationService
+        context.startService(new Intent(context, NotificationService.class)); //start NotificationService
 
     }
 }

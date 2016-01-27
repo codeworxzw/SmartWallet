@@ -7,8 +7,8 @@ import android.content.Intent;
 /**
  * BroadCastReceiver for android.intent.action.BOOT_COMPLETED
  * passes all responsibility to NotificationService.
- * @author Roman Burzakovskiy
  *
+ * @author Roman Burzakovskiy
  */
 public class OnBootReceiver extends BroadcastReceiver {
     @Override
