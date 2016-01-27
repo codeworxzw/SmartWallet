@@ -21,11 +21,12 @@ import java.util.TimeZone;
  * Send reminder massage to user
  */
 public class NotificationReceiver extends BroadcastReceiver {
-
+    private final static String TAG = "NotificationReceiver";
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
+        Log.d(TAG, "onReceive called");
+        WakefulIntentService.acquireStaticLock(context); //acquire a partial WakeLock
         NotificationManager mNM = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder dailyReminder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_wallet_white_24dp)
@@ -56,7 +57,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         dailyReminder.setContentIntent(resultPendingIntent);
         mNM.notify(1, dailyReminder.build());
-
+       context.startService(new Intent(context, NotificationService.class)); //start NotificationService
 
     }
 }

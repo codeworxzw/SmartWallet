@@ -115,13 +115,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        firstTimeOpen = Boolean.valueOf(ReadFromSharedPreferences(this, "firstTimeOpen", "true"));
+        /*firstTimeOpen = Boolean.valueOf(ReadFromSharedPreferences(this, "firstTimeOpen", "true"));
         if (firstTimeOpen) {
             Log.d("FirstTimeOpen", "Application started for the first time");
             firstTimeOpen = false;
             SaveToSharedPreferences(this, "firstTimeOpen", Boolean.toString(firstTimeOpen));
             setNotification();
-        }
+        }*/
+        //Start service to check for alarms
+        WakefulIntentService.acquireStaticLock(this);
+        this.startService(new Intent(this, NotificationService.class));
 
 
     }
@@ -273,11 +276,13 @@ public class MainActivity extends AppCompatActivity {
      */
 
 
-    private void setNotification() {
-        Intent notificationIntent = new Intent(this, NotificationReceiver.class);
+   /* private void setNotification() {
+        //Intent notificationIntent = new Intent(this, NotificationReceiver.class);
+        Intent notificationIntent = new Intent(this, NotificationService.class);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
         calendar.set(Calendar.MILLISECOND, 0);
@@ -291,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
                 pendingIntent);
         Log.d("Alarm", "setnotification was called");
     }
-
+*/
 
     /**
      * Fetches last currency rates from internet
