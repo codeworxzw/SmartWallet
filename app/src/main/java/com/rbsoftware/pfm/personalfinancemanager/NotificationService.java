@@ -1,14 +1,8 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.app.AlarmManager;
-import android.app.IntentService;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.support.v4.app.TaskStackBuilder;
-import android.support.v7.app.NotificationCompat;
-import android.util.Log;
-
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -35,19 +29,20 @@ public class NotificationService extends WakefulIntentService {
 
         Intent notificationIntent = new Intent(this, NotificationReceiver.class);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-        calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.HOUR_OF_DAY, 21);
-        Log.d(TAG, "onHandleIntent called. Notification will be fired on " + calendar.getTimeInMillis());
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                 calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY,
+                1000*60*60*24,
                 pendingIntent);
         super.onHandleIntent(intent);
 
 
     }
+
+
 }

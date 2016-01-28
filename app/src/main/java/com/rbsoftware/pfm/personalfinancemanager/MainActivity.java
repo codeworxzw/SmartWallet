@@ -1,8 +1,6 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -113,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(report, 1);
             }
         });
+
 
 
         //Start service to check for alarms
