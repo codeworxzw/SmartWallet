@@ -1,31 +1,26 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
-import android.app.Notification;
+
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
-
 import java.util.Calendar;
 import java.util.TimeZone;
 
 /**
- * Created by burzakovskiy on 1/5/2016.
- * Send reminder massage to user
+ * Sender reminder message to user
+ *
+ * @author Roman Burzakovskiy
  */
 public class NotificationReceiver extends BroadcastReceiver {
-
+    private final static String TAG = "NotificationReceiver";
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
+        WakefulIntentService.acquireStaticLock(context); //acquire a partial WakeLock
         NotificationManager mNM = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder dailyReminder = (NotificationCompat.Builder) new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_wallet_white_24dp)
@@ -40,23 +35,18 @@ public class NotificationReceiver extends BroadcastReceiver {
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(context, LoginActivity.class);
 
-        // The stack builder object will contain an artificial back stack for the
-        // started Activity.
-        // This ensures that navigating backward from the Activity leads out of
-        // your application to the Home screen.
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        stackBuilder.addParentStack(LoginActivity.class);
-        // Adds the Intent that starts the Activity to the top of the stack
-        stackBuilder.addNextIntent(resultIntent);
+        // Because clicking the notification opens a new ("special") activity, there's
+        // no need to create an artificial back stack.
         PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
+                PendingIntent.getActivity(
+                        context,
                         0,
+                        resultIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
 
         dailyReminder.setContentIntent(resultPendingIntent);
         mNM.notify(1, dailyReminder.build());
-
-
     }
+
 }

@@ -1,8 +1,6 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -58,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        boolean firstTimeOpen;
 
         super.onCreate(savedInstanceState);
 
@@ -115,13 +112,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        firstTimeOpen = Boolean.valueOf(ReadFromSharedPreferences(this, "firstTimeOpen", "true"));
-        if (firstTimeOpen) {
-            Log.d("FirstTimeOpen", "Application started for the first time");
-            firstTimeOpen = false;
-            SaveToSharedPreferences(this, "firstTimeOpen", Boolean.toString(firstTimeOpen));
-            setNotification();
-        }
+
+
+        //Start service to check for alarms
+        WakefulIntentService.acquireStaticLock(this);
+        this.startService(new Intent(this, NotificationService.class));
 
 
     }
@@ -265,31 +260,6 @@ public class MainActivity extends AppCompatActivity {
                 "Replication error",
                 Toast.LENGTH_LONG).show();
 
-    }
-
-
-    /**
-     * Sets daily reminder alarm
-     */
-
-
-    private void setNotification() {
-        Intent notificationIntent = new Intent(this, NotificationReceiver.class);
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-        calendar.set(Calendar.MILLISECOND, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.HOUR_OF_DAY, 21);
-
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                calendar.getTimeInMillis(),
-                1000 * 24 * 60 * 60,
-                pendingIntent);
-        Log.d("Alarm", "setnotification was called");
     }
 
 
