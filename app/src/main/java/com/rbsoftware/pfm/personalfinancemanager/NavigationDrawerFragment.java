@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +18,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.squareup.picasso.Picasso;
 
@@ -74,7 +70,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
         mDrawerView = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         // Inflate the layout for this fragment
-        fragmentPos = Integer.valueOf(MainActivity.ReadFromSharedPreferences(getActivity(), "fragmentPos", "0"));
+        fragmentPos = Integer.valueOf(MainActivity.readFromSharedPreferences(getActivity(), "fragmentPos", "0"));
 
 
         return mDrawerView;
@@ -199,7 +195,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         }
         fragmentPos = position;
 
-        MainActivity.SaveToSharedPreferences(getActivity(), "fragmentPos", Integer.toString(position));
+        MainActivity.saveToSharedPreferences(getActivity(), "fragmentPos", Integer.toString(position));
         FM = getFragmentManager();
 
         FM.beginTransaction().replace(R.id.fragment_container, mFragment).commit();

@@ -72,7 +72,7 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
                 e.printStackTrace();
             }
         }
-        MainActivity.SaveToSharedPreferences(mContext, "updatedDate", currentDate);
+        MainActivity.saveToSharedPreferences(mContext, "updatedDate", currentDate);
 
     } // protected void onPostExecute(Void v)
 

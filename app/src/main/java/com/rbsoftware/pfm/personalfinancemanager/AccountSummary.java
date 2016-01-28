@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
-import uk.co.deanwild.materialshowcaseview.PrefsManager;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 /**
@@ -100,8 +98,8 @@ public class AccountSummary extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.ReadFromSharedPreferences(getActivity(), "periodAccSummary", "thisWeek"), MainActivity.getUserId());
-        mTextViewPeriod.setText(MainActivity.ReadFromSharedPreferences(getActivity(), "periodTextAccSummary", getResources().getString(R.string.this_week)));
+        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.readFromSharedPreferences(getActivity(), "periodAccSummary", "thisWeek"), MainActivity.getUserId());
+        mTextViewPeriod.setText(MainActivity.readFromSharedPreferences(getActivity(), "periodTextAccSummary", getResources().getString(R.string.this_week)));
         getValue(financeDocumentList);
     }
 
@@ -193,8 +191,8 @@ public class AccountSummary extends Fragment {
 
                         break;
                 }
-                MainActivity.SaveToSharedPreferences(getActivity(), "periodAccSummary", selectedItem);
-                MainActivity.SaveToSharedPreferences(getActivity(), "periodTextAccSummary", mTextViewPeriod.getText().toString());
+                MainActivity.saveToSharedPreferences(getActivity(), "periodAccSummary", selectedItem);
+                MainActivity.saveToSharedPreferences(getActivity(), "periodTextAccSummary", mTextViewPeriod.getText().toString());
                 getValue(financeDocumentList);
                 return false;
             }

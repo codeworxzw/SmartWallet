@@ -4,7 +4,6 @@ package com.rbsoftware.pfm.personalfinancemanager;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -83,7 +82,7 @@ public class IncomeExpenseChart extends Fragment {
         mIncomeExpenseButton = (ToggleButton) getActivity().findViewById(R.id.btn_income_expense);
 
 
-        mIncomeExpenseButton.setChecked(Boolean.valueOf(MainActivity.ReadFromSharedPreferences(getActivity(), "toggleButtonState", "true")));
+        mIncomeExpenseButton.setChecked(Boolean.valueOf(MainActivity.readFromSharedPreferences(getActivity(), "toggleButtonState", "true")));
         if (mIncomeExpenseButton.isChecked()) {
             mIncomeExpenseButton.setTextColor(ContextCompat.getColor(getContext(), R.color.income));
             offsetStart = 0;
@@ -108,7 +107,7 @@ public class IncomeExpenseChart extends Fragment {
                     offsetEnd = 0;
 
                 }
-                MainActivity.SaveToSharedPreferences(getActivity(), "toggleButtonState", Boolean.toString(mIncomeExpenseButton.isChecked()));
+                MainActivity.saveToSharedPreferences(getActivity(), "toggleButtonState", Boolean.toString(mIncomeExpenseButton.isChecked()));
                 generateChartData(getValues(financeDocumentList));
             }
         });
@@ -137,8 +136,8 @@ public class IncomeExpenseChart extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.ReadFromSharedPreferences(getActivity(), "period", "thisWeek"), MainActivity.getUserId());
-        mTextViewPeriod.setText(MainActivity.ReadFromSharedPreferences(getActivity(), "periodText", getResources().getString(R.string.this_week)));
+        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.readFromSharedPreferences(getActivity(), "period", "thisWeek"), MainActivity.getUserId());
+        mTextViewPeriod.setText(MainActivity.readFromSharedPreferences(getActivity(), "periodText", getResources().getString(R.string.this_week)));
         generateChartData(getValues(financeDocumentList));
     }
 
@@ -220,8 +219,8 @@ public class IncomeExpenseChart extends Fragment {
 
                         break;
                 }
-                MainActivity.SaveToSharedPreferences(getActivity(), "period", selectedItem);
-                MainActivity.SaveToSharedPreferences(getActivity(), "periodText", mTextViewPeriod.getText().toString());
+                MainActivity.saveToSharedPreferences(getActivity(), "period", selectedItem);
+                MainActivity.saveToSharedPreferences(getActivity(), "periodText", mTextViewPeriod.getText().toString());
 
                 generateChartData(getValues(financeDocumentList));
                 return false;

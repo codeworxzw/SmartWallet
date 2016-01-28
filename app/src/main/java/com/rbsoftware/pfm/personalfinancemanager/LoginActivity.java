@@ -34,10 +34,11 @@ public class LoginActivity extends AppCompatActivity implements
     // Connection detector class
     ConnectionDetector mConnectionDetector;
     private boolean mIntentInProgress;
-
+    private SignInButton signInButton;
     private boolean mSignInClicked;
 
     private ConnectionResult mConnectionResult;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,37 +59,25 @@ public class LoginActivity extends AppCompatActivity implements
         //mGoogleApiClient.connect();
         // [END build_client]
 
-        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_WIDE);
-
+        signInButton.setVisibility(View.GONE);
         // [END customize_button]
         mConnectionDetector = new ConnectionDetector(getApplicationContext());
-        Log.d(TAG, "onCreate");
     }
 
     @Override
     public void onStart() {
-        Log.d(TAG, "onStart");
         super.onStart();
         mGoogleApiClient.connect();
 
     }
-   /* @Override
-    protected void onDestroy() {
-        Log.d(TAG, "onDestroy");
-        super.onDestroy();
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
 
-    }*/
 
     /**
      * Method to resolve any signin errors
-     *
-     * */
+     */
     private void resolveSignInError() {
-        Log.d(TAG, "resolveSignInError");
         if (mConnectionResult.hasResolution()) {
             try {
                 mIntentInProgress = true;
@@ -103,7 +92,6 @@ public class LoginActivity extends AppCompatActivity implements
     // [START onActivityResult]
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "onActivityResult");
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
@@ -121,10 +109,8 @@ public class LoginActivity extends AppCompatActivity implements
     // [END onActivityResult]
 
 
-
     // [START signIn]
     private void signIn() {
-        Log.d(TAG, "signIn");
         if (!mGoogleApiClient.isConnecting()) {
             mSignInClicked = true;
             resolveSignInError();
@@ -136,7 +122,6 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-        Log.d(TAG, "onConnectionFailed");
         if (!result.hasResolution()) {
             GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), this,
                     RC_SIGN_IN).show();
@@ -146,7 +131,7 @@ public class LoginActivity extends AppCompatActivity implements
         if (!mIntentInProgress) {
             // Store the ConnectionResult for later usage
             mConnectionResult = result;
-
+            signInButton.setVisibility(View.VISIBLE);
             if (mSignInClicked) {
                 // The user has already clicked 'sign-in' so we attempt to
                 // resolve all
@@ -157,15 +142,13 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_in_button:
-                if(mConnectionDetector.isConnectingToInternet()) {
-                signIn();
-                }
-                else{
+                if (mConnectionDetector.isConnectingToInternet()) {
+                    signIn();
+                } else {
                     showNoNetworkDialog();
                 }
                 break;
@@ -176,7 +159,7 @@ public class LoginActivity extends AppCompatActivity implements
     /**
      * Shows alert dialog if no network connection
      */
-    private void showNoNetworkDialog(){
+    private void showNoNetworkDialog() {
         AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
         alertDialog.setTitle(getString(R.string.no_network_title));
         alertDialog.setMessage(getString(R.string.no_network_message));
@@ -190,8 +173,10 @@ public class LoginActivity extends AppCompatActivity implements
         alertDialog.show();
     }
 
-    private void handleResult(){
-        Log.d(TAG, "handleResult");
+    /**
+     * Fetches profile data and starts MainActivity
+     */
+    private void handleResult() {
         if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
             Person acct = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
             Intent intent = new Intent(this, MainActivity.class);
@@ -203,9 +188,9 @@ public class LoginActivity extends AppCompatActivity implements
             finish();
         }
     }
+
     @Override
     public void onConnected(Bundle bundle) {
-        Log.d(TAG, "onConnected");
         mSignInClicked = false;
 
         handleResult();
@@ -216,7 +201,6 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.d(TAG, "onConnectionSuspended");
         mGoogleApiClient.connect();
     }
 }

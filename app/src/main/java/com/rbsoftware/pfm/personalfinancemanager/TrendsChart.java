@@ -15,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -62,11 +61,11 @@ public class TrendsChart extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         //Populating list from shared preferences
-        listLinesSize = Integer.valueOf(MainActivity.ReadFromSharedPreferences(getActivity(),
+        listLinesSize = Integer.valueOf(MainActivity.readFromSharedPreferences(getActivity(),
                 "listLinesSize", "0"));
         checkedLines = new ArrayList<>();
         for (int i = 0; i < listLinesSize; i++) {
-            checkedLines.add(Integer.valueOf(MainActivity.ReadFromSharedPreferences(getActivity(),
+            checkedLines.add(Integer.valueOf(MainActivity.readFromSharedPreferences(getActivity(),
                     "checkedLine" + i, null)));
 
         }
@@ -95,10 +94,10 @@ public class TrendsChart extends Fragment {
         super.onResume();
         //Querying list of documents on fragment resume
         financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(
-                MainActivity.ReadFromSharedPreferences(getActivity(), "periodTrend", "thisWeek"),
+                MainActivity.readFromSharedPreferences(getActivity(), "periodTrend", "thisWeek"),
                 MainActivity.getUserId(),
                 FinanceDocumentModel.ORDER_ASC);
-        mTextViewPeriod.setText(MainActivity.ReadFromSharedPreferences(getActivity(),
+        mTextViewPeriod.setText(MainActivity.readFromSharedPreferences(getActivity(),
                 "periodTextTrend",
                 getResources().getString(R.string.this_week)));
         generateLineChartData();
@@ -209,8 +208,8 @@ public class TrendsChart extends Fragment {
 
                         break;
                 }
-                MainActivity.SaveToSharedPreferences(getActivity(), "periodTrend", selectedPeriod);
-                MainActivity.SaveToSharedPreferences(getActivity(), "periodTextTrend", mTextViewPeriod.getText().toString());
+                MainActivity.saveToSharedPreferences(getActivity(), "periodTrend", selectedPeriod);
+                MainActivity.saveToSharedPreferences(getActivity(), "periodTextTrend", mTextViewPeriod.getText().toString());
                 generateLineChartData();
                 return false;
             }
@@ -251,10 +250,10 @@ public class TrendsChart extends Fragment {
 
                 }
                 listLinesSize = checkedLines.size();
-                MainActivity.SaveToSharedPreferences(getActivity(), "listLinesSize",
+                MainActivity.saveToSharedPreferences(getActivity(), "listLinesSize",
                         Integer.toString(listLinesSize));
                 for (int i = 0; i < checkedLines.size(); i++) {
-                    MainActivity.SaveToSharedPreferences(getActivity(), "checkedLine" + i,
+                    MainActivity.saveToSharedPreferences(getActivity(), "checkedLine" + i,
                             Integer.toString(checkedLines.get(i)));
                 }
 
