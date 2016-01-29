@@ -112,12 +112,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        boolean firstStart = Boolean.valueOf(readFromSharedPreferences(this, "firstStart", "true"));
 
-
-        //Start service to check for alarms
-        WakefulIntentService.acquireStaticLock(this);
-        this.startService(new Intent(this, NotificationService.class));
-
+        if (firstStart) {
+            //Start service to check for alarms
+            Log.d(TAG,"NotificationService is not running. Starting..");
+            WakefulIntentService.acquireStaticLock(this);
+            this.startService(new Intent(this, NotificationService.class));
+            firstStart = false;
+            saveToSharedPreferences(this, "firstStart", Boolean.toString(firstStart));
+        }
 
     }
 
@@ -168,6 +172,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }//onActivityResult
 
+
+    //HELPER METHODS
+
     /**
      * Parsing string to retrieve document data
      */
@@ -197,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //HELPER METHODS
+
 
 
     /**
@@ -272,8 +279,7 @@ public class MainActivity extends AppCompatActivity {
             Calendar c = Calendar.getInstance(TimeZone.getDefault());
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
             String currentDate = df.format(c.getTime());
-            String updatedDate = ReadFromSharedPreferences(this, "updatedDate", "");
-            Log.d(TAG, "Last time currency rates were updated on" + updatedDate);
+            String updatedDate = readFromSharedPreferences(this, "updatedDate", "");
             if (!updatedDate.equals(currentDate) || (financeDocumentModel.getCurrencyDocument(FinanceDocumentModel.CURRENCY_ID) == null)) {
                 Log.d(TAG, "Updating currency rates");
                 new CurrencyConversion(this).execute();
@@ -294,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
      * @param prefName  name variable
      * @param prefValue value
      */
-    public static void SaveToSharedPreferences(Context context, String prefName, String prefValue) {
+    public static void saveToSharedPreferences(Context context, String prefName, String prefValue) {
         SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(prefName, prefValue);
@@ -308,10 +314,12 @@ public class MainActivity extends AppCompatActivity {
      * @param prefName     name variable
      * @param defaultValue default value
      */
-    public static String ReadFromSharedPreferences(Context context, String prefName, String defaultValue) {
+    public static String readFromSharedPreferences(Context context, String prefName, String defaultValue) {
         SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
         return sharedPref.getString(prefName, defaultValue);
     }
+
+
 
 
 }

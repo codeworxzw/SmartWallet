@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +17,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
+import com.google.android.gms.plus.Plus;
 import com.squareup.picasso.Picasso;
 
 
@@ -60,26 +57,6 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      /*  if(savedInstanceState == null) {
-            // [START configure_signin]
-            // Configure sign-in to request the user's ID, email address, and basic
-            // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .build();
-            // [END configure_signin]
-
-            // [START build_client]
-            // Build a GoogleApiClient with access to the Google Sign-In API and the
-            // options specified by gso.
-
-            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                    .enableAutoManage(getActivity() , this )
-                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                    .build();
-            mGoogleApiClient.connect();
-            // [END build_client]
-        }*/
 
     }
 
@@ -93,14 +70,14 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
         mDrawerView = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         // Inflate the layout for this fragment
-        fragmentPos = Integer.valueOf(MainActivity.ReadFromSharedPreferences(getActivity(), "fragmentPos", "0"));
+        fragmentPos = Integer.valueOf(MainActivity.readFromSharedPreferences(getActivity(), "fragmentPos", "0"));
 
 
         return mDrawerView;
     }
 
 
-    @Override
+    /*@Override
     public void onStart() {
         super.onStart();
         if (LoginActivity.mGoogleApiClient != null) {
@@ -112,11 +89,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
     @Override
     public void onStop() {
         super.onStop();
-       /* if (LoginActivity.mGoogleApiClient != null) {
-            if (!LoginActivity.mGoogleApiClient.isConnected())
-                LoginActivity.mGoogleApiClient.disconnect();
-        }*/
-    }
+    }*/
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -128,7 +101,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         mUserName.setText(getArguments().getString("name", getArguments().getString("email")));
         String photoURL = getArguments().getString("photoURL", null);
         if (photoURL != null) {
-            Picasso.with(getContext()).load(photoURL).into(mUserPhoto);
+            Picasso.with(getContext()).load(photoURL).transform(new CircleTransform()).into(mUserPhoto);
         } else {
             Picasso.with(getContext()).load(R.drawable.user_photo_256px).into(mUserPhoto);
 
@@ -222,7 +195,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         }
         fragmentPos = position;
 
-        MainActivity.SaveToSharedPreferences(getActivity(), "fragmentPos", Integer.toString(position));
+        MainActivity.saveToSharedPreferences(getActivity(), "fragmentPos", Integer.toString(position));
         FM = getFragmentManager();
 
         FM.beginTransaction().replace(R.id.fragment_container, mFragment).commit();
@@ -236,20 +209,15 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
     }
 
     public void signout() {
-        //  Log.d("TAG", LoginActivity.mGoogleApiClient.getConnectionResult(Auth.GOOGLE_SIGN_IN_API).toString());
-
         if (LoginActivity.mGoogleApiClient.isConnected()) {
-            Auth.GoogleSignInApi.signOut(LoginActivity.mGoogleApiClient).setResultCallback(
-                    new ResultCallback<Status>() {
-                        @Override
-                        public void onResult(Status status) {
-                            Intent intent = new Intent(getActivity(), LoginActivity.class);
-                            startActivity(intent);
-                            getActivity().finish();
+            Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
+            LoginActivity.mGoogleApiClient.disconnect();
 
-                        }
-                    });
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent);
+            getActivity().finish();
         }
+
     }
 
 }
