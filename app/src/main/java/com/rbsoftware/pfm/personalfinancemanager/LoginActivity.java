@@ -1,11 +1,15 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -177,6 +181,7 @@ public class LoginActivity extends AppCompatActivity implements
      * Fetches profile data and starts MainActivity
      */
     private void handleResult() {
+
         if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
             Person acct = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
             Intent intent = new Intent(this, MainActivity.class);
@@ -187,14 +192,83 @@ public class LoginActivity extends AppCompatActivity implements
             startActivity(intent);
             finish();
         }
+
+    }
+
+    /**
+     * Requests GET_ACCOUNTS permission
+     */
+    private void requestGetAccountsPermission() {
+
+
+        // No explanation needed, we can request the permission.
+
+        ActivityCompat.requestPermissions(LoginActivity.this,
+                new String[]{Manifest.permission.GET_ACCOUNTS},
+                0);
+
+
+    }
+
+    /**
+     * Shows explanation why GET_ACCOUNTS required
+     */
+    private void showExplanationDialog() {
+        AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+        alertDialog.setTitle(getString(R.string.permission_required));
+        alertDialog.setMessage(getString(R.string.permission_getaccounts_explanation));
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(android.R.string.ok),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 0: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    handleResult();
+
+                } else {
+                    signInButton.setVisibility(View.VISIBLE);
+                    if (mGoogleApiClient.isConnected()) {
+                        Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+                        mGoogleApiClient.disconnect();
+
+
+                    }
+
+                    showExplanationDialog();
+
+                }
+                break;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     @Override
     public void onConnected(Bundle bundle) {
-        mSignInClicked = false;
+        if (ContextCompat.checkSelfPermission(LoginActivity.this,
+                Manifest.permission.GET_ACCOUNTS)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestGetAccountsPermission();
+        } else {
+            mSignInClicked = false;
 
-        handleResult();
-
+            handleResult();
+        }
 
     }
 

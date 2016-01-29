@@ -121,6 +121,9 @@
     <string name="history_is_empty">History is empty&#8230;</string>
     <string name="no_network_title">No network</string>
     <string name="no_network_message">Can\'t connect to internet</string>
+    <string name="permission_required">Permission required</string>
+    <string name="permission_getaccounts_explanation">Smart Wallet uses your profile information to provide you better user experience.</string>
+    <string name="permission_write_external_storage_explanation">Smart Wallet needs to export data into file on your device</string>
 
 
 </resources>
