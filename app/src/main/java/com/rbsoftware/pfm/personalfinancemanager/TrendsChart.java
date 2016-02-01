@@ -162,7 +162,7 @@ public class TrendsChart extends Fragment {
      * Shows period chart_trends_menu popup menu
      */
 
-    public void showPopupPeriod() {
+    private void showPopupPeriod() {
         View menuItemView = getActivity().findViewById(R.id.action_filter);
         PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
         MenuInflater inflate = popup.getMenuInflater();
@@ -232,7 +232,7 @@ public class TrendsChart extends Fragment {
     /**
      * Shows lines option menu
      */
-    public void showPopupLine() {
+    private void showPopupLine() {
 
         popupLine = new PopupMenu(getActivity(), getActivity().findViewById(R.id.action_line));
         MenuInflater inflate = popupLine.getMenuInflater();
@@ -327,14 +327,7 @@ public class TrendsChart extends Fragment {
 
     }
 
-    public List<AxisValue> getDates(List<FinanceDocument> docList) {
-        List<AxisValue> dates = new ArrayList<>();
-        for (FinanceDocument doc : docList) {
-            AxisValue value = new AxisValue(Float.valueOf(doc.getDate()));
-            dates.add(value);
-        }
-        return dates;
-    }
+
 
     /**
      * Fetches values from document fro line chart

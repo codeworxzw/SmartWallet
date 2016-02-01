@@ -18,7 +18,7 @@ import java.util.TimeZone;
 
 public class CurrencyConversion extends AsyncTask<String, String, String> {
     private static final String TAG = "CurrencyConvertion";
-    HttpURLConnection urlConnection;
+    private HttpURLConnection urlConnection;
     private Currency currency;
     private Context mContext;
 

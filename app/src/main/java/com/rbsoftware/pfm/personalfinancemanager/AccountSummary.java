@@ -216,7 +216,7 @@ public class AccountSummary extends Fragment {
      * Retrieves values from documents list.
      * Calculates sums and sets them to text views
      *
-     * @param list
+     * @param list FinanceDocument list
      **/
 
     private void getValue(List<FinanceDocument> list) {
@@ -234,8 +234,8 @@ public class AccountSummary extends Fragment {
         int personalSum = 0;
         int activitiesSum = 0;
         int otherExpensesSum = 0;
-        int totalIncome = 0;
-        int totalExpense = 0;
+        int totalIncome;
+        int totalExpense;
 
         for (FinanceDocument item : list) {
             salarySum += item.getSalary();

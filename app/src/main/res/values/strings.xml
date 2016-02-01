@@ -1,7 +1,6 @@
 <resources>
-    <string name="app_name" translatable="false">Smart Wallet</string>
+    <string name="app_name">Smart Wallet</string>
 
-    <string name="title_activity_main" translatable="false">MainActivity</string>
 
     <!-- Drawer menu-->
     <string name="drawer_open">Open</string>
@@ -109,7 +108,7 @@
     <string name="action_filter">Filter data by period</string>
     <string name="got_it">Got it</string>
     <string name="document_share">Export summary report data into other applications</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="income_expense_switch">Click to switch between income and expense charts</string>
     <string name="action_line">Select chart type to be shown</string>
     <string name="data_category">Select data category</string>

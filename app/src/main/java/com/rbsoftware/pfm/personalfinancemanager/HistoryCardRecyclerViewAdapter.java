@@ -1,18 +1,8 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 
-import com.cloudant.sync.datastore.ConflictException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,14 +11,15 @@ import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.recyclerview.internal.BaseRecyclerViewAdapter;
 
 /**
- * Created by burzakovskiy on 1/16/2016.
+ * Class for history cards adapter
+ *
+ * @author Roman Burzakovskiy
  */
 public class HistoryCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     /**
      * Internal objects
      */
-    protected List<HistoryCard> mCards;
-    private ActionMode mActionMode = null;
+    private List<HistoryCard> mCards;
 
     /**
      * Constructor
@@ -81,8 +72,8 @@ public class HistoryCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     /**
      * Appends the specified element into the index specified {@code List}.
      *
-     * @param index
-     * @param card
+     * @param index of element
+     * @param card to add
      */
     @Override
     public void add(final int index, @NonNull final Card card) {
@@ -105,8 +96,8 @@ public class HistoryCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     /**
      * Check if the list contains the element
      *
-     * @param card
-     * @return
+     * @param card to check
+     * @return true if card is in list
      */
     @Override
     public boolean contains(final Card card) {
@@ -125,8 +116,8 @@ public class HistoryCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     /**
      * Removes the specified element
      *
-     * @param card
-     * @return
+     * @param card to remove
+     * @return true if card was removed
      */
     @Override
     public boolean remove(@NonNull final Card card) {
@@ -138,8 +129,8 @@ public class HistoryCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     /**
      * Removes the element at position
      *
-     * @param position
-     * @return
+     * @param position of card
+     * @return true if card was removed
      */
     @NonNull
     @Override

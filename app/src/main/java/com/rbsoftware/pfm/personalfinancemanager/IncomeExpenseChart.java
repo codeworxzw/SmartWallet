@@ -188,7 +188,7 @@ public class IncomeExpenseChart extends Fragment {
      * Shows chart_income_expense_menu popup menu
      */
 
-    public void showPopup() {
+    private void showPopup() {
         View menuItemView = getActivity().findViewById(R.id.action_filter);
         PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
         MenuInflater inflate = popup.getMenuInflater();
@@ -283,7 +283,7 @@ public class IncomeExpenseChart extends Fragment {
      * @param list finance documents list
      * @return map of data types and values
      */
-    public HashMap<Integer, Integer> getValues(List<FinanceDocument> list) {
+    private HashMap<Integer, Integer> getValues(List<FinanceDocument> list) {
         int salarySum = 0;
         int rentalIncomeSum = 0;
         int interestSum = 0;
@@ -342,7 +342,7 @@ public class IncomeExpenseChart extends Fragment {
      * @param key value range 1-14
      * @return string value
      **/
-    public String keyToString(int key) {
+    private String keyToString(int key) {
         switch (key) {
             case 1:
                 return getResources().getString(R.string.salary);

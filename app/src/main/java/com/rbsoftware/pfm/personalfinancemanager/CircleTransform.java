@@ -2,6 +2,7 @@ package com.rbsoftware.pfm.personalfinancemanager;
 
 /**
  * Created by burzakovskiy on 1/28/2016.
+ * Holds method for transforming image into circle form
  */
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;

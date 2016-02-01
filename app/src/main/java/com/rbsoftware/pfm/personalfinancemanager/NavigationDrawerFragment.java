@@ -54,11 +54,6 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         setRetainInstance(true);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
 
 
@@ -176,7 +171,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         }
     }
 
-    public void openFragment(int position) {
+    private void openFragment(int position) {
         switch (position) {
             case 0:
                 mFragment = new AccountSummary();
@@ -208,7 +203,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
     }
 
-    public void signout() {
+    private void signout() {
         if (LoginActivity.mGoogleApiClient.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
             LoginActivity.mGoogleApiClient.disconnect();

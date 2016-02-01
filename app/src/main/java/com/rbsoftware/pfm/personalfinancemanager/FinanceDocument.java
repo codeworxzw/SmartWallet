@@ -1,6 +1,5 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
-import android.util.Log;
 
 import com.cloudant.sync.datastore.BasicDocumentRevision;
 
@@ -100,7 +99,7 @@ public class FinanceDocument {
         return type;
     }
 
-    public void setType(String type) {
+    private void setType(String type) {
         this.type = type;
     }
 
@@ -111,7 +110,7 @@ public class FinanceDocument {
         return userId;
     }
 
-    public void setUserId(String data) {
+    private void setUserId(String data) {
         this.userId = data;
     }
 
@@ -127,7 +126,7 @@ public class FinanceDocument {
         this.salary.add(2, recursion);
     }
 
-    public void setSalary(ArrayList<String> salary) {
+    private void setSalary(ArrayList<String> salary) {
 
         this.salary = salary;
     }
@@ -144,7 +143,7 @@ public class FinanceDocument {
         this.rentalIncome.add(2, recursion);
     }
 
-    public void setRentalIncome(ArrayList<String> rentalIncome) {
+    private void setRentalIncome(ArrayList<String> rentalIncome) {
         this.rentalIncome = rentalIncome;
     }
 
@@ -161,7 +160,7 @@ public class FinanceDocument {
         this.interest.add(2, recursion);
     }
 
-    public void setInterest(ArrayList<String> interest) {
+    private void setInterest(ArrayList<String> interest) {
 
         this.interest = interest;
     }
@@ -180,7 +179,7 @@ public class FinanceDocument {
         this.gifts.add(2, recursion);
     }
 
-    public void setGifts(ArrayList<String> gifts) {
+    private void setGifts(ArrayList<String> gifts) {
 
         this.gifts = gifts;
     }
@@ -199,7 +198,7 @@ public class FinanceDocument {
         this.otherIncome.add(2, recursion);
     }
 
-    public void setOtherIncome(ArrayList<String> otherIncome) {
+    private void setOtherIncome(ArrayList<String> otherIncome) {
 
         this.otherIncome = otherIncome;
     }
@@ -218,7 +217,7 @@ public class FinanceDocument {
         this.taxes.add(2, recursion);
     }
 
-    public void setTaxes(ArrayList<String> taxes) {
+    private void setTaxes(ArrayList<String> taxes) {
 
         this.taxes = taxes;
     }
@@ -237,7 +236,7 @@ public class FinanceDocument {
         this.mortgage.add(2, recursion);
     }
 
-    public void setMortgage(ArrayList<String> mortgage) {
+    private void setMortgage(ArrayList<String> mortgage) {
 
         this.mortgage = mortgage;
     }
@@ -256,7 +255,7 @@ public class FinanceDocument {
         this.creditCard.add(2, recursion);
     }
 
-    public void setCreditCard(ArrayList<String> creditCard) {
+    private void setCreditCard(ArrayList<String> creditCard) {
 
         this.creditCard = creditCard;
     }
@@ -275,7 +274,7 @@ public class FinanceDocument {
         this.utilities.add(2, recursion);
     }
 
-    public void setUtilities(ArrayList<String> utilities) {
+    private void setUtilities(ArrayList<String> utilities) {
 
         this.utilities = utilities;
     }
@@ -294,7 +293,7 @@ public class FinanceDocument {
         this.food.add(2, recursion);
     }
 
-    public void setFood(ArrayList<String> food) {
+    private void setFood(ArrayList<String> food) {
 
         this.food = food;
     }
@@ -313,7 +312,7 @@ public class FinanceDocument {
         this.carPayment.add(2, recursion);
     }
 
-    public void setCarPayment(ArrayList<String> carPayment) {
+    private void setCarPayment(ArrayList<String> carPayment) {
 
         this.carPayment = carPayment;
     }
@@ -332,7 +331,7 @@ public class FinanceDocument {
         this.personal.add(2, recursion);
     }
 
-    public void setPersonal(ArrayList<String> personal) {
+    private void setPersonal(ArrayList<String> personal) {
 
         this.personal = personal;
     }
@@ -351,7 +350,7 @@ public class FinanceDocument {
         this.activities.add(2, recursion);
     }
 
-    public void setActivities(ArrayList<String> activities) {
+    private void setActivities(ArrayList<String> activities) {
 
         this.activities = activities;
     }
@@ -369,7 +368,7 @@ public class FinanceDocument {
         this.otherExpenses.add(2, recursion);
     }
 
-    public void setOtherExpenses(ArrayList<String> otherExpenses) {
+    private void setOtherExpenses(ArrayList<String> otherExpenses) {
 
         this.otherExpenses = otherExpenses;
     }
@@ -381,7 +380,7 @@ public class FinanceDocument {
         return date;
     }
 
-    public void setDate(String date) {
+    private void setDate(String date) {
         this.date = date;
     }
 
@@ -414,8 +413,7 @@ public class FinanceDocument {
                 break;
         }
         sdf.setTimeZone(TimeZone.getDefault()); // give a timezone reference for formating (see comment at the bottom
-        String normalDate = sdf.format(formatDate);
-        return normalDate;
+        return sdf.format(formatDate);
     }
 
     /**

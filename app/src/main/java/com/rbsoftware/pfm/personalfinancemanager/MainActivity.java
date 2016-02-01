@@ -25,7 +25,7 @@ import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";
-    public static final String PREF_FILE = "PrefFile";
+    private static final String PREF_FILE = "PrefFile";
     public final static int PARAM_USERID = 0;
     public final static int PARAM_SALARY = 1;
     public final static int PARAM_RENTAL_INCOME = 2;
@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void reloadReplicationSettings() {
         try {
-            this.financeDocumentModel.reloadReplicationSettings();
+            financeDocumentModel.reloadReplicationSettings();
         } catch (URISyntaxException e) {
             Log.e(getApplicationContext().toString(), "Unable to construct remote URI from configuration", e);
             Toast.makeText(getApplicationContext(),

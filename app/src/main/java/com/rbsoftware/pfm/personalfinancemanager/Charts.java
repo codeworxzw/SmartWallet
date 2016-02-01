@@ -1,15 +1,11 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
-import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +27,6 @@ public class Charts extends Fragment {
     }
 
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,10 +59,6 @@ public class Charts extends Fragment {
     }
 
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
 
     private class CollectionPagerAdapter extends FragmentStatePagerAdapter {
         public CollectionPagerAdapter(FragmentManager fm) {
@@ -95,13 +83,13 @@ public class Charts extends Fragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            String title = new String();
+            String title="";
             if (position == 0) {
                 title = getResources().getString(R.string.overview);
             }
             if (position == 1) {
                 title = getResources().getString(R.string.trends);
-                ;
+
             }
             return title;
         }

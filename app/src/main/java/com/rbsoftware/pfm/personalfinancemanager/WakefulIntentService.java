@@ -12,11 +12,9 @@ import android.os.PowerManager;
  * @author Roman Burzakovskiy
  */
 public class WakefulIntentService extends IntentService {
-    public static final String
-            LOCK_NAME_STATIC = "com.rbsoftware.pfm.personalfinancemanager.NotificationService.Static";
-    ;
-    public static final String
-            LOCK_NAME_LOCAL = "com.rbsoftware.pfm.personalfinancemanager.NotificationService.Local";
+    private static final String LOCK_NAME_STATIC = "com.rbsoftware.pfm.personalfinancemanager.NotificationService.Static";
+
+    private static final String LOCK_NAME_LOCAL = "com.rbsoftware.pfm.personalfinancemanager.NotificationService.Local";
     private static PowerManager.WakeLock lockStatic = null;
     private PowerManager.WakeLock lockLocal = null;
 
@@ -28,7 +26,7 @@ public class WakefulIntentService extends IntentService {
      * Acquire a partial static WakeLock, you need too call this within the class
      * that calls startService()
      *
-     * @param context
+     * @param context application context
      */
     public static void acquireStaticLock(Context context) {
         getLock(context).acquire();
