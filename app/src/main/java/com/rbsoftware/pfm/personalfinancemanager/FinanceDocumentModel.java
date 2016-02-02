@@ -641,7 +641,6 @@ public class FinanceDocumentModel {
         mPushReplicator.getEventBus().register(this);
         mPullReplicator.getEventBus().register(this);
 
-        Log.d(TAG, "Set up replicators for URI:" + uri.toString());
     }
 
     /**

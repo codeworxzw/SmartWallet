@@ -28,7 +28,7 @@ import com.squareup.picasso.Picasso;
  * A simple {@link Fragment} subclass.
  * Holds navigation drawer elements
  */
-public class NavigationDrawerFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
+public class NavigationDrawerFragment extends Fragment  {
 
 
     private ActionBarDrawerToggle mDrawerToggle;
@@ -72,19 +72,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
     }
 
 
-    /*@Override
-    public void onStart() {
-        super.onStart();
-        if (LoginActivity.mGoogleApiClient != null) {
-            if (!LoginActivity.mGoogleApiClient.isConnected())
-                LoginActivity.mGoogleApiClient.connect();
-        }
-    }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-    }*/
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -161,7 +149,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
             if (position == 3) {
                 Intent i = new Intent(getActivity(), SettingsActivity.class);
-                startActivityForResult(i, getActivity().RESULT_OK);
+                startActivityForResult(i, MainActivity.RESULT_OK);
             } else if (position == 4) {
                 signout();
 
@@ -182,10 +170,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
             case 2:
                 mFragment = new History();
                 break;
-            /*    case 3:
-                    mFragment= new History();
-                    break;
-*/
+
 
         }
         fragmentPos = position;
@@ -198,10 +183,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
     }
 
 
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
 
-    }
 
     private void signout() {
         if (LoginActivity.mGoogleApiClient.isConnected()) {
