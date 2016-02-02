@@ -86,9 +86,15 @@ public class TrendsChart extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.trendsChartLayout);
-        mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period_trend);
-        chart = (LineChartView) getActivity().findViewById(R.id.trends_chart);
+        if(relativeLayout == null) {
+            relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.trendsChartLayout);
+        }
+        if(mTextViewPeriod == null) {
+            mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period_trend);
+        }
+        if(chart == null) {
+            chart = (LineChartView) getActivity().findViewById(R.id.trends_chart);
+        }
 
         mContext = getContext();
         mActivity = getActivity();

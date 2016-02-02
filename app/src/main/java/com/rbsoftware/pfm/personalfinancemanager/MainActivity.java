@@ -166,9 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
 
             }
-            if (resultCode == RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
+
         }
     }//onActivityResult
 

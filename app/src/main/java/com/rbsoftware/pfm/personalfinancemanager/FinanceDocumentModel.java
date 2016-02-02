@@ -491,7 +491,7 @@ public class FinanceDocumentModel {
      */
     public Currency getCurrencyDocument(String docId) {
 
-        BasicDocumentRevision retrieved = null;
+        BasicDocumentRevision retrieved;
         try {
             retrieved = mDatastore.getDocument(docId);
         } catch (DocumentNotFoundException e) {

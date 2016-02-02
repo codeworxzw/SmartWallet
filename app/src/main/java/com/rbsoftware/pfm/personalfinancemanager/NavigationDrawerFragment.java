@@ -18,8 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
+
 import com.google.android.gms.plus.Plus;
 import com.squareup.picasso.Picasso;
 

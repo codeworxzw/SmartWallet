@@ -81,10 +81,15 @@ public class IncomeExpenseChart extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.incomeExpenseLayout);
-
-        mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period);
-        mIncomeExpenseButton = (ToggleButton) getActivity().findViewById(R.id.btn_income_expense);
+        if(relativeLayout == null) {
+            relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.incomeExpenseLayout);
+        }
+        if(mTextViewPeriod ==null) {
+            mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period);
+        }
+        if(mIncomeExpenseButton == null) {
+            mIncomeExpenseButton = (ToggleButton) getActivity().findViewById(R.id.btn_income_expense);
+        }
 
 
         mIncomeExpenseButton.setChecked(Boolean.valueOf(MainActivity.readFromSharedPreferences(getActivity(), "toggleButtonState", "true")));
@@ -117,8 +122,9 @@ public class IncomeExpenseChart extends Fragment {
             }
         });
 
-
-        mPieChart = (PieChartView) getActivity().findViewById(R.id.pie_chart);
+        if(mPieChart == null) {
+            mPieChart = (PieChartView) getActivity().findViewById(R.id.pie_chart);
+        }
         mPieChart.setOnValueTouchListener(new ValueTouchListener());
 
         mContext = getContext();

@@ -147,7 +147,7 @@ public class ReportActivity extends AppCompatActivity {
         final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
         final Spinner spinner = new Spinner(this);
         int position = 0;
-        lparams.addRule(RelativeLayout.END_OF, editTextValueId - 1);
+        lparams.addRule(RelativeLayout.RIGHT_OF, editTextValueId - 1);
 
         if (categorySpinnerId > 1001) {
              /* Recursion disabled in version 1.0
@@ -223,7 +223,7 @@ public class ReportActivity extends AppCompatActivity {
     private EditText createNewEditText() {
         final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
         final EditText editText = new EditText(this);
-        lparams.addRule(RelativeLayout.END_OF, categorySpinnerId - 1);
+        lparams.addRule(RelativeLayout.RIGHT_OF, categorySpinnerId - 1);
 
         if (categorySpinnerId > 1001) {
             /* Recursion disabled in version 1.0

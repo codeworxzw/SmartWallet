@@ -77,24 +77,57 @@ public class AccountSummary extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[0]);
-
-        mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period);
-        salary = (TextView) getActivity().findViewById(R.id.tv_income_salary);
-        rentalIncome = (TextView) getActivity().findViewById(R.id.tv_income_rental);
-        interest = (TextView) getActivity().findViewById(R.id.tv_income_interest);
-        gifts = (TextView) getActivity().findViewById(R.id.tv_income_gifts);
-        otherIncome = (TextView) getActivity().findViewById(R.id.tv_income_other);
-        taxes = (TextView) getActivity().findViewById(R.id.tv_expense_taxes);
-        mortgage = (TextView) getActivity().findViewById(R.id.tv_expense_mortgage);
-        creditCard = (TextView) getActivity().findViewById(R.id.tv_expense_credit_card);
-        utilities = (TextView) getActivity().findViewById(R.id.tv_expense_utilities);
-        food = (TextView) getActivity().findViewById(R.id.tv_expense_food);
-        carPayment = (TextView) getActivity().findViewById(R.id.tv_expense_car_payment);
-        personal = (TextView) getActivity().findViewById(R.id.tv_expense_personal);
-        activities = (TextView) getActivity().findViewById(R.id.tv_expense_activities);
-        otherExpense = (TextView) getActivity().findViewById(R.id.tv_expense_other);
-        income = (TextView) getActivity().findViewById(R.id.tv_income);
-        expense = (TextView) getActivity().findViewById(R.id.tv_expense);
+        if (mTextViewPeriod == null) {
+            mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period);
+        }
+        if (salary == null) {
+            salary = (TextView) getActivity().findViewById(R.id.tv_income_salary);
+        }
+        if (rentalIncome == null) {
+            rentalIncome = (TextView) getActivity().findViewById(R.id.tv_income_rental);
+        }
+        if (interest == null) {
+            interest = (TextView) getActivity().findViewById(R.id.tv_income_interest);
+        }
+        if (gifts == null) {
+            gifts = (TextView) getActivity().findViewById(R.id.tv_income_gifts);
+        }
+        if (otherIncome == null) {
+            otherIncome = (TextView) getActivity().findViewById(R.id.tv_income_other);
+        }
+        if (taxes == null) {
+            taxes = (TextView) getActivity().findViewById(R.id.tv_expense_taxes);
+        }
+        if (mortgage == null) {
+            mortgage = (TextView) getActivity().findViewById(R.id.tv_expense_mortgage);
+        }
+        if (creditCard == null) {
+            creditCard = (TextView) getActivity().findViewById(R.id.tv_expense_credit_card);
+        }
+        if (utilities == null) {
+            utilities = (TextView) getActivity().findViewById(R.id.tv_expense_utilities);
+        }
+        if (food == null) {
+            food = (TextView) getActivity().findViewById(R.id.tv_expense_food);
+        }
+        if (carPayment == null) {
+            carPayment = (TextView) getActivity().findViewById(R.id.tv_expense_car_payment);
+        }
+        if (personal == null) {
+            personal = (TextView) getActivity().findViewById(R.id.tv_expense_personal);
+        }
+        if (activities == null) {
+            activities = (TextView) getActivity().findViewById(R.id.tv_expense_activities);
+        }
+        if (otherExpense == null) {
+            otherExpense = (TextView) getActivity().findViewById(R.id.tv_expense_other);
+        }
+        if (income == null) {
+            income = (TextView) getActivity().findViewById(R.id.tv_income);
+        }
+        if (expense == null) {
+            expense = (TextView) getActivity().findViewById(R.id.tv_expense);
+        }
 
         mContext = getContext();
         mActivity = getActivity();

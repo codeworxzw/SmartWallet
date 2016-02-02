@@ -53,7 +53,7 @@ public class ExportData {
             writer = new CSVWriter(new FileWriter(filePath));
         }
         List<String[]> data = new ArrayList<>();
-        List<String> value = new ArrayList<>();
+        List<String> value;
 
         data.add(new String[]{mContext.getResources().getString(R.string.document_date), document.getNormalDate(FinanceDocument.DATE_FORMAT_LONG)});
         data.add(new String[]{"", "", "", ""});

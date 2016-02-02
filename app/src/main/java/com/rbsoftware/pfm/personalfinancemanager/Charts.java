@@ -33,7 +33,9 @@ public class Charts extends Fragment {
         super.onCreate(savedInstanceState);
 
         FM = getChildFragmentManager();
-        adapter = new CollectionPagerAdapter(FM);
+        if(adapter == null) {
+            adapter = new CollectionPagerAdapter(FM);
+        }
 
 
     }
@@ -51,8 +53,9 @@ public class Charts extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[1]);
-
-        mPager = (ViewPager) getActivity().findViewById(R.id.pager);
+        if(mPager == null) {
+            mPager = (ViewPager) getActivity().findViewById(R.id.pager);
+        }
         mPager.setAdapter(adapter);
 
 
