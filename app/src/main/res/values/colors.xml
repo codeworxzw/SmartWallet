@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="blue_grey_500">#607D8B</color>
-    <color name="blue_grey_600">#546E7A</color>
-    <color name="blue_grey_700">#455A64</color>
-    <color name="blue_grey_800">#37474F</color>
-    <color name="blue_grey_900">#263238</color>
+
     <color name="colorPrimary">#4CAF50</color>
     <color name="colorPrimaryDark">#388E3C</color>
     <color name="colorAccent">#F57C00</color>
@@ -12,23 +8,23 @@
     <color name="colorPagerTabStrip">#C8E6C9</color>
 
     <color name="income">#99CC00</color>
-    <color name="salary">#004358</color>
-    <color name="rental_income">#1F8A70</color>
-    <color name="gifts">#6E9949</color>
-    <color name="interest">#FFE11A</color>
-    <color name="other_income">#FD7400</color>
+    <color name="salary">#F9DC3E</color>
+    <color name="rental_income">#27DBBC</color>
+    <color name="gifts">#C71EF2</color>
+    <color name="interest">#DB9516</color>
+    <color name="other_income">#5DF986</color>
 
 
     <color name="expense">#FF4444</color>
-    <color name="taxes">#7F1637</color>
-    <color name="mortgage">#047878</color>
-    <color name="credit_card">#FFB733</color>
-    <color name="utilities">#F57336</color>
-    <color name="food">#C22121</color>
-    <color name="car_payment">#F25252</color>
-    <color name="personal">#F27649</color>
-    <color name="activities">#F29D35</color>
-    <color name="other_expense">#F2C12E</color>
+    <color name="taxes">#32F979</color>
+    <color name="mortgage">#DBD224</color>
+    <color name="credit_card">#F28731</color>
+    <color name="utilities">#DB21B2</color>
+    <color name="food">#2642F9</color>
+    <color name="car_payment">#E5F91C</color>
+    <color name="personal">#DB7F11</color>
+    <color name="activities">#F21C7E</color>
+    <color name="other_expense">#11F9C7</color>
 
     <color name="card_backgroundExpand">#FAFAFA</color>
     <color name="drawer_header">#388E3C</color>

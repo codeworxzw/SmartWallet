@@ -1,37 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="all">
-        <item android:id="@+id/popupTotalIncome"
-            android:title="@string/income"/>
-        <item android:id="@+id/popupTotalExpense"
-            android:title="@string/expense"/>
-        <item android:id="@+id/popupSalary"
-            android:title="@string/salary"/>
-        <item android:id="@+id/popupRentalIncome"
-            android:title="@string/rental_income"/>
-        <item android:id="@+id/popupInterest"
-            android:title="@string/interest"/>
-        <item android:id="@+id/popupGifts"
-            android:title="@string/gifts"/>
-        <item android:id="@+id/popupOtherIncome"
-            android:title="@string/other_income"/>
-        <item android:id="@+id/popupTaxes"
-            android:title="@string/taxes"/>
-        <item android:id="@+id/popupMortgage"
-            android:title="@string/mortgage"/>
-        <item android:id="@+id/popupCreditCard"
-            android:title="@string/credit_card"/>
-        <item android:id="@+id/popupUtilities"
-            android:title="@string/utilities"/>
-        <item android:id="@+id/popupFood"
-            android:title="@string/food"/>
-        <item android:id="@+id/popupCarPayment"
-            android:title="@string/car_payment"/>
-        <item android:id="@+id/popupPersonal"
-            android:title="@string/personal"/>
-        <item android:id="@+id/popupActivities"
-            android:title="@string/activities"/>
-        <item android:id="@+id/popupOtherExpense"
-            android:title="@string/other_expense"/>
+        <item
+            android:id="@+id/popupTotalIncome"
+            android:title="@string/income" />
+        <item
+            android:id="@+id/popupTotalExpense"
+            android:title="@string/expense" />
+        <item
+            android:id="@+id/popupSalary"
+            android:title="@string/salary" />
+        <item
+            android:id="@+id/popupRentalIncome"
+            android:title="@string/rental_income" />
+        <item
+            android:id="@+id/popupInterest"
+            android:title="@string/interest" />
+        <item
+            android:id="@+id/popupGifts"
+            android:title="@string/gifts" />
+        <item
+            android:id="@+id/popupOtherIncome"
+            android:title="@string/other_income" />
+        <item
+            android:id="@+id/popupTaxes"
+            android:title="@string/taxes" />
+        <item
+            android:id="@+id/popupMortgage"
+            android:title="@string/mortgage" />
+        <item
+            android:id="@+id/popupCreditCard"
+            android:title="@string/credit_card" />
+        <item
+            android:id="@+id/popupUtilities"
+            android:title="@string/utilities" />
+        <item
+            android:id="@+id/popupFood"
+            android:title="@string/food" />
+        <item
+            android:id="@+id/popupCarPayment"
+            android:title="@string/car_payment" />
+        <item
+            android:id="@+id/popupPersonal"
+            android:title="@string/personal" />
+        <item
+            android:id="@+id/popupActivities"
+            android:title="@string/activities" />
+        <item
+            android:id="@+id/popupOtherExpense"
+            android:title="@string/other_expense" />
     </group>
 </menu>

@@ -8,26 +8,25 @@
 
 
     <ImageView
+        android:id="@+id/img_drawer_row"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/img_drawer_row"
-        android:src="@drawable/ic_settings_black_24dp"
         android:gravity="center_vertical"
-
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
-        />
+
+        android:src="@drawable/ic_settings_black_24dp" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:text="New Text"
         android:id="@+id/tv_drawer_row"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-        android:paddingRight="10dp"
+        android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-        android:minHeight="?android:attr/listPreferredItemHeightSmall" />
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:text="New Text"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
 </LinearLayout>
