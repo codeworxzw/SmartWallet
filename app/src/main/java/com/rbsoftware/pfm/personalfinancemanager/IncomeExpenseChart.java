@@ -425,30 +425,30 @@ public class IncomeExpenseChart extends Fragment {
      */
 
     private void startShowcase() {
-        mIncomeExpenseButton.measure(0, 0);
-        Double r = mIncomeExpenseButton.getMeasuredWidth() / 1.5;
-        ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(500); // half second between each showcase view
+        if (mIncomeExpenseButton != null) {
+            mIncomeExpenseButton.measure(0, 0);
+            Double r = mIncomeExpenseButton.getMeasuredWidth() / 1.5;
+            ShowcaseConfig config = new ShowcaseConfig();
+            config.setDelay(500); // half second between each showcase view
 
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, TAG);
-        sequence.setConfig(config);
-        sequence.addSequenceItem(new MaterialShowcaseView.Builder(mActivity)
-                .setTarget(mIncomeExpenseButton)
-                .setUseAutoRadius(false)
-                .setRadius(r.intValue())
-                .setContentText(R.string.income_expense_switch)
-                .setDismissText(R.string.ok)
-                .setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent))
-                .build());
-        sequence.start();
-
+            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, TAG);
+            sequence.setConfig(config);
+            sequence.addSequenceItem(new MaterialShowcaseView.Builder(mActivity)
+                    .setTarget(mIncomeExpenseButton)
+                    .setUseAutoRadius(false)
+                    .setRadius(r.intValue())
+                    .setContentText(R.string.income_expense_switch)
+                    .setDismissText(R.string.ok)
+                    .setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent))
+                    .build());
+            sequence.start();
+        }
     }
 
     private class ValueTouchListener implements PieChartOnValueSelectListener {
 
         @Override
         public void onValueSelected(int arcIndex, SliceValue value) {
-            // Toast.makeText(getActivity(), value.getLabelAsChars() + " " + value.getValue(), Toast.LENGTH_SHORT).show();
         }
 
         @Override

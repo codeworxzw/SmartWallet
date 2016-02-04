@@ -364,18 +364,19 @@ public class ReportActivity extends AppCompatActivity {
      */
 
     private void startShowcase() {
-        ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(500); // half second between each showcase view
-        config.setDismissTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, TAG);
-        sequence.setConfig(config);
-        // sequence.addSequenceItem(findViewById(categorySpinnerId - 1), getString(R.string.data_category), getString(R.string.got_it));
-        // sequence.addSequenceItem(findViewById(editTextValueId - 1), getString(R.string.data_value), getString(R.string.got_it));
-        // sequence.addSequenceItem(findViewById(currencySpinnerId - 1), getString(R.string.data_currency), getString(R.string.got_it));
-        sequence.addSequenceItem(addNew, getString(R.string.data_add_new), getString(R.string.got_it));
-        sequence.addSequenceItem(findViewById(R.id.report_toolbar_done), getString(R.string.data_done), getString(R.string.ok));
-        sequence.start();
-
+        if (addNew != null && findViewById(R.id.report_toolbar_done) != null) {
+            ShowcaseConfig config = new ShowcaseConfig();
+            config.setDelay(500); // half second between each showcase view
+            config.setDismissTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
+            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, TAG);
+            sequence.setConfig(config);
+            // sequence.addSequenceItem(findViewById(categorySpinnerId - 1), getString(R.string.data_category), getString(R.string.got_it));
+            // sequence.addSequenceItem(findViewById(editTextValueId - 1), getString(R.string.data_value), getString(R.string.got_it));
+            // sequence.addSequenceItem(findViewById(currencySpinnerId - 1), getString(R.string.data_currency), getString(R.string.got_it));
+            sequence.addSequenceItem(addNew, getString(R.string.data_add_new), getString(R.string.got_it));
+            sequence.addSequenceItem(findViewById(R.id.report_toolbar_done), getString(R.string.data_done), getString(R.string.ok));
+            sequence.start();
+        }
     }
 
 

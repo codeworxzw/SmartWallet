@@ -142,22 +142,23 @@ public class History extends Fragment implements Card.OnLongCardClickListener {
      */
 
     private void startShowcase() {
-        ((View) card.getCardView()).measure(0, 0);
-        Double r = ((View) card.getCardView()).getMeasuredWidth() / 2.2;
-        ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(500); // half second between each showcase view
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, TAG);
-        sequence.setConfig(config);
-        sequence.addSequenceItem(new MaterialShowcaseView.Builder(mActivity)
-                .setTarget(((View) card.getCardView()))
-                .setUseAutoRadius(false)
-                .setRadius(r.intValue())
-                .setContentText(R.string.history_card)
-                .setDismissText(R.string.ok)
-                .setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent))
-                .build());
-        sequence.start();
-
+        if(card.getCardView() !=null) {
+            ((View) card.getCardView()).measure(0, 0);
+            Double r = ((View) card.getCardView()).getMeasuredWidth() / 2.2;
+            ShowcaseConfig config = new ShowcaseConfig();
+            config.setDelay(500); // half second between each showcase view
+            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, TAG);
+            sequence.setConfig(config);
+            sequence.addSequenceItem(new MaterialShowcaseView.Builder(mActivity)
+                    .setTarget(((View) card.getCardView()))
+                    .setUseAutoRadius(false)
+                    .setRadius(r.intValue())
+                    .setContentText(R.string.history_card)
+                    .setDismissText(R.string.ok)
+                    .setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent))
+                    .build());
+            sequence.start();
+        }
     }
 
 
