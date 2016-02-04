@@ -86,13 +86,13 @@ public class TrendsChart extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(relativeLayout == null) {
+        if (relativeLayout == null) {
             relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.trendsChartLayout);
         }
-        if(mTextViewPeriod == null) {
+        if (mTextViewPeriod == null) {
             mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period_trend);
         }
-        if(chart == null) {
+        if (chart == null) {
             chart = (LineChartView) getActivity().findViewById(R.id.trends_chart);
         }
 
@@ -143,16 +143,10 @@ public class TrendsChart extends Fragment {
                 showPopupLine();
                 return true;
             case R.id.document_share:
-                if (ContextCompat.checkSelfPermission(getContext(),
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    requestWriteExternalStoragePermission();
-                } else {
-                    try {
-                        ExportData.exportChartAsPng(getContext(), relativeLayout);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    ExportData.exportChartAsPng(getContext(), relativeLayout);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
                 return true;
             default:
@@ -334,7 +328,6 @@ public class TrendsChart extends Fragment {
     }
 
 
-
     /**
      * Fetches values from document fro line chart
      *
@@ -350,7 +343,7 @@ public class TrendsChart extends Fragment {
                 for (FinanceDocument doc : docList) {
                     data.add(new String[]{
                             Integer.toString(doc.getSalary() +
-                                   doc.getRentalIncome() +
+                                    doc.getRentalIncome() +
                                     doc.getInterest() +
                                     doc.getGifts() +
                                     doc.getOtherIncome()),
@@ -647,62 +640,6 @@ public class TrendsChart extends Fragment {
         }
     }
 
-
-    /**
-     * Requests WRITE_EXTERNAL_STORAGE permission
-     */
-    private void requestWriteExternalStoragePermission() {
-
-        // No explanation needed, we can request the permission.
-
-        ActivityCompat.requestPermissions(getActivity(),
-                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                0);
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case 0: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    try {
-                        ExportData.exportChartAsPng(getContext(), relativeLayout);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                } else {
-
-                    showExplanationDialog();
-
-                }
-                break;
-            }
-
-
-        }
-    }
-
-    /**
-     * Shows explanation why WRITE_EXTERNAL_STORAGE required
-     */
-    private void showExplanationDialog() {
-        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
-        alertDialog.setTitle(getString(R.string.permission_required));
-        alertDialog.setMessage(getString(R.string.permission_write_external_storage_explanation));
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(android.R.string.ok),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        alertDialog.show();
-    }
 
     /**
      * Runs showcase presentation on fragment start

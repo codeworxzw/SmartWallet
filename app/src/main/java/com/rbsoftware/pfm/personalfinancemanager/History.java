@@ -108,7 +108,7 @@ public class History extends Fragment implements Card.OnLongCardClickListener {
         if (mRecyclerView != null) {
             mRecyclerView.setAdapter(mCardArrayAdapter);
             checkAdapterIsEmpty();
-            if (!docList.isEmpty() && docList.size()==1) {
+            if (!docList.isEmpty() && docList.size() == 1) {
                 int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
                         .getInt("status_" + TAG, 0);
                 if (status != -1) {
@@ -214,17 +214,11 @@ public class History extends Fragment implements Card.OnLongCardClickListener {
                         return true;
 
                     case R.id.history_share:
-                        if(ContextCompat.checkSelfPermission(getContext(),
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                != PackageManager.PERMISSION_GRANTED){
-                            requestWriteExternalStoragePermission();
-                        }
-                        else {
-                            try {
-                                ExportData.exportHistoryAsCsv(getContext(), ((HistoryCard) card).getDocument());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+
+                        try {
+                            ExportData.exportHistoryAsCsv(getContext(), ((HistoryCard) card).getDocument());
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                         mode.finish(); // Action picked, so close the CAB
                         return true;
@@ -245,54 +239,6 @@ public class History extends Fragment implements Card.OnLongCardClickListener {
         return true;
 
     }
-    /**
-     * Requests WRITE_EXTERNAL_STORAGE permission
-     */
-    private void requestWriteExternalStoragePermission() {
 
-        // No explanation needed, we can request the permission.
-
-        ActivityCompat.requestPermissions(getActivity(),
-                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                0);
-
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case 0: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-
-
-                } else {
-
-                    showExplanationDialog();
-
-                }
-                break;
-            }
-
-
-        }
-    }
-    /**
-     * Shows explanation why WRITE_EXTERNAL_STORAGE required
-     */
-    private void showExplanationDialog() {
-        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
-        alertDialog.setTitle(getString(R.string.permission_required));
-        alertDialog.setMessage(getString(R.string.permission_write_external_storage_explanation));
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(android.R.string.ok),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        alertDialog.show();
-    }
 
 }

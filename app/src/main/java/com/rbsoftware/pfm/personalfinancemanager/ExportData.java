@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.View;
 
 import com.opencsv.CSVWriter;
@@ -37,12 +39,15 @@ public class ExportData {
      * @throws IOException
      **/
     public static void exportHistoryAsCsv(Context mContext, FinanceDocument document) throws IOException {
-        String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+
+        File baseDir = mContext.getFilesDir();
+
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         String fileName = "doc-" + df.format(calendar.getTimeInMillis()) + ".csv";
 
-        String filePath = baseDir + File.separator + fileName;
+        String filePath = baseDir.toString() + File.separator + fileName;
+
         File historyFile = new File(filePath);
         CSVWriter writer;
 // File exist
@@ -71,11 +76,32 @@ public class ExportData {
 
         writer.close();
 
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(historyFile));
-        sendIntent.setType("text/comma-separated-values");
-        mContext.startActivity(Intent.createChooser(sendIntent, mContext.getString(R.string.share)));
+        try {
+            Uri fileUri = FileProvider.getUriForFile(
+                    mContext,
+                    "com.rbsoftware.pfm.personalfinancemanager.fileprovider",
+                    historyFile);
+
+
+            Intent sendIntent = new Intent("com.rbsoftware.pfm.personalfinancemanager.ACTION_RETURN_FILE");
+            if (fileUri != null) {
+                // Grant temporary read permission to the content URI
+                sendIntent.addFlags(
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+            sendIntent.setType("text/comma-separated-values");
+            mContext.startActivity(Intent.createChooser(sendIntent, mContext.getString(R.string.share)));
+
+        } catch (IllegalArgumentException e) {
+            Log.e("File Selector",
+                    "The selected file can't be shared: " +
+                            historyFile.getName());
+            e.printStackTrace();
+        }
+
+
     }
 
 
@@ -87,12 +113,12 @@ public class ExportData {
      * @throws IOException
      **/
     public static void exportSummaryAsCsv(Context mContext, List<String[]> inputData) throws IOException {
-        String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+        File baseDir = mContext.getFilesDir();
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 
         String fileName = "summary-" + df.format(calendar.getTimeInMillis()) + ".csv";
-        String filePath = baseDir + File.separator + fileName;
+        String filePath = baseDir.toString() + File.separator + fileName;
         File summaryFile = new File(filePath);
         CSVWriter writer;
 // File exist
@@ -107,11 +133,31 @@ public class ExportData {
 
         writer.close();
 
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(summaryFile));
-        sendIntent.setType("text/comma-separated-values");
-        mContext.startActivity(Intent.createChooser(sendIntent, mContext.getString(R.string.share)));
+        try {
+            Uri fileUri = FileProvider.getUriForFile(
+                    mContext,
+                    "com.rbsoftware.pfm.personalfinancemanager.fileprovider",
+                    summaryFile);
+
+
+            Intent sendIntent = new Intent("com.rbsoftware.pfm.personalfinancemanager.ACTION_RETURN_FILE");
+            if (fileUri != null) {
+                // Grant temporary read permission to the content URI
+                sendIntent.addFlags(
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+            sendIntent.setType("text/comma-separated-values");
+            mContext.startActivity(Intent.createChooser(sendIntent, mContext.getString(R.string.share)));
+
+        } catch (IllegalArgumentException e) {
+            Log.e("File Selector",
+                    "The selected file can't be shared: " +
+                            summaryFile.getName());
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -122,12 +168,12 @@ public class ExportData {
      * @throws IOException
      **/
     public static void exportChartAsPng(Context mContext, View view) throws IOException {
-        String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+        File baseDir = mContext.getFilesDir();
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 
         String fileName = "chart-" + df.format(calendar.getTimeInMillis()) + ".png";
-        String filePath = baseDir + File.separator + fileName;
+        String filePath = baseDir.toString() + File.separator + fileName;
         File chartFile = new File(filePath);
 
         OutputStream outStream = new FileOutputStream(chartFile);
@@ -135,11 +181,31 @@ public class ExportData {
         outStream.flush();
         outStream.close();
 
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(chartFile));
-        sendIntent.setType("image/png");
-        mContext.startActivity(Intent.createChooser(sendIntent, mContext.getString(R.string.share)));
+        try {
+            Uri fileUri = FileProvider.getUriForFile(
+                    mContext,
+                    "com.rbsoftware.pfm.personalfinancemanager.fileprovider",
+                    chartFile);
+
+
+            Intent sendIntent = new Intent("com.rbsoftware.pfm.personalfinancemanager.ACTION_RETURN_FILE");
+            if (fileUri != null) {
+                // Grant temporary read permission to the content URI
+                sendIntent.addFlags(
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+            sendIntent.setType("image/png");
+            mContext.startActivity(Intent.createChooser(sendIntent, mContext.getString(R.string.share)));
+
+        } catch (IllegalArgumentException e) {
+            Log.e("File Selector",
+                    "The selected file can't be shared: " +
+                            chartFile.getName());
+            e.printStackTrace();
+        }
+
     }
 
 
