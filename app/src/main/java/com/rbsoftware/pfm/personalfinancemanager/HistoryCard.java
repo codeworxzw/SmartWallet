@@ -1,6 +1,7 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -113,10 +114,10 @@ public class HistoryCard extends Card {
             List<String> value;
             mLayout = (LinearLayout) view.findViewById(R.id.history_expand_card_layout);
             mLayout.removeAllViewsInLayout();
-            for (int i = 1; i <= doc.getValuesMap().size(); i++) {
+            for (int i = 1; i <= FinanceDocument.NUMBER_OF_CATEGORIES; i++) {
                 value = doc.getValuesMap().get(i);
-                if (Integer.valueOf(value.get(0)) != 0) {
-                    String output = "";
+                if (value != null) {
+                        String output = "";
                     /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
                     if (!value.get(2).equals(mContext.getString(R.string.never))){
@@ -126,9 +127,10 @@ public class HistoryCard extends Card {
                     else{
                         output =value.get(0)+" "+value.get(1);
                     } */
-                    output = value.get(0) + " " + value.get(1);
+                        output = value.get(0) + " " + value.get(1);
 
-                    mLayout.addView(createNewTextView(i, output));
+                        mLayout.addView(createNewTextView(i, output));
+
                 }
             }
         }
