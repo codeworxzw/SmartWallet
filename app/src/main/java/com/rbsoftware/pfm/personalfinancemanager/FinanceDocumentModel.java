@@ -491,7 +491,7 @@ public class FinanceDocumentModel {
      */
     public Currency getCurrencyDocument(String docId) {
 
-        BasicDocumentRevision retrieved = null;
+        BasicDocumentRevision retrieved;
         try {
             retrieved = mDatastore.getDocument(docId);
         } catch (DocumentNotFoundException e) {
@@ -641,7 +641,6 @@ public class FinanceDocumentModel {
         mPushReplicator.getEventBus().register(this);
         mPullReplicator.getEventBus().register(this);
 
-        Log.d(TAG, "Set up replicators for URI:" + uri.toString());
     }
 
     /**

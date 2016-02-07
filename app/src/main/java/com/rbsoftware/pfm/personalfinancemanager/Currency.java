@@ -13,11 +13,12 @@ import java.util.Map;
 
 /**
  * Created by Bogdan on 1/5/2016.
+ * Holds method to work with currency
  */
 public class Currency {
     private BasicDocumentRevision rev;
-    static final String DOC_TYPE = "CurrencyDocument";
-    private String type = DOC_TYPE;
+    private static final String DOC_TYPE = "CurrencyDocument";
+    private final String type = DOC_TYPE;
     private String input;
 
     private Double EUR = 1.0;
@@ -53,51 +54,51 @@ public class Currency {
     }
 
 
-    public void setEURtoUSD(String EURtoUSD) {
+    private void setEURtoUSD(String EURtoUSD) {
         this.EURtoUSD = EURtoUSD;
     }
 
-    public void setEURtoRUB(String EURtoRUB) {
+    private void setEURtoRUB(String EURtoRUB) {
         this.EURtoRUB = EURtoRUB;
     }
 
-    public void setEURtoUAH(String EURtoUAH) {
+    private void setEURtoUAH(String EURtoUAH) {
         this.EURtoUAH = EURtoUAH;
     }
 
-    public void setUSDtoEUR(String USDtoEUR) {
+    private void setUSDtoEUR(String USDtoEUR) {
         this.USDtoEUR = USDtoEUR;
     }
 
-    public void setUSDtoRUB(String USDtoRUB) {
+    private void setUSDtoRUB(String USDtoRUB) {
         this.USDtoRUB = USDtoRUB;
     }
 
-    public void setUSDtoUAH(String USDtoUAH) {
+    private void setUSDtoUAH(String USDtoUAH) {
         this.USDtoUAH = USDtoUAH;
     }
 
-    public void setRUBtoEUR(String RUBtoEUR) {
+    private void setRUBtoEUR(String RUBtoEUR) {
         this.RUBtoEUR = RUBtoEUR;
     }
 
-    public void setRUBtoUSD(String RUBtoUSD) {
+    private void setRUBtoUSD(String RUBtoUSD) {
         this.RUBtoUSD = RUBtoUSD;
     }
 
-    public void setRUBtoUAH(String RUBtoUAH) {
+    private void setRUBtoUAH(String RUBtoUAH) {
         this.RUBtoUAH = RUBtoUAH;
     }
 
-    public void setUAHtoEUR(String UAHtoEUR) {
+    private void setUAHtoEUR(String UAHtoEUR) {
         this.UAHtoEUR = UAHtoEUR;
     }
 
-    public void setUAHtoRUB(String UAHtoRUB) {
+    private void setUAHtoRUB(String UAHtoRUB) {
         this.UAHtoRUB = UAHtoRUB;
     }
 
-    public void setUAHtoUSD(String UAHtoUSD) {
+    private void setUAHtoUSD(String UAHtoUSD) {
         this.UAHtoUSD = UAHtoUSD;
     }
 
@@ -151,7 +152,7 @@ public class Currency {
     }
 
 
-    public void parser() {
+    private void parser() {
         String ccy;
 //        String base_ccy;
         double buy;
@@ -182,9 +183,7 @@ public class Currency {
             Log.e("JSONException", "Error: " + e.toString());
         }// catch (JSONException e) */
 
-        Log.d("TAG", EUR + " ");
-        Log.d("TAG", USD + " ");
-        Log.d("TAG", RUB + " ");
+
 
 
         EURtoUAH = Double.toString(EUR);

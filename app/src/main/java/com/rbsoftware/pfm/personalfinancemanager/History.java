@@ -1,17 +1,19 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.recyclerview.internal.CardArrayRecyclerViewAdapter;
 import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
@@ -107,7 +108,7 @@ public class History extends Fragment implements Card.OnLongCardClickListener {
         if (mRecyclerView != null) {
             mRecyclerView.setAdapter(mCardArrayAdapter);
             checkAdapterIsEmpty();
-            if (!docList.isEmpty()) {
+            if (!docList.isEmpty() && docList.size() == 1) {
                 int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
                         .getInt("status_" + TAG, 0);
                 if (status != -1) {
@@ -213,6 +214,7 @@ public class History extends Fragment implements Card.OnLongCardClickListener {
                         return true;
 
                     case R.id.history_share:
+
                         try {
                             ExportData.exportHistoryAsCsv(getContext(), ((HistoryCard) card).getDocument());
                         } catch (IOException e) {
@@ -237,4 +239,6 @@ public class History extends Fragment implements Card.OnLongCardClickListener {
         return true;
 
     }
+
+
 }

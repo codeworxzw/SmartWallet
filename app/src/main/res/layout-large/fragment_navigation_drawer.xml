@@ -15,7 +15,7 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
         android:paddingStart="24dp"
-        android:paddingTop="16dp">
+        android:paddingTop="32dp">
 
         <ImageView
             android:id="@+id/user_photo"

@@ -1,13 +1,17 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,10 +25,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
-import uk.co.deanwild.materialshowcaseview.PrefsManager;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
-
+/**
+ * A simple {@link Fragment} subclass.
+ * Account summary fragment holds account data
+ **/
 public class AccountSummary extends Fragment {
 
     private final String TAG = "AccountSummary";
@@ -49,6 +55,7 @@ public class AccountSummary extends Fragment {
     private Context mContext;
     private Activity mActivity;
     private List<FinanceDocument> financeDocumentList;
+
     public AccountSummary() {
         // Required empty public constructor
     }
@@ -70,24 +77,57 @@ public class AccountSummary extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[0]);
-
-        mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period);
-        salary = (TextView) getActivity().findViewById(R.id.tv_income_salary);
-        rentalIncome = (TextView) getActivity().findViewById(R.id.tv_income_rental);
-        interest = (TextView) getActivity().findViewById(R.id.tv_income_interest);
-        gifts = (TextView) getActivity().findViewById(R.id.tv_income_gifts);
-        otherIncome = (TextView) getActivity().findViewById(R.id.tv_income_other);
-        taxes = (TextView) getActivity().findViewById(R.id.tv_expense_taxes);
-        mortgage = (TextView) getActivity().findViewById(R.id.tv_expense_mortgage);
-        creditCard = (TextView) getActivity().findViewById(R.id.tv_expense_credit_card);
-        utilities = (TextView) getActivity().findViewById(R.id.tv_expense_utilities);
-        food = (TextView) getActivity().findViewById(R.id.tv_expense_food);
-        carPayment = (TextView) getActivity().findViewById(R.id.tv_expense_car_payment);
-        personal = (TextView) getActivity().findViewById(R.id.tv_expense_personal);
-        activities = (TextView) getActivity().findViewById(R.id.tv_expense_activities);
-        otherExpense = (TextView) getActivity().findViewById(R.id.tv_expense_other);
-        income = (TextView) getActivity().findViewById(R.id.tv_income);
-        expense = (TextView) getActivity().findViewById(R.id.tv_expense);
+        if (mTextViewPeriod == null) {
+            mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period);
+        }
+        if (salary == null) {
+            salary = (TextView) getActivity().findViewById(R.id.tv_income_salary);
+        }
+        if (rentalIncome == null) {
+            rentalIncome = (TextView) getActivity().findViewById(R.id.tv_income_rental);
+        }
+        if (interest == null) {
+            interest = (TextView) getActivity().findViewById(R.id.tv_income_interest);
+        }
+        if (gifts == null) {
+            gifts = (TextView) getActivity().findViewById(R.id.tv_income_gifts);
+        }
+        if (otherIncome == null) {
+            otherIncome = (TextView) getActivity().findViewById(R.id.tv_income_other);
+        }
+        if (taxes == null) {
+            taxes = (TextView) getActivity().findViewById(R.id.tv_expense_taxes);
+        }
+        if (mortgage == null) {
+            mortgage = (TextView) getActivity().findViewById(R.id.tv_expense_mortgage);
+        }
+        if (creditCard == null) {
+            creditCard = (TextView) getActivity().findViewById(R.id.tv_expense_credit_card);
+        }
+        if (utilities == null) {
+            utilities = (TextView) getActivity().findViewById(R.id.tv_expense_utilities);
+        }
+        if (food == null) {
+            food = (TextView) getActivity().findViewById(R.id.tv_expense_food);
+        }
+        if (carPayment == null) {
+            carPayment = (TextView) getActivity().findViewById(R.id.tv_expense_car_payment);
+        }
+        if (personal == null) {
+            personal = (TextView) getActivity().findViewById(R.id.tv_expense_personal);
+        }
+        if (activities == null) {
+            activities = (TextView) getActivity().findViewById(R.id.tv_expense_activities);
+        }
+        if (otherExpense == null) {
+            otherExpense = (TextView) getActivity().findViewById(R.id.tv_expense_other);
+        }
+        if (income == null) {
+            income = (TextView) getActivity().findViewById(R.id.tv_income);
+        }
+        if (expense == null) {
+            expense = (TextView) getActivity().findViewById(R.id.tv_expense);
+        }
 
         mContext = getContext();
         mActivity = getActivity();
@@ -96,8 +136,8 @@ public class AccountSummary extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.ReadFromSharedPreferences(getActivity(), "periodAccSummary", "thisWeek"), MainActivity.getUserId());
-        mTextViewPeriod.setText(MainActivity.ReadFromSharedPreferences(getActivity(), "periodTextAccSummary", getResources().getString(R.string.this_week)));
+        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.readFromSharedPreferences(getActivity(), "periodAccSummary", "thisWeek"), MainActivity.getUserId());
+        mTextViewPeriod.setText(MainActivity.readFromSharedPreferences(getActivity(), "periodTextAccSummary", getResources().getString(R.string.this_week)));
         getValue(financeDocumentList);
     }
 
@@ -105,17 +145,17 @@ public class AccountSummary extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.account_summary_menu, menu);
-            int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
-                    .getInt("status_"+TAG,0);
-            if(status != -1) {
+        int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
+                .getInt("status_" + TAG, 0);
+        if (status != -1) {
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        startShowcase();
-                    }
-                }, 1000);
-            }
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startShowcase();
+                }
+            }, 1000);
+        }
 
         super.onCreateOptionsMenu(menu, inflater);
 
@@ -140,11 +180,13 @@ public class AccountSummary extends Fragment {
         }
 
 
-
     }
     //Helper methods
-    //Shows account_summary_menu popup menu
-    public void showPopup(){
+
+    /**
+     * Shows account_summary_menu popup menu
+     **/
+    private void showPopup() {
         View menuItemView = getActivity().findViewById(R.id.action_filter);
         PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
         MenuInflater inflate = popup.getMenuInflater();
@@ -155,40 +197,40 @@ public class AccountSummary extends Fragment {
                 int id = item.getItemId();
 
 
-                switch (id){
+                switch (id) {
                     case R.id.thisWeek:
-                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
                         selectedItem = "thisWeek";
                         mTextViewPeriod.setText(getResources().getString(R.string.this_week));
 
                         break;
                     case R.id.thisMonth:
-                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisMonth", MainActivity.getUserId());
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisMonth", MainActivity.getUserId());
                         selectedItem = "thisMonth";
                         mTextViewPeriod.setText(getResources().getString(R.string.this_month));
 
                         break;
                     case R.id.lastWeek:
-                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("lastWeek", MainActivity.getUserId());
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("lastWeek", MainActivity.getUserId());
                         selectedItem = "lastWeek";
                         mTextViewPeriod.setText(getResources().getString(R.string.last_week));
 
                         break;
                     case R.id.lastMonth:
-                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("lastMonth", MainActivity.getUserId());
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("lastMonth", MainActivity.getUserId());
                         selectedItem = "lastMonth";
                         mTextViewPeriod.setText(getResources().getString(R.string.last_month));
 
                         break;
                     case R.id.thisYear:
-                        financeDocumentList= MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId());
+                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId());
                         selectedItem = "thisYear";
                         mTextViewPeriod.setText(getResources().getString(R.string.this_year));
 
                         break;
                 }
-                MainActivity.SaveToSharedPreferences(getActivity(), "periodAccSummary", selectedItem);
-                MainActivity.SaveToSharedPreferences(getActivity(), "periodTextAccSummary", mTextViewPeriod.getText().toString());
+                MainActivity.saveToSharedPreferences(getActivity(), "periodAccSummary", selectedItem);
+                MainActivity.saveToSharedPreferences(getActivity(), "periodTextAccSummary", mTextViewPeriod.getText().toString());
                 getValue(financeDocumentList);
                 return false;
             }
@@ -197,7 +239,14 @@ public class AccountSummary extends Fragment {
 
     }
 
-    public void getValue(List<FinanceDocument> list) {
+    /**
+     * Retrieves values from documents list.
+     * Calculates sums and sets them to text views
+     *
+     * @param list FinanceDocument list
+     **/
+
+    private void getValue(List<FinanceDocument> list) {
         int salarySum = 0;
         int rentalIncomeSum = 0;
         int interestSum = 0;
@@ -212,8 +261,8 @@ public class AccountSummary extends Fragment {
         int personalSum = 0;
         int activitiesSum = 0;
         int otherExpensesSum = 0;
-        int totalIncome = 0;
-        int totalExpense = 0;
+        int totalIncome;
+        int totalExpense;
 
         for (FinanceDocument item : list) {
             salarySum += item.getSalary();
@@ -232,7 +281,7 @@ public class AccountSummary extends Fragment {
             otherExpensesSum += item.getOtherExpenses();
         }
 
-        totalIncome = salarySum + rentalIncomeSum +interestSum + giftsSum + otherIncomeSum;
+        totalIncome = salarySum + rentalIncomeSum + interestSum + giftsSum + otherIncomeSum;
         totalExpense = taxesSum + mortgageSum + creditCardSum + utilitiesSum + foodSum + carPaymentSum + personalSum + activitiesSum + otherExpensesSum;
 
         salary.setText(Integer.toString(salarySum));
@@ -249,27 +298,31 @@ public class AccountSummary extends Fragment {
         personal.setText(Integer.toString(personalSum));
         activities.setText(Integer.toString(activitiesSum));
         otherExpense.setText(Integer.toString(otherExpensesSum));
-        String incomeString = Integer.toString(totalIncome) +" "+MainActivity.defaultCurrency;
+        String incomeString = Integer.toString(totalIncome) + " " + MainActivity.defaultCurrency;
         income.setText(incomeString);
-        String expenseString = Integer.toString(totalExpense) +" "+MainActivity.defaultCurrency;
+        String expenseString = Integer.toString(totalExpense) + " " + MainActivity.defaultCurrency;
         expense.setText(expenseString);
     }
 
-    // compiles all views data into export ready list
-    private List<String[]> prepareCsvData(){
+    /**
+     * Compiles all views data into export ready list
+     *
+     * @return data
+     **/
+    private List<String[]> prepareCsvData() {
         List<String[]> data = new ArrayList<>();
         data.add(new String[]{getString(R.string.period), mTextViewPeriod.getText().toString()});
-        data.add(new String[]{"",""});
+        data.add(new String[]{"", ""});
         data.add(new String[]{getString(R.string.income), income.getText().toString()});
-        data.add(new String[]{"",""});
+        data.add(new String[]{"", ""});
         data.add(new String[]{getString(R.string.salary), salary.getText().toString()});
         data.add(new String[]{getString(R.string.rental_income), rentalIncome.getText().toString()});
         data.add(new String[]{getString(R.string.interest), interest.getText().toString()});
         data.add(new String[]{getString(R.string.gifts), gifts.getText().toString()});
         data.add(new String[]{getString(R.string.other_income), otherIncome.getText().toString()});
-        data.add(new String[]{"",""});
+        data.add(new String[]{"", ""});
         data.add(new String[]{getString(R.string.expense), expense.getText().toString()});
-        data.add(new String[]{"",""});
+        data.add(new String[]{"", ""});
         data.add(new String[]{getString(R.string.food), food.getText().toString()});
         data.add(new String[]{getString(R.string.car_payment), carPayment.getText().toString()});
         data.add(new String[]{getString(R.string.personal), personal.getText().toString()});
@@ -284,8 +337,10 @@ public class AccountSummary extends Fragment {
     }
 
 
-    //Runs showcase presentation on fragment start
-    private void startShowcase(){
+    /**
+     * Runs showcase presentation on fragment start
+     **/
+    private void startShowcase() {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         config.setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));

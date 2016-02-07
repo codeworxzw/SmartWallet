@@ -1,6 +1,5 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
-import android.util.Log;
 
 import com.cloudant.sync.datastore.BasicDocumentRevision;
 
@@ -20,6 +19,7 @@ import java.util.TimeZone;
  */
 public class FinanceDocument {
     private static final String DOC_TYPE = "Finance document";
+    private static final String TAG = "FinanceDocument";
     private static final String MAIN_ACCOUNT = "mainAccount";
     public static final int DATE_FORMAT_SHORT = 0;
     public static final int DATE_FORMAT_MEDIUM = 1;
@@ -100,7 +100,7 @@ public class FinanceDocument {
         return type;
     }
 
-    public void setType(String type) {
+    private void setType(String type) {
         this.type = type;
     }
 
@@ -111,13 +111,20 @@ public class FinanceDocument {
         return userId;
     }
 
-    public void setUserId(String data) {
+    private void setUserId(String data) {
         this.userId = data;
     }
 
     //salary
     public int getSalary() {
-        return CurrencyConversion.convertCurrency(Integer.valueOf(salary.get(0)), salary.get(1), MainActivity.defaultCurrency);
+        if(salary.get(1).equals(MainActivity.defaultCurrency)){
+
+            return Integer.valueOf(salary.get(0));
+        }
+        else {
+
+            return CurrencyConversion.convertCurrency(Integer.valueOf(salary.get(0)), salary.get(1), MainActivity.defaultCurrency);
+        }
     }
 
     public void setSalary(String salary, String currency, String recursion) {
@@ -127,7 +134,7 @@ public class FinanceDocument {
         this.salary.add(2, recursion);
     }
 
-    public void setSalary(ArrayList<String> salary) {
+    private void setSalary(ArrayList<String> salary) {
 
         this.salary = salary;
     }
@@ -135,7 +142,14 @@ public class FinanceDocument {
     //rental income
 
     public int getRentalIncome() {
-        return CurrencyConversion.convertCurrency(Integer.valueOf(rentalIncome.get(0)), rentalIncome.get(1), MainActivity.defaultCurrency);
+        if(rentalIncome.get(1).equals(MainActivity.defaultCurrency)){
+
+            return Integer.valueOf(rentalIncome.get(0));
+        }
+        else {
+
+            return CurrencyConversion.convertCurrency(Integer.valueOf(rentalIncome.get(0)), rentalIncome.get(1), MainActivity.defaultCurrency);
+        }
     }
 
     public void setRentalIncome(String rentalIncome, String currency, String recursion) {
@@ -144,14 +158,21 @@ public class FinanceDocument {
         this.rentalIncome.add(2, recursion);
     }
 
-    public void setRentalIncome(ArrayList<String> rentalIncome) {
+    private void setRentalIncome(ArrayList<String> rentalIncome) {
         this.rentalIncome = rentalIncome;
     }
 
     //interest
 
     public int getInterest() {
-        return CurrencyConversion.convertCurrency(Integer.valueOf(interest.get(0)), interest.get(1), MainActivity.defaultCurrency);
+        if(interest.get(1).equals(MainActivity.defaultCurrency)){
+
+            return Integer.valueOf(interest.get(0));
+        }
+        else {
+
+            return CurrencyConversion.convertCurrency(Integer.valueOf(interest.get(0)), interest.get(1), MainActivity.defaultCurrency);
+        }
     }
 
     public void setInterest(String interest, String currency, String recursion) {
@@ -161,7 +182,7 @@ public class FinanceDocument {
         this.interest.add(2, recursion);
     }
 
-    public void setInterest(ArrayList<String> interest) {
+    private void setInterest(ArrayList<String> interest) {
 
         this.interest = interest;
     }
@@ -169,8 +190,14 @@ public class FinanceDocument {
     //gifts
 
     public int getGifts() {
+        if(gifts.get(1).equals(MainActivity.defaultCurrency)){
 
-        return CurrencyConversion.convertCurrency(Integer.valueOf(gifts.get(0)), gifts.get(1), MainActivity.defaultCurrency);
+            return Integer.valueOf(gifts.get(0));
+        }
+        else {
+
+            return CurrencyConversion.convertCurrency(Integer.valueOf(gifts.get(0)), gifts.get(1), MainActivity.defaultCurrency);
+        }
     }
 
     public void setGifts(String gifts, String currency, String recursion) {
@@ -180,7 +207,7 @@ public class FinanceDocument {
         this.gifts.add(2, recursion);
     }
 
-    public void setGifts(ArrayList<String> gifts) {
+    private void setGifts(ArrayList<String> gifts) {
 
         this.gifts = gifts;
     }
@@ -188,8 +215,14 @@ public class FinanceDocument {
     //other income
 
     public int getOtherIncome() {
+        if(otherIncome.get(1).equals(MainActivity.defaultCurrency)){
 
-        return CurrencyConversion.convertCurrency(Integer.valueOf(otherIncome.get(0)), otherIncome.get(1), MainActivity.defaultCurrency);
+            return Integer.valueOf(otherIncome.get(0));
+        }
+        else {
+
+            return CurrencyConversion.convertCurrency(Integer.valueOf(otherIncome.get(0)), otherIncome.get(1), MainActivity.defaultCurrency);
+        }
     }
 
     public void setOtherIncome(String otherIncome, String currency, String recursion) {
@@ -199,7 +232,7 @@ public class FinanceDocument {
         this.otherIncome.add(2, recursion);
     }
 
-    public void setOtherIncome(ArrayList<String> otherIncome) {
+    private void setOtherIncome(ArrayList<String> otherIncome) {
 
         this.otherIncome = otherIncome;
     }
@@ -208,7 +241,14 @@ public class FinanceDocument {
 
     public int getTaxes() {
 
-        return CurrencyConversion.convertCurrency(Integer.valueOf(taxes.get(0)), taxes.get(1), MainActivity.defaultCurrency);
+        if(taxes.get(1).equals(MainActivity.defaultCurrency)){
+
+            return Integer.valueOf(taxes.get(0));
+        }
+        else {
+
+            return CurrencyConversion.convertCurrency(Integer.valueOf(taxes.get(0)), taxes.get(1), MainActivity.defaultCurrency);
+        }
     }
 
     public void setTaxes(String taxes, String currency, String recursion) {
@@ -218,7 +258,7 @@ public class FinanceDocument {
         this.taxes.add(2, recursion);
     }
 
-    public void setTaxes(ArrayList<String> taxes) {
+    private void setTaxes(ArrayList<String> taxes) {
 
         this.taxes = taxes;
     }
@@ -226,8 +266,13 @@ public class FinanceDocument {
     // 8 - mortgage
 
     public int getMortgage() {
+        if(mortgage.get(1).equals(MainActivity.defaultCurrency)){
 
-        return CurrencyConversion.convertCurrency(Integer.valueOf(mortgage.get(0)), mortgage.get(1), MainActivity.defaultCurrency);
+            return Integer.valueOf(mortgage.get(0));
+        }
+        else {
+            return CurrencyConversion.convertCurrency(Integer.valueOf(mortgage.get(0)), mortgage.get(1), MainActivity.defaultCurrency);
+        }
     }
 
     public void setMortgage(String mortgage, String currency, String recursion) {
@@ -237,7 +282,7 @@ public class FinanceDocument {
         this.mortgage.add(2, recursion);
     }
 
-    public void setMortgage(ArrayList<String> mortgage) {
+    private void setMortgage(ArrayList<String> mortgage) {
 
         this.mortgage = mortgage;
     }
@@ -245,8 +290,13 @@ public class FinanceDocument {
 
     // 9 - credit card
     public int getCreditCard() {
+        if(creditCard.get(1).equals(MainActivity.defaultCurrency)){
 
-        return CurrencyConversion.convertCurrency(Integer.valueOf(creditCard.get(0)), creditCard.get(1), MainActivity.defaultCurrency);
+            return Integer.valueOf(creditCard.get(0));
+        }
+        else {
+            return CurrencyConversion.convertCurrency(Integer.valueOf(creditCard.get(0)), creditCard.get(1), MainActivity.defaultCurrency);
+        }
     }
 
     public void setCreditCard(String creditCard, String currency, String recursion) {
@@ -256,7 +306,7 @@ public class FinanceDocument {
         this.creditCard.add(2, recursion);
     }
 
-    public void setCreditCard(ArrayList<String> creditCard) {
+    private void setCreditCard(ArrayList<String> creditCard) {
 
         this.creditCard = creditCard;
     }
@@ -264,8 +314,13 @@ public class FinanceDocument {
     //10 - utilities
 
     public int getUtilities() {
+        if(utilities.get(1).equals(MainActivity.defaultCurrency)){
 
-        return CurrencyConversion.convertCurrency(Integer.valueOf(utilities.get(0)), utilities.get(1), MainActivity.defaultCurrency);
+            return Integer.valueOf(utilities.get(0));
+        }
+        else {
+            return CurrencyConversion.convertCurrency(Integer.valueOf(utilities.get(0)), utilities.get(1), MainActivity.defaultCurrency);
+        }
     }
 
     public void setUtilities(String utilities, String currency, String recursion) {
@@ -275,7 +330,7 @@ public class FinanceDocument {
         this.utilities.add(2, recursion);
     }
 
-    public void setUtilities(ArrayList<String> utilities) {
+    private void setUtilities(ArrayList<String> utilities) {
 
         this.utilities = utilities;
     }
@@ -283,8 +338,13 @@ public class FinanceDocument {
     //11 - food
 
     public int getFood() {
+        if(food.get(1).equals(MainActivity.defaultCurrency)){
 
-        return CurrencyConversion.convertCurrency(Integer.valueOf(food.get(0)), food.get(1), MainActivity.defaultCurrency);
+            return Integer.valueOf(food.get(0));
+        }
+        else {
+            return CurrencyConversion.convertCurrency(Integer.valueOf(food.get(0)), food.get(1), MainActivity.defaultCurrency);
+        }
     }
 
     public void setFood(String food, String currency, String recursion) {
@@ -294,7 +354,7 @@ public class FinanceDocument {
         this.food.add(2, recursion);
     }
 
-    public void setFood(ArrayList<String> food) {
+    private void setFood(ArrayList<String> food) {
 
         this.food = food;
     }
@@ -302,8 +362,13 @@ public class FinanceDocument {
     //12 - car payment
 
     public int getCarPayment() {
+        if(carPayment.get(1).equals(MainActivity.defaultCurrency)){
 
-        return CurrencyConversion.convertCurrency(Integer.valueOf(carPayment.get(0)), carPayment.get(1), MainActivity.defaultCurrency);
+            return Integer.valueOf(carPayment.get(0));
+        }
+        else {
+            return CurrencyConversion.convertCurrency(Integer.valueOf(carPayment.get(0)), carPayment.get(1), MainActivity.defaultCurrency);
+        }
     }
 
     public void setCarPayment(String carPayment, String currency, String recursion) {
@@ -313,7 +378,7 @@ public class FinanceDocument {
         this.carPayment.add(2, recursion);
     }
 
-    public void setCarPayment(ArrayList<String> carPayment) {
+    private void setCarPayment(ArrayList<String> carPayment) {
 
         this.carPayment = carPayment;
     }
@@ -321,8 +386,13 @@ public class FinanceDocument {
     //13 - personal
 
     public int getPersonal() {
+        if(personal.get(1).equals(MainActivity.defaultCurrency)){
 
-        return CurrencyConversion.convertCurrency(Integer.valueOf(personal.get(0)), personal.get(1), MainActivity.defaultCurrency);
+            return Integer.valueOf(personal.get(0));
+        }
+        else {
+            return CurrencyConversion.convertCurrency(Integer.valueOf(personal.get(0)), personal.get(1), MainActivity.defaultCurrency);
+        }
     }
 
     public void setPersonal(String personal, String currency, String recursion) {
@@ -332,7 +402,7 @@ public class FinanceDocument {
         this.personal.add(2, recursion);
     }
 
-    public void setPersonal(ArrayList<String> personal) {
+    private void setPersonal(ArrayList<String> personal) {
 
         this.personal = personal;
     }
@@ -340,8 +410,13 @@ public class FinanceDocument {
     //14 - activities
 
     public int getActivities() {
+        if(activities.get(1).equals(MainActivity.defaultCurrency)){
 
-        return CurrencyConversion.convertCurrency(Integer.valueOf(activities.get(0)), activities.get(1), MainActivity.defaultCurrency);
+            return Integer.valueOf(activities.get(0));
+        }
+        else {
+            return CurrencyConversion.convertCurrency(Integer.valueOf(activities.get(0)), activities.get(1), MainActivity.defaultCurrency);
+        }
     }
 
     public void setActivities(String activities, String currency, String recursion) {
@@ -351,15 +426,20 @@ public class FinanceDocument {
         this.activities.add(2, recursion);
     }
 
-    public void setActivities(ArrayList<String> activities) {
+    private void setActivities(ArrayList<String> activities) {
 
         this.activities = activities;
     }
     //15 - other expenses
 
     public int getOtherExpenses() {
+        if(otherExpenses.get(1).equals(MainActivity.defaultCurrency)){
 
-        return CurrencyConversion.convertCurrency(Integer.valueOf(otherExpenses.get(0)), otherExpenses.get(1), MainActivity.defaultCurrency);
+            return Integer.valueOf(otherExpenses.get(0));
+        }
+        else {
+            return CurrencyConversion.convertCurrency(Integer.valueOf(otherExpenses.get(0)), otherExpenses.get(1), MainActivity.defaultCurrency);
+        }
     }
 
     public void setOtherExpenses(String otherExpenses, String currency, String recursion) {
@@ -369,7 +449,7 @@ public class FinanceDocument {
         this.otherExpenses.add(2, recursion);
     }
 
-    public void setOtherExpenses(ArrayList<String> otherExpenses) {
+    private void setOtherExpenses(ArrayList<String> otherExpenses) {
 
         this.otherExpenses = otherExpenses;
     }
@@ -381,7 +461,7 @@ public class FinanceDocument {
         return date;
     }
 
-    public void setDate(String date) {
+    private void setDate(String date) {
         this.date = date;
     }
 
@@ -414,8 +494,7 @@ public class FinanceDocument {
                 break;
         }
         sdf.setTimeZone(TimeZone.getDefault()); // give a timezone reference for formating (see comment at the bottom
-        String normalDate = sdf.format(formatDate);
-        return normalDate;
+        return sdf.format(formatDate);
     }
 
     /**
@@ -529,7 +608,7 @@ public class FinanceDocument {
      */
     public Map<String, Object> asMap() {
         // this could also be done by a fancy object mapper
-        HashMap<String, Object> map = new HashMap<String, Object>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("type", type);
         map.put("userId", userId);
         map.put("account", account);

@@ -1,14 +1,18 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -77,13 +81,18 @@ public class IncomeExpenseChart extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.incomeExpenseLayout);
+        if (relativeLayout == null) {
+            relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.incomeExpenseLayout);
+        }
+        if (mTextViewPeriod == null) {
+            mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period);
+        }
+        if (mIncomeExpenseButton == null) {
+            mIncomeExpenseButton = (ToggleButton) getActivity().findViewById(R.id.btn_income_expense);
+        }
 
-        mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period);
-        mIncomeExpenseButton = (ToggleButton) getActivity().findViewById(R.id.btn_income_expense);
 
-
-        mIncomeExpenseButton.setChecked(Boolean.valueOf(MainActivity.ReadFromSharedPreferences(getActivity(), "toggleButtonState", "true")));
+        mIncomeExpenseButton.setChecked(Boolean.valueOf(MainActivity.readFromSharedPreferences(getActivity(), "toggleButtonState", "true")));
         if (mIncomeExpenseButton.isChecked()) {
             mIncomeExpenseButton.setTextColor(ContextCompat.getColor(getContext(), R.color.income));
             offsetStart = 0;
@@ -108,13 +117,14 @@ public class IncomeExpenseChart extends Fragment {
                     offsetEnd = 0;
 
                 }
-                MainActivity.SaveToSharedPreferences(getActivity(), "toggleButtonState", Boolean.toString(mIncomeExpenseButton.isChecked()));
+                MainActivity.saveToSharedPreferences(getActivity(), "toggleButtonState", Boolean.toString(mIncomeExpenseButton.isChecked()));
                 generateChartData(getValues(financeDocumentList));
             }
         });
 
-
-        mPieChart = (PieChartView) getActivity().findViewById(R.id.pie_chart);
+        if (mPieChart == null) {
+            mPieChart = (PieChartView) getActivity().findViewById(R.id.pie_chart);
+        }
         mPieChart.setOnValueTouchListener(new ValueTouchListener());
 
         mContext = getContext();
@@ -137,8 +147,8 @@ public class IncomeExpenseChart extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.ReadFromSharedPreferences(getActivity(), "period", "thisWeek"), MainActivity.getUserId());
-        mTextViewPeriod.setText(MainActivity.ReadFromSharedPreferences(getActivity(), "periodText", getResources().getString(R.string.this_week)));
+        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.readFromSharedPreferences(getActivity(), "period", "thisWeek"), MainActivity.getUserId());
+        mTextViewPeriod.setText(MainActivity.readFromSharedPreferences(getActivity(), "periodText", getResources().getString(R.string.this_week)));
         generateChartData(getValues(financeDocumentList));
     }
 
@@ -178,7 +188,7 @@ public class IncomeExpenseChart extends Fragment {
      * Shows chart_income_expense_menu popup menu
      */
 
-    public void showPopup() {
+    private void showPopup() {
         View menuItemView = getActivity().findViewById(R.id.action_filter);
         PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
         MenuInflater inflate = popup.getMenuInflater();
@@ -220,8 +230,8 @@ public class IncomeExpenseChart extends Fragment {
 
                         break;
                 }
-                MainActivity.SaveToSharedPreferences(getActivity(), "period", selectedItem);
-                MainActivity.SaveToSharedPreferences(getActivity(), "periodText", mTextViewPeriod.getText().toString());
+                MainActivity.saveToSharedPreferences(getActivity(), "period", selectedItem);
+                MainActivity.saveToSharedPreferences(getActivity(), "periodText", mTextViewPeriod.getText().toString());
 
                 generateChartData(getValues(financeDocumentList));
                 return false;
@@ -273,7 +283,7 @@ public class IncomeExpenseChart extends Fragment {
      * @param list finance documents list
      * @return map of data types and values
      */
-    public HashMap<Integer, Integer> getValues(List<FinanceDocument> list) {
+    private HashMap<Integer, Integer> getValues(List<FinanceDocument> list) {
         int salarySum = 0;
         int rentalIncomeSum = 0;
         int interestSum = 0;
@@ -332,7 +342,7 @@ public class IncomeExpenseChart extends Fragment {
      * @param key value range 1-14
      * @return string value
      **/
-    public String keyToString(int key) {
+    private String keyToString(int key) {
         switch (key) {
             case 1:
                 return getResources().getString(R.string.salary);
@@ -408,6 +418,7 @@ public class IncomeExpenseChart extends Fragment {
         }
 
     }
+
 
     /**
      * Runs showcase presentation on fragment start

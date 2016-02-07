@@ -65,6 +65,9 @@
     <string name="history_is_empty">Активність відсутня&#8230;</string>
     <string name="no_network_title">Немає мережі</string>
     <string name="no_network_message">Неможливо підключитися до мережі</string>
+    <string name="permission_required">Необхідний дозвіл</string>
+    <string name="permission_getaccounts_explanation">Smart Wallet використовує інформацію з Вашого профілю для надання Вам кращого користувацького досвіду.</string>
+    <string name="permission_write_external_storage_explanation">Smart Wallet необхідно експортувати дані у файл на Вашому пристрої</string>
 
 
     <string-array name="account_summary_spinner">

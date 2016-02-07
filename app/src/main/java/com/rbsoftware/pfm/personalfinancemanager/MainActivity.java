@@ -1,8 +1,6 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,7 +25,7 @@ import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";
-    public static final String PREF_FILE = "PrefFile";
+    private static final String PREF_FILE = "PrefFile";
     public final static int PARAM_USERID = 0;
     public final static int PARAM_SALARY = 1;
     public final static int PARAM_RENTAL_INCOME = 2;
@@ -58,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        boolean firstTimeOpen;
 
         super.onCreate(savedInstanceState);
 
@@ -115,14 +112,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        firstTimeOpen = Boolean.valueOf(ReadFromSharedPreferences(this, "firstTimeOpen", "true"));
-        if (firstTimeOpen) {
-            Log.d("FirstTimeOpen", "Application started for the first time");
-            firstTimeOpen = false;
-            SaveToSharedPreferences(this, "firstTimeOpen", Boolean.toString(firstTimeOpen));
-            setNotification();
-        }
+        boolean firstStart = Boolean.valueOf(readFromSharedPreferences(this, "firstStart", "true"));
 
+        if (firstStart) {
+            //Start service to check for alarms
+            Log.d(TAG,"NotificationService is not running. Starting..");
+            WakefulIntentService.acquireStaticLock(this);
+            this.startService(new Intent(this, NotificationService.class));
+            firstStart = false;
+            saveToSharedPreferences(this, "firstStart", Boolean.toString(firstStart));
+        }
 
     }
 
@@ -167,11 +166,12 @@ public class MainActivity extends AppCompatActivity {
 
 
             }
-            if (resultCode == RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
+
         }
     }//onActivityResult
+
+
+    //HELPER METHODS
 
     /**
      * Parsing string to retrieve document data
@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //HELPER METHODS
+
 
 
     /**
@@ -233,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void reloadReplicationSettings() {
         try {
-            this.financeDocumentModel.reloadReplicationSettings();
+            financeDocumentModel.reloadReplicationSettings();
         } catch (URISyntaxException e) {
             Log.e(getApplicationContext().toString(), "Unable to construct remote URI from configuration", e);
             Toast.makeText(getApplicationContext(),
@@ -269,31 +269,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * Sets daily reminder alarm
-     */
-
-
-    private void setNotification() {
-        Intent notificationIntent = new Intent(this, NotificationReceiver.class);
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-        calendar.set(Calendar.MILLISECOND, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.HOUR_OF_DAY, 21);
-
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                calendar.getTimeInMillis(),
-                1000 * 24 * 60 * 60,
-                pendingIntent);
-        Log.d("Alarm", "setnotification was called");
-    }
-
-
-    /**
      * Fetches last currency rates from internet
      */
     private void reloadCurrency() {
@@ -302,8 +277,7 @@ public class MainActivity extends AppCompatActivity {
             Calendar c = Calendar.getInstance(TimeZone.getDefault());
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
             String currentDate = df.format(c.getTime());
-            String updatedDate = ReadFromSharedPreferences(this, "updatedDate", "");
-            Log.d(TAG, "Last time currency rates were updated on" + updatedDate);
+            String updatedDate = readFromSharedPreferences(this, "updatedDate", "");
             if (!updatedDate.equals(currentDate) || (financeDocumentModel.getCurrencyDocument(FinanceDocumentModel.CURRENCY_ID) == null)) {
                 Log.d(TAG, "Updating currency rates");
                 new CurrencyConversion(this).execute();
@@ -324,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
      * @param prefName  name variable
      * @param prefValue value
      */
-    public static void SaveToSharedPreferences(Context context, String prefName, String prefValue) {
+    public static void saveToSharedPreferences(Context context, String prefName, String prefValue) {
         SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(prefName, prefValue);
@@ -338,10 +312,12 @@ public class MainActivity extends AppCompatActivity {
      * @param prefName     name variable
      * @param defaultValue default value
      */
-    public static String ReadFromSharedPreferences(Context context, String prefName, String defaultValue) {
+    public static String readFromSharedPreferences(Context context, String prefName, String defaultValue) {
         SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
         return sharedPref.getString(prefName, defaultValue);
     }
+
+
 
 
 }

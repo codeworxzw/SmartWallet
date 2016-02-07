@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,19 +17,17 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
+
+
+import com.google.android.gms.plus.Plus;
 import com.squareup.picasso.Picasso;
 
 
 /**
  * A simple {@link Fragment} subclass.
+ * Holds navigation drawer elements
  */
-public class NavigationDrawerFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener{
+public class NavigationDrawerFragment extends Fragment  {
 
 
     private ActionBarDrawerToggle mDrawerToggle;
@@ -56,31 +53,6 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         setRetainInstance(true);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-      /*  if(savedInstanceState == null) {
-            // [START configure_signin]
-            // Configure sign-in to request the user's ID, email address, and basic
-            // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .build();
-            // [END configure_signin]
-
-            // [START build_client]
-            // Build a GoogleApiClient with access to the Google Sign-In API and the
-            // options specified by gso.
-
-            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                    .enableAutoManage(getActivity() , this )
-                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                    .build();
-            mGoogleApiClient.connect();
-            // [END build_client]
-        }*/
-
-    }
 
 
 
@@ -92,8 +64,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
         mDrawerView = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         // Inflate the layout for this fragment
-        fragmentPos=Integer.valueOf(MainActivity.ReadFromSharedPreferences(getActivity(), "fragmentPos", "0"));
-
+        fragmentPos = Integer.valueOf(MainActivity.readFromSharedPreferences(getActivity(), "fragmentPos", "0"));
 
 
         return mDrawerView;
@@ -101,37 +72,25 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
 
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if(!LoginActivity.mGoogleApiClient.isConnected())LoginActivity.mGoogleApiClient.connect();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if(!LoginActivity.mGoogleApiClient.isConnected())LoginActivity.mGoogleApiClient.disconnect();
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mDrawerLayout = (DrawerLayout)getActivity().findViewById(R.id.drawer_layout);
+        mDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         mUserName = (TextView) mDrawerView.findViewById(R.id.tv_user_name);
         mUserPhoto = (ImageView) mDrawerView.findViewById(R.id.user_photo);
         mUserName.setText(getArguments().getString("name", getArguments().getString("email")));
         String photoURL = getArguments().getString("photoURL", null);
-        if(photoURL != null) {
-            Picasso.with(getContext()).load(photoURL).into(mUserPhoto);
-        }
-        else{
+        if (photoURL != null) {
+            Picasso.with(getContext()).load(photoURL).transform(new CircleTransform()).into(mUserPhoto);
+        } else {
             Picasso.with(getContext()).load(R.drawable.user_photo_256px).into(mUserPhoto);
 
         }
 
         mDrawerList = (ListView) mDrawerView.findViewById(R.id.navigation_drawer_listview);
-        mListItems= getResources().getStringArray(R.array.drawer_menu);
+        mListItems = getResources().getStringArray(R.array.drawer_menu);
         int[] mListImages = {
                 R.drawable.ic_bill_black_24dp,
                 R.drawable.ic_statistics_black_24dp,
@@ -139,7 +98,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
                 R.drawable.ic_settings_black_24dp,
                 R.drawable.ic_exit_black_24dp};
 
-       // mDrawerList.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mListItems));
+        // mDrawerList.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mListItems));
         mDrawerList.setAdapter(new DrawerListAdapter(getActivity(), mListImages, mListItems));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
@@ -177,7 +136,7 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
 
 
         mToolbar.setTitle(mListItems[fragmentPos]);
-        if(mFragment==null) {   //RetainInstanceState applied. Checking if mFragment is not created yet
+        if (mFragment == null) {   //RetainInstanceState applied. Checking if mFragment is not created yet
             openFragment(fragmentPos);
         }
     }
@@ -187,67 +146,54 @@ public class NavigationDrawerFragment extends Fragment implements GoogleApiClien
         public void onItemClick(AdapterView parent, View view, int position, long id) {
             mDrawerLayout.closeDrawers();
 
-            if(position ==3){
+            if (position == 3) {
                 Intent i = new Intent(getActivity(), SettingsActivity.class);
-                startActivityForResult(i, getActivity().RESULT_OK);
-            }
-            else if(position == 4){
+                startActivityForResult(i, MainActivity.RESULT_OK);
+            } else if (position == 4) {
                 signout();
 
-            }
-            else {
+            } else {
                 openFragment(position);
             }
         }
     }
 
-    public void openFragment(int position){
-            switch (position) {
-                case 0:
-                    mFragment= new AccountSummary();
-                    break;
-                case 1:
-                    mFragment= new Charts();
-                    break;
-                case 2:
-                    mFragment= new History();
-                    break;
-            /*    case 3:
-                    mFragment= new History();
-                    break;
-*/
+    private void openFragment(int position) {
+        switch (position) {
+            case 0:
+                mFragment = new AccountSummary();
+                break;
+            case 1:
+                mFragment = new Charts();
+                break;
+            case 2:
+                mFragment = new History();
+                break;
 
-            }
-            fragmentPos = position;
-
-            MainActivity.SaveToSharedPreferences(getActivity(), "fragmentPos", Integer.toString(position));
-            FM = getFragmentManager();
-
-            FM.beginTransaction().replace(R.id.fragment_container, mFragment).commit();
 
         }
+        fragmentPos = position;
 
+        MainActivity.saveToSharedPreferences(getActivity(), "fragmentPos", Integer.toString(position));
+        FM = getFragmentManager();
 
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+        FM.beginTransaction().replace(R.id.fragment_container, mFragment).commit();
 
     }
-    public void signout(){
-      //  Log.d("TAG", LoginActivity.mGoogleApiClient.getConnectionResult(Auth.GOOGLE_SIGN_IN_API).toString());
 
+
+
+
+    private void signout() {
         if (LoginActivity.mGoogleApiClient.isConnected()) {
-            Auth.GoogleSignInApi.signOut(LoginActivity.mGoogleApiClient).setResultCallback(
-                    new ResultCallback<Status>() {
-                        @Override
-                        public void onResult(Status status) {
-                            Intent intent = new Intent(getActivity(), LoginActivity.class);
-                            startActivity(intent);
-                            getActivity().finish();
+            Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
+            LoginActivity.mGoogleApiClient.disconnect();
 
-                        }
-                    });
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent);
+            getActivity().finish();
         }
+
     }
 
 }

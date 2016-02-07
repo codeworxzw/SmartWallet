@@ -1,13 +1,18 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,7 +20,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -36,6 +40,7 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 /**
  * A simple {@link Fragment} subclass.
+ * Hold line chart data
  */
 public class TrendsChart extends Fragment {
     private final String TAG = "TrendsChart";
@@ -51,6 +56,7 @@ public class TrendsChart extends Fragment {
     private PopupMenu popupLine;
     private Context mContext;
     private Activity mActivity;
+
     public TrendsChart() {
         // Required empty public constructor
     }
@@ -60,11 +66,11 @@ public class TrendsChart extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         //Populating list from shared preferences
-        listLinesSize = Integer.valueOf(MainActivity.ReadFromSharedPreferences(getActivity(),
+        listLinesSize = Integer.valueOf(MainActivity.readFromSharedPreferences(getActivity(),
                 "listLinesSize", "0"));
         checkedLines = new ArrayList<>();
         for (int i = 0; i < listLinesSize; i++) {
-            checkedLines.add(Integer.valueOf(MainActivity.ReadFromSharedPreferences(getActivity(),
+            checkedLines.add(Integer.valueOf(MainActivity.readFromSharedPreferences(getActivity(),
                     "checkedLine" + i, null)));
 
         }
@@ -80,9 +86,15 @@ public class TrendsChart extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.trendsChartLayout);
-        mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period_trend);
-        chart = (LineChartView) getActivity().findViewById(R.id.trends_chart);
+        if (relativeLayout == null) {
+            relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.trendsChartLayout);
+        }
+        if (mTextViewPeriod == null) {
+            mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period_trend);
+        }
+        if (chart == null) {
+            chart = (LineChartView) getActivity().findViewById(R.id.trends_chart);
+        }
 
         mContext = getContext();
         mActivity = getActivity();
@@ -93,10 +105,10 @@ public class TrendsChart extends Fragment {
         super.onResume();
         //Querying list of documents on fragment resume
         financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(
-                MainActivity.ReadFromSharedPreferences(getActivity(), "periodTrend", "thisWeek"),
+                MainActivity.readFromSharedPreferences(getActivity(), "periodTrend", "thisWeek"),
                 MainActivity.getUserId(),
                 FinanceDocumentModel.ORDER_ASC);
-        mTextViewPeriod.setText(MainActivity.ReadFromSharedPreferences(getActivity(),
+        mTextViewPeriod.setText(MainActivity.readFromSharedPreferences(getActivity(),
                 "periodTextTrend",
                 getResources().getString(R.string.this_week)));
         generateLineChartData();
@@ -106,8 +118,8 @@ public class TrendsChart extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.chart_trends_menu, menu);
         int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
-                .getInt("status_"+TAG,0);
-        if(status != -1) {
+                .getInt("status_" + TAG, 0);
+        if (status != -1) {
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -145,8 +157,12 @@ public class TrendsChart extends Fragment {
 
 
     //Helper methods
-    //Shows period chart_trends_menu popup menu
-    public void showPopupPeriod() {
+
+    /**
+     * Shows period chart_trends_menu popup menu
+     */
+
+    private void showPopupPeriod() {
         View menuItemView = getActivity().findViewById(R.id.action_filter);
         PopupMenu popup = new PopupMenu(getActivity(), menuItemView);
         MenuInflater inflate = popup.getMenuInflater();
@@ -203,8 +219,8 @@ public class TrendsChart extends Fragment {
 
                         break;
                 }
-                MainActivity.SaveToSharedPreferences(getActivity(), "periodTrend", selectedPeriod);
-                MainActivity.SaveToSharedPreferences(getActivity(), "periodTextTrend", mTextViewPeriod.getText().toString());
+                MainActivity.saveToSharedPreferences(getActivity(), "periodTrend", selectedPeriod);
+                MainActivity.saveToSharedPreferences(getActivity(), "periodTextTrend", mTextViewPeriod.getText().toString());
                 generateLineChartData();
                 return false;
             }
@@ -213,7 +229,10 @@ public class TrendsChart extends Fragment {
 
     }
 
-    public void showPopupLine() {
+    /**
+     * Shows lines option menu
+     */
+    private void showPopupLine() {
 
         popupLine = new PopupMenu(getActivity(), getActivity().findViewById(R.id.action_line));
         MenuInflater inflate = popupLine.getMenuInflater();
@@ -242,10 +261,10 @@ public class TrendsChart extends Fragment {
 
                 }
                 listLinesSize = checkedLines.size();
-                MainActivity.SaveToSharedPreferences(getActivity(), "listLinesSize",
+                MainActivity.saveToSharedPreferences(getActivity(), "listLinesSize",
                         Integer.toString(listLinesSize));
                 for (int i = 0; i < checkedLines.size(); i++) {
-                    MainActivity.SaveToSharedPreferences(getActivity(), "checkedLine" + i,
+                    MainActivity.saveToSharedPreferences(getActivity(), "checkedLine" + i,
                             Integer.toString(checkedLines.get(i)));
                 }
 
@@ -258,7 +277,10 @@ public class TrendsChart extends Fragment {
 
     }
 
-    //Fills LineChart with data
+    /**
+     * Fills LineChart with data
+     */
+
     private void generateLineChartData() {
         List<AxisValue> axisValues = new ArrayList<AxisValue>();
         List<Line> lines = new ArrayList<Line>();
@@ -305,16 +327,15 @@ public class TrendsChart extends Fragment {
 
     }
 
-    public List<AxisValue> getDates(List<FinanceDocument> docList) {
-        List<AxisValue> dates = new ArrayList<>();
-        for (FinanceDocument doc : docList) {
-            AxisValue value = new AxisValue(Float.valueOf(doc.getDate()));
-            dates.add(value);
-        }
-        return dates;
-    }
 
-    public List<String[]> getDataFromDocument(int lineId, List<FinanceDocument> docList) {
+    /**
+     * Fetches values from document fro line chart
+     *
+     * @param lineId  chart type
+     * @param docList list of finance documents
+     * @return data values and dates list of arrays
+     */
+    private List<String[]> getDataFromDocument(int lineId, List<FinanceDocument> docList) {
         int value;
         List<String[]> data = new ArrayList<>();
         switch (lineId) {
@@ -322,7 +343,7 @@ public class TrendsChart extends Fragment {
                 for (FinanceDocument doc : docList) {
                     data.add(new String[]{
                             Integer.toString(doc.getSalary() +
-                                   doc.getRentalIncome() +
+                                    doc.getRentalIncome() +
                                     doc.getInterest() +
                                     doc.getGifts() +
                                     doc.getOtherIncome()),
@@ -478,9 +499,11 @@ public class TrendsChart extends Fragment {
     }
 
 
-    /* Converts menu item title into id
-        @param title of menu item
-        @return resource id
+    /**
+     * Converts menu item title into id
+     *
+     * @param position of menu item
+     * @return resource id
      */
     private int findMenuItemByPosition(int position) {
         switch (position) {
@@ -524,30 +547,59 @@ public class TrendsChart extends Fragment {
         }
     }
 
-    private int getPositionFromId(int id){
+    /**
+     * Converts options menu id into position
+     *
+     * @param id of resource
+     * @return resource position in menu
+     */
+    private int getPositionFromId(int id) {
         switch (id) {
-            case R.id.popupTotalIncome: return 0;
-            case R.id.popupTotalExpense: return 1;
-            case R.id.popupSalary:return 2;
-            case R.id.popupRentalIncome: return 3;
-            case R.id.popupInterest: return 4;
-            case  R.id.popupGifts: return 5;
-            case R.id.popupOtherIncome: return 6;
+            case R.id.popupTotalIncome:
+                return 0;
+            case R.id.popupTotalExpense:
+                return 1;
+            case R.id.popupSalary:
+                return 2;
+            case R.id.popupRentalIncome:
+                return 3;
+            case R.id.popupInterest:
+                return 4;
+            case R.id.popupGifts:
+                return 5;
+            case R.id.popupOtherIncome:
+                return 6;
 
-            case R.id.popupTaxes: return 7;
-            case R.id.popupMortgage: return 8;
-            case R.id.popupCreditCard: return 9;
-            case R.id.popupUtilities: return 10;
-            case R.id.popupFood: return 11;
-            case R.id.popupCarPayment: return 12;
-            case R.id.popupPersonal: return 13;
-            case R.id.popupActivities: return 14;
-            case R.id.popupOtherExpense: return 15;
+            case R.id.popupTaxes:
+                return 7;
+            case R.id.popupMortgage:
+                return 8;
+            case R.id.popupCreditCard:
+                return 9;
+            case R.id.popupUtilities:
+                return 10;
+            case R.id.popupFood:
+                return 11;
+            case R.id.popupCarPayment:
+                return 12;
+            case R.id.popupPersonal:
+                return 13;
+            case R.id.popupActivities:
+                return 14;
+            case R.id.popupOtherExpense:
+                return 15;
 
-            default: return 0;
+            default:
+                return 0;
         }
     }
 
+    /**
+     * gets chart line color by resource id
+     *
+     * @param i resource id
+     * @return color of line
+     */
     private int getColorPalette(int i) {
         switch (i) {
             case R.id.popupTotalIncome:
@@ -588,8 +640,12 @@ public class TrendsChart extends Fragment {
         }
     }
 
-    //Runs showcase presentation on fragment start
-    private void startShowcase(){
+
+    /**
+     * Runs showcase presentation on fragment start
+     */
+
+    private void startShowcase() {
         ShowcaseConfig config = new ShowcaseConfig();
         config.setDelay(500); // half second between each showcase view
         config.setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));

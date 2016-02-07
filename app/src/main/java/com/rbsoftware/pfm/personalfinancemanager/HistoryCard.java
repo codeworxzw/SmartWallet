@@ -97,7 +97,7 @@ public class HistoryCard extends Card {
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
             super.setupInnerViewElements(parent, view);
-            List<String> value = new ArrayList<>();
+            List<String> value;
             mLayout = (LinearLayout) view.findViewById(R.id.history_expand_card_layout);
             mLayout.removeAllViewsInLayout();
             for(int i=1;i<=doc.getValuesMap().size(); i++){

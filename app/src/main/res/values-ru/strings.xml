@@ -65,6 +65,9 @@
     <string name="history_is_empty">Активность отсутствует&#8230;</string>
     <string name="no_network_title">Нет сети</string>
     <string name="no_network_message">Невозможно подключиться к сети</string>
+    <string name="permission_required">Необходимо разрешение</string>
+    <string name="permission_getaccounts_explanation">Smart Wallet использует информацию из Вашего профиля для предоставления Вам лучшего пользовательского опыта.</string>
+    <string name="permission_write_external_storage_explanation">Smart Wallet необходимо экспортировать данные в файл на Вашем устройстве</string>
 
     <string-array name="drawer_menu">
         <item>Общая информация</item>

@@ -1,24 +1,20 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
-import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 
-
 /**
  * A simple {@link Fragment} subclass.
- */
+ * Charts fragment that holds child fragments
+ **/
 public class Charts extends Fragment {
 
     private Fragment mFragment;
@@ -31,21 +27,18 @@ public class Charts extends Fragment {
     }
 
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         FM = getChildFragmentManager();
-        adapter = new CollectionPagerAdapter(FM);
+        if(adapter == null) {
+            adapter = new CollectionPagerAdapter(FM);
+        }
 
 
     }
-
 
 
     @Override
@@ -60,18 +53,15 @@ public class Charts extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[1]);
-
-        mPager= (ViewPager) getActivity().findViewById(R.id.pager);
+        if(mPager == null) {
+            mPager = (ViewPager) getActivity().findViewById(R.id.pager);
+        }
         mPager.setAdapter(adapter);
 
 
     }
 
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
 
     private class CollectionPagerAdapter extends FragmentStatePagerAdapter {
         public CollectionPagerAdapter(FragmentManager fm) {
@@ -80,10 +70,10 @@ public class Charts extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            if(position == 0){
+            if (position == 0) {
                 mFragment = new IncomeExpenseChart();
             }
-            if(position == 1){
+            if (position == 1) {
                 mFragment = new TrendsChart();
             }
             return mFragment;
@@ -96,17 +86,17 @@ public class Charts extends Fragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            String title = new String();
-            if(position == 0){
+            String title="";
+            if (position == 0) {
                 title = getResources().getString(R.string.overview);
             }
-            if(position == 1){
-                title =getResources().getString(R.string.trends); ;
+            if (position == 1) {
+                title = getResources().getString(R.string.trends);
+
             }
-            return  title;
+            return title;
         }
     }
-
 
 
 }

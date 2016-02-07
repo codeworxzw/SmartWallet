@@ -63,6 +63,9 @@
     <string name="never">Nunca</string>
     <string name="no_network_title">Sin red</string>
     <string name="no_network_message">No puede conectarse a Internet</string>
+    <string name="permission_required">Permiso requerido</string>
+    <string name="permission_getaccounts_explanation">Smart Wallet utiliza la información de perfil para proporcionar una mejor experiencia de usuario.</string>
+    <string name="permission_write_external_storage_explanation">Smart Wallet necesita exportar los datos en un archivo en su dispositivo</string>
 
 
     <string-array name="drawer_menu">

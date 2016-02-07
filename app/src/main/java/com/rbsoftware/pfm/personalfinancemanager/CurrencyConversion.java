@@ -18,7 +18,7 @@ import java.util.TimeZone;
 
 public class CurrencyConversion extends AsyncTask<String, String, String> {
     private static final String TAG = "CurrencyConvertion";
-    HttpURLConnection urlConnection;
+    private HttpURLConnection urlConnection;
     private Currency currency;
     private Context mContext;
 
@@ -62,6 +62,7 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
 
         if (MainActivity.financeDocumentModel.getCurrencyDocument(FinanceDocumentModel.CURRENCY_ID) == null) {
             MainActivity.financeDocumentModel.createDocument(currency);
+            Log.d(TAG, "Currency document was created successfully");
         } else {
 
             try {
@@ -71,7 +72,7 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
                 e.printStackTrace();
             }
         }
-        MainActivity.SaveToSharedPreferences(mContext, "updatedDate", currentDate);
+        MainActivity.saveToSharedPreferences(mContext, "updatedDate", currentDate);
 
     } // protected void onPostExecute(Void v)
 
