@@ -124,9 +124,9 @@ public class FinanceDocumentModel {
         indexList.add("type");
         indexList.add("userId");
         indexList.add("date");
+        indexList.add("account");
 
         im.ensureIndexed(indexList, FINANCE_DOCUMENT_INDEX_LIST);
-        Log.d("index manager", "List of indexes " + im.listIndexes().toString());
     }
 
 
