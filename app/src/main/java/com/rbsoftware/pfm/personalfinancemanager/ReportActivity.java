@@ -2,6 +2,7 @@ package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -17,9 +18,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,7 @@ public class ReportActivity extends AppCompatActivity {
     private int categorySpinnerId = 1001; //IDs of categorySpinner
     private int currencySpinnerId = 2001; //IDs of currencySpinner
     private int editTextValueId = 3001;   //Ids of editText
+    private int deleteButtonId = 4001;   //Ids of deletButton
      /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
     private int textViewRecursId =4001;   //Ids of TextView "Recurs"
@@ -54,6 +56,7 @@ public class ReportActivity extends AppCompatActivity {
             mLayout.addView(createNewCategorySpinner());
             mLayout.addView(createNewEditText());
             mLayout.addView(createNewCurrencySpinner());
+            mLayout.addView(createNewDeleteButton());
              /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
             mLayout.addView(createNewRecursTextView());
@@ -72,6 +75,8 @@ public class ReportActivity extends AppCompatActivity {
                 mLayout.addView(createNewCurrencySpinner());
                 Spinner currencySpinner = (Spinner) findViewById(2000 + i);
                 currencySpinner.setSelection(savedInstanceState.getInt("currencySpinner" + i));
+                mLayout.addView(createNewDeleteButton());
+
                  /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
                 mLayout.addView(createNewRecursTextView());
@@ -92,6 +97,7 @@ public class ReportActivity extends AppCompatActivity {
                 mLayout.addView(createNewCategorySpinner());
                 mLayout.addView(createNewEditText());
                 mLayout.addView(createNewCurrencySpinner());
+                mLayout.addView(createNewDeleteButton());
                  /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
                 mLayout.addView(createNewRecursTextView());
@@ -126,6 +132,7 @@ public class ReportActivity extends AppCompatActivity {
             outState.putInt("currencySpinner" + i, currencySpinner.getSelectedItemPosition());
             EditText editTextValue = (EditText) findViewById(3000 + i);
             outState.putString("editTextValue" + i, editTextValue.getText().toString());
+
              /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
             Spinner recursSpinner = (Spinner) findViewById(5000+i);
@@ -249,6 +256,46 @@ public class ReportActivity extends AppCompatActivity {
         return editText;
     }
 
+    /**
+     * Generates delete button
+     *
+     * @return delete button
+     */
+    private ImageButton createNewDeleteButton() {
+        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
+        final ImageButton deleteButton = new ImageButton(this);
+        lparams.addRule(RelativeLayout.RIGHT_OF, currencySpinnerId - 1);
+        deleteButton.setVisibility(View.INVISIBLE);
+        if (deleteButtonId > 4001) {
+            lparams.addRule(RelativeLayout.BELOW, deleteButtonId - 1);
+            deleteButton.setVisibility(View.VISIBLE);
+            findViewById(deleteButtonId - 1).setVisibility(View.INVISIBLE);
+        }
+
+        deleteButton.setLayoutParams(lparams);
+        deleteButton.setBackgroundColor(Color.TRANSPARENT);
+        deleteButton.setImageResource(R.drawable.ic_remove_grey_24dp);
+        deleteButton.setId(deleteButtonId);
+        deleteButtonId++;
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (deleteButtonId - 2 != 4001) {
+                    findViewById(deleteButtonId - 2).setVisibility(View.VISIBLE);
+                }
+                mLayout.removeView(findViewById(categorySpinnerId - 1));
+                mLayout.removeView(findViewById(currencySpinnerId - 1));
+                mLayout.removeView(findViewById(editTextValueId - 1));
+                mLayout.removeView(findViewById(deleteButtonId - 1));
+                categorySpinnerId--;
+                currencySpinnerId--;
+                editTextValueId--;
+                deleteButtonId--;
+            }
+        });
+
+        return deleteButton;
+    }
      /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
     //Generates recurs text view
