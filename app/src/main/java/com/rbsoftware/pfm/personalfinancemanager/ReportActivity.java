@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -242,7 +244,7 @@ public class ReportActivity extends AppCompatActivity {
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         editText.setId(editTextValueId);
         editText.setSaveEnabled(true);
-
+        editText.requestFocus();
         editTextValueId++;
         return editText;
     }
@@ -303,13 +305,40 @@ public class ReportActivity extends AppCompatActivity {
             finish();
         }
         if (id == R.id.report_toolbar_done) {
-            Intent intent = new Intent();
-            intent.putStringArrayListExtra("reportResult", getReportResult());
-            setResult(RESULT_OK, intent);
-            finish();
+            if (validateFields()) {
+                Intent intent = new Intent();
+                intent.putStringArrayListExtra("reportResult", getReportResult());
+                setResult(RESULT_OK, intent);
+                finish();
+            }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Validates editText fields
+     *
+     * @return false if field is empty or contains only zeros
+     */
+    private boolean validateFields() {
+        int counter = categorySpinnerId - 1000;
+        for (int i = 1; i < counter; i++) {
+            EditText editTextValue = (EditText) findViewById(3000 + i);
+            if (editTextValue.getText().toString().isEmpty()) {
+                Log.d(TAG, i + "");
+                editTextValue.requestFocus();
+                editTextValue.setError(getString(R.string.set_value));
+
+                return false;
+            }
+            if (editTextValue.getText().toString().matches("0+")) {
+                editTextValue.requestFocus();
+                editTextValue.setError(getString(R.string.set_non_zero_value));
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -329,9 +358,7 @@ public class ReportActivity extends AppCompatActivity {
             Spinner recursSpinner = (Spinner) findViewById(5000+i);
             */
             EditText editTextValue = (EditText) findViewById(3000 + i);
-            if (editTextValue.getText().toString().isEmpty()) {
-                editTextValue.setText("0");
-            }
+
 
             list.add(categorySpinner.getSelectedItemPosition() + "-"
                     + categorySpinner.getSelectedItem().toString() + "-"
@@ -370,9 +397,7 @@ public class ReportActivity extends AppCompatActivity {
             config.setDismissTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
             MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, TAG);
             sequence.setConfig(config);
-            // sequence.addSequenceItem(findViewById(categorySpinnerId - 1), getString(R.string.data_category), getString(R.string.got_it));
-            // sequence.addSequenceItem(findViewById(editTextValueId - 1), getString(R.string.data_value), getString(R.string.got_it));
-            // sequence.addSequenceItem(findViewById(currencySpinnerId - 1), getString(R.string.data_currency), getString(R.string.got_it));
+
             sequence.addSequenceItem(addNew, getString(R.string.data_add_new), getString(R.string.got_it));
             sequence.addSequenceItem(findViewById(R.id.report_toolbar_done), getString(R.string.data_done), getString(R.string.ok));
             sequence.start();
