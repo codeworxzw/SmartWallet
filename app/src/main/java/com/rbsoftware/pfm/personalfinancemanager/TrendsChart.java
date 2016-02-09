@@ -126,7 +126,7 @@ public class TrendsChart extends Fragment {
                 public void run() {
                     startShowcase();
                 }
-            }, 1000);
+            }, 100);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -646,13 +646,14 @@ public class TrendsChart extends Fragment {
      */
 
     private void startShowcase() {
-        ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(500); // half second between each showcase view
-        config.setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, TAG);
-        sequence.setConfig(config);
-        sequence.addSequenceItem(mActivity.findViewById(R.id.action_line), getString(R.string.action_line), getString(R.string.ok));
-        sequence.start();
-
+        if (mActivity.findViewById(R.id.action_line) != null) {
+            ShowcaseConfig config = new ShowcaseConfig();
+            config.setDelay(500); // half second between each showcase view
+            config.setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, TAG);
+            sequence.setConfig(config);
+            sequence.addSequenceItem(mActivity.findViewById(R.id.action_line), getString(R.string.action_line), getString(R.string.ok));
+            sequence.start();
+        }
     }
 }

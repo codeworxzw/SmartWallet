@@ -341,15 +341,16 @@ public class AccountSummary extends Fragment {
      * Runs showcase presentation on fragment start
      **/
     private void startShowcase() {
-        ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(500); // half second between each showcase view
-        config.setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
-        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, TAG);
-        sequence.setConfig(config);
-        sequence.addSequenceItem(mActivity.findViewById(R.id.action_filter), getString(R.string.action_filter), getString(R.string.got_it));
-        sequence.addSequenceItem(mActivity.findViewById(R.id.document_share), getString(R.string.document_share), getString(R.string.ok));
-        sequence.start();
-
+        if (mActivity.findViewById(R.id.action_filter) != null && mActivity.findViewById(R.id.document_share) != null) {
+            ShowcaseConfig config = new ShowcaseConfig();
+            config.setDelay(500); // half second between each showcase view
+            config.setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, TAG);
+            sequence.setConfig(config);
+            sequence.addSequenceItem(mActivity.findViewById(R.id.action_filter), getString(R.string.action_filter), getString(R.string.got_it));
+            sequence.addSequenceItem(mActivity.findViewById(R.id.document_share), getString(R.string.document_share), getString(R.string.ok));
+            sequence.start();
+        }
     }
 
 }

@@ -24,6 +24,8 @@ public class FinanceDocument {
     public static final int DATE_FORMAT_SHORT = 0;
     public static final int DATE_FORMAT_MEDIUM = 1;
     public static final int DATE_FORMAT_LONG = 2;
+    public static final int NUMBER_OF_CATEGORIES = 14;
+
     private List<String> salary = new ArrayList<>();
     private List<String> rentalIncome = new ArrayList<>();
     private List<String> interest = new ArrayList<>();
@@ -117,11 +119,12 @@ public class FinanceDocument {
 
     //salary
     public int getSalary() {
-        if(salary.get(1).equals(MainActivity.defaultCurrency)){
+        if (salary == null) {
+            return 0;
+        } else if (salary.get(1).equals(MainActivity.defaultCurrency)) {
 
             return Integer.valueOf(salary.get(0));
-        }
-        else {
+        } else {
 
             return CurrencyConversion.convertCurrency(Integer.valueOf(salary.get(0)), salary.get(1), MainActivity.defaultCurrency);
         }
@@ -142,11 +145,12 @@ public class FinanceDocument {
     //rental income
 
     public int getRentalIncome() {
-        if(rentalIncome.get(1).equals(MainActivity.defaultCurrency)){
+        if (rentalIncome == null) {
+            return 0;
+        } else if (rentalIncome.get(1).equals(MainActivity.defaultCurrency)) {
 
             return Integer.valueOf(rentalIncome.get(0));
-        }
-        else {
+        } else {
 
             return CurrencyConversion.convertCurrency(Integer.valueOf(rentalIncome.get(0)), rentalIncome.get(1), MainActivity.defaultCurrency);
         }
@@ -165,11 +169,12 @@ public class FinanceDocument {
     //interest
 
     public int getInterest() {
-        if(interest.get(1).equals(MainActivity.defaultCurrency)){
+        if (interest == null) {
+            return 0;
+        } else if (interest.get(1).equals(MainActivity.defaultCurrency)) {
 
             return Integer.valueOf(interest.get(0));
-        }
-        else {
+        } else {
 
             return CurrencyConversion.convertCurrency(Integer.valueOf(interest.get(0)), interest.get(1), MainActivity.defaultCurrency);
         }
@@ -190,11 +195,12 @@ public class FinanceDocument {
     //gifts
 
     public int getGifts() {
-        if(gifts.get(1).equals(MainActivity.defaultCurrency)){
+        if (gifts == null) {
+            return 0;
+        } else if (gifts.get(1).equals(MainActivity.defaultCurrency)) {
 
             return Integer.valueOf(gifts.get(0));
-        }
-        else {
+        } else {
 
             return CurrencyConversion.convertCurrency(Integer.valueOf(gifts.get(0)), gifts.get(1), MainActivity.defaultCurrency);
         }
@@ -215,11 +221,12 @@ public class FinanceDocument {
     //other income
 
     public int getOtherIncome() {
-        if(otherIncome.get(1).equals(MainActivity.defaultCurrency)){
+        if (otherIncome == null) {
+            return 0;
+        } else if (otherIncome.get(1).equals(MainActivity.defaultCurrency)) {
 
             return Integer.valueOf(otherIncome.get(0));
-        }
-        else {
+        } else {
 
             return CurrencyConversion.convertCurrency(Integer.valueOf(otherIncome.get(0)), otherIncome.get(1), MainActivity.defaultCurrency);
         }
@@ -241,11 +248,12 @@ public class FinanceDocument {
 
     public int getTaxes() {
 
-        if(taxes.get(1).equals(MainActivity.defaultCurrency)){
+        if (taxes == null) {
+            return 0;
+        } else if (taxes.get(1).equals(MainActivity.defaultCurrency)) {
 
             return Integer.valueOf(taxes.get(0));
-        }
-        else {
+        } else {
 
             return CurrencyConversion.convertCurrency(Integer.valueOf(taxes.get(0)), taxes.get(1), MainActivity.defaultCurrency);
         }
@@ -266,11 +274,12 @@ public class FinanceDocument {
     // 8 - mortgage
 
     public int getMortgage() {
-        if(mortgage.get(1).equals(MainActivity.defaultCurrency)){
+        if (mortgage == null) {
+            return 0;
+        } else if (mortgage.get(1).equals(MainActivity.defaultCurrency)) {
 
             return Integer.valueOf(mortgage.get(0));
-        }
-        else {
+        } else {
             return CurrencyConversion.convertCurrency(Integer.valueOf(mortgage.get(0)), mortgage.get(1), MainActivity.defaultCurrency);
         }
     }
@@ -290,11 +299,12 @@ public class FinanceDocument {
 
     // 9 - credit card
     public int getCreditCard() {
-        if(creditCard.get(1).equals(MainActivity.defaultCurrency)){
+        if (creditCard == null) {
+            return 0;
+        } else if (creditCard.get(1).equals(MainActivity.defaultCurrency)) {
 
             return Integer.valueOf(creditCard.get(0));
-        }
-        else {
+        } else {
             return CurrencyConversion.convertCurrency(Integer.valueOf(creditCard.get(0)), creditCard.get(1), MainActivity.defaultCurrency);
         }
     }
@@ -314,11 +324,12 @@ public class FinanceDocument {
     //10 - utilities
 
     public int getUtilities() {
-        if(utilities.get(1).equals(MainActivity.defaultCurrency)){
+        if (utilities == null) {
+            return 0;
+        } else if (utilities.get(1).equals(MainActivity.defaultCurrency)) {
 
             return Integer.valueOf(utilities.get(0));
-        }
-        else {
+        } else {
             return CurrencyConversion.convertCurrency(Integer.valueOf(utilities.get(0)), utilities.get(1), MainActivity.defaultCurrency);
         }
     }
@@ -338,11 +349,12 @@ public class FinanceDocument {
     //11 - food
 
     public int getFood() {
-        if(food.get(1).equals(MainActivity.defaultCurrency)){
+        if (food == null) {
+            return 0;
+        } else if (food.get(1).equals(MainActivity.defaultCurrency)) {
 
             return Integer.valueOf(food.get(0));
-        }
-        else {
+        } else {
             return CurrencyConversion.convertCurrency(Integer.valueOf(food.get(0)), food.get(1), MainActivity.defaultCurrency);
         }
     }
@@ -362,11 +374,12 @@ public class FinanceDocument {
     //12 - car payment
 
     public int getCarPayment() {
-        if(carPayment.get(1).equals(MainActivity.defaultCurrency)){
+        if (carPayment == null) {
+            return 0;
+        } else if (carPayment.get(1).equals(MainActivity.defaultCurrency)) {
 
             return Integer.valueOf(carPayment.get(0));
-        }
-        else {
+        } else {
             return CurrencyConversion.convertCurrency(Integer.valueOf(carPayment.get(0)), carPayment.get(1), MainActivity.defaultCurrency);
         }
     }
@@ -386,11 +399,12 @@ public class FinanceDocument {
     //13 - personal
 
     public int getPersonal() {
-        if(personal.get(1).equals(MainActivity.defaultCurrency)){
+        if (personal == null) {
+            return 0;
+        } else if (personal.get(1).equals(MainActivity.defaultCurrency)) {
 
             return Integer.valueOf(personal.get(0));
-        }
-        else {
+        } else {
             return CurrencyConversion.convertCurrency(Integer.valueOf(personal.get(0)), personal.get(1), MainActivity.defaultCurrency);
         }
     }
@@ -410,11 +424,12 @@ public class FinanceDocument {
     //14 - activities
 
     public int getActivities() {
-        if(activities.get(1).equals(MainActivity.defaultCurrency)){
+        if (activities == null) {
+            return 0;
+        } else if (activities.get(1).equals(MainActivity.defaultCurrency)) {
 
             return Integer.valueOf(activities.get(0));
-        }
-        else {
+        } else {
             return CurrencyConversion.convertCurrency(Integer.valueOf(activities.get(0)), activities.get(1), MainActivity.defaultCurrency);
         }
     }
@@ -433,11 +448,12 @@ public class FinanceDocument {
     //15 - other expenses
 
     public int getOtherExpenses() {
-        if(otherExpenses.get(1).equals(MainActivity.defaultCurrency)){
+        if (otherExpenses == null) {
+            return 0;
+        } else if (otherExpenses.get(1).equals(MainActivity.defaultCurrency)) {
 
             return Integer.valueOf(otherExpenses.get(0));
-        }
-        else {
+        } else {
             return CurrencyConversion.convertCurrency(Integer.valueOf(otherExpenses.get(0)), otherExpenses.get(1), MainActivity.defaultCurrency);
         }
     }
@@ -542,21 +558,48 @@ public class FinanceDocument {
     public HashMap<Integer, List<String>> getValuesMap() {
 
         HashMap<Integer, List<String>> mapSum = new HashMap<>();
-        mapSum.put(MainActivity.PARAM_SALARY, salary);
-        mapSum.put(MainActivity.PARAM_RENTAL_INCOME, rentalIncome);
-        mapSum.put(MainActivity.PARAM_INTEREST, interest);
-        mapSum.put(MainActivity.PARAM_GIFTS, gifts);
-        mapSum.put(MainActivity.PARAM_OTHER_INCOME, otherIncome);
-
-        mapSum.put(MainActivity.PARAM_TAXES, taxes);
-        mapSum.put(MainActivity.PARAM_MORTGAGE, mortgage);
-        mapSum.put(MainActivity.PARAM_CREDIT_CARD, creditCard);
-        mapSum.put(MainActivity.PARAM_UTILITIES, utilities);
-        mapSum.put(MainActivity.PARAM_FOOD, food);
-        mapSum.put(MainActivity.PARAM_CAR_PAYMENT, carPayment);
-        mapSum.put(MainActivity.PARAM_PERSONAL, personal);
-        mapSum.put(MainActivity.PARAM_ACTIVITIES, activities);
-        mapSum.put(MainActivity.PARAM_OTHER_EXPENSE, otherExpenses);
+        if (salary != null) {
+            mapSum.put(MainActivity.PARAM_SALARY, salary);
+        }
+        if (rentalIncome != null) {
+            mapSum.put(MainActivity.PARAM_RENTAL_INCOME, rentalIncome);
+        }
+        if (interest != null) {
+            mapSum.put(MainActivity.PARAM_INTEREST, interest);
+        }
+        if (gifts != null) {
+            mapSum.put(MainActivity.PARAM_GIFTS, gifts);
+        }
+        if (otherIncome != null) {
+            mapSum.put(MainActivity.PARAM_OTHER_INCOME, otherIncome);
+        }
+        if (taxes != null) {
+            mapSum.put(MainActivity.PARAM_TAXES, taxes);
+        }
+        if (mortgage != null) {
+            mapSum.put(MainActivity.PARAM_MORTGAGE, mortgage);
+        }
+        if (creditCard != null) {
+            mapSum.put(MainActivity.PARAM_CREDIT_CARD, creditCard);
+        }
+        if (utilities != null) {
+            mapSum.put(MainActivity.PARAM_UTILITIES, utilities);
+        }
+        if (food != null) {
+            mapSum.put(MainActivity.PARAM_FOOD, food);
+        }
+        if (carPayment != null) {
+            mapSum.put(MainActivity.PARAM_CAR_PAYMENT, carPayment);
+        }
+        if (personal != null) {
+            mapSum.put(MainActivity.PARAM_PERSONAL, personal);
+        }
+        if (activities != null) {
+            mapSum.put(MainActivity.PARAM_ACTIVITIES, activities);
+        }
+        if (otherExpenses != null) {
+            mapSum.put(MainActivity.PARAM_OTHER_EXPENSE, otherExpenses);
+        }
 
         return mapSum;
     }
@@ -612,20 +655,48 @@ public class FinanceDocument {
         map.put("type", type);
         map.put("userId", userId);
         map.put("account", account);
-        map.put("salary", salary);
-        map.put("rentalIncome", rentalIncome);
-        map.put("interest", interest);
-        map.put("gifts", gifts);
-        map.put("otherIncome", otherIncome);
-        map.put("taxes", taxes);
-        map.put("mortgage", mortgage);
-        map.put("creditCard", creditCard);
-        map.put("utilities", utilities);
-        map.put("food", food);
-        map.put("carPayment", carPayment);
-        map.put("personal", personal);
-        map.put("activities", activities);
-        map.put("otherExpenses", otherExpenses);
+        if (!salary.get(0).equals("0")) {
+            map.put("salary", salary);
+        }
+        if (!rentalIncome.get(0).equals("0")) {
+            map.put("rentalIncome", rentalIncome);
+        }
+        if (!interest.get(0).equals("0")) {
+            map.put("interest", interest);
+        }
+        if (!gifts.get(0).equals("0")) {
+            map.put("gifts", gifts);
+        }
+        if (!otherIncome.get(0).equals("0")) {
+            map.put("otherIncome", otherIncome);
+        }
+        if (!taxes.get(0).equals("0")) {
+            map.put("taxes", taxes);
+        }
+        if (!mortgage.get(0).equals("0")) {
+            map.put("mortgage", mortgage);
+        }
+        if (!creditCard.get(0).equals("0")) {
+            map.put("creditCard", creditCard);
+        }
+        if (!utilities.get(0).equals("0")) {
+            map.put("utilities", utilities);
+        }
+        if (!food.get(0).equals("0")) {
+            map.put("food", food);
+        }
+        if (!carPayment.get(0).equals("0")) {
+            map.put("carPayment", carPayment);
+        }
+        if (!personal.get(0).equals("0")) {
+            map.put("personal", personal);
+        }
+        if (!activities.get(0).equals("0")) {
+            map.put("activities", activities);
+        }
+        if (!otherExpenses.get(0).equals("0")) {
+            map.put("otherExpenses", otherExpenses);
+        }
         map.put("date", date);
 
         return map;
