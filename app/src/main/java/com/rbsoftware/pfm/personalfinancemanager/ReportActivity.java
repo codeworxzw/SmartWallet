@@ -32,6 +32,7 @@ public class ReportActivity extends AppCompatActivity {
     private int categorySpinnerId = 1001; //IDs of categorySpinner
     private int currencySpinnerId = 2001; //IDs of currencySpinner
     private int editTextValueId = 3001;   //Ids of editText
+    private int buttonCounter = 0; //counter to make button "Add Line" invisible
      /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
     private int textViewRecursId =4001;   //Ids of TextView "Recurs"
@@ -90,11 +91,17 @@ public class ReportActivity extends AppCompatActivity {
                 mLayout.addView(createNewCategorySpinner());
                 mLayout.addView(createNewEditText());
                 mLayout.addView(createNewCurrencySpinner());
+                buttonCounter++;
                  /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
                 mLayout.addView(createNewRecursTextView());
                 mLayout.addView(createNewRecursSpinner());
                 */
+                while (buttonCounter >= FinanceDocument.NUMBER_OF_CATEGORIES)
+                {
+                    addNew.setVisibility(View.GONE);
+                }
+
 
 
             }
