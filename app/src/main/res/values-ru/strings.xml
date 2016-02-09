@@ -54,7 +54,7 @@
     <string name="got_it">Понятно</string>
     <string name="document_share">Экспортируйте отчёт в другие приложения</string>
     <string name="ok">Ok</string>
-    <string name="income_expense_switch">Переключайтесь между графиками доходов и завтрат</string>
+    <string name="income_expense_switch">Переключайтесь между графиками доходов и затрат</string>
     <string name="action_line">Выберите какой график отобразить</string>
     <string name="data_category">Выберите категорию</string>
     <string name="data_value">Укажите значение</string>
