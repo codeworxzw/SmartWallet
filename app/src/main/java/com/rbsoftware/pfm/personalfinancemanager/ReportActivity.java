@@ -36,6 +36,7 @@ public class ReportActivity extends AppCompatActivity {
     private int currencySpinnerId = 2001; //IDs of currencySpinner
     private int editTextValueId = 3001;   //Ids of editText
     private int deleteButtonId = 4001;   //Ids of deletButton
+    private int buttonCounter; //counter to make button "Add Line" invisible
      /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
     private int textViewRecursId =4001;   //Ids of TextView "Recurs"
@@ -89,8 +90,16 @@ public class ReportActivity extends AppCompatActivity {
         }
 
         addNew = (Button) findViewById(R.id.btn_add_new);
+        if (savedInstanceState != null) {
+            buttonCounter = savedInstanceState.getInt("buttonCounter");
+        } else {
+            buttonCounter = 0;
+        }
 
-
+        if (buttonCounter >= FinanceDocument.NUMBER_OF_CATEGORIES - 1) {
+            addNew.setVisibility(View.GONE);
+        }
+        Log.d(TAG, buttonCounter+"");
         addNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +107,12 @@ public class ReportActivity extends AppCompatActivity {
                 mLayout.addView(createNewEditText());
                 mLayout.addView(createNewCurrencySpinner());
                 mLayout.addView(createNewDeleteButton());
+                buttonCounter++;
+                Log.d(TAG, buttonCounter+"");
+
+                if (buttonCounter >= FinanceDocument.NUMBER_OF_CATEGORIES - 1) {
+                    addNew.setVisibility(View.GONE);
+                }
                  /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
                 mLayout.addView(createNewRecursTextView());
@@ -125,6 +140,7 @@ public class ReportActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         int counter = categorySpinnerId - 1000;
         outState.putInt("counter", counter);
+        outState.putInt("buttonCounter", buttonCounter);
         for (int i = 1; i < counter; i++) {
             Spinner categorySpinner = (Spinner) findViewById(1000 + i);
             outState.putInt("categorySpinner" + i, categorySpinner.getSelectedItemPosition());
@@ -291,6 +307,8 @@ public class ReportActivity extends AppCompatActivity {
                 currencySpinnerId--;
                 editTextValueId--;
                 deleteButtonId--;
+                buttonCounter--;
+                if(buttonCounter<FinanceDocument.NUMBER_OF_CATEGORIES-1) addNew.setVisibility(View.VISIBLE);
             }
         });
 
