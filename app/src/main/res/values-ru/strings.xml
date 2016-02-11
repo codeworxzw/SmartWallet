@@ -70,6 +70,7 @@
     <string name="permission_write_external_storage_explanation">Smart Wallet необходимо экспортировать данные в файл на Вашем устройстве</string>
     <string name="set_value">Пожалуйста, укажите значение</string>
     <string name="set_non_zero_value">Пожалуйста, укажите ненулевое значение</string>
+    <string name="duplicate_entry">Категория уже использована</string>
 
     <string-array name="drawer_menu">
         <item>Общая информация</item>
