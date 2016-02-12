@@ -90,15 +90,16 @@ public class ReportActivity extends AppCompatActivity {
         }
 
         addNew = (Button) findViewById(R.id.btn_add_new);
+        if (savedInstanceState != null) {
+            buttonCounter = savedInstanceState.getInt("buttonCounter");
+        } else {
+            buttonCounter = 0;
+        }
 
-        if (savedInstanceState != null)
-        {buttonCounter = savedInstanceState.getInt("buttonCounter");}
-        else {buttonCounter = 0;}
-
-        if (buttonCounter >= FinanceDocument.NUMBER_OF_CATEGORIES-1)
-        {addNew.setVisibility(View.GONE);}
-
-
+        if (buttonCounter >= FinanceDocument.NUMBER_OF_CATEGORIES - 1) {
+            addNew.setVisibility(View.GONE);
+        }
+        Log.d(TAG, buttonCounter+"");
         addNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,13 +108,18 @@ public class ReportActivity extends AppCompatActivity {
                 mLayout.addView(createNewCurrencySpinner());
                 mLayout.addView(createNewDeleteButton());
                 buttonCounter++;
-                if (buttonCounter >= FinanceDocument.NUMBER_OF_CATEGORIES-1)
-                {addNew.setVisibility(View.GONE);}
+                Log.d(TAG, buttonCounter+"");
+
+                if (buttonCounter >= FinanceDocument.NUMBER_OF_CATEGORIES - 1) {
+                    addNew.setVisibility(View.GONE);
+                }
                  /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
                 mLayout.addView(createNewRecursTextView());
                 mLayout.addView(createNewRecursSpinner());
                 */
+
+
             }
         });
 
@@ -301,6 +307,8 @@ public class ReportActivity extends AppCompatActivity {
                 currencySpinnerId--;
                 editTextValueId--;
                 deleteButtonId--;
+                buttonCounter--;
+                if(buttonCounter<FinanceDocument.NUMBER_OF_CATEGORIES-1) addNew.setVisibility(View.VISIBLE);
             }
         });
 
