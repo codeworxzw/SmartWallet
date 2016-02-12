@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -99,7 +100,6 @@ public class ReportActivity extends AppCompatActivity {
         if (buttonCounter >= FinanceDocument.NUMBER_OF_CATEGORIES - 1) {
             addNew.setVisibility(View.GONE);
         }
-        Log.d(TAG, buttonCounter+"");
         addNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +108,6 @@ public class ReportActivity extends AppCompatActivity {
                 mLayout.addView(createNewCurrencySpinner());
                 mLayout.addView(createNewDeleteButton());
                 buttonCounter++;
-                Log.d(TAG, buttonCounter+"");
 
                 if (buttonCounter >= FinanceDocument.NUMBER_OF_CATEGORIES - 1) {
                     addNew.setVisibility(View.GONE);
@@ -308,7 +307,8 @@ public class ReportActivity extends AppCompatActivity {
                 editTextValueId--;
                 deleteButtonId--;
                 buttonCounter--;
-                if(buttonCounter<FinanceDocument.NUMBER_OF_CATEGORIES-1) addNew.setVisibility(View.VISIBLE);
+                if (buttonCounter < FinanceDocument.NUMBER_OF_CATEGORIES - 1)
+                    addNew.setVisibility(View.VISIBLE);
             }
         });
 
@@ -370,7 +370,7 @@ public class ReportActivity extends AppCompatActivity {
             finish();
         }
         if (id == R.id.report_toolbar_done) {
-            if (validateFields()) {
+            if (validateFields() && validateSpinner()) {
                 Intent intent = new Intent();
                 intent.putStringArrayListExtra("reportResult", getReportResult());
                 setResult(RESULT_OK, intent);
@@ -391,18 +391,44 @@ public class ReportActivity extends AppCompatActivity {
         for (int i = 1; i < counter; i++) {
             EditText editTextValue = (EditText) findViewById(3000 + i);
             if (editTextValue.getText().toString().isEmpty()) {
-                Log.d(TAG, i + "");
                 editTextValue.requestFocus();
-                editTextValue.setError(getString(R.string.set_value));
+//                editTextValue.setError(getString(R.string.set_value));
+                Toast.makeText(this, getString(R.string.set_value), Toast.LENGTH_LONG).show();
 
                 return false;
             }
             if (editTextValue.getText().toString().matches("0+")) {
                 editTextValue.requestFocus();
-                editTextValue.setError(getString(R.string.set_non_zero_value));
+//                editTextValue.setError(getString(R.string.set_non_zero_value));
+                Toast.makeText(this, getString(R.string.set_non_zero_value), Toast.LENGTH_LONG).show();
+
                 return false;
             }
         }
+        return true;
+    }
+
+
+    /**
+     * Validates spinners
+     *
+     * @return false if category is duplicated
+     */
+    private boolean validateSpinner() {
+        int counter = categorySpinnerId - 1000;
+        for (int i = counter - 1; i > 1; i--) {
+            for (int j = i - 1; j >= 1; j--) {
+                if (i != j && ((Spinner) findViewById(1000 + i)).getSelectedItem().equals(((Spinner) findViewById(1000 + j)).getSelectedItem())) {
+
+                    Toast.makeText(this, getString(R.string.duplicate_entry) + " : " + ((Spinner) findViewById(1000 + i)).getSelectedItem().toString(), Toast.LENGTH_LONG).show();
+
+                    return false;
+
+                }
+
+            }
+        }
+
         return true;
     }
 

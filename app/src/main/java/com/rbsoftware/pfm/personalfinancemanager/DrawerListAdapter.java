@@ -11,7 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-
+/**
+ * A simple {@link BaseAdapter} subclass.
+ * Holds list of navigation drawer items
+ **/
 
 public class DrawerListAdapter extends BaseAdapter {
     private int[] imageArray;
@@ -34,15 +37,17 @@ public class DrawerListAdapter extends BaseAdapter {
     public int getCount() {
         return imageArray.length;
     }
-    public class Holder
-    {
+
+    public class Holder {
         ImageView imgDrawerRow;
         TextView tvDrawerRow;
+
         public Holder(View base) {
             imgDrawerRow = (ImageView) base.findViewById(R.id.img_drawer_row);
             tvDrawerRow = (TextView) base.findViewById(R.id.tv_drawer_row);
         }
     }
+
     @Override
     public View getView(int pos, View convertView, ViewGroup parent) {
         View v = convertView;
