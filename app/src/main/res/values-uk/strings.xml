@@ -68,6 +68,9 @@
     <string name="permission_required">Необхідний дозвіл</string>
     <string name="permission_getaccounts_explanation">Smart Wallet використовує інформацію з Вашого профілю для надання Вам кращого користувацького досвіду.</string>
     <string name="permission_write_external_storage_explanation">Smart Wallet необхідно експортувати дані у файл на Вашому пристрої</string>
+    <string name="set_value">Будь ласка, вкажіть значення</string>
+    <string name="set_non_zero_value">Будь ласка, вкажіть ненульове значення</string>
+    <string name="duplicate_entry">Категорію уже використано</string>
 
 
     <string-array name="account_summary_spinner">

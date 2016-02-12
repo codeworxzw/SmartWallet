@@ -2,6 +2,7 @@ package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -10,14 +11,17 @@ import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -32,6 +36,8 @@ public class ReportActivity extends AppCompatActivity {
     private int categorySpinnerId = 1001; //IDs of categorySpinner
     private int currencySpinnerId = 2001; //IDs of currencySpinner
     private int editTextValueId = 3001;   //Ids of editText
+    private int deleteButtonId = 4001;   //Ids of deletButton
+    private int buttonCounter; //counter to make button "Add Line" invisible
      /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
     private int textViewRecursId =4001;   //Ids of TextView "Recurs"
@@ -52,6 +58,7 @@ public class ReportActivity extends AppCompatActivity {
             mLayout.addView(createNewCategorySpinner());
             mLayout.addView(createNewEditText());
             mLayout.addView(createNewCurrencySpinner());
+            mLayout.addView(createNewDeleteButton());
              /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
             mLayout.addView(createNewRecursTextView());
@@ -70,6 +77,8 @@ public class ReportActivity extends AppCompatActivity {
                 mLayout.addView(createNewCurrencySpinner());
                 Spinner currencySpinner = (Spinner) findViewById(2000 + i);
                 currencySpinner.setSelection(savedInstanceState.getInt("currencySpinner" + i));
+                mLayout.addView(createNewDeleteButton());
+
                  /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
                 mLayout.addView(createNewRecursTextView());
@@ -82,14 +91,27 @@ public class ReportActivity extends AppCompatActivity {
         }
 
         addNew = (Button) findViewById(R.id.btn_add_new);
+        if (savedInstanceState != null) {
+            buttonCounter = savedInstanceState.getInt("buttonCounter");
+        } else {
+            buttonCounter = 0;
+        }
 
-
+        if (buttonCounter >= FinanceDocument.NUMBER_OF_CATEGORIES - 1) {
+            addNew.setVisibility(View.GONE);
+        }
         addNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mLayout.addView(createNewCategorySpinner());
                 mLayout.addView(createNewEditText());
                 mLayout.addView(createNewCurrencySpinner());
+                mLayout.addView(createNewDeleteButton());
+                buttonCounter++;
+
+                if (buttonCounter >= FinanceDocument.NUMBER_OF_CATEGORIES - 1) {
+                    addNew.setVisibility(View.GONE);
+                }
                  /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
                 mLayout.addView(createNewRecursTextView());
@@ -117,6 +139,7 @@ public class ReportActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         int counter = categorySpinnerId - 1000;
         outState.putInt("counter", counter);
+        outState.putInt("buttonCounter", buttonCounter);
         for (int i = 1; i < counter; i++) {
             Spinner categorySpinner = (Spinner) findViewById(1000 + i);
             outState.putInt("categorySpinner" + i, categorySpinner.getSelectedItemPosition());
@@ -124,6 +147,7 @@ public class ReportActivity extends AppCompatActivity {
             outState.putInt("currencySpinner" + i, currencySpinner.getSelectedItemPosition());
             EditText editTextValue = (EditText) findViewById(3000 + i);
             outState.putString("editTextValue" + i, editTextValue.getText().toString());
+
              /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
             Spinner recursSpinner = (Spinner) findViewById(5000+i);
@@ -242,11 +266,54 @@ public class ReportActivity extends AppCompatActivity {
         editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         editText.setId(editTextValueId);
         editText.setSaveEnabled(true);
-
+        editText.requestFocus();
         editTextValueId++;
         return editText;
     }
 
+    /**
+     * Generates delete button
+     *
+     * @return delete button
+     */
+    private ImageButton createNewDeleteButton() {
+        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
+        final ImageButton deleteButton = new ImageButton(this);
+        lparams.addRule(RelativeLayout.RIGHT_OF, currencySpinnerId - 1);
+        deleteButton.setVisibility(View.INVISIBLE);
+        if (deleteButtonId > 4001) {
+            lparams.addRule(RelativeLayout.BELOW, deleteButtonId - 1);
+            deleteButton.setVisibility(View.VISIBLE);
+            findViewById(deleteButtonId - 1).setVisibility(View.INVISIBLE);
+        }
+
+        deleteButton.setLayoutParams(lparams);
+        deleteButton.setBackgroundColor(Color.TRANSPARENT);
+        deleteButton.setImageResource(R.drawable.ic_remove_grey_24dp);
+        deleteButton.setId(deleteButtonId);
+        deleteButtonId++;
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (deleteButtonId - 2 != 4001) {
+                    findViewById(deleteButtonId - 2).setVisibility(View.VISIBLE);
+                }
+                mLayout.removeView(findViewById(categorySpinnerId - 1));
+                mLayout.removeView(findViewById(currencySpinnerId - 1));
+                mLayout.removeView(findViewById(editTextValueId - 1));
+                mLayout.removeView(findViewById(deleteButtonId - 1));
+                categorySpinnerId--;
+                currencySpinnerId--;
+                editTextValueId--;
+                deleteButtonId--;
+                buttonCounter--;
+                if (buttonCounter < FinanceDocument.NUMBER_OF_CATEGORIES - 1)
+                    addNew.setVisibility(View.VISIBLE);
+            }
+        });
+
+        return deleteButton;
+    }
      /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
     //Generates recurs text view
@@ -303,13 +370,66 @@ public class ReportActivity extends AppCompatActivity {
             finish();
         }
         if (id == R.id.report_toolbar_done) {
-            Intent intent = new Intent();
-            intent.putStringArrayListExtra("reportResult", getReportResult());
-            setResult(RESULT_OK, intent);
-            finish();
+            if (validateFields() && validateSpinner()) {
+                Intent intent = new Intent();
+                intent.putStringArrayListExtra("reportResult", getReportResult());
+                setResult(RESULT_OK, intent);
+                finish();
+            }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Validates editText fields
+     *
+     * @return false if field is empty or contains only zeros
+     */
+    private boolean validateFields() {
+        int counter = categorySpinnerId - 1000;
+        for (int i = 1; i < counter; i++) {
+            EditText editTextValue = (EditText) findViewById(3000 + i);
+            if (editTextValue.getText().toString().isEmpty()) {
+                editTextValue.requestFocus();
+//                editTextValue.setError(getString(R.string.set_value));
+                Toast.makeText(this, getString(R.string.set_value), Toast.LENGTH_LONG).show();
+
+                return false;
+            }
+            if (editTextValue.getText().toString().matches("0+")) {
+                editTextValue.requestFocus();
+//                editTextValue.setError(getString(R.string.set_non_zero_value));
+                Toast.makeText(this, getString(R.string.set_non_zero_value), Toast.LENGTH_LONG).show();
+
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * Validates spinners
+     *
+     * @return false if category is duplicated
+     */
+    private boolean validateSpinner() {
+        int counter = categorySpinnerId - 1000;
+        for (int i = counter - 1; i > 1; i--) {
+            for (int j = i - 1; j >= 1; j--) {
+                if (i != j && ((Spinner) findViewById(1000 + i)).getSelectedItem().equals(((Spinner) findViewById(1000 + j)).getSelectedItem())) {
+
+                    Toast.makeText(this, getString(R.string.duplicate_entry) + " : " + ((Spinner) findViewById(1000 + i)).getSelectedItem().toString(), Toast.LENGTH_LONG).show();
+
+                    return false;
+
+                }
+
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -329,9 +449,7 @@ public class ReportActivity extends AppCompatActivity {
             Spinner recursSpinner = (Spinner) findViewById(5000+i);
             */
             EditText editTextValue = (EditText) findViewById(3000 + i);
-            if (editTextValue.getText().toString().isEmpty()) {
-                editTextValue.setText("0");
-            }
+
 
             list.add(categorySpinner.getSelectedItemPosition() + "-"
                     + categorySpinner.getSelectedItem().toString() + "-"
@@ -370,9 +488,7 @@ public class ReportActivity extends AppCompatActivity {
             config.setDismissTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
             MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, TAG);
             sequence.setConfig(config);
-            // sequence.addSequenceItem(findViewById(categorySpinnerId - 1), getString(R.string.data_category), getString(R.string.got_it));
-            // sequence.addSequenceItem(findViewById(editTextValueId - 1), getString(R.string.data_value), getString(R.string.got_it));
-            // sequence.addSequenceItem(findViewById(currencySpinnerId - 1), getString(R.string.data_currency), getString(R.string.got_it));
+
             sequence.addSequenceItem(addNew, getString(R.string.data_add_new), getString(R.string.got_it));
             sequence.addSequenceItem(findViewById(R.id.report_toolbar_done), getString(R.string.data_done), getString(R.string.ok));
             sequence.start();
