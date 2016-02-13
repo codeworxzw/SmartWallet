@@ -168,6 +168,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+        else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }//onActivityResult
 
 

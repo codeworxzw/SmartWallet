@@ -76,7 +76,7 @@
     </string-array>
 
     <string name="never">Never</string>
-   <!-- <string-array name="report_activity_recurs_spinner">
+    <!-- <string-array name="report_activity_recurs_spinner">
         <item>Never</item>
         <item>Every week</item>
         <item>Every month</item>
@@ -126,6 +126,8 @@
     <string name="set_value">Please set value</string>
     <string name="set_non_zero_value">Please set non-zero value</string>
     <string name="duplicate_entry">Category is already used</string>
+    <string name="edit">Edit</string>
+    <string name="title_activity_edit">Editor</string>
 
 
 </resources>

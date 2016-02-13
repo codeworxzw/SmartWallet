@@ -5,6 +5,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -142,7 +144,7 @@ public class History extends Fragment implements Card.OnLongCardClickListener {
      */
 
     private void startShowcase() {
-        if(card.getCardView() !=null) {
+        if (card.getCardView() != null) {
             ((View) card.getCardView()).measure(0, 0);
             Double r = ((View) card.getCardView()).getMeasuredWidth() / 2.2;
             ShowcaseConfig config = new ShowcaseConfig();
@@ -187,6 +189,13 @@ public class History extends Fragment implements Card.OnLongCardClickListener {
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 switch (item.getItemId()) {
+                    case R.id.history_edit:
+                        Intent edit = new Intent(getActivity(), EditDocument.class);
+                        edit.putExtra("docId", ((HistoryCard) card).getDocument().getDocumentRevision().getId());
+                        startActivityForResult(edit, 2);
+
+                        return true;
+
                     case R.id.history_delete:
 
                         new AlertDialog.Builder(getContext())
@@ -241,5 +250,14 @@ public class History extends Fragment implements Card.OnLongCardClickListener {
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 2) {
+            if (resultCode == Activity.RESULT_OK) {
+                Log.d(TAG, data.getStringExtra("result"));
+                //TODO complete method to update document
+            }
+        }
+    }
 
 }

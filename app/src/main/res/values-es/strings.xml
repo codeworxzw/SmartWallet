@@ -69,6 +69,8 @@
     <string name="set_value">Por favor, defina el valor</string>
     <string name="set_non_zero_value">Por favor, defina un valor distinto de cero</string>
     <string name="duplicate_entry">Categoría ya se utiliza</string>
+    <string name="edit">Editar</string>
+    <string name="title_activity_edit">Editor</string>
 
 
     <string-array name="drawer_menu">
