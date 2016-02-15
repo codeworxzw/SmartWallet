@@ -117,7 +117,7 @@ public class HistoryCard extends Card {
             for (int i = 1; i <= FinanceDocument.NUMBER_OF_CATEGORIES; i++) {
                 value = doc.getValuesMap().get(i);
                 if (value != null) {
-                        String output = "";
+                    String output = "";
                     /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
                     if (!value.get(2).equals(mContext.getString(R.string.never))){
@@ -127,9 +127,9 @@ public class HistoryCard extends Card {
                     else{
                         output =value.get(0)+" "+value.get(1);
                     } */
-                        output = value.get(0) + " " + value.get(1);
+                    output = value.get(0) + " " + value.get(1);
 
-                        mLayout.addView(createNewTextView(i, output));
+                    mLayout.addView(createNewTextView(i, output));
 
                 }
             }
@@ -141,50 +141,9 @@ public class HistoryCard extends Card {
             final TextView mTextView = new TextView(mContext);
             String row;
             mTextView.setLayoutParams(layoutParams);
-            row = keyToString(i) + " " + value;
+            row = Utils.keyToString(getContext(), i) + " " + value;
             mTextView.setText(row);
             return mTextView;
-        }
-
-
-        /**
-         * Converts int key to human readable string
-         *
-         * @param key value range 1-14
-         * @return string value
-         */
-        private String keyToString(int key) {
-            switch (key) {
-                case 1:
-                    return mContext.getResources().getString(R.string.salary);
-                case 2:
-                    return mContext.getResources().getString(R.string.rental_income);
-                case 3:
-                    return mContext.getResources().getString(R.string.interest);
-                case 4:
-                    return mContext.getResources().getString(R.string.gifts);
-                case 5:
-                    return mContext.getResources().getString(R.string.other_income);
-                case 6:
-                    return mContext.getResources().getString(R.string.taxes);
-                case 7:
-                    return mContext.getResources().getString(R.string.mortgage);
-                case 8:
-                    return mContext.getResources().getString(R.string.credit_card);
-                case 9:
-                    return mContext.getResources().getString(R.string.utilities);
-                case 10:
-                    return mContext.getResources().getString(R.string.food);
-                case 11:
-                    return mContext.getResources().getString(R.string.car_payment);
-                case 12:
-                    return mContext.getResources().getString(R.string.personal);
-                case 13:
-                    return mContext.getResources().getString(R.string.activities);
-                case 14:
-                    return mContext.getResources().getString(R.string.other_expense);
-            }
-            return "";
         }
 
 

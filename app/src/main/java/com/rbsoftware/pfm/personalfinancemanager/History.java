@@ -30,6 +30,7 @@ import com.cloudant.sync.datastore.ConflictException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
@@ -254,10 +255,32 @@ public class History extends Fragment implements Card.OnLongCardClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 2) {
             if (resultCode == Activity.RESULT_OK) {
-                Log.d(TAG, data.getStringExtra("result"));
-                //TODO complete method to update document
+                List<Object> params = new ArrayList<>();
+                ArrayList<String> editResult = data.getStringArrayListExtra("editResult");
+                String oldDocId = data.getStringExtra("oldDocId");
+                params.add(MainActivity.PARAM_USERID, MainActivity.getUserId());
+                params.add(MainActivity.PARAM_SALARY, Utils.getItem(editResult, 0));
+                params.add(MainActivity.PARAM_RENTAL_INCOME, Utils.getItem(editResult, 1));
+                params.add(MainActivity.PARAM_INTEREST, Utils.getItem(editResult, 2));
+                params.add(MainActivity.PARAM_GIFTS, Utils.getItem(editResult, 3));
+                params.add(MainActivity.PARAM_OTHER_INCOME, Utils.getItem(editResult, 4));
+                params.add(MainActivity.PARAM_TAXES, Utils.getItem(editResult, 5));
+                params.add(MainActivity.PARAM_MORTGAGE, Utils.getItem(editResult, 6));
+                params.add(MainActivity.PARAM_CREDIT_CARD, Utils.getItem(editResult, 7));
+                params.add(MainActivity.PARAM_UTILITIES, Utils.getItem(editResult, 8));
+                params.add(MainActivity.PARAM_FOOD, Utils.getItem(editResult, 9));
+                params.add(MainActivity.PARAM_CAR_PAYMENT, Utils.getItem(editResult, 10));
+                params.add(MainActivity.PARAM_PERSONAL, Utils.getItem(editResult, 11));
+                params.add(MainActivity.PARAM_ACTIVITIES, Utils.getItem(editResult, 12));
+                params.add(MainActivity.PARAM_OTHER_EXPENSE, Utils.getItem(editResult, 13));
+                try {
+                    MainActivity.financeDocumentModel.updateFinanceDocument(
+                            MainActivity.financeDocumentModel.getFinanceDocument(oldDocId),
+                            new FinanceDocument(params));
+                } catch (ConflictException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
-
 }

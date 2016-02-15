@@ -147,20 +147,20 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<String> reportResult = data.getStringArrayListExtra("reportResult");
 
                 params.add(PARAM_USERID, userID);
-                params.add(PARAM_SALARY, getItem(reportResult, 0));
-                params.add(PARAM_RENTAL_INCOME, getItem(reportResult, 1));
-                params.add(PARAM_INTEREST, getItem(reportResult, 2));
-                params.add(PARAM_GIFTS, getItem(reportResult, 3));
-                params.add(PARAM_OTHER_INCOME, getItem(reportResult, 4));
-                params.add(PARAM_TAXES, getItem(reportResult, 5));
-                params.add(PARAM_MORTGAGE, getItem(reportResult, 6));
-                params.add(PARAM_CREDIT_CARD, getItem(reportResult, 7));
-                params.add(PARAM_UTILITIES, getItem(reportResult, 8));
-                params.add(PARAM_FOOD, getItem(reportResult, 9));
-                params.add(PARAM_CAR_PAYMENT, getItem(reportResult, 10));
-                params.add(PARAM_PERSONAL, getItem(reportResult, 11));
-                params.add(PARAM_ACTIVITIES, getItem(reportResult, 12));
-                params.add(PARAM_OTHER_EXPENSE, getItem(reportResult, 13));
+                params.add(PARAM_SALARY, Utils.getItem(reportResult, 0));
+                params.add(PARAM_RENTAL_INCOME, Utils.getItem(reportResult, 1));
+                params.add(PARAM_INTEREST, Utils.getItem(reportResult, 2));
+                params.add(PARAM_GIFTS, Utils.getItem(reportResult, 3));
+                params.add(PARAM_OTHER_INCOME, Utils.getItem(reportResult, 4));
+                params.add(PARAM_TAXES, Utils.getItem(reportResult, 5));
+                params.add(PARAM_MORTGAGE, Utils.getItem(reportResult, 6));
+                params.add(PARAM_CREDIT_CARD, Utils.getItem(reportResult, 7));
+                params.add(PARAM_UTILITIES, Utils.getItem(reportResult, 8));
+                params.add(PARAM_FOOD, Utils.getItem(reportResult, 9));
+                params.add(PARAM_CAR_PAYMENT, Utils.getItem(reportResult, 10));
+                params.add(PARAM_PERSONAL, Utils.getItem(reportResult, 11));
+                params.add(PARAM_ACTIVITIES, Utils.getItem(reportResult, 12));
+                params.add(PARAM_OTHER_EXPENSE, Utils.getItem(reportResult, 13));
                 createNewFinanceDocument(params);
                 // financeDocumentModel.startPushReplication();
 
@@ -176,42 +176,12 @@ public class MainActivity extends AppCompatActivity {
 
     //HELPER METHODS
 
-    /**
-     * Parsing string to retrieve document data
-     */
-    private ArrayList<String> getItem(ArrayList<String> reportResult, int i) {
-        ArrayList<String> item = new ArrayList<>();
-        item.add(0, "0");
-        item.add(1, defaultCurrency);
-        item.add(2, "Never");
-        for (String listItem : reportResult) {
-            String[] parts = listItem.split("-");
-            int position = Integer.valueOf(parts[0]);
-            if (i == position) {
-                item.clear();
-                item.add(0, parts[2]);
-                item.add(1, parts[3]);
-                /* Recursion disabled in version 1.0
-                    TODO enable recursion in future versions
-                item.add(2,parts[4]);
-                */
-                item.add(2, "Never");
-            }
-
-
-        }
-
-        return item;
-    }
-
-
-
 
 
     /**
      * Creation new document from data
      *
-     * @param params list of finance document fieleds
+     * @param params list of finance document fields
      */
     private void createNewFinanceDocument(List<Object> params) {
         financeDocument = new FinanceDocument(params);

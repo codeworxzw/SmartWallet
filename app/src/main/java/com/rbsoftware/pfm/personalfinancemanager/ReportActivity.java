@@ -36,7 +36,7 @@ public class ReportActivity extends AppCompatActivity {
     private int categorySpinnerId = 1001; //IDs of categorySpinner
     private int currencySpinnerId = 2001; //IDs of currencySpinner
     private int editTextValueId = 3001;   //Ids of editText
-    private int deleteButtonId = 4001;   //Ids of deletButton
+    private int deleteButtonId = 4001;   //Ids of deleteButton
     private int buttonCounter; //counter to make button "Add Line" invisible
      /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
@@ -168,7 +168,7 @@ public class ReportActivity extends AppCompatActivity {
      */
 
     private Spinner createNewCurrencySpinner() {
-        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
+        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Utils.dpToPx(getApplicationContext(), 40));
         final Spinner spinner = new Spinner(this);
         int position = 0;
         lparams.addRule(RelativeLayout.RIGHT_OF, editTextValueId - 1);
@@ -206,7 +206,7 @@ public class ReportActivity extends AppCompatActivity {
 
 
     private Spinner createNewCategorySpinner() {
-        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
+        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Utils.dpToPx(getApplicationContext(), 40));
         final Spinner spinner = new Spinner(this);
 
         if (categorySpinnerId > 1001) {
@@ -245,7 +245,7 @@ public class ReportActivity extends AppCompatActivity {
 
 
     private EditText createNewEditText() {
-        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
+        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Utils.dpToPx(getApplicationContext(), 40));
         final EditText editText = new EditText(this);
         lparams.addRule(RelativeLayout.RIGHT_OF, categorySpinnerId - 1);
 
@@ -277,7 +277,7 @@ public class ReportActivity extends AppCompatActivity {
      * @return delete button
      */
     private ImageButton createNewDeleteButton() {
-        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
+        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, Utils.dpToPx(getApplicationContext(), 40));
         final ImageButton deleteButton = new ImageButton(this);
         lparams.addRule(RelativeLayout.RIGHT_OF, currencySpinnerId - 1);
         deleteButton.setVisibility(View.INVISIBLE);
@@ -466,16 +466,7 @@ public class ReportActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Converts dp to px
-     *
-     * @param dp density pixels
-     * @return pixels
-     */
-    private int dpToPx(int dp) {
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-    }
+
 
     /**
      * Runs showcase presentation on fragment start
