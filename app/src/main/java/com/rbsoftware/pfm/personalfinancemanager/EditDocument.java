@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -82,7 +81,6 @@ public class EditDocument extends AppCompatActivity {
             buttonCounter = savedInstanceState.getInt("buttonCounter");
         } else {
             buttonCounter = categorySpinnerId - 1002;
-            Log.d(TAG, buttonCounter + "");
         }
 
         if (buttonCounter >= FinanceDocument.NUMBER_OF_CATEGORIES - 1) {

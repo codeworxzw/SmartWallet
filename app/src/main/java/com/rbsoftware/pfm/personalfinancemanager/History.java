@@ -1,25 +1,19 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +24,9 @@ import com.cloudant.sync.datastore.ConflictException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardHeader;
+import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
@@ -43,7 +37,7 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
  * A simple {@link Fragment} subclass.
  * Holds user's history
  */
-public class History extends Fragment implements Card.OnLongCardClickListener {
+public class History extends Fragment implements CardHeader.OnClickCardHeaderPopupMenuListener {
     private final String TAG = "History";
     private CardRecyclerView mRecyclerView;
     private List<FinanceDocument> docList;
@@ -92,8 +86,8 @@ public class History extends Fragment implements Card.OnLongCardClickListener {
         for (int i = 0; i < docList.size(); i++) {
             card = new HistoryCard(getContext(), docList.get(i));
             card.setHeader();
+            card.getCardHeader().setPopupMenu(R.menu.history_card_menu, this);
             card.setExpand();
-            card.setOnLongClickListener(this);
             cards.add(card);
         }
 
@@ -147,7 +141,7 @@ public class History extends Fragment implements Card.OnLongCardClickListener {
     private void startShowcase() {
         if (card.getCardView() != null) {
             ((View) card.getCardView()).measure(0, 0);
-            Double r = ((View) card.getCardView()).getMeasuredWidth() / 2.2;
+            Double r = ((View) card.getCardView()).getMeasuredWidth() / 3.0;
             ShowcaseConfig config = new ShowcaseConfig();
             config.setDelay(500); // half second between each showcase view
             MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, TAG);
@@ -164,92 +158,6 @@ public class History extends Fragment implements Card.OnLongCardClickListener {
         }
     }
 
-
-    @Override
-    public boolean onLongClick(final Card card, final View view) {
-        if (mActionMode != null) {
-            view.setActivated(false);
-            mActionMode.finish();
-            return false;
-        }
-        // Start the CAB using the ActionMode.Callback defined below
-        mActionMode = view.startActionMode(new ActionMode.Callback() {
-            @Override
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                // Inflate a menu resource providing context menu items
-                MenuInflater inflater = mode.getMenuInflater();
-                inflater.inflate(R.menu.history_card_menu, menu);
-                return true;
-            }
-
-            @Override
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            @Override
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.history_edit:
-                        Intent edit = new Intent(getActivity(), EditDocument.class);
-                        edit.putExtra("docId", ((HistoryCard) card).getDocument().getDocumentRevision().getId());
-                        startActivityForResult(edit, 2);
-
-                        return true;
-
-                    case R.id.history_delete:
-
-                        new AlertDialog.Builder(getContext())
-                                .setTitle(getContext().getString(R.string.delete_dialog_title))
-                                .setMessage(getContext().getString(R.string.delete_dialog_message))
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        try {
-                                            MainActivity.financeDocumentModel.deleteDocument(((HistoryCard) card).getDocument());
-                                            mCardArrayAdapter.remove(card);
-                                        } catch (ConflictException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                })
-                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // do nothing
-                                    }
-                                })
-                                .setIcon(android.R.drawable.ic_dialog_alert)
-                                .show();
-
-
-                        mode.finish(); // Action picked, so close the CAB
-                        return true;
-
-                    case R.id.history_share:
-
-                        try {
-                            ExportData.exportHistoryAsCsv(getContext(), ((HistoryCard) card).getDocument());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        mode.finish(); // Action picked, so close the CAB
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode mode) {
-                mActionMode = null;
-                if (card != null)
-                    view.setActivated(false);
-
-            }
-        });
-        view.setActivated(true);
-        return true;
-
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -281,6 +189,54 @@ public class History extends Fragment implements Card.OnLongCardClickListener {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    @Override
+    public void onMenuItemClick(final BaseCard card, MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.history_edit:
+                Intent edit = new Intent(getActivity(), EditDocument.class);
+                edit.putExtra("docId", ((HistoryCard) card).getDocument().getDocumentRevision().getId());
+                startActivityForResult(edit, 2);
+
+                return;
+
+            case R.id.history_delete:
+
+                new AlertDialog.Builder(getContext())
+                        .setTitle(getContext().getString(R.string.delete_dialog_title))
+                        .setMessage(getContext().getString(R.string.delete_dialog_message))
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    MainActivity.financeDocumentModel.deleteDocument(((HistoryCard) card).getDocument());
+                                    mCardArrayAdapter.remove((HistoryCard) card);
+                                } catch (ConflictException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
+
+                return;
+
+            case R.id.history_share:
+
+                try {
+                    ExportData.exportHistoryAsCsv(getContext(), ((HistoryCard) card).getDocument());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
+
         }
     }
 }
