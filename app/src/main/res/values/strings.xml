@@ -76,7 +76,7 @@
     </string-array>
 
     <string name="never">Never</string>
-   <!-- <string-array name="report_activity_recurs_spinner">
+    <!-- <string-array name="report_activity_recurs_spinner">
         <item>Never</item>
         <item>Every week</item>
         <item>Every month</item>
@@ -116,7 +116,7 @@
     <string name="data_currency">Select operation currency</string>
     <string name="data_add_new">Click if more input fields required</string>
     <string name="data_done">Click to submit your report</string>
-    <string name="history_card">Click on the card to see operation details or hold your finger to call card menu</string>
+    <string name="history_card">Click on the card to see operation details</string>
     <string name="history_is_empty">History is empty&#8230;</string>
     <string name="no_network_title">No network</string>
     <string name="no_network_message">Can\'t connect to internet</string>
@@ -126,6 +126,8 @@
     <string name="set_value">Please set value</string>
     <string name="set_non_zero_value">Please set non-zero value</string>
     <string name="duplicate_entry">Category is already used</string>
+    <string name="edit">Edit</string>
+    <string name="title_activity_edit">Editor</string>
 
 
 </resources>

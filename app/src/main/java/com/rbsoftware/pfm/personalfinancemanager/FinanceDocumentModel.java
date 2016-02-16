@@ -506,14 +506,15 @@ public class FinanceDocumentModel {
     /**
      * Updates a Document document within the datastore.
      *
-     * @param document document to update
+     * @param oldDocument document to update
+     * @param newDocument new document
      * @return the updated revision of the Task
      * @throws ConflictException if the document passed in has a rev which doesn't
      *                           match the current rev in the datastore.
      */
-    public FinanceDocument updateFinanceDocument(FinanceDocument document) throws ConflictException {
-        MutableDocumentRevision rev = document.getDocumentRevision().mutableCopy();
-        rev.body = DocumentBodyFactory.create(document.asMap());
+    public FinanceDocument updateFinanceDocument(FinanceDocument oldDocument, FinanceDocument newDocument) throws ConflictException {
+        MutableDocumentRevision rev = oldDocument.getDocumentRevision().mutableCopy();
+        rev.body = DocumentBodyFactory.create(newDocument.asMap());
         try {
             BasicDocumentRevision updated = this.mDatastore.updateDocumentFromRevision(rev);
             return FinanceDocument.fromRevision(updated);

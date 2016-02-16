@@ -29,4 +29,5 @@
     <color name="card_backgroundExpand">#FAFAFA</color>
     <color name="drawer_header">#388E3C</color>
     <color name="background">#E8F5E9</color>
+    <color name="grey">#666666</color>
 </resources>
