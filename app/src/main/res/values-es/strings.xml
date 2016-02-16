@@ -26,7 +26,7 @@
     <string name="food">Comida</string>
     <string name="gifts">Regalos</string>
     <string name="got_it">Entendído</string>
-    <string name="history_card">Haga clic en la tarjeta para ver los detalles de la operación o mantenga el dedo para abrir el menú de la tarjeta</string>
+    <string name="history_card">Haga clic en la tarjeta para ver los detalles de la operación</string>
     <string name="history_is_empty">No hay actividad…</string>
     <string name="income">Ingresos</string>
     <string name="income_expense_switch">Haga clic para cambiar entre las gráficas de ingresos y gastos</string>
@@ -69,6 +69,8 @@
     <string name="set_value">Por favor, defina el valor</string>
     <string name="set_non_zero_value">Por favor, defina un valor distinto de cero</string>
     <string name="duplicate_entry">Categoría ya se utiliza</string>
+    <string name="edit">Editar</string>
+    <string name="title_activity_edit">Editor</string>
 
 
     <string-array name="drawer_menu">

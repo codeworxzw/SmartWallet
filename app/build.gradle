@@ -11,8 +11,8 @@ android {
         applicationId "com.rbsoftware.pfm.personalfinancemanager"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 2
-        versionName "0.8.1a"
+        versionCode 3
+        versionName "0.8.2a"
     }
     buildTypes {
         release {

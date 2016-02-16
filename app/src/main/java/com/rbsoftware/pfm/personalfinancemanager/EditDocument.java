@@ -1,17 +1,12 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Handler;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,25 +19,18 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
-import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
-
-public class ReportActivity extends AppCompatActivity {
-
-    private final String TAG = "ReportActivity";
-    private Button addNew;
+public class EditDocument extends AppCompatActivity {
+    private final String TAG = "EditDocument";
+    private String docId;
     private RelativeLayout mLayout;
+    private Button addNew;
     private int categorySpinnerId = 1001; //IDs of categorySpinner
     private int currencySpinnerId = 2001; //IDs of currencySpinner
     private int editTextValueId = 3001;   //Ids of editText
     private int deleteButtonId = 4001;   //Ids of deleteButton
     private int buttonCounter; //counter to make button "Add Line" invisible
-     /* Recursion disabled in version 1.0
-                    TODO enable recursion in future versions
-    private int textViewRecursId =4001;   //Ids of TextView "Recurs"
-    private int spinnerRecursId =5001;   //Ids of spinner "Recurs"
-    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +40,25 @@ public class ReportActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
         mLayout = (RelativeLayout) findViewById(R.id.report_item_layout);
+
         if (savedInstanceState == null) {
-            mLayout.addView(createNewCategorySpinner());
-            mLayout.addView(createNewEditText());
-            mLayout.addView(createNewCurrencySpinner());
-            mLayout.addView(createNewDeleteButton());
-             /* Recursion disabled in version 1.0
-                    TODO enable recursion in future versions
-            mLayout.addView(createNewRecursTextView());
-            mLayout.addView(createNewRecursSpinner());
-            */
+            docId = getIntent().getExtras().getString("docId");
+            FinanceDocument financeDocument = MainActivity.financeDocumentModel.getFinanceDocument(docId);
+            List<String> value;
+
+            for (int i = 1; i <= FinanceDocument.NUMBER_OF_CATEGORIES; i++) {
+                value = financeDocument.getValuesMap().get(i);
+                if (value != null) {
+                    mLayout.addView(createNewCategorySpinner());
+                    mLayout.addView(createNewEditText());
+                    mLayout.addView(createNewCurrencySpinner());
+                    mLayout.addView(createNewDeleteButton());
+                    ((Spinner) findViewById(categorySpinnerId - 1)).setSelection(i-1);
+                    ((EditText) findViewById(editTextValueId - 1)).setText(value.get(0));
+                    ((Spinner) findViewById(currencySpinnerId - 1)).setSelection(Utils.getCurrencyPosition(getApplicationContext(), value.get(1)));
+                }
+            }
         } else {
             //views states were saved in onSaveInstanceState
             int counter = savedInstanceState.getInt("counter");
@@ -78,23 +73,14 @@ public class ReportActivity extends AppCompatActivity {
                 Spinner currencySpinner = (Spinner) findViewById(2000 + i);
                 currencySpinner.setSelection(savedInstanceState.getInt("currencySpinner" + i));
                 mLayout.addView(createNewDeleteButton());
-
-                 /* Recursion disabled in version 1.0
-                    TODO enable recursion in future versions
-                mLayout.addView(createNewRecursTextView());
-                mLayout.addView(createNewRecursSpinner());
-                Spinner recursSpinner = (Spinner) findViewById(5000+i);
-                recursSpinner.setSelection(savedInstanceState.getInt("recursSpinner" + i));
-                */
             }
-
         }
 
         addNew = (Button) findViewById(R.id.btn_add_new);
         if (savedInstanceState != null) {
             buttonCounter = savedInstanceState.getInt("buttonCounter");
         } else {
-            buttonCounter = 0;
+            buttonCounter = categorySpinnerId - 1002;
         }
 
         if (buttonCounter >= FinanceDocument.NUMBER_OF_CATEGORIES - 1) {
@@ -112,27 +98,118 @@ public class ReportActivity extends AppCompatActivity {
                 if (buttonCounter >= FinanceDocument.NUMBER_OF_CATEGORIES - 1) {
                     addNew.setVisibility(View.GONE);
                 }
-                 /* Recursion disabled in version 1.0
-                    TODO enable recursion in future versions
-                mLayout.addView(createNewRecursTextView());
-                mLayout.addView(createNewRecursSpinner());
-                */
 
 
             }
         });
 
-        int status = getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
-                .getInt("status_" + TAG, 0);
-        if (status != -1) {
+    }
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startShowcase();
-                }
-            }, 1000);
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.report_toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
         }
+        if (id == R.id.report_toolbar_done) {
+            if (validateFields() && validateSpinner()) {
+                Intent intent = new Intent();
+                intent.putExtra("oldDocId", docId);
+                intent.putStringArrayListExtra("editResult", getEditResult());
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Validates editText fields
+     *
+     * @return false if field is empty or contains only zeros
+     */
+    private boolean validateFields() {
+        int counter = categorySpinnerId - 1000;
+        for (int i = 1; i < counter; i++) {
+            EditText editTextValue = (EditText) findViewById(3000 + i);
+            if (editTextValue.getText().toString().isEmpty()) {
+                editTextValue.requestFocus();
+//                editTextValue.setError(getString(R.string.set_value));
+                Toast.makeText(this, getString(R.string.set_value), Toast.LENGTH_LONG).show();
+
+                return false;
+            }
+            if (editTextValue.getText().toString().matches("0+")) {
+                editTextValue.requestFocus();
+//                editTextValue.setError(getString(R.string.set_non_zero_value));
+                Toast.makeText(this, getString(R.string.set_non_zero_value), Toast.LENGTH_LONG).show();
+
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * Validates spinners
+     *
+     * @return false if category is duplicated
+     */
+    private boolean validateSpinner() {
+        int counter = categorySpinnerId - 1000;
+        for (int i = counter - 1; i > 1; i--) {
+            for (int j = i - 1; j >= 1; j--) {
+                if (i != j && ((Spinner) findViewById(1000 + i)).getSelectedItem().equals(((Spinner) findViewById(1000 + j)).getSelectedItem())) {
+
+                    Toast.makeText(this, getString(R.string.duplicate_entry) + " : " + ((Spinner) findViewById(1000 + i)).getSelectedItem().toString(), Toast.LENGTH_LONG).show();
+
+                    return false;
+
+                }
+
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Compiles inputs from fields
+     *
+     * @return list of strings category-value-currency
+     */
+
+    private ArrayList<String> getEditResult() {
+        ArrayList<String> list = new ArrayList<>();
+        int counter = categorySpinnerId - 1000;
+        for (int i = 1; i < counter; i++) {
+            Spinner categorySpinner = (Spinner) findViewById(1000 + i);
+            Spinner currencySpinner = (Spinner) findViewById(2000 + i);
+
+            EditText editTextValue = (EditText) findViewById(3000 + i);
+
+
+            list.add(categorySpinner.getSelectedItemPosition() + "-"
+                    + categorySpinner.getSelectedItem().toString() + "-"
+                    + editTextValue.getText().toString().replaceFirst("^0+(?!$)", "") + "-"
+                    + currencySpinner.getSelectedItem().toString());
+
+
+        }
+
+        return list;
     }
 
     @Override
@@ -159,7 +236,6 @@ public class ReportActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
 
     }
-
 
     /**
      * Generates operation category spinner
@@ -314,177 +390,4 @@ public class ReportActivity extends AppCompatActivity {
 
         return deleteButton;
     }
-     /* Recursion disabled in version 1.0
-                    TODO enable recursion in future versions
-    //Generates recurs text view
-    private TextView createNewRecursTextView(){
-        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
-        lparams.addRule(RelativeLayout.BELOW, categorySpinnerId - 1);
-        lparams.setMargins(dpToPx(12),dpToPx(8),0,0);
-        final TextView textView = new TextView(this);
-        textView.setLayoutParams(lparams);
-;       textView.setId(textViewRecursId);
-        textView.setText(getResources().getString(R.string.recurs));
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                getResources().getDimension(R.dimen.recurs_text_size));
-        textView.setSaveEnabled(true);
-        textViewRecursId++;
-        return textView;
-    }
-    */
-
-    /* Recursion disabled in version 1.0
-                   TODO enable recursion in future versions
-   //Generates recurring spinner
-   private Spinner createNewRecursSpinner() {
-       final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, dpToPx(40));
-       final Spinner spinner = new Spinner(this);
-       lparams.addRule(RelativeLayout.END_OF, textViewRecursId-1);
-       lparams.addRule(RelativeLayout.BELOW, categorySpinnerId - 1);
-       lparams.addRule(RelativeLayout.ALIGN_RIGHT, currencySpinnerId - 1);
-
-       spinner.setLayoutParams(lparams);
-       ArrayAdapter<CharSequence> recursSpinnerAdapter = ArrayAdapter.createFromResource(this,R.array.report_activity_recurs_spinner,android.R.layout.simple_spinner_item);
-       recursSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-       spinner.setAdapter(recursSpinnerAdapter);
-       spinner.setId(spinnerRecursId);
-       spinner.setSaveEnabled(true);
-       spinnerRecursId++;
-       return spinner;
-   }
-   */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.report_toolbar_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == android.R.id.home) {
-            finish();
-        }
-        if (id == R.id.report_toolbar_done) {
-            if (validateFields() && validateSpinner()) {
-                Intent intent = new Intent();
-                intent.putStringArrayListExtra("reportResult", getReportResult());
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Validates editText fields
-     *
-     * @return false if field is empty or contains only zeros
-     */
-    private boolean validateFields() {
-        int counter = categorySpinnerId - 1000;
-        for (int i = 1; i < counter; i++) {
-            EditText editTextValue = (EditText) findViewById(3000 + i);
-            if (editTextValue.getText().toString().isEmpty()) {
-                editTextValue.requestFocus();
-//                editTextValue.setError(getString(R.string.set_value));
-                Toast.makeText(this, getString(R.string.set_value), Toast.LENGTH_LONG).show();
-
-                return false;
-            }
-            if (editTextValue.getText().toString().matches("0+")) {
-                editTextValue.requestFocus();
-//                editTextValue.setError(getString(R.string.set_non_zero_value));
-                Toast.makeText(this, getString(R.string.set_non_zero_value), Toast.LENGTH_LONG).show();
-
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-    /**
-     * Validates spinners
-     *
-     * @return false if category is duplicated
-     */
-    private boolean validateSpinner() {
-        int counter = categorySpinnerId - 1000;
-        for (int i = counter - 1; i > 1; i--) {
-            for (int j = i - 1; j >= 1; j--) {
-                if (i != j && ((Spinner) findViewById(1000 + i)).getSelectedItem().equals(((Spinner) findViewById(1000 + j)).getSelectedItem())) {
-
-                    Toast.makeText(this, getString(R.string.duplicate_entry) + " : " + ((Spinner) findViewById(1000 + i)).getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-
-                    return false;
-
-                }
-
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Compiles inputs from fields
-     *
-     * @return list of strings category-value-currency
-     */
-
-    private ArrayList<String> getReportResult() {
-        ArrayList<String> list = new ArrayList<>();
-        int counter = categorySpinnerId - 1000;
-        for (int i = 1; i < counter; i++) {
-            Spinner categorySpinner = (Spinner) findViewById(1000 + i);
-            Spinner currencySpinner = (Spinner) findViewById(2000 + i);
-             /* Recursion disabled in version 1.0
-                    TODO enable recursion in future versions
-            Spinner recursSpinner = (Spinner) findViewById(5000+i);
-            */
-            EditText editTextValue = (EditText) findViewById(3000 + i);
-
-
-            list.add(categorySpinner.getSelectedItemPosition() + "-"
-                    + categorySpinner.getSelectedItem().toString() + "-"
-                    + editTextValue.getText().toString().replaceFirst("^0+(?!$)", "") + "-"
-                    + currencySpinner.getSelectedItem().toString());
-             /* Recursion disabled in version 1.0
-                    TODO enable recursion in future versions
-                        + recursSpinner.getSelectedItem().toString());
-             */
-
-        }
-
-        return list;
-    }
-
-
-
-
-    /**
-     * Runs showcase presentation on fragment start
-     */
-
-    private void startShowcase() {
-        if (addNew != null && findViewById(R.id.report_toolbar_done) != null) {
-            ShowcaseConfig config = new ShowcaseConfig();
-            config.setDelay(500); // half second between each showcase view
-            config.setDismissTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
-            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, TAG);
-            sequence.setConfig(config);
-
-            sequence.addSequenceItem(addNew, getString(R.string.data_add_new), getString(R.string.got_it));
-            sequence.addSequenceItem(findViewById(R.id.report_toolbar_done), getString(R.string.data_done), getString(R.string.ok));
-            sequence.start();
-        }
-    }
-
-
 }

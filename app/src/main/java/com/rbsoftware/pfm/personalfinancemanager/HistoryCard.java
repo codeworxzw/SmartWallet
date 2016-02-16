@@ -1,15 +1,13 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.content.Context;
-import android.util.Log;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -112,12 +110,22 @@ public class HistoryCard extends Card {
         public void setupInnerViewElements(ViewGroup parent, View view) {
             super.setupInnerViewElements(parent, view);
             List<String> value;
+            boolean isIncomeFieldSet = false;
+            boolean isExpenseFieldSet = false;
+
             mLayout = (LinearLayout) view.findViewById(R.id.history_expand_card_layout);
             mLayout.removeAllViewsInLayout();
             for (int i = 1; i <= FinanceDocument.NUMBER_OF_CATEGORIES; i++) {
                 value = doc.getValuesMap().get(i);
                 if (value != null) {
-                        String output = "";
+                    if(i <=5) isIncomeFieldSet =true;
+                    if(i>5) isExpenseFieldSet = true;
+                    if(isIncomeFieldSet && isExpenseFieldSet){
+                        mLayout.addView(createDivider());
+                        isIncomeFieldSet = false;
+                        isExpenseFieldSet = false;
+                    }
+                    String output = "";
                     /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
                     if (!value.get(2).equals(mContext.getString(R.string.never))){
@@ -127,9 +135,10 @@ public class HistoryCard extends Card {
                     else{
                         output =value.get(0)+" "+value.get(1);
                     } */
-                        output = value.get(0) + " " + value.get(1);
+                    output = value.get(0) + " " + value.get(1);
 
-                        mLayout.addView(createNewTextView(i, output));
+                    mLayout.addView(createNewTextView(i, output));
+
 
                 }
             }
@@ -141,50 +150,19 @@ public class HistoryCard extends Card {
             final TextView mTextView = new TextView(mContext);
             String row;
             mTextView.setLayoutParams(layoutParams);
-            row = keyToString(i) + " " + value;
+            String sign = (i<6)? "+": "-";
+            row = Utils.keyToString(getContext(), i) + " " +sign+ value;
             mTextView.setText(row);
             return mTextView;
         }
 
-
-        /**
-         * Converts int key to human readable string
-         *
-         * @param key value range 1-14
-         * @return string value
-         */
-        private String keyToString(int key) {
-            switch (key) {
-                case 1:
-                    return mContext.getResources().getString(R.string.salary);
-                case 2:
-                    return mContext.getResources().getString(R.string.rental_income);
-                case 3:
-                    return mContext.getResources().getString(R.string.interest);
-                case 4:
-                    return mContext.getResources().getString(R.string.gifts);
-                case 5:
-                    return mContext.getResources().getString(R.string.other_income);
-                case 6:
-                    return mContext.getResources().getString(R.string.taxes);
-                case 7:
-                    return mContext.getResources().getString(R.string.mortgage);
-                case 8:
-                    return mContext.getResources().getString(R.string.credit_card);
-                case 9:
-                    return mContext.getResources().getString(R.string.utilities);
-                case 10:
-                    return mContext.getResources().getString(R.string.food);
-                case 11:
-                    return mContext.getResources().getString(R.string.car_payment);
-                case 12:
-                    return mContext.getResources().getString(R.string.personal);
-                case 13:
-                    return mContext.getResources().getString(R.string.activities);
-                case 14:
-                    return mContext.getResources().getString(R.string.other_expense);
-            }
-            return "";
+        private View createDivider(){
+            final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Utils.dpToPx(mContext,1));
+            layoutParams.setMargins(0, Utils.dpToPx(mContext, 6), 0 ,Utils.dpToPx(mContext, 6));
+            final View divider = new View(mContext);
+            divider.setLayoutParams(layoutParams);
+            divider.setBackgroundColor(ContextCompat.getColor(mContext, R.color.grey));
+            return divider;
         }
 
 

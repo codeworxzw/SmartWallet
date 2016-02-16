@@ -61,7 +61,7 @@
     <string name="data_currency">Выберите валюту операции</string>
     <string name="data_add_new">Добавьте новое поле для ввода</string>
     <string name="data_done">Нажмите, чтобы создать отчёт</string>
-    <string name="history_card">Нажмите на карточке для просмотра деталей или задержите палец для вызова меню</string>
+    <string name="history_card">Нажмите на карточке для просмотра деталей</string>
     <string name="history_is_empty">Активность отсутствует&#8230;</string>
     <string name="no_network_title">Нет сети</string>
     <string name="no_network_message">Невозможно подключиться к сети</string>
@@ -71,6 +71,8 @@
     <string name="set_value">Пожалуйста, укажите значение</string>
     <string name="set_non_zero_value">Пожалуйста, укажите ненулевое значение</string>
     <string name="duplicate_entry">Категория уже использована</string>
+    <string name="edit">Редактировать</string>
+    <string name="title_activity_edit">Редактор</string>
 
     <string-array name="drawer_menu">
         <item>Общая информация</item>
