@@ -1,6 +1,7 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -109,11 +110,21 @@ public class HistoryCard extends Card {
         public void setupInnerViewElements(ViewGroup parent, View view) {
             super.setupInnerViewElements(parent, view);
             List<String> value;
+            boolean isIncomeFieldSet = false;
+            boolean isExpenseFieldSet = false;
+
             mLayout = (LinearLayout) view.findViewById(R.id.history_expand_card_layout);
             mLayout.removeAllViewsInLayout();
             for (int i = 1; i <= FinanceDocument.NUMBER_OF_CATEGORIES; i++) {
                 value = doc.getValuesMap().get(i);
                 if (value != null) {
+                    if(i <=5) isIncomeFieldSet =true;
+                    if(i>5) isExpenseFieldSet = true;
+                    if(isIncomeFieldSet && isExpenseFieldSet){
+                        mLayout.addView(createDivider());
+                        isIncomeFieldSet = false;
+                        isExpenseFieldSet = false;
+                    }
                     String output = "";
                     /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
@@ -128,6 +139,7 @@ public class HistoryCard extends Card {
 
                     mLayout.addView(createNewTextView(i, output));
 
+
                 }
             }
         }
@@ -138,9 +150,19 @@ public class HistoryCard extends Card {
             final TextView mTextView = new TextView(mContext);
             String row;
             mTextView.setLayoutParams(layoutParams);
-            row = Utils.keyToString(getContext(), i) + " " + value;
+            String sign = (i<6)? "+": "-";
+            row = Utils.keyToString(getContext(), i) + " " +sign+ value;
             mTextView.setText(row);
             return mTextView;
+        }
+
+        private View createDivider(){
+            final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Utils.dpToPx(mContext,1));
+            layoutParams.setMargins(0, Utils.dpToPx(mContext, 6), 0 ,Utils.dpToPx(mContext, 6));
+            final View divider = new View(mContext);
+            divider.setLayoutParams(layoutParams);
+            divider.setBackgroundColor(ContextCompat.getColor(mContext, R.color.grey));
+            return divider;
         }
 
 
