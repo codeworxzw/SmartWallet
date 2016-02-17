@@ -279,59 +279,59 @@ public class AccountSummary extends Fragment {
         totalIncome = salarySum + rentalIncomeSum + interestSum + giftsSum + otherIncomeSum;
         totalExpense = taxesSum + mortgageSum + creditCardSum + utilitiesSum + foodSum + carPaymentSum + personalSum + activitiesSum + otherExpensesSum;
 
-        if(salarySum != 0) {
+        if (salarySum != 0) {
             getActivity().findViewById(R.id.salary_layout).setVisibility(View.VISIBLE);
             salaryTextView.setText(Integer.toString(salarySum));
         }
-        if(rentalIncomeSum !=0) {
+        if (rentalIncomeSum != 0) {
             getActivity().findViewById(R.id.rental_income_layout).setVisibility(View.VISIBLE);
             rentalIncomeTextView.setText(Integer.toString(rentalIncomeSum));
         }
-        if(interestSum !=0) {
+        if (interestSum != 0) {
             getActivity().findViewById(R.id.interest_layout).setVisibility(View.VISIBLE);
             interestTextView.setText(Integer.toString(interestSum));
         }
-        if(giftsSum !=0) {
+        if (giftsSum != 0) {
             getActivity().findViewById(R.id.gifts_layout).setVisibility(View.VISIBLE);
             giftsTextView.setText(Integer.toString(giftsSum));
         }
-        if(otherIncomeSum !=0) {
+        if (otherIncomeSum != 0) {
             getActivity().findViewById(R.id.other_income_layout).setVisibility(View.VISIBLE);
             otherIncomeTextView.setText(Integer.toString(otherIncomeSum));
         }
-        if(taxesSum !=0) {
+        if (taxesSum != 0) {
             getActivity().findViewById(R.id.taxes_layout).setVisibility(View.VISIBLE);
             taxesTextView.setText(Integer.toString(taxesSum));
         }
-        if(mortgageSum !=0) {
+        if (mortgageSum != 0) {
             getActivity().findViewById(R.id.mortgage_layout).setVisibility(View.VISIBLE);
             mortgageTextView.setText(Integer.toString(mortgageSum));
         }
-        if(creditCardSum !=0) {
+        if (creditCardSum != 0) {
             getActivity().findViewById(R.id.credit_card_layout).setVisibility(View.VISIBLE);
             creditCardTextView.setText(Integer.toString(creditCardSum));
         }
-        if(utilitiesSum !=0) {
+        if (utilitiesSum != 0) {
             getActivity().findViewById(R.id.utilities_layout).setVisibility(View.VISIBLE);
             utilitiesTextView.setText(Integer.toString(utilitiesSum));
         }
-        if(foodSum !=0) {
+        if (foodSum != 0) {
             getActivity().findViewById(R.id.food_layout).setVisibility(View.VISIBLE);
             foodTextView.setText(Integer.toString(foodSum));
         }
-        if(carPaymentSum !=0) {
+        if (carPaymentSum != 0) {
             getActivity().findViewById(R.id.car_payment_layout).setVisibility(View.VISIBLE);
             carPaymentTextView.setText(Integer.toString(carPaymentSum));
         }
-        if(personalSum !=0) {
+        if (personalSum != 0) {
             getActivity().findViewById(R.id.personal_layout).setVisibility(View.VISIBLE);
             personalTextView.setText(Integer.toString(personalSum));
         }
-        if(activitiesSum !=0) {
+        if (activitiesSum != 0) {
             getActivity().findViewById(R.id.activities_layout).setVisibility(View.VISIBLE);
             activitiesTextView.setText(Integer.toString(activitiesSum));
         }
-        if(otherExpensesSum !=0) {
+        if (otherExpensesSum != 0) {
             getActivity().findViewById(R.id.other_expenses_layout).setVisibility(View.VISIBLE);
             otherExpense.setText(Integer.toString(otherExpensesSum));
         }
@@ -352,23 +352,51 @@ public class AccountSummary extends Fragment {
         data.add(new String[]{"", ""});
         data.add(new String[]{getString(R.string.income), income.getText().toString()});
         data.add(new String[]{"", ""});
-        data.add(new String[]{getString(R.string.salary), salaryTextView.getText().toString()});
-        data.add(new String[]{getString(R.string.rental_income), rentalIncomeTextView.getText().toString()});
-        data.add(new String[]{getString(R.string.interest), interestTextView.getText().toString()});
-        data.add(new String[]{getString(R.string.gifts), giftsTextView.getText().toString()});
-        data.add(new String[]{getString(R.string.other_income), otherIncomeTextView.getText().toString()});
+        if (!salaryTextView.getText().toString().equals("000")) {
+            data.add(new String[]{getString(R.string.salary), salaryTextView.getText().toString()});
+        }
+        if (!rentalIncomeTextView.getText().toString().equals("000")) {
+            data.add(new String[]{getString(R.string.rental_income), rentalIncomeTextView.getText().toString()});
+        }
+        if (!interestTextView.getText().toString().equals("000")) {
+            data.add(new String[]{getString(R.string.interest), interestTextView.getText().toString()});
+        }
+        if (!giftsTextView.getText().toString().equals("000")) {
+            data.add(new String[]{getString(R.string.gifts), giftsTextView.getText().toString()});
+        }
+        if (!otherIncomeTextView.getText().toString().equals("000")) {
+            data.add(new String[]{getString(R.string.other_income), otherIncomeTextView.getText().toString()});
+        }
         data.add(new String[]{"", ""});
         data.add(new String[]{getString(R.string.expense), expense.getText().toString()});
         data.add(new String[]{"", ""});
-        data.add(new String[]{getString(R.string.food), foodTextView.getText().toString()});
-        data.add(new String[]{getString(R.string.car_payment), carPaymentTextView.getText().toString()});
-        data.add(new String[]{getString(R.string.personal), personalTextView.getText().toString()});
-        data.add(new String[]{getString(R.string.activities), activitiesTextView.getText().toString()});
-        data.add(new String[]{getString(R.string.utilities), utilitiesTextView.getText().toString()});
-        data.add(new String[]{getString(R.string.credit_card), creditCardTextView.getText().toString()});
-        data.add(new String[]{getString(R.string.taxes), taxesTextView.getText().toString()});
-        data.add(new String[]{getString(R.string.mortgage), mortgageTextView.getText().toString()});
-        data.add(new String[]{getString(R.string.other_expense), otherExpense.getText().toString()});
+        if (!foodTextView.getText().toString().equals("000")) {
+            data.add(new String[]{getString(R.string.food), foodTextView.getText().toString()});
+        }
+        if (!carPaymentTextView.getText().toString().equals("000")) {
+            data.add(new String[]{getString(R.string.car_payment), carPaymentTextView.getText().toString()});
+        }
+        if (!personalTextView.getText().toString().equals("000")) {
+            data.add(new String[]{getString(R.string.personal), personalTextView.getText().toString()});
+        }
+        if (!activitiesTextView.getText().toString().equals("000")) {
+            data.add(new String[]{getString(R.string.activities), activitiesTextView.getText().toString()});
+        }
+        if (!utilitiesTextView.getText().toString().equals("000")) {
+            data.add(new String[]{getString(R.string.utilities), utilitiesTextView.getText().toString()});
+        }
+        if (!creditCardTextView.getText().toString().equals("000")) {
+            data.add(new String[]{getString(R.string.credit_card), creditCardTextView.getText().toString()});
+        }
+        if (!taxesTextView.getText().toString().equals("000")) {
+            data.add(new String[]{getString(R.string.taxes), taxesTextView.getText().toString()});
+        }
+        if (!mortgageTextView.getText().toString().equals("000")) {
+            data.add(new String[]{getString(R.string.mortgage), mortgageTextView.getText().toString()});
+        }
+        if (!otherExpense.getText().toString().equals("000")) {
+            data.add(new String[]{getString(R.string.other_expense), otherExpense.getText().toString()});
+        }
 
         return data;
     }
