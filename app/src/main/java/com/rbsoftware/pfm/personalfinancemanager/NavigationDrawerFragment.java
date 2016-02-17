@@ -92,11 +92,11 @@ public class NavigationDrawerFragment extends Fragment  {
         mDrawerList = (ListView) mDrawerView.findViewById(R.id.navigation_drawer_listview);
         mListItems = getResources().getStringArray(R.array.drawer_menu);
         int[] mListImages = {
-                R.drawable.ic_bill_black_24dp,
-                R.drawable.ic_statistics_black_24dp,
-                R.drawable.ic_history_black_24dp,
-                R.drawable.ic_settings_black_24dp,
-                R.drawable.ic_exit_black_24dp};
+                R.drawable.ic_bill_grey_24dp,
+                R.drawable.ic_statistics_grey_24dp,
+                R.drawable.ic_history_grey_24dp,
+                R.drawable.ic_settings_grey_24dp,
+                R.drawable.ic_exit_grey_24dp};
 
         // mDrawerList.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mListItems));
         mDrawerList.setAdapter(new DrawerListAdapter(getActivity(), mListImages, mListItems));

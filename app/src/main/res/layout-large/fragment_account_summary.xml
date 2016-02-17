@@ -6,26 +6,30 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingStart="16dp"
-    android:scrollbars="none">
+    android:scrollbars="none"
+    android:fillViewport="true">
 
     <LinearLayout
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:weightSum="100"
         tools:context="com.rbsoftware.pfm.personalfinancemanager.AccountSummary">
 
         <TextView
             android:id="@+id/tv_period"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="center"
             android:text="@string/this_week"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:layout_weight="4"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="35"
             android:layout_marginTop="50dp"
             android:orientation="vertical">
 
@@ -58,6 +62,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/salary_layout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -89,6 +95,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/rental_income_layout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -121,6 +129,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/interest_layout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -152,6 +162,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/gifts_layout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -183,6 +195,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/other_income_layout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -216,7 +230,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="61"
             android:layout_marginTop="50dp"
             android:orientation="vertical">
 
@@ -249,6 +264,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/food_layout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -280,6 +297,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/car_payment_layout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -311,6 +330,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/personal_layout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -342,6 +363,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/activities_layout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -373,6 +396,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/utilities_layout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -404,6 +429,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/credit_card_layout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -435,6 +462,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/taxes_layout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -466,6 +495,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/mortgage_layout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -497,6 +528,8 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/other_expenses_layout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
