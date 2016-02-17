@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Locale;
+
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -67,8 +69,8 @@ public class HistoryCard extends Card {
         public HistoryHeaderInnerCard(Context context, String date, int totalIncome, int totalExpense) {
             super(context, R.layout.history_list_row_inner_layout);
             this.date = date;
-            this.income = "+" + Integer.toString(totalIncome) + " " + MainActivity.defaultCurrency;
-            this.expense = "-" + Integer.toString(totalExpense) + " " + MainActivity.defaultCurrency;
+            this.income = "+" + String.format(Locale.getDefault(), "%,d", totalIncome) + " " + MainActivity.defaultCurrency;
+            this.expense = "-" + String.format(Locale.getDefault(), "%,d", totalExpense) + " " + MainActivity.defaultCurrency;
         }
 
         @Override
@@ -135,7 +137,7 @@ public class HistoryCard extends Card {
                     else{
                         output =value.get(0)+" "+value.get(1);
                     } */
-                    output = value.get(0) + " " + value.get(1);
+                    output = String.format(Locale.getDefault(), "%,d",Integer.valueOf(value.get(0))) + " " + value.get(1);
 
                     mLayout.addView(createNewTextView(i, output));
 

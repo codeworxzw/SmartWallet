@@ -1,6 +1,8 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 
 import java.util.ArrayList;
@@ -68,11 +70,10 @@ public class Utils {
     /**
      * Gets currency position in array
      *
-     * @param mContext application context
      * @param currency currency string
      * @return currency position in array
      */
-    public static int getCurrencyPosition(Context mContext, String currency) {
+    public static int getCurrencyPosition(String currency) {
         switch (currency) {
             case "USD":
                 return 0;
@@ -114,5 +115,48 @@ public class Utils {
         }
 
         return item;
+    }
+
+    /**
+     * Gets color by data type key
+     *
+     * @param i data type key
+     * @return color
+     */
+    public static int getColorPalette(Context mContext, int i) {
+        switch (i) {
+            case 1:
+                return ContextCompat.getColor(mContext, R.color.salary);
+            case 2:
+                return ContextCompat.getColor(mContext, R.color.rental_income);
+            case 3:
+                return ContextCompat.getColor(mContext, R.color.interest);
+            case 4:
+                return ContextCompat.getColor(mContext, R.color.gifts);
+            case 5:
+                return ContextCompat.getColor(mContext, R.color.other_income);
+            case 6:
+                return ContextCompat.getColor(mContext, R.color.taxes);
+            case 7:
+                return ContextCompat.getColor(mContext, R.color.mortgage);
+            case 8:
+                return ContextCompat.getColor(mContext, R.color.credit_card);
+            case 9:
+                return ContextCompat.getColor(mContext, R.color.utilities);
+            case 10:
+                return ContextCompat.getColor(mContext, R.color.food);
+            case 11:
+                return ContextCompat.getColor(mContext, R.color.car_payment);
+            case 12:
+                return ContextCompat.getColor(mContext, R.color.personal);
+            case 13:
+                return ContextCompat.getColor(mContext, R.color.activities);
+            case 14:
+                return ContextCompat.getColor(mContext, R.color.other_expense);
+            default:
+                return Color.WHITE;
+
+        }
+
     }
 }

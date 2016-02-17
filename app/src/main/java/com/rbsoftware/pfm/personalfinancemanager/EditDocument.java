@@ -56,7 +56,7 @@ public class EditDocument extends AppCompatActivity {
                     mLayout.addView(createNewDeleteButton());
                     ((Spinner) findViewById(categorySpinnerId - 1)).setSelection(i-1);
                     ((EditText) findViewById(editTextValueId - 1)).setText(value.get(0));
-                    ((Spinner) findViewById(currencySpinnerId - 1)).setSelection(Utils.getCurrencyPosition(getApplicationContext(), value.get(1)));
+                    ((Spinner) findViewById(currencySpinnerId - 1)).setSelection(Utils.getCurrencyPosition(value.get(1)));
                 }
             }
         } else {

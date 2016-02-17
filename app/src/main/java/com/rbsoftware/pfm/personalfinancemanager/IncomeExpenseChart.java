@@ -1,18 +1,12 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import lecho.lib.hellocharts.listener.PieChartOnValueSelectListener;
 import lecho.lib.hellocharts.model.PieChartData;
@@ -49,7 +44,6 @@ public class IncomeExpenseChart extends Fragment {
     private RelativeLayout relativeLayout;
     private List<FinanceDocument> financeDocumentList;
     private PieChartView mPieChart;
-    private PieChartData data;
     private String selectedItem; //position of selected item in popup menu
     private ToggleButton mIncomeExpenseButton;
     private TextView mTextViewPeriod;
@@ -248,30 +242,29 @@ public class IncomeExpenseChart extends Fragment {
      */
 
     private void generateChartData(HashMap<Integer, Integer> mapSum) {
-        List<SliceValue> values = new ArrayList<SliceValue>();
+        List<SliceValue> values = new ArrayList<>();
         int total = 0;
+
         for (int i = 1 + offsetStart; i <= (mapSum.size() - offsetEnd); ++i) {
-            int value = mapSum.get(i);
-            total += value;
-            if (value != 0) {
-                //SliceValue sliceValue = new SliceValue(value, Color.rgb(150 - i * 4, 90 + i * 8, 200 - i*5));
-                SliceValue sliceValue = new SliceValue(value, getColorPalette(i));
-                sliceValue.setLabel(keyToString(i) + " " + value);
-                values.add(sliceValue);
+            total += mapSum.get(i);
+        }
+        if (total != 0) {
+            for (int i = 1 + offsetStart; i <= (mapSum.size() - offsetEnd); ++i) {
+
+                if (mapSum.get(i) != 0) {
+                    float value = (mapSum.get(i) * 100.0f) / total;
+                    SliceValue sliceValue = new SliceValue(value, Utils.getColorPalette(mContext, i));
+                    sliceValue.setLabel(Utils.keyToString(mContext, i) + " " + String.format(Locale.getDefault(), "%.1f", value) + "%");
+                    values.add(sliceValue);
+                }
             }
         }
-        data = new PieChartData(values);
+        PieChartData data = new PieChartData(values);
         data.setHasLabels(true);
-        //data.setHasLabelsOnlyForSelected(true);
         data.setHasLabelsOutside(false);
         data.setHasCenterCircle(true);
-        data.setCenterText1(Integer.toString(total));
+        data.setCenterText1(String.format(Locale.getDefault(), "%,d", total));
         data.setCenterText2(MainActivity.defaultCurrency);
-     /*   if (mIncomeExpenseButton.isChecked()) {
-            data.setCenterCircleColor(getResources().getColor(R.color.income));
-        } else {
-            data.setCenterCircleColor(getResources().getColor(R.color.expense));
-        }*/
         mPieChart.setPieChartData(data);
 
     }
@@ -336,89 +329,6 @@ public class IncomeExpenseChart extends Fragment {
         return mapSum;
     }
 
-    /**
-     * Converts int key to human readable string
-     *
-     * @param key value range 1-14
-     * @return string value
-     **/
-    private String keyToString(int key) {
-        switch (key) {
-            case 1:
-                return getResources().getString(R.string.salary);
-            case 2:
-                return getResources().getString(R.string.rental_income);
-            case 3:
-                return getResources().getString(R.string.interest);
-            case 4:
-                return getResources().getString(R.string.gifts);
-            case 5:
-                return getResources().getString(R.string.other_income);
-            case 6:
-                return getResources().getString(R.string.taxes);
-            case 7:
-                return getResources().getString(R.string.mortgage);
-            case 8:
-                return getResources().getString(R.string.credit_card);
-            case 9:
-                return getResources().getString(R.string.utilities);
-            case 10:
-                return getResources().getString(R.string.food);
-            case 11:
-                return getResources().getString(R.string.car_payment);
-            case 12:
-                return getResources().getString(R.string.personal);
-            case 13:
-                return getResources().getString(R.string.activities);
-            case 14:
-                return getResources().getString(R.string.other_expense);
-        }
-        return "";
-    }
-
-    /**
-     * Gets color bu data type key
-     *
-     * @param i data type key
-     * @return color
-     */
-    private int getColorPalette(int i) {
-        switch (i) {
-            case 1:
-                return ContextCompat.getColor(getContext(), R.color.salary);
-            case 2:
-                return ContextCompat.getColor(getContext(), R.color.rental_income);
-            case 3:
-                return ContextCompat.getColor(getContext(), R.color.interest);
-            case 4:
-                return ContextCompat.getColor(getContext(), R.color.gifts);
-            case 5:
-                return ContextCompat.getColor(getContext(), R.color.other_income);
-            case 6:
-                return ContextCompat.getColor(getContext(), R.color.taxes);
-            case 7:
-                return ContextCompat.getColor(getContext(), R.color.mortgage);
-            case 8:
-                return ContextCompat.getColor(getContext(), R.color.credit_card);
-            case 9:
-                return ContextCompat.getColor(getContext(), R.color.utilities);
-            case 10:
-                return ContextCompat.getColor(getContext(), R.color.food);
-            case 11:
-                return ContextCompat.getColor(getContext(), R.color.car_payment);
-            case 12:
-                return ContextCompat.getColor(getContext(), R.color.personal);
-            case 13:
-                return ContextCompat.getColor(getContext(), R.color.activities);
-            case 14:
-                return ContextCompat.getColor(getContext(), R.color.other_expense);
-            default:
-                return Color.WHITE;
-
-        }
-
-    }
-
 
     /**
      * Runs showcase presentation on fragment start
@@ -453,7 +363,6 @@ public class IncomeExpenseChart extends Fragment {
 
         @Override
         public void onValueDeselected() {
-            // TODO Auto-generated method stub
 
         }
     }
