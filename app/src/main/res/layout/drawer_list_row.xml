@@ -13,7 +13,7 @@
         android:gravity="center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
 
-        android:src="@drawable/ic_settings_black_24dp" />
+        android:src="@drawable/ic_settings_grey_24dp" />
 
     <TextView
         android:id="@+id/tv_drawer_row"
