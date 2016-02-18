@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Locale;
+
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardExpand;
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -19,7 +21,6 @@ import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
  */
 public class HistoryCard extends Card {
     private FinanceDocument doc;
-    private HistoryCard card;
     private Context mContext;
 
     public HistoryCard(Context context, FinanceDocument doc) {
@@ -41,8 +42,6 @@ public class HistoryCard extends Card {
     public void setExpand() {
         HistoryExpandCard expand = new HistoryExpandCard(mContext, doc);
 
-        //Set inner title in Expand Area
-        //expand.setTitle("dummy text");
 
         //Add expand to card
         this.addCardExpand(expand);
@@ -67,8 +66,8 @@ public class HistoryCard extends Card {
         public HistoryHeaderInnerCard(Context context, String date, int totalIncome, int totalExpense) {
             super(context, R.layout.history_list_row_inner_layout);
             this.date = date;
-            this.income = "+" + Integer.toString(totalIncome) + " " + MainActivity.defaultCurrency;
-            this.expense = "-" + Integer.toString(totalExpense) + " " + MainActivity.defaultCurrency;
+            this.income = "+" + String.format(Locale.getDefault(), "%,d", totalIncome) + " " + MainActivity.defaultCurrency;
+            this.expense = "-" + String.format(Locale.getDefault(), "%,d", totalExpense) + " " + MainActivity.defaultCurrency;
         }
 
         @Override
@@ -118,9 +117,9 @@ public class HistoryCard extends Card {
             for (int i = 1; i <= FinanceDocument.NUMBER_OF_CATEGORIES; i++) {
                 value = doc.getValuesMap().get(i);
                 if (value != null) {
-                    if(i <=5) isIncomeFieldSet =true;
-                    if(i>5) isExpenseFieldSet = true;
-                    if(isIncomeFieldSet && isExpenseFieldSet){
+                    if (i <= 5) isIncomeFieldSet = true;
+                    if (i > 5) isExpenseFieldSet = true;
+                    if (isIncomeFieldSet && isExpenseFieldSet) {
                         mLayout.addView(createDivider());
                         isIncomeFieldSet = false;
                         isExpenseFieldSet = false;
@@ -135,7 +134,7 @@ public class HistoryCard extends Card {
                     else{
                         output =value.get(0)+" "+value.get(1);
                     } */
-                    output = value.get(0) + " " + value.get(1);
+                    output = String.format(Locale.getDefault(), "%,d", Integer.valueOf(value.get(0))) + " " + value.get(1);
 
                     mLayout.addView(createNewTextView(i, output));
 
@@ -144,21 +143,33 @@ public class HistoryCard extends Card {
             }
         }
 
+        /**
+         * Generates expanded card text views
+         *
+         * @param i     position in hash map
+         * @param value hash map value
+         * @return TextView object
+         */
         private TextView createNewTextView(int i, String value) {
 
             final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             final TextView mTextView = new TextView(mContext);
             String row;
             mTextView.setLayoutParams(layoutParams);
-            String sign = (i<6)? "+": "-";
-            row = Utils.keyToString(getContext(), i) + " " +sign+ value;
+            String sign = (i < 6) ? "+" : "-";
+            row = Utils.keyToString(getContext(), i) + " " + sign + value;
             mTextView.setText(row);
             return mTextView;
         }
 
-        private View createDivider(){
-            final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Utils.dpToPx(mContext,1));
-            layoutParams.setMargins(0, Utils.dpToPx(mContext, 6), 0 ,Utils.dpToPx(mContext, 6));
+        /**
+         * Generates divider between income and expense categories
+         *
+         * @return divider View
+         */
+        private View createDivider() {
+            final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Utils.dpToPx(mContext, 1));
+            layoutParams.setMargins(0, Utils.dpToPx(mContext, 6), 0, Utils.dpToPx(mContext, 6));
             final View divider = new View(mContext);
             divider.setLayoutParams(layoutParams);
             divider.setBackgroundColor(ContextCompat.getColor(mContext, R.color.grey));

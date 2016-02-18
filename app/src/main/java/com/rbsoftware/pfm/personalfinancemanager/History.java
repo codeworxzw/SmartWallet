@@ -12,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,8 +39,6 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 public class History extends Fragment implements CardHeader.OnClickCardHeaderPopupMenuListener {
     private final String TAG = "History";
     private CardRecyclerView mRecyclerView;
-    private List<FinanceDocument> docList;
-    private ActionMode mActionMode = null;
     private HistoryCardRecyclerViewAdapter mCardArrayAdapter;
     private HistoryCard card;
     private TextView mEmptyView;
@@ -79,8 +76,8 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
 
 
         super.onResume();
-        docList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId(), FinanceDocumentModel.ORDER_DESC);
-        ArrayList<HistoryCard> cards = new ArrayList<HistoryCard>();
+        List<FinanceDocument> docList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId(), FinanceDocumentModel.ORDER_DESC);
+        ArrayList<HistoryCard> cards = new ArrayList<>();
 
 
         for (int i = 0; i < docList.size(); i++) {

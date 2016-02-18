@@ -18,6 +18,7 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
@@ -133,6 +134,7 @@ public class AccountSummary extends Fragment {
         super.onResume();
         financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.readFromSharedPreferences(getActivity(), "periodAccSummary", "thisWeek"), MainActivity.getUserId());
         mTextViewPeriod.setText(MainActivity.readFromSharedPreferences(getActivity(), "periodTextAccSummary", getResources().getString(R.string.this_week)));
+        hideAllTextViews();
         setValuesFromList(financeDocumentList);
     }
 
@@ -226,6 +228,7 @@ public class AccountSummary extends Fragment {
                 }
                 MainActivity.saveToSharedPreferences(getActivity(), "periodAccSummary", selectedItem);
                 MainActivity.saveToSharedPreferences(getActivity(), "periodTextAccSummary", mTextViewPeriod.getText().toString());
+                hideAllTextViews();
                 setValuesFromList(financeDocumentList);
                 return false;
             }
@@ -281,63 +284,63 @@ public class AccountSummary extends Fragment {
 
         if (salarySum != 0) {
             getActivity().findViewById(R.id.salary_layout).setVisibility(View.VISIBLE);
-            salaryTextView.setText(Integer.toString(salarySum));
+            salaryTextView.setText(String.format(Locale.getDefault(),"%,d",salarySum));
         }
         if (rentalIncomeSum != 0) {
             getActivity().findViewById(R.id.rental_income_layout).setVisibility(View.VISIBLE);
-            rentalIncomeTextView.setText(Integer.toString(rentalIncomeSum));
+            rentalIncomeTextView.setText(String.format(Locale.getDefault(), "%,d", rentalIncomeSum));
         }
         if (interestSum != 0) {
             getActivity().findViewById(R.id.interest_layout).setVisibility(View.VISIBLE);
-            interestTextView.setText(Integer.toString(interestSum));
+            interestTextView.setText(String.format(Locale.getDefault(), "%,d", interestSum));
         }
         if (giftsSum != 0) {
             getActivity().findViewById(R.id.gifts_layout).setVisibility(View.VISIBLE);
-            giftsTextView.setText(Integer.toString(giftsSum));
+            giftsTextView.setText(String.format(Locale.getDefault(), "%,d", giftsSum));
         }
         if (otherIncomeSum != 0) {
             getActivity().findViewById(R.id.other_income_layout).setVisibility(View.VISIBLE);
-            otherIncomeTextView.setText(Integer.toString(otherIncomeSum));
+            otherIncomeTextView.setText(String.format(Locale.getDefault(), "%,d", otherIncomeSum));
         }
         if (taxesSum != 0) {
             getActivity().findViewById(R.id.taxes_layout).setVisibility(View.VISIBLE);
-            taxesTextView.setText(Integer.toString(taxesSum));
+            taxesTextView.setText(String.format(Locale.getDefault(), "%,d", taxesSum));
         }
         if (mortgageSum != 0) {
             getActivity().findViewById(R.id.mortgage_layout).setVisibility(View.VISIBLE);
-            mortgageTextView.setText(Integer.toString(mortgageSum));
+            mortgageTextView.setText(String.format(Locale.getDefault(), "%,d", mortgageSum));
         }
         if (creditCardSum != 0) {
             getActivity().findViewById(R.id.credit_card_layout).setVisibility(View.VISIBLE);
-            creditCardTextView.setText(Integer.toString(creditCardSum));
+            creditCardTextView.setText(String.format(Locale.getDefault(), "%,d", creditCardSum));
         }
         if (utilitiesSum != 0) {
             getActivity().findViewById(R.id.utilities_layout).setVisibility(View.VISIBLE);
-            utilitiesTextView.setText(Integer.toString(utilitiesSum));
+            utilitiesTextView.setText(String.format(Locale.getDefault(), "%,d", utilitiesSum));
         }
         if (foodSum != 0) {
             getActivity().findViewById(R.id.food_layout).setVisibility(View.VISIBLE);
-            foodTextView.setText(Integer.toString(foodSum));
+            foodTextView.setText(String.format(Locale.getDefault(), "%,d", foodSum));
         }
         if (carPaymentSum != 0) {
             getActivity().findViewById(R.id.car_payment_layout).setVisibility(View.VISIBLE);
-            carPaymentTextView.setText(Integer.toString(carPaymentSum));
+            carPaymentTextView.setText(String.format(Locale.getDefault(), "%,d", carPaymentSum));
         }
         if (personalSum != 0) {
             getActivity().findViewById(R.id.personal_layout).setVisibility(View.VISIBLE);
-            personalTextView.setText(Integer.toString(personalSum));
+            personalTextView.setText(String.format(Locale.getDefault(), "%,d", personalSum));
         }
         if (activitiesSum != 0) {
             getActivity().findViewById(R.id.activities_layout).setVisibility(View.VISIBLE);
-            activitiesTextView.setText(Integer.toString(activitiesSum));
+            activitiesTextView.setText(String.format(Locale.getDefault(), "%,d", activitiesSum));
         }
         if (otherExpensesSum != 0) {
             getActivity().findViewById(R.id.other_expenses_layout).setVisibility(View.VISIBLE);
-            otherExpense.setText(Integer.toString(otherExpensesSum));
+            otherExpense.setText(String.format(Locale.getDefault(), "%,d", otherExpensesSum));
         }
-        String incomeString = Integer.toString(totalIncome) + " " + MainActivity.defaultCurrency;
+        String incomeString = String.format(Locale.getDefault(), "%,d", totalIncome) + " " + MainActivity.defaultCurrency;
         income.setText(incomeString);
-        String expenseString = Integer.toString(totalExpense) + " " + MainActivity.defaultCurrency;
+        String expenseString = String.format(Locale.getDefault(), "%,d", totalExpense) + " " + MainActivity.defaultCurrency;
         expense.setText(expenseString);
     }
 
@@ -401,7 +404,25 @@ public class AccountSummary extends Fragment {
         return data;
     }
 
-
+    /**
+     * Hides all category views
+     */
+    private void hideAllTextViews(){
+        getActivity().findViewById(R.id.salary_layout).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.rental_income_layout).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.interest_layout).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.gifts_layout).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.other_income_layout).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.taxes_layout).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.mortgage_layout).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.credit_card_layout).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.utilities_layout).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.food_layout).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.car_payment_layout).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.personal_layout).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.activities_layout).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.other_expenses_layout).setVisibility(View.GONE);
+    }
     /**
      * Runs showcase presentation on fragment start
      **/
