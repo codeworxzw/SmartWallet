@@ -18,7 +18,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
-
 import com.google.android.gms.plus.Plus;
 import com.squareup.picasso.Picasso;
 
@@ -27,21 +26,14 @@ import com.squareup.picasso.Picasso;
  * A simple {@link Fragment} subclass.
  * Holds navigation drawer elements
  */
-public class NavigationDrawerFragment extends Fragment  {
+public class NavigationDrawerFragment extends Fragment {
 
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-    private Toolbar mToolbar;
-    private ListView mDrawerList;
-    private String[] mListItems;
-    //private GoogleApiClient mGoogleApiClient;
-    private TextView mUserName;
-    private ImageView mUserPhoto;
     private View mDrawerView;
     private int fragmentPos;
     private Fragment mFragment;
-    private FragmentManager FM;
 
     public NavigationDrawerFragment() {
         // Required empty public constructor
@@ -71,15 +63,13 @@ public class NavigationDrawerFragment extends Fragment  {
     }
 
 
-
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mDrawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
-        mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        mUserName = (TextView) mDrawerView.findViewById(R.id.tv_user_name);
-        mUserPhoto = (ImageView) mDrawerView.findViewById(R.id.user_photo);
+        Toolbar mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        TextView mUserName = (TextView) mDrawerView.findViewById(R.id.tv_user_name);
+        ImageView mUserPhoto = (ImageView) mDrawerView.findViewById(R.id.user_photo);
         mUserName.setText(getArguments().getString("name", getArguments().getString("email")));
         String photoURL = getArguments().getString("photoURL", null);
         if (photoURL != null) {
@@ -89,8 +79,8 @@ public class NavigationDrawerFragment extends Fragment  {
 
         }
 
-        mDrawerList = (ListView) mDrawerView.findViewById(R.id.navigation_drawer_listview);
-        mListItems = getResources().getStringArray(R.array.drawer_menu);
+        ListView mDrawerList = (ListView) mDrawerView.findViewById(R.id.navigation_drawer_listview);
+        String[] mListItems = getResources().getStringArray(R.array.drawer_menu);
         int[] mListImages = {
                 R.drawable.ic_bill_grey_24dp,
                 R.drawable.ic_statistics_grey_24dp,
@@ -175,13 +165,11 @@ public class NavigationDrawerFragment extends Fragment  {
         fragmentPos = position;
 
         MainActivity.saveToSharedPreferences(getActivity(), "fragmentPos", Integer.toString(position));
-        FM = getFragmentManager();
+        FragmentManager FM = getFragmentManager();
 
         FM.beginTransaction().replace(R.id.fragment_container, mFragment).commit();
 
     }
-
-
 
 
     private void signout() {
