@@ -125,6 +125,7 @@ public class AccountSummary extends Fragment {
             expense = (TextView) getActivity().findViewById(R.id.tv_expense);
         }
 
+        MainActivity.fab.show();
         mContext = getContext();
         mActivity = getActivity();
     }

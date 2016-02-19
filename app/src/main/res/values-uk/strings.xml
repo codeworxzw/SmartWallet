@@ -73,6 +73,7 @@
     <string name="duplicate_entry">Категорію уже використано</string>
     <string name="edit">Редагувати</string>
     <string name="title_activity_edit">Редактор</string>
+    <string name="balance">Баланс</string>
 
 
     <string-array name="account_summary_spinner">

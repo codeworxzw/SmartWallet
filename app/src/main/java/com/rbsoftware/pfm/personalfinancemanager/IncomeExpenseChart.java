@@ -253,7 +253,7 @@ public class IncomeExpenseChart extends Fragment {
 
                 if (mapSum.get(i) != 0) {
                     float value = (mapSum.get(i) * 100.0f) / total;
-                    SliceValue sliceValue = new SliceValue(value, Utils.getColorPalette(mContext, i));
+                    SliceValue sliceValue = new SliceValue(value, Utils.getPieColorPalette(mContext, i));
                     sliceValue.setLabel(Utils.keyToString(mContext, i) + " " + String.format(Locale.getDefault(), "%.1f", value) + "%");
                     values.add(sliceValue);
                 }

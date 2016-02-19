@@ -1,18 +1,12 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,11 +43,8 @@ public class TrendsChart extends Fragment {
     private List<FinanceDocument> financeDocumentList;
     private String selectedPeriod; //position of selected item in popup menu
     private LineChartView chart;
-    private LineChartData data;
     private TextView mTextViewPeriod;
-    private List<Integer> checkedLines; //list of checked lines positions
-    private int listLinesSize; //size of checked lines list
-    private PopupMenu popupLine;
+    private int checkedLine;
     private Context mContext;
     private Activity mActivity;
 
@@ -65,15 +56,9 @@ public class TrendsChart extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        //Populating list from shared preferences
-        listLinesSize = Integer.valueOf(MainActivity.readFromSharedPreferences(getActivity(),
-                "listLinesSize", "0"));
-        checkedLines = new ArrayList<>();
-        for (int i = 0; i < listLinesSize; i++) {
-            checkedLines.add(Integer.valueOf(MainActivity.readFromSharedPreferences(getActivity(),
-                    "checkedLine" + i, null)));
 
-        }
+        checkedLine = Integer.valueOf(MainActivity.readFromSharedPreferences(getActivity(),
+                "checkedLine", "0"));
     }
 
     @Override
@@ -234,40 +219,23 @@ public class TrendsChart extends Fragment {
      */
     private void showPopupLine() {
 
-        popupLine = new PopupMenu(getActivity(), getActivity().findViewById(R.id.action_line));
+        PopupMenu popupLine = new PopupMenu(getActivity(), getActivity().findViewById(R.id.action_line));
         MenuInflater inflate = popupLine.getMenuInflater();
         inflate.inflate(R.menu.lines, popupLine.getMenu());
-        if (listLinesSize != 0) {
-            for (int i = 0; i < listLinesSize; i++) {
-                MenuItem item = popupLine.getMenu().findItem(findMenuItemByPosition(checkedLines.get(i)));
-                item.setChecked(true);
-            }
-        }
+
+        MenuItem item = popupLine.getMenu().findItem(Utils.findMenuItemByPosition(checkedLine));
+        item.setChecked(true);
+
         popupLine.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 item.setChecked(!item.isChecked());
                 if (item.isChecked()) {
-                    checkedLines.add(getPositionFromId(item.getItemId()));
-                } else {
-                    int counter = 0;
-                    while (counter < checkedLines.size()) {
-                        if (checkedLines.get(counter) == (getPositionFromId(item.getItemId()))) {
-                            checkedLines.remove(counter);
-                        } else {
-                            counter++;
-                        }
-                    }
-
+//                    checkedLines.add(getPositionFromId(item.getItemId()));
+                    checkedLine = Utils.getPositionFromId(item.getItemId());
                 }
-                listLinesSize = checkedLines.size();
-                MainActivity.saveToSharedPreferences(getActivity(), "listLinesSize",
-                        Integer.toString(listLinesSize));
-                for (int i = 0; i < checkedLines.size(); i++) {
-                    MainActivity.saveToSharedPreferences(getActivity(), "checkedLine" + i,
-                            Integer.toString(checkedLines.get(i)));
-                }
-
+                MainActivity.saveToSharedPreferences(getActivity(), "checkedLine",
+                        Integer.toString(checkedLine));
                 generateLineChartData();
 
                 return true;
@@ -282,33 +250,33 @@ public class TrendsChart extends Fragment {
      */
 
     private void generateLineChartData() {
-        List<AxisValue> axisValues = new ArrayList<AxisValue>();
-        List<Line> lines = new ArrayList<Line>();
-        for (int i = 0; i < checkedLines.size(); ++i) {
-            List<String[]> docData = getDataFromDocument(findMenuItemByPosition(checkedLines.get(i)),
-                    financeDocumentList);
-            List<PointValue> values = new ArrayList<PointValue>();
-            axisValues.clear();
-            for (int j = 0; j < docData.size(); ++j) {
-                values.add(new PointValue(j, Integer.valueOf(docData.get(j)[0])));
-                axisValues.add(new AxisValue(j).setLabel(docData.get(j)[1]));
-            }
+        List<AxisValue> axisValues = new ArrayList<>();
+        List<Line> lines = new ArrayList<>();
 
-            Line line = new Line(values);
-            line.setColor(getColorPalette
-                    (findMenuItemByPosition(checkedLines.get(i))));
-            line.setShape(ValueShape.CIRCLE);
-
-            line.setFilled(true);
-            line.setHasLabels(true);
-            line.setHasLines(true);
-            line.setHasPoints(true);
-
-            lines.add(line);
+        List<String[]> docData = getDataFromDocument(Utils.findMenuItemByPosition(checkedLine),
+                financeDocumentList);
+        List<PointValue> values = new ArrayList<>();
+        axisValues.clear();
+        for (int j = 0; j < docData.size(); ++j) {
+            values.add(new PointValue(j, Integer.valueOf(docData.get(j)[0])));
+            axisValues.add(new AxisValue(j).setLabel(docData.get(j)[1]));
         }
 
+        Line line = new Line(values);
+        line.setColor(Utils.getLineColorPalette
+                (mContext, Utils.findMenuItemByPosition(checkedLine)));
+        line.setShape(ValueShape.CIRCLE);
+        if(checkedLine !=0) {
+            line.setFilled(true);
+        }
+        line.setHasLabels(true);
+        line.setHasLines(true);
+        line.setHasPoints(true);
 
-        data = new LineChartData(lines);
+        lines.add(line);
+
+
+        LineChartData data = new LineChartData(lines);
 
 
         Axis axisX = new Axis(axisValues);
@@ -339,30 +307,28 @@ public class TrendsChart extends Fragment {
         int value;
         List<String[]> data = new ArrayList<>();
         switch (lineId) {
-            case R.id.popupTotalIncome:
+            case R.id.popupBalance:
                 for (FinanceDocument doc : docList) {
                     data.add(new String[]{
-                            Integer.toString(doc.getSalary() +
-                                    doc.getRentalIncome() +
-                                    doc.getInterest() +
-                                    doc.getGifts() +
-                                    doc.getOtherIncome()),
+                            Integer.toString(doc.getTotalIncome()-doc.getTotalExpense()),
+                            doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)});
+
+                }
+                break;
+            case R.id.popupTotalIncome:
+                for (FinanceDocument doc : docList) {
+                    value = doc.getTotalIncome();
+                    if (value != 0) data.add(new String[]{
+                            Integer.toString(value),
                             doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)});
 
                 }
                 break;
             case R.id.popupTotalExpense:
                 for (FinanceDocument doc : docList) {
-                    data.add(new String[]{
-                            Integer.toString(doc.getTaxes() +
-                                    doc.getMortgage() +
-                                    doc.getCreditCard() +
-                                    doc.getUtilities() +
-                                    doc.getFood() +
-                                    doc.getCarPayment() +
-                                    doc.getPersonal() +
-                                    doc.getActivities() +
-                                    doc.getOtherExpenses()),
+                    value = doc.getTotalExpense();
+                    if (value != 0) data.add(new String[]{
+                            Integer.toString(value),
                             doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
                     });
                 }
@@ -498,147 +464,6 @@ public class TrendsChart extends Fragment {
         return data;
     }
 
-
-    /**
-     * Converts menu item title into id
-     *
-     * @param position of menu item
-     * @return resource id
-     */
-    private int findMenuItemByPosition(int position) {
-        switch (position) {
-            case 0:
-                return R.id.popupTotalIncome;
-            case 1:
-                return R.id.popupTotalExpense;
-
-            case 2:
-                return R.id.popupSalary;
-            case 3:
-                return R.id.popupRentalIncome;
-            case 4:
-                return R.id.popupInterest;
-            case 5:
-                return R.id.popupGifts;
-            case 6:
-                return R.id.popupOtherIncome;
-
-            case 7:
-                return R.id.popupTaxes;
-            case 8:
-                return R.id.popupMortgage;
-            case 9:
-                return R.id.popupCreditCard;
-            case 10:
-                return R.id.popupUtilities;
-            case 11:
-                return R.id.popupFood;
-            case 12:
-                return R.id.popupCarPayment;
-            case 13:
-                return R.id.popupPersonal;
-            case 14:
-                return R.id.popupActivities;
-            case 15:
-                return R.id.popupOtherExpense;
-
-            default:
-                return R.id.popupTotalIncome;
-        }
-    }
-
-    /**
-     * Converts options menu id into position
-     *
-     * @param id of resource
-     * @return resource position in menu
-     */
-    private int getPositionFromId(int id) {
-        switch (id) {
-            case R.id.popupTotalIncome:
-                return 0;
-            case R.id.popupTotalExpense:
-                return 1;
-            case R.id.popupSalary:
-                return 2;
-            case R.id.popupRentalIncome:
-                return 3;
-            case R.id.popupInterest:
-                return 4;
-            case R.id.popupGifts:
-                return 5;
-            case R.id.popupOtherIncome:
-                return 6;
-
-            case R.id.popupTaxes:
-                return 7;
-            case R.id.popupMortgage:
-                return 8;
-            case R.id.popupCreditCard:
-                return 9;
-            case R.id.popupUtilities:
-                return 10;
-            case R.id.popupFood:
-                return 11;
-            case R.id.popupCarPayment:
-                return 12;
-            case R.id.popupPersonal:
-                return 13;
-            case R.id.popupActivities:
-                return 14;
-            case R.id.popupOtherExpense:
-                return 15;
-
-            default:
-                return 0;
-        }
-    }
-
-    /**
-     * gets chart line color by resource id
-     *
-     * @param i resource id
-     * @return color of line
-     */
-    private int getColorPalette(int i) {
-        switch (i) {
-            case R.id.popupTotalIncome:
-                return ContextCompat.getColor(getContext(), R.color.income);
-            case R.id.popupTotalExpense:
-                return ContextCompat.getColor(getContext(), R.color.expense);
-            case R.id.popupSalary:
-                return ContextCompat.getColor(getContext(), R.color.salary);
-            case R.id.popupRentalIncome:
-                return ContextCompat.getColor(getContext(), R.color.rental_income);
-            case R.id.popupInterest:
-                return ContextCompat.getColor(getContext(), R.color.interest);
-            case R.id.popupGifts:
-                return ContextCompat.getColor(getContext(), R.color.gifts);
-            case R.id.popupOtherIncome:
-                return ContextCompat.getColor(getContext(), R.color.other_income);
-            case R.id.popupTaxes:
-                return ContextCompat.getColor(getContext(), R.color.taxes);
-            case R.id.popupMortgage:
-                ContextCompat.getColor(getContext(), R.color.mortgage);
-            case R.id.popupCreditCard:
-                return ContextCompat.getColor(getContext(), R.color.credit_card);
-            case R.id.popupUtilities:
-                return ContextCompat.getColor(getContext(), R.color.utilities);
-            case R.id.popupFood:
-                return ContextCompat.getColor(getContext(), R.color.food);
-            case R.id.popupCarPayment:
-                return ContextCompat.getColor(getContext(), R.color.car_payment);
-            case R.id.popupPersonal:
-                return ContextCompat.getColor(getContext(), R.color.personal);
-            case R.id.popupActivities:
-                return ContextCompat.getColor(getContext(), R.color.activities);
-            case R.id.popupOtherExpense:
-                return ContextCompat.getColor(getContext(), R.color.other_expense);
-            default:
-                return Color.WHITE;
-
-        }
-    }
 
 
     /**

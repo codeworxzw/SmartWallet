@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     public final static int PARAM_ACTIVITIES = 13;
     public final static int PARAM_OTHER_EXPENSE = 14;
     public static String defaultCurrency;
-
+    public static FloatingActionButton fab;
     private List<Object> params; //List FinanceDocument constructor parameters
     private String data;
     private static String userID; //unique user identifier
@@ -99,14 +99,10 @@ public class MainActivity extends AppCompatActivity {
         reloadCurrency();
 
         //FAB declaration and listener
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Document creation
-                // createNewFinanceDocument(data);
-                //replication start
-                //financeDocumentModel.startPushReplication();
                 Intent report = new Intent(MainActivity.this, ReportActivity.class);
                 startActivityForResult(report, 1);
             }

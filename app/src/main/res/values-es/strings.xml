@@ -71,6 +71,7 @@
     <string name="duplicate_entry">Categoría ya se utiliza</string>
     <string name="edit">Editar</string>
     <string name="title_activity_edit">Editor</string>
+    <string name="balance">Balance</string>
 
 
     <string-array name="drawer_menu">

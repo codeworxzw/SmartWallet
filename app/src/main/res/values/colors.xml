@@ -7,6 +7,8 @@
     <color name="colorAccentDark">#EF6C00</color>
     <color name="colorPagerTabStrip">#C8E6C9</color>
 
+    <color name="balance">#33B5E5</color>
+
     <color name="income">#99CC00</color>
     <color name="salary">#CAF0AF</color>
     <color name="rental_income">#8BC372</color>
@@ -30,4 +32,5 @@
     <color name="drawer_header">#388E3C</color>
     <color name="background">#E8F5E9</color>
     <color name="grey">#666666</color>
+
 </resources>

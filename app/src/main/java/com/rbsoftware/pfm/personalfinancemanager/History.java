@@ -66,6 +66,7 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
         mEmptyView = (TextView) getActivity().findViewById(R.id.emptyHistory);
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        MainActivity.fab.hide();
         mContext = getContext();
         mActivity = getActivity();
 

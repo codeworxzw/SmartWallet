@@ -73,6 +73,7 @@
     <string name="duplicate_entry">Категория уже использована</string>
     <string name="edit">Редактировать</string>
     <string name="title_activity_edit">Редактор</string>
+    <string name="balance">Баланс</string>
 
     <string-array name="drawer_menu">
         <item>Общая информация</item>
