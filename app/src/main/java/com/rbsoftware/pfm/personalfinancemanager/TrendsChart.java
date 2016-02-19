@@ -27,6 +27,7 @@ import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.model.ValueShape;
+import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
@@ -42,7 +43,7 @@ public class TrendsChart extends Fragment {
     private RelativeLayout relativeLayout;
     private List<FinanceDocument> financeDocumentList;
     private String selectedPeriod; //position of selected item in popup menu
-    private LineChartView chart;
+    private LineChartView mLineChart;
     private TextView mTextViewPeriod;
     private int checkedLine;
     private Context mContext;
@@ -77,8 +78,8 @@ public class TrendsChart extends Fragment {
         if (mTextViewPeriod == null) {
             mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period_trend);
         }
-        if (chart == null) {
-            chart = (LineChartView) getActivity().findViewById(R.id.trends_chart);
+        if (mLineChart == null) {
+            mLineChart = (LineChartView) getActivity().findViewById(R.id.trends_chart);
         }
 
         mContext = getContext();
@@ -231,7 +232,6 @@ public class TrendsChart extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 item.setChecked(!item.isChecked());
                 if (item.isChecked()) {
-//                    checkedLines.add(getPositionFromId(item.getItemId()));
                     checkedLine = Utils.getPositionFromId(item.getItemId());
                 }
                 MainActivity.saveToSharedPreferences(getActivity(), "checkedLine",
@@ -255,44 +255,52 @@ public class TrendsChart extends Fragment {
 
         List<String[]> docData = getDataFromDocument(Utils.findMenuItemByPosition(checkedLine),
                 financeDocumentList);
-        List<PointValue> values = new ArrayList<>();
-        axisValues.clear();
-        for (int j = 0; j < docData.size(); ++j) {
-            values.add(new PointValue(j, Integer.valueOf(docData.get(j)[0])));
-            axisValues.add(new AxisValue(j).setLabel(docData.get(j)[1]));
+        if(docData.size()>1) {
+            mLineChart.setVisibility(View.VISIBLE);
+            getActivity().findViewById(R.id.emptyTrends).setVisibility(View.GONE);
+            List<PointValue> values = new ArrayList<>();
+            axisValues.clear();
+            for (int j = 0; j < docData.size(); ++j) {
+                values.add(new PointValue(j, Integer.valueOf(docData.get(j)[0])));
+                axisValues.add(new AxisValue(j).setLabel(docData.get(j)[1]));
+            }
+
+            Line line = new Line(values);
+            line.setColor(Utils.getLineColorPalette
+                    (mContext, Utils.findMenuItemByPosition(checkedLine)));
+            line.setShape(ValueShape.CIRCLE);
+            line.setCubic(true);
+
+            line.setHasLabels(true);
+            line.setHasLines(true);
+            line.setHasPoints(true);
+
+            lines.add(line);
+
+
+            LineChartData data = new LineChartData(lines);
+
+
+            Axis axisX = new Axis(axisValues);
+            Axis axisY = new Axis().setHasLines(true);
+            axisX.setName(getResources().getString(R.string.period));
+            axisY.setName(getResources().getString(R.string.value));
+
+            data.setAxisXBottom(axisX);
+            data.setAxisYLeft(axisY);
+            mLineChart.setLineChartData(data);
+            Viewport v = new Viewport(mLineChart.getMaximumViewport());
+
+            v.bottom = v.bottom -Math.abs(v.bottom)*0.2f;
+            v.top = v.top+Math.abs(v.top)*0.2f;
+            mLineChart.setMaximumViewport(v);
+            mLineChart.setCurrentViewportWithAnimation(v);
+
         }
-
-        Line line = new Line(values);
-        line.setColor(Utils.getLineColorPalette
-                (mContext, Utils.findMenuItemByPosition(checkedLine)));
-        line.setShape(ValueShape.CIRCLE);
-        if(checkedLine !=0) {
-            line.setFilled(true);
+        else{
+            mLineChart.setVisibility(View.GONE);
+            getActivity().findViewById(R.id.emptyTrends).setVisibility(View.VISIBLE);
         }
-        line.setHasLabels(true);
-        line.setHasLines(true);
-        line.setHasPoints(true);
-
-        lines.add(line);
-
-
-        LineChartData data = new LineChartData(lines);
-
-
-        Axis axisX = new Axis(axisValues);
-        Axis axisY = new Axis().setHasLines(true);
-        //  axisX.setHasTiltedLabels(true);
-        //  axisX.setValues(getDates(financeDocumentList));
-        axisX.setName(getResources().getString(R.string.period));
-        axisY.setName(getResources().getString(R.string.value));
-
-        data.setAxisXBottom(axisX);
-        data.setAxisYLeft(axisY);
-
-
-        data.setBaseValue(Float.NEGATIVE_INFINITY);
-        chart.setLineChartData(data);
-
     }
 
 

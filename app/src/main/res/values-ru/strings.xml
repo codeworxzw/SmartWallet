@@ -74,7 +74,9 @@
     <string name="edit">Редактировать</string>
     <string name="title_activity_edit">Редактор</string>
     <string name="balance">Баланс</string>
-
+    <string name="income_is_empty">Доходы пустые. Нажмите (+) для создания данных</string>
+    <string name="expense_is_empty">Затраты пустые. Нажмите (+) для создания данных</string>
+    <string name="no_data_to_show">Нет данных для отображения&#8230;</string>
     <string-array name="drawer_menu">
         <item>Общая информация</item>
         <item>Графики</item>

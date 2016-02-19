@@ -24,6 +24,6 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="@string/history_is_empty"
-        android:textSize="24sp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:visibility="gone" />
 </RelativeLayout>

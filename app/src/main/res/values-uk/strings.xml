@@ -74,7 +74,9 @@
     <string name="edit">Редагувати</string>
     <string name="title_activity_edit">Редактор</string>
     <string name="balance">Баланс</string>
-
+    <string name="income_is_empty">Доходи порожні. Натисніть (+) для створення даних</string>
+    <string name="expense_is_empty">Витрати порожні. Натисніть (+) для створення даних</string>
+    <string name="no_data_to_show">Немає даних для відображення&#8230;</string>
 
     <string-array name="account_summary_spinner">
         <item>Поточний тиждень</item>
