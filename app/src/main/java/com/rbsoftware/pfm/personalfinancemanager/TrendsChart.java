@@ -291,7 +291,7 @@ public class TrendsChart extends Fragment {
             mLineChart.setLineChartData(data);
             Viewport v = new Viewport(mLineChart.getMaximumViewport());
 
-            v.bottom = v.bottom -Math.abs(v.bottom)*0.2f;
+            v.bottom = v.bottom -Math.abs(v.top)*0.1f;
             v.top = v.top+Math.abs(v.top)*0.2f;
             mLineChart.setMaximumViewport(v);
             mLineChart.setCurrentViewportWithAnimation(v);
