@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 
 import java.util.ArrayList;
 
@@ -64,7 +65,7 @@ public class Utils {
      */
     public static int dpToPx(Context mContext, int dp) {
         DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, displayMetrics));
     }
 
     /**

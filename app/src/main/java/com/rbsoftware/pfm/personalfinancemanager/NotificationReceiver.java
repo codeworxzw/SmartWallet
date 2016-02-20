@@ -28,7 +28,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         Calendar c = Calendar.getInstance(TimeZone.getDefault());
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         String currentDate = df.format(c.getTime());
-        String updatedDate = MainActivity.readFromSharedPreferences(mContext, "updatedDate", "");
+        String updatedDate = MainActivity.readFromSharedPreferences(mContext, "createdDate", "");
         if (!updatedDate.equals(currentDate)) {
             NotificationManager mNM = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
             NotificationCompat.Builder dailyReminder = (NotificationCompat.Builder) new NotificationCompat.Builder(mContext)
@@ -59,7 +59,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         }
         else
         {
-            Log.d(TAG, "User opened app today");
+            Log.d(TAG, "User submitted data today");
         }
     }
 

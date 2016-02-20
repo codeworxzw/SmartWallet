@@ -44,14 +44,11 @@ public class MainActivity extends AppCompatActivity {
     public static String defaultCurrency;
     public static FloatingActionButton fab;
     private List<Object> params; //List FinanceDocument constructor parameters
-    private String data;
     private static String userID; //unique user identifier
-    private NavigationDrawerFragment drawerFragment;
     private boolean retained = false;
 
 
     public static FinanceDocumentModel financeDocumentModel;
-    private FinanceDocument financeDocument;
 
 
     @Override
@@ -65,10 +62,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //Get intent userdata from login activity
         Intent intent = getIntent();
-        data = intent.getExtras().getString("name");
         userID = intent.getExtras().getString("id");
         params = new ArrayList<>();
-
+        NavigationDrawerFragment drawerFragment;
         if (savedInstanceState == null) {
             drawerFragment = new NavigationDrawerFragment();
             drawerFragment.setArguments(intent.getExtras());
@@ -79,9 +75,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         retained = true;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
 
         // Protect creation of static variable.
         if (financeDocumentModel == null) {
@@ -180,9 +177,13 @@ public class MainActivity extends AppCompatActivity {
      * @param params list of finance document fields
      */
     private void createNewFinanceDocument(List<Object> params) {
-        financeDocument = new FinanceDocument(params);
+        FinanceDocument financeDocument = new FinanceDocument(params);
         financeDocumentModel.createDocument(financeDocument);
-
+        //Save tag when new doc created
+        Calendar c = Calendar.getInstance(TimeZone.getDefault());
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        String currentDate = df.format(c.getTime());
+        saveToSharedPreferences(this, "createdDate", currentDate);
 
     }
 

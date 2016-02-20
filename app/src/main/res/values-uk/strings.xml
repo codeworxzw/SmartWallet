@@ -4,7 +4,7 @@
     <string name="activities">Розваги</string>
     <string name="add_line">Додати поле</string>
     <string name="car_payment">Автомобіль</string>
-    <string name="credit_card">Кредитна карта</string>
+    <string name="credit_card">Кредит</string>
     <string name="daily_reminder_text">Заповніть Ваш звіт</string>
     <string name="daily_reminder_title">Щоденне нагадування Smart Wallet</string>
     <string name="default_currency">Валюта за замовчуванням</string>
@@ -33,7 +33,7 @@
     <string name="period">Період</string>
     <string name="personal">Особисті</string>
     <string name="recurs">Повторюються</string>
-    <string name="rental_income">Доходи від оренди</string>
+    <string name="rental_income">Дохід з оренди</string>
     <string name="salary">Зарплата</string>
     <string name="share">Поділитись</string>
     <string name="taxes">Податки</string>
@@ -103,7 +103,7 @@
         <item>Інші доходи</item>
         <item>Податки</item>
         <item>Іпотека</item>
-        <item>Кредитна карта</item>
+        <item>Кредит</item>
         <item>Комунальні</item>
         <item>Харчування</item>
         <item>Автомобіль</item>

@@ -290,9 +290,9 @@ public class TrendsChart extends Fragment {
             data.setAxisYLeft(axisY);
             mLineChart.setLineChartData(data);
             Viewport v = new Viewport(mLineChart.getMaximumViewport());
-
-            v.bottom = v.bottom -Math.abs(v.top)*0.1f;
-            v.top = v.top+Math.abs(v.top)*0.2f;
+            float delta = Math.max(Math.abs(v.top),Math.abs(v.bottom));
+            v.bottom = v.bottom -delta*0.1f;
+            v.top = v.top+delta*0.2f;
             mLineChart.setMaximumViewport(v);
             mLineChart.setCurrentViewportWithAnimation(v);
 
