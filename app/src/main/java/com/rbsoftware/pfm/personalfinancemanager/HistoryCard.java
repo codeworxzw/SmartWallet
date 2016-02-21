@@ -5,6 +5,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -148,18 +149,30 @@ public class HistoryCard extends Card {
          *
          * @param i     position in hash map
          * @param value hash map value
-         * @return TextView object
+         * @return RelativeLayout with two TextViews
          */
-        private TextView createNewTextView(int i, String value) {
+        private RelativeLayout createNewTextView(int i, String value) {
+            final RelativeLayout mRelativeLayout = new RelativeLayout(mContext);
+            final RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            final RelativeLayout.LayoutParams layoutParamsCategory = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            final RelativeLayout.LayoutParams layoutParamsData = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-            final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            final TextView mTextView = new TextView(mContext);
-            String row;
-            mTextView.setLayoutParams(layoutParams);
+            layoutParamsCategory.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            layoutParamsData.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+            final TextView mTextViewCategory = new TextView(mContext);
+            final TextView mTextViewData = new TextView(mContext);
+            mRelativeLayout.setLayoutParams(layoutParams);
+            mTextViewCategory.setLayoutParams(layoutParamsCategory);
+            mTextViewData.setLayoutParams(layoutParamsData);
             String sign = (i < 6) ? "+" : "-";
-            row = Utils.keyToString(getContext(), i) + " " + sign + value;
-            mTextView.setText(row);
-            return mTextView;
+            String rowCategory = Utils.keyToString(getContext(), i);
+            String rowData = sign + value;
+            mTextViewCategory.setText(rowCategory);
+            mTextViewData.setText(rowData);
+            mRelativeLayout.addView(mTextViewCategory);
+            mRelativeLayout.addView(mTextViewData);
+            return mRelativeLayout;
         }
 
         /**
