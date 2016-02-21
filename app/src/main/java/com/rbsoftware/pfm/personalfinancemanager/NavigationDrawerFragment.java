@@ -56,8 +56,12 @@ public class NavigationDrawerFragment extends Fragment {
 
         mDrawerView = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         // Inflate the layout for this fragment
-        fragmentPos = Integer.valueOf(MainActivity.readFromSharedPreferences(getActivity(), "fragmentPos", "0"));
-
+        if(savedInstanceState == null){
+            fragmentPos =0;
+        }
+        else{
+            fragmentPos = savedInstanceState.getInt("fragmentPos");
+        }
 
         return mDrawerView;
     }
@@ -88,7 +92,6 @@ public class NavigationDrawerFragment extends Fragment {
                 R.drawable.ic_settings_grey_24dp,
                 R.drawable.ic_exit_grey_24dp};
 
-        // mDrawerList.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mListItems));
         mDrawerList.setAdapter(new DrawerListAdapter(getActivity(), mListImages, mListItems));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
@@ -131,6 +134,12 @@ public class NavigationDrawerFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt("fragmentPos",fragmentPos);
+        super.onSaveInstanceState(outState);
+    }
+
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
@@ -164,7 +173,6 @@ public class NavigationDrawerFragment extends Fragment {
         }
         fragmentPos = position;
 
-        MainActivity.saveToSharedPreferences(getActivity(), "fragmentPos", Integer.toString(position));
         FragmentManager FM = getFragmentManager();
 
         FM.beginTransaction().replace(R.id.fragment_container, mFragment).commit();

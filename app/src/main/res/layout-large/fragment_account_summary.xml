@@ -2,12 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     android:paddingEnd="16dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingStart="16dp"
-    android:scrollbars="none"
-    android:fillViewport="true">
+    android:scrollbars="none">
 
     <LinearLayout
 
@@ -22,15 +22,15 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:text="@string/this_week"
             android:layout_weight="4"
+            android:text="@string/this_week"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="35"
             android:layout_marginTop="50dp"
+            android:layout_weight="35"
             android:orientation="vertical">
 
             <LinearLayout
@@ -61,9 +61,23 @@
                     android:textSize="36sp" />
             </LinearLayout>
 
+            <RelativeLayout
+                android:id="@+id/emptyIncome"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_horizontal"
+                    android:text="@string/income_is_empty"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </RelativeLayout>
+
             <LinearLayout
                 android:id="@+id/salary_layout"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -73,7 +87,8 @@
                 android:background="@drawable/salary_background"
                 android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
-                android:paddingStart="8dp">
+                android:paddingStart="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView"
@@ -96,7 +111,6 @@
 
             <LinearLayout
                 android:id="@+id/rental_income_layout"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -106,7 +120,8 @@
                 android:background="@drawable/rental_income_background"
                 android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
-                android:paddingStart="8dp">
+                android:paddingStart="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView3"
@@ -130,7 +145,6 @@
 
             <LinearLayout
                 android:id="@+id/interest_layout"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -140,7 +154,8 @@
                 android:background="@drawable/interest_background"
                 android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
-                android:paddingStart="8dp">
+                android:paddingStart="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView5"
@@ -163,7 +178,6 @@
 
             <LinearLayout
                 android:id="@+id/gifts_layout"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -173,7 +187,8 @@
                 android:background="@drawable/gifts_background"
                 android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
-                android:paddingStart="8dp">
+                android:paddingStart="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView4"
@@ -196,7 +211,6 @@
 
             <LinearLayout
                 android:id="@+id/other_income_layout"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -206,7 +220,8 @@
                 android:background="@drawable/other_income_background"
                 android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
-                android:paddingStart="8dp">
+                android:paddingStart="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView6"
@@ -231,8 +246,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="61"
             android:layout_marginTop="50dp"
+            android:layout_weight="61"
             android:orientation="vertical">
 
             <LinearLayout
@@ -263,9 +278,23 @@
                     android:textSize="36sp" />
             </LinearLayout>
 
+            <RelativeLayout
+                android:id="@+id/emptyExpense"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center_horizontal"
+                    android:text="@string/expense_is_empty"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </RelativeLayout>
+
             <LinearLayout
                 android:id="@+id/food_layout"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -275,7 +304,8 @@
                 android:background="@drawable/food_background"
                 android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
-                android:paddingStart="8dp">
+                android:paddingStart="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView8"
@@ -298,7 +328,6 @@
 
             <LinearLayout
                 android:id="@+id/car_payment_layout"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -308,7 +337,8 @@
                 android:background="@drawable/car_payment_background"
                 android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
-                android:paddingStart="8dp">
+                android:paddingStart="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView9"
@@ -331,7 +361,6 @@
 
             <LinearLayout
                 android:id="@+id/personal_layout"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -341,7 +370,8 @@
                 android:background="@drawable/personal_background"
                 android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
-                android:paddingStart="8dp">
+                android:paddingStart="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView10"
@@ -364,7 +394,6 @@
 
             <LinearLayout
                 android:id="@+id/activities_layout"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -374,7 +403,8 @@
                 android:background="@drawable/activities_background"
                 android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
-                android:paddingStart="8dp">
+                android:paddingStart="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView15"
@@ -397,7 +427,6 @@
 
             <LinearLayout
                 android:id="@+id/utilities_layout"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -407,7 +436,8 @@
                 android:background="@drawable/utilities_background"
                 android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
-                android:paddingStart="8dp">
+                android:paddingStart="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView11"
@@ -430,7 +460,6 @@
 
             <LinearLayout
                 android:id="@+id/credit_card_layout"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -440,7 +469,8 @@
                 android:background="@drawable/credit_card_background"
                 android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
-                android:paddingStart="8dp">
+                android:paddingStart="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView12"
@@ -463,7 +493,6 @@
 
             <LinearLayout
                 android:id="@+id/taxes_layout"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -473,7 +502,8 @@
                 android:background="@drawable/taxes_background"
                 android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
-                android:paddingStart="8dp">
+                android:paddingStart="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView13"
@@ -496,7 +526,6 @@
 
             <LinearLayout
                 android:id="@+id/mortgage_layout"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -506,7 +535,8 @@
                 android:background="@drawable/mortgage_background"
                 android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
-                android:paddingStart="8dp">
+                android:paddingStart="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView14"
@@ -529,7 +559,6 @@
 
             <LinearLayout
                 android:id="@+id/other_expenses_layout"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="50dp"
@@ -539,7 +568,8 @@
                 android:background="@drawable/other_expenses_background"
                 android:paddingBottom="2dp"
                 android:paddingLeft="8dp"
-                android:paddingStart="8dp">
+                android:paddingStart="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView16"

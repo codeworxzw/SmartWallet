@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 
 import java.util.ArrayList;
 
@@ -64,7 +65,7 @@ public class Utils {
      */
     public static int dpToPx(Context mContext, int dp) {
         DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, displayMetrics));
     }
 
     /**
@@ -118,12 +119,158 @@ public class Utils {
     }
 
     /**
+     * Converts menu item title into id
+     *
+     * @param position of menu item
+     * @return resource id
+     */
+    public static int findMenuItemByPosition(int position) {
+        switch (position) {
+            case 0:
+                return R.id.popupBalance;
+            case 1:
+                return R.id.popupTotalIncome;
+            case 2:
+                return R.id.popupTotalExpense;
+
+            case 3:
+                return R.id.popupSalary;
+            case 4:
+                return R.id.popupRentalIncome;
+            case 5:
+                return R.id.popupInterest;
+            case 6:
+                return R.id.popupGifts;
+            case 7:
+                return R.id.popupOtherIncome;
+
+            case 8:
+                return R.id.popupTaxes;
+            case 9:
+                return R.id.popupMortgage;
+            case 10:
+                return R.id.popupCreditCard;
+            case 11:
+                return R.id.popupUtilities;
+            case 12:
+                return R.id.popupFood;
+            case 13:
+                return R.id.popupCarPayment;
+            case 14:
+                return R.id.popupPersonal;
+            case 15:
+                return R.id.popupActivities;
+            case 16:
+                return R.id.popupOtherExpense;
+
+            default:
+                return R.id.popupBalance;
+        }
+    }
+
+    /**
+     * Converts options menu id into position
+     *
+     * @param id of resource
+     * @return resource position in menu
+     */
+    public static int getPositionFromId(int id) {
+        switch (id) {
+            case R.id.popupBalance:
+                return 0;
+            case R.id.popupTotalIncome:
+                return 1;
+            case R.id.popupTotalExpense:
+                return 2;
+            case R.id.popupSalary:
+                return 3;
+            case R.id.popupRentalIncome:
+                return 4;
+            case R.id.popupInterest:
+                return 5;
+            case R.id.popupGifts:
+                return 6;
+            case R.id.popupOtherIncome:
+                return 7;
+
+            case R.id.popupTaxes:
+                return 8;
+            case R.id.popupMortgage:
+                return 9;
+            case R.id.popupCreditCard:
+                return 10;
+            case R.id.popupUtilities:
+                return 11;
+            case R.id.popupFood:
+                return 12;
+            case R.id.popupCarPayment:
+                return 13;
+            case R.id.popupPersonal:
+                return 14;
+            case R.id.popupActivities:
+                return 15;
+            case R.id.popupOtherExpense:
+                return 16;
+
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     * gets chart line color by resource id
+     *
+     * @param i resource id
+     * @return color of line
+     */
+    public static int getLineColorPalette(Context mContext, int i) {
+        switch (i) {
+            case R.id.popupBalance:
+                return ContextCompat.getColor(mContext, R.color.balance);
+            case R.id.popupTotalIncome:
+                return ContextCompat.getColor(mContext, R.color.income);
+            case R.id.popupTotalExpense:
+                return ContextCompat.getColor(mContext, R.color.expense);
+            case R.id.popupSalary:
+                return ContextCompat.getColor(mContext, R.color.salary);
+            case R.id.popupRentalIncome:
+                return ContextCompat.getColor(mContext, R.color.rental_income);
+            case R.id.popupInterest:
+                return ContextCompat.getColor(mContext, R.color.interest);
+            case R.id.popupGifts:
+                return ContextCompat.getColor(mContext, R.color.gifts);
+            case R.id.popupOtherIncome:
+                return ContextCompat.getColor(mContext, R.color.other_income);
+            case R.id.popupTaxes:
+                return ContextCompat.getColor(mContext, R.color.taxes);
+            case R.id.popupMortgage:
+                ContextCompat.getColor(mContext, R.color.mortgage);
+            case R.id.popupCreditCard:
+                return ContextCompat.getColor(mContext, R.color.credit_card);
+            case R.id.popupUtilities:
+                return ContextCompat.getColor(mContext, R.color.utilities);
+            case R.id.popupFood:
+                return ContextCompat.getColor(mContext, R.color.food);
+            case R.id.popupCarPayment:
+                return ContextCompat.getColor(mContext, R.color.car_payment);
+            case R.id.popupPersonal:
+                return ContextCompat.getColor(mContext, R.color.personal);
+            case R.id.popupActivities:
+                return ContextCompat.getColor(mContext, R.color.activities);
+            case R.id.popupOtherExpense:
+                return ContextCompat.getColor(mContext, R.color.other_expense);
+            default:
+                return Color.WHITE;
+
+        }
+    }
+    /**
      * Gets color by data type key
      *
      * @param i data type key
      * @return color
      */
-    public static int getColorPalette(Context mContext, int i) {
+    public static int getPieColorPalette(Context mContext, int i) {
         switch (i) {
             case 1:
                 return ContextCompat.getColor(mContext, R.color.salary);

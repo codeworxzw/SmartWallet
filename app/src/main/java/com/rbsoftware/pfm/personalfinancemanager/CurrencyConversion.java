@@ -19,7 +19,6 @@ import java.util.TimeZone;
 public class CurrencyConversion extends AsyncTask<String, String, String> {
     private static final String TAG = "CurrencyConvertion";
     private HttpURLConnection urlConnection;
-    private Currency currency;
     private Context mContext;
 
     public CurrencyConversion(Context context) {
@@ -54,7 +53,7 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String output) {
-        currency = new Currency(output);
+        Currency currency = new Currency(output);
         Calendar c = Calendar.getInstance(TimeZone.getDefault());
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
@@ -78,7 +77,7 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
 
 
     /**
-     * Static method for currency convertion
+     * Static method for currency conversion
      *
      * @param in          input value
      * @param curr        input currency

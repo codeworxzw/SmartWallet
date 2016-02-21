@@ -3,6 +3,7 @@
     android:id="@+id/trendsChartLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context="com.rbsoftware.pfm.personalfinancemanager.TrendsChart">
 
     <TextView
@@ -24,5 +25,15 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:layout_marginTop="18dp"/>
+    <TextView
+        android:id="@+id/emptyTrends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:drawableTop="@drawable/empty_64dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/no_data_to_show"
+        android:visibility="gone"/>
 
 </RelativeLayout>

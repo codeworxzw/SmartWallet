@@ -6,6 +6,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingStart="16dp"
+    android:fillViewport="true"
     android:scrollbars="none">
 
     <LinearLayout
@@ -72,6 +73,20 @@
                         android:textSize="36sp" />
                 </LinearLayout>
 
+                <RelativeLayout
+                    android:id="@+id/emptyIncome"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_horizontal"
+                        android:text="@string/income_is_empty"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                </RelativeLayout>
                 <LinearLayout
                     android:id="@+id/salary_layout"
                     android:visibility="gone"
@@ -275,6 +290,21 @@
 
                         android:textSize="36sp" />
                 </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/emptyExpense"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_horizontal"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/expense_is_empty" />
+                </RelativeLayout>
 
                 <LinearLayout
                     android:id="@+id/food_layout"

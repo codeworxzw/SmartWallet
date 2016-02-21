@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 
@@ -122,7 +124,7 @@ public class LoginActivity extends AppCompatActivity implements
 
 
     @Override
-    public void onConnectionFailed(ConnectionResult result) {
+    public void onConnectionFailed(@NonNull ConnectionResult result) {
         if (!result.hasResolution()) {
             GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), this,
                     RC_SIGN_IN).show();
@@ -178,7 +180,7 @@ public class LoginActivity extends AppCompatActivity implements
      * Fetches profile data and starts MainActivity
      */
     private void handleResult() {
-
+        if(!mGoogleApiClient.isConnected()) mGoogleApiClient.connect();
         if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
             Person acct = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
             Intent intent = new Intent(this, MainActivity.class);
@@ -225,7 +227,7 @@ public class LoginActivity extends AppCompatActivity implements
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case 0: {

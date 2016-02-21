@@ -71,7 +71,10 @@
     <string name="duplicate_entry">Categoría ya se utiliza</string>
     <string name="edit">Editar</string>
     <string name="title_activity_edit">Editor</string>
-
+    <string name="balance">Balance</string>
+    <string name="income_is_empty">Ingresos está vacía. Pulse (+) para crear datos de</string>
+    <string name="expense_is_empty">Gastos está vacía. Pulse (+) para crear datos de</string>
+    <string name="no_data_to_show">No hay información para mostrar&#8230;</string>
 
     <string-array name="drawer_menu">
         <item>Información  general</item>

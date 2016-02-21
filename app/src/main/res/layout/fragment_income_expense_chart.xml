@@ -3,6 +3,7 @@
     android:id="@+id/incomeExpenseLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context="com.rbsoftware.pfm.personalfinancemanager.IncomeExpenseChart">
 
     <ToggleButton
@@ -40,6 +41,15 @@
         android:text="@string/this_week"
         android:background="@android:color/white"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
+    <TextView
+        android:id="@+id/emptyIncomeExpense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:drawableTop="@drawable/empty_64dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/no_data_to_show"
+        android:visibility="gone"/>
 
 </RelativeLayout>

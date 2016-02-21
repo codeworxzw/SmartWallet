@@ -249,23 +249,35 @@ public class IncomeExpenseChart extends Fragment {
             total += mapSum.get(i);
         }
         if (total != 0) {
+            mPieChart.setVisibility(View.VISIBLE);
+            getActivity().findViewById(R.id.emptyIncomeExpense).setVisibility(View.GONE);
+            int j=0;
             for (int i = 1 + offsetStart; i <= (mapSum.size() - offsetEnd); ++i) {
 
                 if (mapSum.get(i) != 0) {
                     float value = (mapSum.get(i) * 100.0f) / total;
-                    SliceValue sliceValue = new SliceValue(value, Utils.getColorPalette(mContext, i));
+                    SliceValue sliceValue = new SliceValue(1, Utils.getPieColorPalette(mContext, i));
                     sliceValue.setLabel(Utils.keyToString(mContext, i) + " " + String.format(Locale.getDefault(), "%.1f", value) + "%");
                     values.add(sliceValue);
+
+                    values.get(j).setTarget(value);
+                    j++;
                 }
             }
+            PieChartData data = new PieChartData(values);
+            data.setHasLabels(true);
+            data.setHasLabelsOutside(false);
+            data.setHasCenterCircle(true);
+            data.setCenterText1(String.format(Locale.getDefault(), "%,d", total));
+            data.setCenterText2(MainActivity.defaultCurrency);
+            mPieChart.setPieChartData(data);
+            mPieChart.startDataAnimation();
         }
-        PieChartData data = new PieChartData(values);
-        data.setHasLabels(true);
-        data.setHasLabelsOutside(false);
-        data.setHasCenterCircle(true);
-        data.setCenterText1(String.format(Locale.getDefault(), "%,d", total));
-        data.setCenterText2(MainActivity.defaultCurrency);
-        mPieChart.setPieChartData(data);
+        else{
+            mPieChart.setVisibility(View.GONE);
+            getActivity().findViewById(R.id.emptyIncomeExpense).setVisibility(View.VISIBLE);
+        }
+
 
     }
 

@@ -43,9 +43,9 @@ public class AccountSummary extends Fragment {
     private TextView carPaymentTextView;
     private TextView personalTextView;
     private TextView activitiesTextView;
-    private TextView otherExpense;
-    private TextView income;
-    private TextView expense;
+    private TextView otherExpenseTextView;
+    private TextView incomeTextView;
+    private TextView expenseTextView;
     private String selectedItem;
     private TextView mTextViewPeriod;
     private Context mContext;
@@ -115,16 +115,17 @@ public class AccountSummary extends Fragment {
         if (activitiesTextView == null) {
             activitiesTextView = (TextView) getActivity().findViewById(R.id.tv_expense_activities);
         }
-        if (otherExpense == null) {
-            otherExpense = (TextView) getActivity().findViewById(R.id.tv_expense_other);
+        if (otherExpenseTextView == null) {
+            otherExpenseTextView = (TextView) getActivity().findViewById(R.id.tv_expense_other);
         }
-        if (income == null) {
-            income = (TextView) getActivity().findViewById(R.id.tv_income);
+        if (incomeTextView == null) {
+            incomeTextView = (TextView) getActivity().findViewById(R.id.tv_income);
         }
-        if (expense == null) {
-            expense = (TextView) getActivity().findViewById(R.id.tv_expense);
+        if (expenseTextView == null) {
+            expenseTextView = (TextView) getActivity().findViewById(R.id.tv_expense);
         }
 
+        MainActivity.fab.show();
         mContext = getContext();
         mActivity = getActivity();
     }
@@ -282,6 +283,24 @@ public class AccountSummary extends Fragment {
         totalIncome = salarySum + rentalIncomeSum + interestSum + giftsSum + otherIncomeSum;
         totalExpense = taxesSum + mortgageSum + creditCardSum + utilitiesSum + foodSum + carPaymentSum + personalSum + activitiesSum + otherExpensesSum;
 
+        String incomeString = String.format(Locale.getDefault(), "%,d", totalIncome) + " " + MainActivity.defaultCurrency;
+        incomeTextView.setText(incomeString);
+        String expenseString = String.format(Locale.getDefault(), "%,d", totalExpense) + " " + MainActivity.defaultCurrency;
+        expenseTextView.setText(expenseString);
+
+        //check if any data fetched. If no data set empty views
+        if(totalIncome == 0){
+            getActivity().findViewById(R.id.emptyIncome).setVisibility(View.VISIBLE);
+        }else{
+            getActivity().findViewById(R.id.emptyIncome).setVisibility(View.GONE);
+        }
+
+        if(totalExpense == 0){
+            getActivity().findViewById(R.id.emptyExpense).setVisibility(View.VISIBLE);
+        }else{
+            getActivity().findViewById(R.id.emptyExpense).setVisibility(View.GONE);
+        }
+
         if (salarySum != 0) {
             getActivity().findViewById(R.id.salary_layout).setVisibility(View.VISIBLE);
             salaryTextView.setText(String.format(Locale.getDefault(),"%,d",salarySum));
@@ -336,12 +355,9 @@ public class AccountSummary extends Fragment {
         }
         if (otherExpensesSum != 0) {
             getActivity().findViewById(R.id.other_expenses_layout).setVisibility(View.VISIBLE);
-            otherExpense.setText(String.format(Locale.getDefault(), "%,d", otherExpensesSum));
+            otherExpenseTextView.setText(String.format(Locale.getDefault(), "%,d", otherExpensesSum));
         }
-        String incomeString = String.format(Locale.getDefault(), "%,d", totalIncome) + " " + MainActivity.defaultCurrency;
-        income.setText(incomeString);
-        String expenseString = String.format(Locale.getDefault(), "%,d", totalExpense) + " " + MainActivity.defaultCurrency;
-        expense.setText(expenseString);
+
     }
 
     /**
@@ -353,7 +369,7 @@ public class AccountSummary extends Fragment {
         List<String[]> data = new ArrayList<>();
         data.add(new String[]{getString(R.string.period), mTextViewPeriod.getText().toString()});
         data.add(new String[]{"", ""});
-        data.add(new String[]{getString(R.string.income), income.getText().toString()});
+        data.add(new String[]{getString(R.string.income), incomeTextView.getText().toString()});
         data.add(new String[]{"", ""});
         if (!salaryTextView.getText().toString().equals("000")) {
             data.add(new String[]{getString(R.string.salary), salaryTextView.getText().toString()});
@@ -371,7 +387,7 @@ public class AccountSummary extends Fragment {
             data.add(new String[]{getString(R.string.other_income), otherIncomeTextView.getText().toString()});
         }
         data.add(new String[]{"", ""});
-        data.add(new String[]{getString(R.string.expense), expense.getText().toString()});
+        data.add(new String[]{getString(R.string.expense), expenseTextView.getText().toString()});
         data.add(new String[]{"", ""});
         if (!foodTextView.getText().toString().equals("000")) {
             data.add(new String[]{getString(R.string.food), foodTextView.getText().toString()});
@@ -397,8 +413,8 @@ public class AccountSummary extends Fragment {
         if (!mortgageTextView.getText().toString().equals("000")) {
             data.add(new String[]{getString(R.string.mortgage), mortgageTextView.getText().toString()});
         }
-        if (!otherExpense.getText().toString().equals("000")) {
-            data.add(new String[]{getString(R.string.other_expense), otherExpense.getText().toString()});
+        if (!otherExpenseTextView.getText().toString().equals("000")) {
+            data.add(new String[]{getString(R.string.other_expense), otherExpenseTextView.getText().toString()});
         }
 
         return data;
