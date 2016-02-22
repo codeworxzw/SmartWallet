@@ -58,7 +58,7 @@ public class Charts extends Fragment {
         }
         mPager.setAdapter(adapter);
 
-
+        MainActivity.fab.hide();
     }
 
 

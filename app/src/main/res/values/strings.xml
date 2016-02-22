@@ -128,6 +128,10 @@
     <string name="duplicate_entry">Category is already used</string>
     <string name="edit">Edit</string>
     <string name="title_activity_edit">Editor</string>
+    <string name="balance">Balance</string>
+    <string name="income_is_empty">Income is empty. Press (+) to create data</string>
+    <string name="expense_is_empty">Expense is empty. Press (+) to create data</string>
+    <string name="no_data_to_show">No data to display&#8230;</string>
 
 
 </resources>

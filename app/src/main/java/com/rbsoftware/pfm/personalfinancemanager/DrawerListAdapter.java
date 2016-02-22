@@ -1,7 +1,6 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,15 +20,11 @@ public class DrawerListAdapter extends BaseAdapter {
     private String[] textArray;
     private Activity mContext;
 
-    private LayoutInflater mLayoutInflater = null;
 
     public DrawerListAdapter(FragmentActivity context, int[] images, String[] time) {
         imageArray = images;
         textArray = time;
         mContext = context;
-        mLayoutInflater = (LayoutInflater) mContext
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
 
     }
 
@@ -53,8 +48,8 @@ public class DrawerListAdapter extends BaseAdapter {
         View v = convertView;
         Holder viewHolder;
         if (convertView == null) {
-            LayoutInflater li = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = li.inflate(R.layout.drawer_list_row, null);
+            LayoutInflater li = mContext.getLayoutInflater();
+            v = li.inflate(R.layout.drawer_list_row, parent,false);
             viewHolder = new Holder(v);
             v.setTag(viewHolder);
         } else {
