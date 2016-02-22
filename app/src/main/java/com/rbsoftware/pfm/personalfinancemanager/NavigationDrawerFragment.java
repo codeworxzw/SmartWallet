@@ -56,10 +56,9 @@ public class NavigationDrawerFragment extends Fragment {
 
         mDrawerView = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         // Inflate the layout for this fragment
-        if(savedInstanceState == null){
-            fragmentPos =0;
-        }
-        else{
+        if (savedInstanceState == null) {
+            fragmentPos = 0;
+        } else {
             fragmentPos = savedInstanceState.getInt("fragmentPos");
         }
 
@@ -106,13 +105,15 @@ public class NavigationDrawerFragment extends Fragment {
         ) {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-
+                if (fragmentPos == 0)
+                    MainActivity.fab.show();
                 getActivity().invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-
+                if (fragmentPos == 0)
+                    MainActivity.fab.hide();
                 getActivity().invalidateOptionsMenu();
             }
         };
@@ -136,7 +137,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt("fragmentPos",fragmentPos);
+        outState.putInt("fragmentPos", fragmentPos);
         super.onSaveInstanceState(outState);
     }
 
