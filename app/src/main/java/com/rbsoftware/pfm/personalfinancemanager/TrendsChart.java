@@ -293,6 +293,7 @@ public class TrendsChart extends Fragment {
             float delta = Math.max(Math.abs(v.top), Math.abs(v.bottom));
             v.bottom = v.bottom - delta * 0.1f;
             v.top = v.top + delta * 0.2f;
+            v.right=(v.right <10)? v.right*1.05f : v.right*1.01f;
             mLineChart.setMaximumViewport(v);
             mLineChart.setCurrentViewportWithAnimation(v);
 
