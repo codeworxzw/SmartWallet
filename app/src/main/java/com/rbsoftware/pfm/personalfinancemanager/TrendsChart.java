@@ -258,7 +258,8 @@ public class TrendsChart extends Fragment {
         if (docData.size() > 1) {
             mLineChart.setVisibility(View.VISIBLE);
             getActivity().findViewById(R.id.emptyTrends).setVisibility(View.GONE);
-            List<PointValue> values = new ArrayList<>();
+            List<PointValue> values =
+                    new ArrayList<>();
             axisValues.clear();
             for (int j = 0; j < docData.size(); ++j) {
                 values.add(new PointValue(j, Integer.valueOf(docData.get(j)[0])));
