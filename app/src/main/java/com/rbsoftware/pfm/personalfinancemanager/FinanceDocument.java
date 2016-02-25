@@ -482,7 +482,7 @@ public class FinanceDocument {
     }
 
     /**
-     * Converts unix date inot human readable
+     * Converts unix date into human readable
      *
      * @param format date of the date
      * @return human readable date
