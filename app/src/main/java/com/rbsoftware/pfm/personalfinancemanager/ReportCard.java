@@ -28,7 +28,9 @@ import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 
 /**
- * Created by burzakovskiy on 2/24/2016.
+ * Holds methods for edit and report layout and operations
+ *
+ * @author Roman Burzakovskiy
  */
 public class ReportCard extends Card {
     private final static String TAG = "ReportCard";
@@ -44,14 +46,29 @@ public class ReportCard extends Card {
         this.addCardHeader(header);
     }
 
+    /**
+     * Gets getCategorySpinnerId value
+     *
+     * @return int getCategorySpinnerId
+     */
     public int getCategorySpinnerId() {
         return ((ReportCardHeader) this.getCardHeader()).categorySpinnerId;
     }
 
+    /**
+     * Gets buttonCounter value
+     *
+     * @return int buttonCounter
+     */
     public int getButtonCounter() {
         return ((ReportCardHeader) this.getCardHeader()).buttonCounter;
     }
 
+    /**
+     * Prepares layout for onSaveInstanceState
+     *
+     * @return Bundle of layout state
+     */
     public Bundle getElementsToSave() {
         Bundle outState = new Bundle();
         int counter = this.getCategorySpinnerId() - 1000;
@@ -159,17 +176,24 @@ public class ReportCard extends Card {
         private View mView;
 
         FinanceDocument mFinanceDocument;
+
         public ReportCardHeader(Context context, Bundle savedInstanceState, String docId) {
             super(context, R.layout.report_card_layout);
             this.savedInstanceState = savedInstanceState;
-            if(docId == null){mFinanceDocument = null;}
-            else{mFinanceDocument = MainActivity.financeDocumentModel.getFinanceDocument(docId);}
+            if (docId == null) {
+                mFinanceDocument = null;
+            } else {
+                mFinanceDocument = MainActivity.financeDocumentModel.getFinanceDocument(docId);
+            }
 
         }
 
         @Override
         public void setupInnerViewElements(ViewGroup parent, final View view) {
             super.setupInnerViewElements(parent, view);
+            final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+
+            parent.setLayoutParams(lparams);
             this.mView = view;
             mLayout = (RelativeLayout) view.findViewById(R.id.report_item_layout);
             mTextViewDate = (TextView) view.findViewById(R.id.textViewDate);
@@ -177,14 +201,14 @@ public class ReportCard extends Card {
             DateFormat sdf = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
             mTextViewDate.setText(sdf.format(c.getTimeInMillis()));
 
-            if (savedInstanceState == null ) {
+            if (savedInstanceState == null) { //prepare initial layout for report
                 if (mFinanceDocument == null) {
                     mLayout.addView(createNewCategorySpinner(view));
                     mLayout.addView(createNewEditText());
                     mLayout.addView(createNewCurrencySpinner());
                     mLayout.addView(createNewDeleteButton(view));
                     buttonCounter = 0;
-                }else{
+                } else {   //prepare initial layout for edit
                     buttonCounter = 0;
                     for (int i = 1; i <= FinanceDocument.NUMBER_OF_CATEGORIES; i++) {
                         List<String> value = mFinanceDocument.getValuesMap().get(i);
@@ -221,12 +245,8 @@ public class ReportCard extends Card {
 
             }
             addNew = (Button) view.findViewById(R.id.btn_add_new);
-            if (savedInstanceState != null) {
 
-            } else {
-
-            }
-
+            //hide addNew button if all fields called
             if (buttonCounter >= FinanceDocument.NUMBER_OF_CATEGORIES - 1) {
                 addNew.setVisibility(View.GONE);
             }
@@ -248,6 +268,12 @@ public class ReportCard extends Card {
             });
         }
 
+        /**
+         * Retrieves card inner view by id
+         *
+         * @param id of view
+         * @return View element
+         */
         public View getViewById(int id) {
             return mView.findViewById(id);
         }
@@ -280,6 +306,7 @@ public class ReportCard extends Card {
             }
             spinner.setAdapter(currencySpinnerAdapter);
             spinner.setSelection(position);
+            //noinspection ResourceType
             spinner.setId(currencySpinnerId);
             spinner.setSaveEnabled(true);
             currencySpinnerId++;
@@ -306,6 +333,7 @@ public class ReportCard extends Card {
             ArrayAdapter<CharSequence> categorySpinnerAdapter = ArrayAdapter.createFromResource(mContext, R.array.report_activity_category_spinner, android.R.layout.simple_spinner_item);
             categorySpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner.setAdapter(categorySpinnerAdapter);
+            //noinspection ResourceType
             spinner.setId(categorySpinnerId);
             spinner.setSaveEnabled(true);
 
@@ -346,6 +374,7 @@ public class ReportCard extends Card {
             editText.setLayoutParams(lparams);
             editText.setHint(mContext.getResources().getString(R.string.value));
             editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+            //noinspection ResourceType
             editText.setId(editTextValueId);
             editText.setSaveEnabled(true);
             editText.requestFocus();
@@ -372,6 +401,7 @@ public class ReportCard extends Card {
             deleteButton.setLayoutParams(lparams);
             deleteButton.setBackgroundColor(Color.TRANSPARENT);
             deleteButton.setImageResource(R.drawable.ic_remove_grey_24dp);
+            //noinspection ResourceType
             deleteButton.setId(deleteButtonId);
             deleteButtonId++;
             deleteButton.setOnClickListener(new View.OnClickListener() {

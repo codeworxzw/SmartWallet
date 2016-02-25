@@ -1,37 +1,19 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Handler;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.InputFilter;
-import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 
 import it.gmariotti.cardslib.library.view.CardViewNative;
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
-import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
 
 public class ReportActivity extends AppCompatActivity {
 
     private final String TAG = "ReportActivity";
-    private CardViewNative mReportCardView;
     private ReportCard reportCard;
 
     @Override
@@ -44,7 +26,7 @@ public class ReportActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
-        mReportCardView = (CardViewNative) findViewById(R.id.report_card);
+        CardViewNative mReportCardView = (CardViewNative) findViewById(R.id.report_card);
 
 
         reportCard = new ReportCard(this, savedInstanceState, null);
@@ -55,7 +37,7 @@ public class ReportActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-       outState.putAll(reportCard.getElementsToSave());
+        outState.putAll(reportCard.getElementsToSave());
         super.onSaveInstanceState(outState);
 
     }

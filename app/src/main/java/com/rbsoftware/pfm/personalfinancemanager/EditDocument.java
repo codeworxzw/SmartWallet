@@ -1,32 +1,18 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.InputFilter;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import it.gmariotti.cardslib.library.view.CardViewNative;
 
 public class EditDocument extends AppCompatActivity {
     private final String TAG = "EditDocument";
     private String docId;
-    private CardViewNative mReportCardView;
     private ReportCard reportCard;
 
     @Override
@@ -35,7 +21,7 @@ public class EditDocument extends AppCompatActivity {
         setContentView(R.layout.activity_report);
         Toolbar toolbar = (Toolbar) findViewById(R.id.report_toolbar);
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() !=null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
@@ -44,7 +30,7 @@ public class EditDocument extends AppCompatActivity {
             docId = getIntent().getExtras().getString("docId");
 
         }
-        mReportCardView = (CardViewNative) findViewById(R.id.report_card);
+        CardViewNative mReportCardView = (CardViewNative) findViewById(R.id.report_card);
         reportCard = new ReportCard(this, savedInstanceState, docId);
         mReportCardView.setCard(reportCard);
 
@@ -81,13 +67,9 @@ public class EditDocument extends AppCompatActivity {
     }
 
 
-
-
-
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
-       outState.putAll(reportCard.getElementsToSave());
+        outState.putAll(reportCard.getElementsToSave());
 
         super.onSaveInstanceState(outState);
 

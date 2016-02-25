@@ -49,7 +49,7 @@
             android:layout_weight="6"
             android:paddingEnd="32dp"
             android:paddingLeft="8dp"
-
+            android:scrollbars="none"
             android:paddingRight="8dp"
             android:paddingStart="8dp">
 

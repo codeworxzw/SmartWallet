@@ -17,6 +17,7 @@ import java.util.TimeZone;
  * Created by burzakovskiy on 11/24/2015.
  * Holds structure of finance document
  */
+@SuppressWarnings("unchecked") // Suppressing unchecked cast: 'java.lang.Object' to 'java.util.ArrayList<java.lang.String>'
 public class FinanceDocument {
     private static final String DOC_TYPE = "Finance document";
     private static final String TAG = "FinanceDocument";

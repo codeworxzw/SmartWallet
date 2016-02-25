@@ -31,7 +31,7 @@ public class HistoryCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
         if (cards != null) {
             mCards = cards;
         } else {
-            mCards = new ArrayList<HistoryCard>();
+            mCards = new ArrayList<>();
         }
     }
 
@@ -88,7 +88,8 @@ public class HistoryCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
      * @return {@code true} if this {@code List} is modified, {@code false} otherwise.
      */
     public boolean addAll(@NonNull final Collection<? extends Card> collection) {
-        boolean result = mCards.addAll((Collection<? extends HistoryCard>) collection);
+        //noinspection unchecked
+        @SuppressWarnings("unchecked") boolean result = mCards.addAll((Collection<? extends HistoryCard>) collection);
         notifyDataSetChanged();
         return result;
     }

@@ -15,7 +15,7 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
  */
 public class BalanceCard extends Card {
     private Context mContext;
-    private String value;
+    private final String value;
 
     public BalanceCard(Context context, String value) {
         super(context);

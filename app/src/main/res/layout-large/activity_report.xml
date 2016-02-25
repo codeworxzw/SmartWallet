@@ -24,7 +24,7 @@
         android:layout_below="@id/report_appbar_layout"
         android:paddingEnd="32dp"
         android:paddingLeft="32dp"
-
+        android:scrollbars="none"
         android:paddingRight="32dp"
         android:paddingStart="32dp">
 

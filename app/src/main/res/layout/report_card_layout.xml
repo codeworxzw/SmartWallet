@@ -3,7 +3,6 @@
     android:id="@+id/report_wrapper"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical">
 
     <TextView
@@ -13,17 +12,23 @@
         android:layout_marginBottom="6dp"
         android:text="Date" />
 
-    <RelativeLayout
-        android:id="@+id/report_item_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center">
 
 
-    </RelativeLayout>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/report_item_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
 
+
+        </RelativeLayout>
+</RelativeLayout>
     <Button
         android:id="@+id/btn_add_new"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
@@ -31,10 +36,9 @@
         android:paddingEnd="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        style="?android:attr/borderlessButtonStyle"
-        android:textAllCaps="true"
         android:paddingStart="16dp"
         android:text="@string/add_line"
+        android:textAllCaps="true"
         android:textColor="@color/colorAccent"
         android:textStyle="bold" />
 

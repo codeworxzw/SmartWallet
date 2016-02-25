@@ -12,7 +12,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
 
@@ -180,16 +179,20 @@ public class LoginActivity extends AppCompatActivity implements
      * Fetches profile data and starts MainActivity
      */
     private void handleResult() {
-        if(!mGoogleApiClient.isConnected()) mGoogleApiClient.connect();
-        if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-            Person acct = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("name", acct.getDisplayName());
-            intent.putExtra("id", acct.getId());
-            intent.putExtra("email", Plus.AccountApi.getAccountName(mGoogleApiClient));
-            intent.putExtra("photoURL", acct.getImage().getUrl());
-            startActivity(intent);
-            finish();
+        if(mGoogleApiClient.isConnected()) {
+            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+                Person acct = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra("name", acct.getDisplayName());
+                intent.putExtra("id", acct.getId());
+                intent.putExtra("email", Plus.AccountApi.getAccountName(mGoogleApiClient));
+                intent.putExtra("photoURL", acct.getImage().getUrl());
+                startActivity(intent);
+                finish();
+            }
+        }
+        else{
+            mGoogleApiClient.connect();
         }
 
     }
