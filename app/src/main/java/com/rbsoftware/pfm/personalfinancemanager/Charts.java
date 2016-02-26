@@ -19,7 +19,6 @@ public class Charts extends Fragment {
 
     private Fragment mFragment;
     private ViewPager mPager;
-    private FragmentManager FM;
     private CollectionPagerAdapter adapter;
 
     public Charts() {
@@ -32,7 +31,7 @@ public class Charts extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FM = getChildFragmentManager();
+        FragmentManager FM = getChildFragmentManager();
         if(adapter == null) {
             adapter = new CollectionPagerAdapter(FM);
         }
