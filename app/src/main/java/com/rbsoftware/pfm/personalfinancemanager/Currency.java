@@ -207,7 +207,7 @@ public class Currency {
      * @return map of
      */
     public Map<String, Object> asMap() {
-        HashMap<String, Object> map = new HashMap<String, Object>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("EURtoUSD", EURtoUSD);
         map.put("EURtoRUB", EURtoRUB);
         map.put("EURtoUAH", EURtoUAH);

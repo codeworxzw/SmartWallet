@@ -150,19 +150,19 @@ public class FinanceDocumentModel {
         List<FinanceDocument> list = new ArrayList<>();
         cal = Calendar.getInstance();
         long currDate = cal.getTimeInMillis() / 1000;
-        Map<String, Object> query = new HashMap<String, Object>();
+        Map<String, Object> query = new HashMap<>();
 
-        Map<String, Object> gteDate = new HashMap<String, Object>();                    // Start of the period
-        Map<String, Object> startClause = new HashMap<String, Object>();                //*
+        Map<String, Object> gteDate = new HashMap<>();                    // Start of the period
+        Map<String, Object> startClause = new HashMap<>();                //*
         gteDate.put("$gte", startDateBuilder(currDate, timeFrame));        //*
         startClause.put("date", gteDate);
         //*********
-        Map<String, Object> lteDate = new HashMap<String, Object>();      // End of t/he period
-        Map<String, Object> endClause = new HashMap<String, Object>();                 // *
+        Map<String, Object> lteDate = new HashMap<>();      // End of t/he period
+        Map<String, Object> endClause = new HashMap<>();                 // *
         lteDate.put("$lte", endDateBuilder(currDate, timeFrame));         //*
         endClause.put("date", lteDate);                                   //*********
-        Map<String, Object> eqUserId = new HashMap<String, Object>();       //Query by userId
-        Map<String, Object> userIdClause = new HashMap<String, Object>();               //*
+        Map<String, Object> eqUserId = new HashMap<>();       //Query by userId
+        Map<String, Object> userIdClause = new HashMap<>();               //*
         eqUserId.put("$eq", userId);                                       //*
         userIdClause.put("userId", eqUserId);                              //**********************
 
@@ -201,27 +201,27 @@ public class FinanceDocumentModel {
         List<FinanceDocument> list = new ArrayList<>();
         cal = Calendar.getInstance();
         long currDate = cal.getTimeInMillis() / 1000;
-        Map<String, Object> query = new HashMap<String, Object>();
+        Map<String, Object> query = new HashMap<>();
 
-        Map<String, Object> gteDate = new HashMap<String, Object>();                    // Start of the period
-        Map<String, Object> startClause = new HashMap<String, Object>();                //*
+        Map<String, Object> gteDate = new HashMap<>();                    // Start of the period
+        Map<String, Object> startClause = new HashMap<>();                //*
         gteDate.put("$gte", startDateBuilder(currDate, timeFrame));        //*
         startClause.put("date", gteDate);
         //*********
-        Map<String, Object> lteDate = new HashMap<String, Object>();      // End of t/he period
-        Map<String, Object> endClause = new HashMap<String, Object>();                 // *
+        Map<String, Object> lteDate = new HashMap<>();      // End of t/he period
+        Map<String, Object> endClause = new HashMap<>();                 // *
         lteDate.put("$lte", endDateBuilder(currDate, timeFrame));         //*
         endClause.put("date", lteDate);                                   //*********
-        Map<String, Object> eqUserId = new HashMap<String, Object>();       //Query by userId
-        Map<String, Object> userIdClause = new HashMap<String, Object>();               //*
+        Map<String, Object> eqUserId = new HashMap<>();       //Query by userId
+        Map<String, Object> userIdClause = new HashMap<>();               //*
         eqUserId.put("$eq", userId);                                       //*
         userIdClause.put("userId", eqUserId);                              //**********************
 
         query.put("$and", Arrays.<Object>asList(startClause, endClause, userIdClause)); //query
 
         //Sorting documents
-        List<Map<String, String>> sortDocument = new ArrayList<Map<String, String>>();
-        Map<String, String> sortByDate = new HashMap<String, String>();
+        List<Map<String, String>> sortDocument = new ArrayList<>();
+        Map<String, String> sortByDate = new HashMap<>();
         if (order.equals(ORDER_ASC)) {
 
             sortByDate.put("date", "asc");  //sorting by date
@@ -561,7 +561,7 @@ public class FinanceDocumentModel {
     public List<FinanceDocument> allTasks() {
         int nDocs = this.mDatastore.getDocumentCount();
         List<BasicDocumentRevision> all = this.mDatastore.getAllDocuments(0, nDocs, true);
-        List<FinanceDocument> tasks = new ArrayList<FinanceDocument>();
+        List<FinanceDocument> tasks = new ArrayList<>();
 
         // Filter all documents down to those of type Task.
         for (BasicDocumentRevision rev : all) {

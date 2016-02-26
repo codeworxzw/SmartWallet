@@ -14,7 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -40,11 +40,11 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 public class TrendsChart extends Fragment {
     private final String TAG = "TrendsChart";
 
-    private RelativeLayout relativeLayout;
+    private LinearLayout linearLayout;
     private List<FinanceDocument> financeDocumentList;
     private String selectedPeriod; //position of selected item in popup menu
     private LineChartView mLineChart;
-    private TextView mTextViewPeriod;
+    private TextView mTextViewPeriod, mTextViewChartType;
     private int checkedLine;
     private Context mContext;
     private Activity mActivity;
@@ -72,8 +72,11 @@ public class TrendsChart extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (relativeLayout == null) {
-            relativeLayout = (RelativeLayout) getActivity().findViewById(R.id.trendsChartLayout);
+        if (linearLayout == null) {
+            linearLayout = (LinearLayout) getActivity().findViewById(R.id.trendsChartLayout);
+        }
+        if (mTextViewChartType == null) {
+            mTextViewChartType = (TextView) getActivity().findViewById(R.id.trends_chart_type);
         }
         if (mTextViewPeriod == null) {
             mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period_trend);
@@ -94,6 +97,10 @@ public class TrendsChart extends Fragment {
                 MainActivity.readFromSharedPreferences(getActivity(), "periodTrend", "thisWeek"),
                 MainActivity.getUserId(),
                 FinanceDocumentModel.ORDER_ASC);
+        mTextViewChartType.setText(MainActivity.readFromSharedPreferences(getActivity(),
+                "chartType",
+                getResources().getString(R.string.balance)));
+        mTextViewChartType.setTextColor(Utils.getLineColorPalette(mContext,  Utils.findMenuItemByPosition(checkedLine)));
         mTextViewPeriod.setText(MainActivity.readFromSharedPreferences(getActivity(),
                 "periodTextTrend",
                 getResources().getString(R.string.this_week)));
@@ -130,7 +137,7 @@ public class TrendsChart extends Fragment {
                 return true;
             case R.id.document_share:
                 try {
-                    ExportData.exportChartAsPng(getContext(), relativeLayout);
+                    ExportData.exportChartAsPng(getContext(), linearLayout);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -234,6 +241,10 @@ public class TrendsChart extends Fragment {
                 if (item.isChecked()) {
                     checkedLine = Utils.getPositionFromId(item.getItemId());
                 }
+                mTextViewChartType.setText(item.getTitle());
+                mTextViewChartType.setTextColor(Utils.getLineColorPalette(mContext, Utils.findMenuItemByPosition(checkedLine)));
+                MainActivity.saveToSharedPreferences(getActivity(), "chartType",
+                       mTextViewChartType.getText().toString());
                 MainActivity.saveToSharedPreferences(getActivity(), "checkedLine",
                         Integer.toString(checkedLine));
                 generateLineChartData();
