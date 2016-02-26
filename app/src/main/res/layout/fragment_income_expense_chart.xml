@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:textColor="@color/expense"
+        android:gravity="center"
         android:textOff="@string/expense"
         android:textOn="@string/income"
         android:textSize="20sp"
