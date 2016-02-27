@@ -7,9 +7,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
-import it.gmariotti.cardslib.library.view.CardViewNative;
-
 public class EditDocument extends AppCompatActivity {
     private final String TAG = "EditDocument";
     private String docId;
@@ -32,9 +29,8 @@ public class EditDocument extends AppCompatActivity {
             docId = getIntent().getExtras().getString("docId");
 
         }
-        CardViewNative mReportCardView = (CardViewNative) findViewById(R.id.report_card);
-        reportCard = new ReportCard(this, savedInstanceState, docId);
-        mReportCardView.setCard(reportCard);
+        reportCard = new ReportCard(this);
+        reportCard.setup(this, savedInstanceState, docId);
 
 
     }
