@@ -1,6 +1,7 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
@@ -15,11 +16,24 @@ import java.util.ArrayList;
  */
 public class Utils {
 
+
+    /**
+     * Detects if application runs on tablet
+     *
+     * @param context app context
+     * @return true if app runs on tablet, false if on phone
+     */
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+
     /**
      * Converts int key to human readable string
      *
      * @param mContext application context
-     * @param key value range 1-FinanceDocument.NUMBER_OF_CATEGORIES
+     * @param key      value range 1-FinanceDocument.NUMBER_OF_CATEGORIES
      * @return string value
      */
     public static String keyToString(Context mContext, int key) {
@@ -60,7 +74,7 @@ public class Utils {
      * Converts dp to px
      *
      * @param mContext application context
-     * @param dp density pixels
+     * @param dp       density pixels
      * @return pixels
      */
     public static int dpToPx(Context mContext, int dp) {
@@ -264,6 +278,7 @@ public class Utils {
 
         }
     }
+
     /**
      * Gets color by data type key
      *

@@ -175,7 +175,7 @@ public class ReportCard extends Card {
         private int buttonCounter; //counter to make button "Add Line" invisible
         private View mView;
 
-        FinanceDocument mFinanceDocument;
+        private FinanceDocument mFinanceDocument;
 
         public ReportCardHeader(Context context, Bundle savedInstanceState, String docId) {
             super(context, R.layout.report_card_layout);

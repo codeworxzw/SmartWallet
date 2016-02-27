@@ -64,11 +64,15 @@ public class AccountSummary extends Fragment {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[0]);
 
-
-        mBalanceCardView = (CardViewNative) getActivity().findViewById(R.id.account_summary_balance_card);
-
-        mIncomeCardView = (CardViewNative) getActivity().findViewById(R.id.account_summary_income_card);
-        mExpenseCardView = (CardViewNative) getActivity().findViewById(R.id.account_summary_expense_card);
+        if (mBalanceCardView == null) {
+            mBalanceCardView = (CardViewNative) getActivity().findViewById(R.id.account_summary_balance_card);
+        }
+        if (mIncomeCardView == null) {
+            mIncomeCardView = (CardViewNative) getActivity().findViewById(R.id.account_summary_income_card);
+        }
+        if (mExpenseCardView == null) {
+            mExpenseCardView = (CardViewNative) getActivity().findViewById(R.id.account_summary_expense_card);
+        }
 
         if (mTextViewPeriod == null) {
             mTextViewPeriod = (TextView) getActivity().findViewById(R.id.tv_period);

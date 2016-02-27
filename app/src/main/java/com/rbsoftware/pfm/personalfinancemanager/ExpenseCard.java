@@ -16,55 +16,53 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
  * @author Roman Burzakovskiy
  */
 public class ExpenseCard extends Card {
-    Context mContext;
     int[] expenseValues;
 
     public ExpenseCard(Context context, int[] expenseValues) {
         super(context);
-        this.mContext = context;
         this.expenseValues = expenseValues;
-        ExpenseHeaderInnerCard header = new ExpenseHeaderInnerCard(mContext);
+        ExpenseHeaderInnerCard header = new ExpenseHeaderInnerCard(context);
         this.addCardHeader(header);
     }
 
     public String getTotalExpenseValue() {
-        return ((ExpenseHeaderInnerCard) this.getCardHeader()).getExpenseTextView().getText().toString();
+        return ((ExpenseHeaderInnerCard) this.getCardHeader()).expenseTextView.getText().toString();
     }
 
     public String getTaxesValue() {
-        return ((ExpenseHeaderInnerCard) this.getCardHeader()).getTaxesTextView().getText().toString();
+        return ((ExpenseHeaderInnerCard) this.getCardHeader()).taxesTextView.getText().toString();
     }
 
     public String getMortgageValue() {
-        return ((ExpenseHeaderInnerCard) this.getCardHeader()).getMortgageTextView().getText().toString();
+        return ((ExpenseHeaderInnerCard) this.getCardHeader()).mortgageTextView.getText().toString();
     }
 
     public String getCreditCardValue() {
-        return ((ExpenseHeaderInnerCard) this.getCardHeader()).getCreditCardTextView().getText().toString();
+        return ((ExpenseHeaderInnerCard) this.getCardHeader()).creditCardTextView.getText().toString();
     }
 
     public String getUtilitiesValue() {
-        return ((ExpenseHeaderInnerCard) this.getCardHeader()).getUtilitiesTextView().getText().toString();
+        return ((ExpenseHeaderInnerCard) this.getCardHeader()).utilitiesTextView.getText().toString();
     }
 
     public String getFoodValue() {
-        return ((ExpenseHeaderInnerCard) this.getCardHeader()).getFoodTextView().getText().toString();
+        return ((ExpenseHeaderInnerCard) this.getCardHeader()).foodTextView.getText().toString();
     }
 
     public String getCarPaymentValue() {
-        return ((ExpenseHeaderInnerCard) this.getCardHeader()).getCarPaymentTextView().getText().toString();
+        return ((ExpenseHeaderInnerCard) this.getCardHeader()).carPaymentTextView.getText().toString();
     }
 
     public String getPersonalValue() {
-        return ((ExpenseHeaderInnerCard) this.getCardHeader()).getPersonalTextView().getText().toString();
+        return ((ExpenseHeaderInnerCard) this.getCardHeader()).personalTextView.getText().toString();
     }
 
     public String getActivitiesValue() {
-        return ((ExpenseHeaderInnerCard) this.getCardHeader()).getActivitiesTextView().getText().toString();
+        return ((ExpenseHeaderInnerCard) this.getCardHeader()).activitiesTextView.getText().toString();
     }
 
     public String getOtherExpenseValue() {
-        return ((ExpenseHeaderInnerCard) this.getCardHeader()).getOtherExpenseTextView().getText().toString();
+        return ((ExpenseHeaderInnerCard) this.getCardHeader()).otherExpenseTextView.getText().toString();
     }
 
     private class ExpenseHeaderInnerCard extends CardHeader {
@@ -84,45 +82,6 @@ public class ExpenseCard extends Card {
             super(context, R.layout.account_summary_expense_card_layout);
         }
 
-        public TextView getExpenseTextView() {
-            return expenseTextView;
-        }
-
-        public TextView getTaxesTextView() {
-            return taxesTextView;
-        }
-
-        public TextView getMortgageTextView() {
-            return mortgageTextView;
-        }
-
-        public TextView getCreditCardTextView() {
-            return creditCardTextView;
-        }
-
-        public TextView getUtilitiesTextView() {
-            return utilitiesTextView;
-        }
-
-        public TextView getFoodTextView() {
-            return foodTextView;
-        }
-
-        public TextView getCarPaymentTextView() {
-            return carPaymentTextView;
-        }
-
-        public TextView getPersonalTextView() {
-            return personalTextView;
-        }
-
-        public TextView getActivitiesTextView() {
-            return activitiesTextView;
-        }
-
-        public TextView getOtherExpenseTextView() {
-            return otherExpenseTextView;
-        }
 
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
