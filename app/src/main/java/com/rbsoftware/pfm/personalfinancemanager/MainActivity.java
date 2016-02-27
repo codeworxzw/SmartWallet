@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,7 +24,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.plus.Plus;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -69,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
     private static String userID; //unique user identifier
     private AccountHeader drawerAccountHeader;
     private Drawer mMaterialDrawer;
-    private FragmentManager fragmentManager;
     public static FinanceDocumentModel financeDocumentModel;
 
 
@@ -234,11 +231,11 @@ public class MainActivity extends AppCompatActivity {
                 .withAccountHeader(drawerAccountHeader)
                 .withDelayDrawerClickEvent(0)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[0]).withIcon(MaterialDesignIconic.Icon.gmi_view_dashboard),
-                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[1]).withIcon(MaterialDesignIconic.Icon.gmi_chart_donut),
+                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[0]).withIcon(GoogleMaterial.Icon.gmd_dashboard),
+                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[1]).withIcon(GoogleMaterial.Icon.gmd_pie_chart),
                         new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[2]).withIcon(GoogleMaterial.Icon.gmd_history),
                         new DividerDrawerItem(),
-                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[3]).withSelectable(false).withIcon(MaterialDesignIconic.Icon.gmi_settings),
+                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[3]).withSelectable(false).withIcon(GoogleMaterial.Icon.gmd_settings),
                         new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[4]).withSelectable(false).withIcon(GoogleMaterial.Icon.gmd_exit_to_app)
                 )
 
@@ -285,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
      * @param position fragment position
      */
     private void openFragment(int position) {
-        fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         switch (position) {
             case 1:
 

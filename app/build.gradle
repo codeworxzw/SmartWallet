@@ -57,7 +57,6 @@ dependencies {
     
     //material drawer
     compile 'com.mikepenz:google-material-typeface:2.2.0.1.original@aar'  //Google Material Icons
-    compile 'com.mikepenz:material-design-iconic-typeface:2.2.0.1@aar'
     compile('com.mikepenz:materialdrawer:5.0.6@aar') {
         transitive = true
     }
