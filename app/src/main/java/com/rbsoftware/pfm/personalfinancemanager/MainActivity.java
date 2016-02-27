@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private static String userID; //unique user identifier
     private AccountHeader drawerAccountHeader;
     private Drawer mMaterialDrawer;
+    private FragmentManager fragmentManager;
     public static FinanceDocumentModel financeDocumentModel;
 
 
@@ -129,8 +131,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     @Override
     protected void onResume() {
+
         //Reading default currency from settings
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         defaultCurrency = sharedPreferences.getString("defaultCurrency", "USD");
@@ -281,24 +285,43 @@ public class MainActivity extends AppCompatActivity {
      * @param position fragment position
      */
     private void openFragment(int position) {
-        Fragment mFragment;
+        fragmentManager = getSupportFragmentManager();
         switch (position) {
             case 1:
-                mFragment = new AccountSummary();
+
+                if (fragmentManager.findFragmentByTag("AccountSummary") != null) {
+                    //if the fragment exists, show it.
+                    fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("AccountSummary")).commit();
+                } else {
+                    //if the fragment does not exist, add it to fragment manager.
+                    fragmentManager.beginTransaction().replace(R.id.fragment_container, new AccountSummary(), "AccountSummary").commit();
+                }
+
                 break;
             case 2:
-                mFragment = new Charts();
+
+                if (fragmentManager.findFragmentByTag("Charts") != null) {
+                    //if the fragment exists, show it.
+                    fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("Charts")).commit();
+                } else {
+                    //if the fragment does not exist, add it to fragment manager.
+                    fragmentManager.beginTransaction().replace(R.id.fragment_container, new Charts(), "Charts").commit();
+                }
                 break;
             case 3:
-                mFragment = new History();
+
+                if (fragmentManager.findFragmentByTag("History") != null) {
+                    //if the fragment exists, show it.
+                    fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("History")).commit();
+                } else {
+                    //if the fragment does not exist, add it to fragment manager.
+                    fragmentManager.beginTransaction().replace(R.id.fragment_container, new History(), "History").commit();
+                }
                 break;
-            default:
-                mFragment = new AccountSummary();
-                break;
+
 
         }
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment).commit();
 
     }
 

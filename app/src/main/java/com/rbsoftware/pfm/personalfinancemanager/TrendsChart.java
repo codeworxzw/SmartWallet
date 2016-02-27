@@ -271,7 +271,8 @@ public class TrendsChart extends Fragment {
             getActivity().findViewById(R.id.emptyTrends).setVisibility(View.GONE);
             List<PointValue> values = new ArrayList<>();
             axisValues.clear();
-            for (int j = 0; j < docData.size(); ++j) {
+            int size =docData.size();
+            for (int j = 0; j < size; ++j) {
                 values.add(new PointValue(j, Integer.valueOf(docData.get(j)[0])));
                 axisValues.add(new AxisValue(j).setLabel(docData.get(j)[1]));
             }

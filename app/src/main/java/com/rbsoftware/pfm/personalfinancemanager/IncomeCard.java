@@ -16,39 +16,37 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
  * @author Roman Burzakovskiy
  */
 public class IncomeCard extends Card {
-    private Context mContext;
     int[] incomeValues;
 
     public IncomeCard(Context context, int[] incomeValues) {
         super(context);
-        this.mContext = context;
         this.incomeValues = incomeValues;
-        IncomeHeaderInnerCard header = new IncomeHeaderInnerCard(mContext);
+        IncomeHeaderInnerCard header = new IncomeHeaderInnerCard(context);
         this.addCardHeader(header);
     }
 
     public String getTotalIncomeValue() {
-        return ((IncomeHeaderInnerCard) this.getCardHeader()).getIncomeTextView().getText().toString();
+        return ((IncomeHeaderInnerCard) this.getCardHeader()).incomeTextView.getText().toString();
     }
 
     public String getSalaryValue() {
-        return ((IncomeHeaderInnerCard) this.getCardHeader()).getSalaryTextView().getText().toString();
+        return ((IncomeHeaderInnerCard) this.getCardHeader()).salaryTextView.getText().toString();
     }
 
     public String getRentalIncomeValue() {
-        return ((IncomeHeaderInnerCard) this.getCardHeader()).getRentalIncomeTextView().getText().toString();
+        return ((IncomeHeaderInnerCard) this.getCardHeader()).rentalIncomeTextView.getText().toString();
     }
 
     public String getInterestValue() {
-        return ((IncomeHeaderInnerCard) this.getCardHeader()).getInterestTextView().getText().toString();
+        return ((IncomeHeaderInnerCard) this.getCardHeader()).interestTextView.getText().toString();
     }
 
     public String getGiftsValue() {
-        return ((IncomeHeaderInnerCard) this.getCardHeader()).getGiftsTextView().getText().toString();
+        return ((IncomeHeaderInnerCard) this.getCardHeader()).giftsTextView.getText().toString();
     }
 
     public String getOtherIncomeValue() {
-        return ((IncomeHeaderInnerCard) this.getCardHeader()).getOtherIncomeTextView().getText().toString();
+        return ((IncomeHeaderInnerCard) this.getCardHeader()).otherIncomeTextView.getText().toString();
     }
 
     private class IncomeHeaderInnerCard extends CardHeader {
@@ -64,29 +62,6 @@ public class IncomeCard extends Card {
 
         }
 
-        public TextView getIncomeTextView() {
-            return incomeTextView;
-        }
-
-        public TextView getSalaryTextView() {
-            return salaryTextView;
-        }
-
-        public TextView getRentalIncomeTextView() {
-            return rentalIncomeTextView;
-        }
-
-        public TextView getInterestTextView() {
-            return interestTextView;
-        }
-
-        public TextView getGiftsTextView() {
-            return giftsTextView;
-        }
-
-        public TextView getOtherIncomeTextView() {
-            return otherIncomeTextView;
-        }
 
         @Override
         public void setupInnerViewElements(ViewGroup parent, View view) {
