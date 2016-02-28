@@ -241,7 +241,6 @@ public class AccountSummary extends Fragment {
         String balanceString = String.format(Locale.getDefault(), "%,d", totalIncome - totalExpense) + " " + MainActivity.defaultCurrency;
 
         BalanceCard mBalanceCard = new BalanceCard(mContext, balanceString);
-        mBalanceCard.setBackgroundColorResourceId(R.color.balance);
         if (mBalanceCardView.getCard() == null) {
             mBalanceCardView.setCard(mBalanceCard);
         } else {
@@ -250,7 +249,6 @@ public class AccountSummary extends Fragment {
 
         int[] incomeArray = {totalIncome, salarySum, rentalIncomeSum, interestSum, giftsSum, otherIncomeSum};
         IncomeCard mIncomeCard = new IncomeCard(mContext, incomeArray);
-        mIncomeCard.setBackgroundColorResourceId(R.color.income);
         if (mIncomeCardView.getCard() == null) {
             mIncomeCardView.setCard(mIncomeCard);
         } else {
@@ -259,7 +257,6 @@ public class AccountSummary extends Fragment {
 
         int[] expenseArray = {totalExpense, taxesSum, mortgageSum, creditCardSum, utilitiesSum, foodSum, carPaymentSum, personalSum, activitiesSum, otherExpensesSum};
         ExpenseCard mExpenseCard = new ExpenseCard(mContext, expenseArray);
-        mExpenseCard.setBackgroundColorResourceId(R.color.expense);
         if (mExpenseCardView.getCard() == null) {
             mExpenseCardView.setCard(mExpenseCard);
         } else {
