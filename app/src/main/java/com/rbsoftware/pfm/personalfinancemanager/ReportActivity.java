@@ -8,9 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-import it.gmariotti.cardslib.library.view.CardViewNative;
-
-
 public class ReportActivity extends AppCompatActivity {
 
     private final String TAG = "ReportActivity";
@@ -23,14 +20,13 @@ public class ReportActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.report_toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
+
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
         }
-        CardViewNative mReportCardView = (CardViewNative) findViewById(R.id.report_card);
-
-
-        reportCard = new ReportCard(this, savedInstanceState, null);
-        mReportCardView.setCard(reportCard);
+        reportCard = new ReportCard(this);
+        reportCard.setup(this, savedInstanceState, null);
 
 
     }

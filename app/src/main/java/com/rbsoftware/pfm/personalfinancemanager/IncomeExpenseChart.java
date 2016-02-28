@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
+import android.util.SparseArray;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -241,23 +243,23 @@ public class IncomeExpenseChart extends Fragment {
      * @param mapSum hash map of data types and values
      */
 
-    private void generateChartData(HashMap<Integer, Integer> mapSum) {
+    private void generateChartData(SparseIntArray mapSum) {
         List<SliceValue> values = new ArrayList<>();
         int total = 0;
-
-        for (int i = 1 + offsetStart; i <= (mapSum.size() - offsetEnd); ++i) {
+        int size= mapSum.size();
+        for (int i = 1 + offsetStart; i <= (size - offsetEnd); ++i) {
             total += mapSum.get(i);
         }
         if (total != 0) {
             mPieChart.setVisibility(View.VISIBLE);
             getActivity().findViewById(R.id.emptyIncomeExpense).setVisibility(View.GONE);
             int j=0;
-            for (int i = 1 + offsetStart; i <= (mapSum.size() - offsetEnd); ++i) {
+            for (int i = 1 + offsetStart; i <= (size - offsetEnd); ++i) {
 
                 if (mapSum.get(i) != 0) {
-                    float value = (mapSum.get(i) * 100.0f) / total;
+                    int value = (mapSum.get(i) * 100) / total;
                     SliceValue sliceValue = new SliceValue(1, Utils.getPieColorPalette(mContext, i));
-                    sliceValue.setLabel(Utils.keyToString(mContext, i) + " " + String.format(Locale.getDefault(), "%.1f", value) + "%");
+                    sliceValue.setLabel(Utils.keyToString(mContext, i) + " " + String.format(Locale.getDefault(), "%,d", value) + "%");
                     values.add(sliceValue);
 
                     values.get(j).setTarget(value);
@@ -288,7 +290,7 @@ public class IncomeExpenseChart extends Fragment {
      * @param list finance documents list
      * @return map of data types and values
      */
-    private HashMap<Integer, Integer> getValues(List<FinanceDocument> list) {
+    private SparseIntArray getValues(List<FinanceDocument> list) {
         int salarySum = 0;
         int rentalIncomeSum = 0;
         int interestSum = 0;
@@ -322,7 +324,7 @@ public class IncomeExpenseChart extends Fragment {
             otherExpensesSum += item.getOtherExpenses();
 
         }
-        HashMap<Integer, Integer> mapSum = new HashMap<>();
+        SparseIntArray mapSum = new SparseIntArray();
         mapSum.put(MainActivity.PARAM_SALARY, salarySum);
         mapSum.put(MainActivity.PARAM_RENTAL_INCOME, rentalIncomeSum);
         mapSum.put(MainActivity.PARAM_INTEREST, interestSum);

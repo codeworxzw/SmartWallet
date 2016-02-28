@@ -100,7 +100,7 @@ public class TrendsChart extends Fragment {
         mTextViewChartType.setText(MainActivity.readFromSharedPreferences(getActivity(),
                 "chartType",
                 getResources().getString(R.string.balance)));
-        mTextViewChartType.setTextColor(Utils.getLineColorPalette(mContext,  Utils.findMenuItemByPosition(checkedLine)));
+        mTextViewChartType.setTextColor(Utils.getLineColorPalette(mContext, Utils.findMenuItemByPosition(checkedLine)));
         mTextViewPeriod.setText(MainActivity.readFromSharedPreferences(getActivity(),
                 "periodTextTrend",
                 getResources().getString(R.string.this_week)));
@@ -244,7 +244,7 @@ public class TrendsChart extends Fragment {
                 mTextViewChartType.setText(item.getTitle());
                 mTextViewChartType.setTextColor(Utils.getLineColorPalette(mContext, Utils.findMenuItemByPosition(checkedLine)));
                 MainActivity.saveToSharedPreferences(getActivity(), "chartType",
-                       mTextViewChartType.getText().toString());
+                        mTextViewChartType.getText().toString());
                 MainActivity.saveToSharedPreferences(getActivity(), "checkedLine",
                         Integer.toString(checkedLine));
                 generateLineChartData();
@@ -272,7 +272,8 @@ public class TrendsChart extends Fragment {
             List<PointValue> values =
                     new ArrayList<>();
             axisValues.clear();
-            for (int j = 0; j < docData.size(); ++j) {
+            int size =docData.size();
+            for (int j = 0; j < size; ++j) {
                 values.add(new PointValue(j, Integer.valueOf(docData.get(j)[0])));
                 axisValues.add(new AxisValue(j).setLabel(docData.get(j)[1]));
             }
@@ -305,7 +306,7 @@ public class TrendsChart extends Fragment {
             float delta = Math.max(Math.abs(v.top), Math.abs(v.bottom));
             v.bottom = v.bottom - delta * 0.1f;
             v.top = v.top + delta * 0.2f;
-            v.right=(v.right <10)? v.right*1.05f : v.right*1.01f;
+            v.right = (v.right < 10) ? v.right * 1.05f : v.right * 1.01f;
             mLineChart.setMaximumViewport(v);
             mLineChart.setCurrentViewportWithAnimation(v);
 
@@ -356,9 +357,17 @@ public class TrendsChart extends Fragment {
                 i = 0;
                 for (FinanceDocument doc : docList) {
                     value = doc.getTotalIncome();
-                    if (i != 0) {
-                        if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
-                            data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
+                    if (value != 0) {
+                        if (i != 0) {
+                            if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                                data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
+                            } else {
+                                data.add(new String[]{
+                                        Integer.toString(value),
+                                        doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                });
+                                i++;
+                            }
                         } else {
                             data.add(new String[]{
                                     Integer.toString(value),
@@ -366,23 +375,24 @@ public class TrendsChart extends Fragment {
                             });
                             i++;
                         }
-                    } else {
-                        data.add(new String[]{
-                                Integer.toString(value),
-                                doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
-                        });
-                        i++;
                     }
-
                 }
                 return data;
             case R.id.popupTotalExpense:
                 i = 0;
                 for (FinanceDocument doc : docList) {
                     value = doc.getTotalExpense();
-                    if (i != 0) {
-                        if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
-                            data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
+                    if (value != 0) {
+                        if (i != 0) {
+                            if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                                data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
+                            } else {
+                                data.add(new String[]{
+                                        Integer.toString(value),
+                                        doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                });
+                                i++;
+                            }
                         } else {
                             data.add(new String[]{
                                     Integer.toString(value),
@@ -390,14 +400,7 @@ public class TrendsChart extends Fragment {
                             });
                             i++;
                         }
-                    } else {
-                        data.add(new String[]{
-                                Integer.toString(value),
-                                doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
-                        });
-                        i++;
                     }
-
                 }
                 return data;
             case R.id.popupSalary:

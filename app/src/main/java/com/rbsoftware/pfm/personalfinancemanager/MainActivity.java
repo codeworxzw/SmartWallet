@@ -4,17 +4,37 @@ package com.rbsoftware.pfm.personalfinancemanager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import android.view.View;
 
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+
+import com.google.android.gms.plus.Plus;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerImageLoader;
+import com.squareup.picasso.Picasso;
 
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
@@ -45,9 +65,8 @@ public class MainActivity extends AppCompatActivity {
     public static FloatingActionButton fab;
     private List<Object> params; //List FinanceDocument constructor parameters
     private static String userID; //unique user identifier
-    private boolean retained = false;
-
-
+    private AccountHeader drawerAccountHeader;
+    private Drawer mMaterialDrawer;
     public static FinanceDocumentModel financeDocumentModel;
 
 
@@ -64,21 +83,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userID = intent.getExtras().getString("id");
         params = new ArrayList<>();
-        NavigationDrawerFragment drawerFragment;
-        if (savedInstanceState == null) {
-            drawerFragment = new NavigationDrawerFragment();
-            drawerFragment.setArguments(intent.getExtras());
-            getSupportFragmentManager().beginTransaction().add(R.id.navigation_drawer_fragment, drawerFragment, "DrawerTag").commit();
-        } else {
-            drawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentByTag("DrawerTag");
 
-        }
 
-        retained = true;
-        if(getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-        }
+        if (savedInstanceState == null) openFragment(1);
+
 
         // Protect creation of static variable.
         if (financeDocumentModel == null) {
@@ -105,11 +113,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        setupNavigationDrawer(savedInstanceState, toolbar, intent);
+
         boolean firstStart = Boolean.valueOf(readFromSharedPreferences(this, "firstStart", "true"));
 
         if (firstStart) {
             //Start service to check for alarms
-            Log.d(TAG,"NotificationService is not running. Starting..");
+            Log.d(TAG, "NotificationService is not running. Starting..");
             WakefulIntentService.acquireStaticLock(this);
             this.startService(new Intent(this, NotificationService.class));
             firstStart = false;
@@ -118,8 +128,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     @Override
     protected void onResume() {
+
         //Reading default currency from settings
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         defaultCurrency = sharedPreferences.getString("defaultCurrency", "USD");
@@ -128,8 +140,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+
+        //add the values which need to be saved from the drawer to the bundle
+        outState.putAll(mMaterialDrawer.saveInstanceState(outState));
+        //add the values which need to be saved from the accountHeader to the bundle
+        outState.putAll(drawerAccountHeader.saveInstanceState(outState));
         super.onSaveInstanceState(outState);
-        outState.putBoolean("retained", retained);
     }
 
     @Override
@@ -160,8 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-        }
-        else{
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }//onActivityResult
@@ -169,7 +184,158 @@ public class MainActivity extends AppCompatActivity {
 
     //HELPER METHODS
 
+    /**
+     * Creates navigation drawer
+     *
+     * @param savedInstanceState of activity
+     * @param toolbar            of activity
+     * @param intent             received after login
+     */
+    private void setupNavigationDrawer(Bundle savedInstanceState, Toolbar toolbar, Intent intent) {
 
+        //Set up image loading through Picasso
+        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
+            @Override
+            public void set(ImageView imageView, Uri uri, Drawable placeholder) {
+                Picasso.with(imageView.getContext()).load(uri).placeholder(placeholder).into(imageView);
+            }
+
+            @Override
+            public void cancel(ImageView imageView) {
+                Picasso.with(imageView.getContext()).cancelRequest(imageView);
+            }
+
+
+        });
+        // Create the AccountHeader
+        drawerAccountHeader = new AccountHeaderBuilder()
+                .withActivity(this)
+
+                .withHeaderBackground(R.drawable.header)
+                .addProfiles(
+                        new ProfileDrawerItem().withName(intent.getStringExtra("name"))
+                                .withEmail(intent.getStringExtra("email"))
+                                .withIcon(intent.getStringExtra("photoURL"))
+                )
+                .withSelectionListEnabledForSingleProfile(false)
+
+
+                .withProfileImagesClickable(false)
+                .withSavedInstance(savedInstanceState)
+                .build();
+
+        //Build navigation drawer
+        DrawerBuilder drawerBuilder = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .withAccountHeader(drawerAccountHeader)
+                .withDelayDrawerClickEvent(0)
+                .addDrawerItems(
+                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[0]).withIcon(GoogleMaterial.Icon.gmd_dashboard),
+                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[1]).withIcon(GoogleMaterial.Icon.gmd_pie_chart),
+                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[2]).withIcon(GoogleMaterial.Icon.gmd_history),
+                        new DividerDrawerItem(),
+                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[3]).withSelectable(false).withIcon(GoogleMaterial.Icon.gmd_settings),
+                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[4]).withSelectable(false).withIcon(GoogleMaterial.Icon.gmd_exit_to_app)
+                )
+
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        if (position == 5) {
+                            Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+                            startActivityForResult(i, MainActivity.RESULT_OK);
+                            return true;
+                        } else if (position == 6) {
+                            signout();
+                            return true;
+
+                        } else {
+                            openFragment(position);
+                        }
+                        return false;
+                    }
+                })
+
+                .withSavedInstance(savedInstanceState);
+
+        //make multipane layout for tablets in landscape orientation
+        if (Utils.isTablet(this) && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            drawerBuilder.withTranslucentStatusBar(false).withTranslucentNavigationBar(false);
+
+            mMaterialDrawer = drawerBuilder.buildView();
+            ((ViewGroup) findViewById(R.id.nav_tablet)).addView(mMaterialDrawer.getSlider());
+        } else {
+            mMaterialDrawer = drawerBuilder.build();
+
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                mMaterialDrawer.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+            }
+        }
+
+    }
+
+    /**
+     * Opens fragment
+     *
+     * @param position fragment position
+     */
+    private void openFragment(int position) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        switch (position) {
+            case 1:
+
+                if (fragmentManager.findFragmentByTag("AccountSummary") != null) {
+                    //if the fragment exists, show it.
+                    fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("AccountSummary")).commit();
+                } else {
+                    //if the fragment does not exist, add it to fragment manager.
+                    fragmentManager.beginTransaction().replace(R.id.fragment_container, new AccountSummary(), "AccountSummary").commit();
+                }
+
+                break;
+            case 2:
+
+                if (fragmentManager.findFragmentByTag("Charts") != null) {
+                    //if the fragment exists, show it.
+                    fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("Charts")).commit();
+                } else {
+                    //if the fragment does not exist, add it to fragment manager.
+                    fragmentManager.beginTransaction().replace(R.id.fragment_container, new Charts(), "Charts").commit();
+                }
+                break;
+            case 3:
+
+                if (fragmentManager.findFragmentByTag("History") != null) {
+                    //if the fragment exists, show it.
+                    fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("History")).commit();
+                } else {
+                    //if the fragment does not exist, add it to fragment manager.
+                    fragmentManager.beginTransaction().replace(R.id.fragment_container, new History(), "History").commit();
+                }
+                break;
+
+
+        }
+
+
+    }
+
+    /**
+     * Sign out from application
+     */
+    private void signout() {
+        if (LoginActivity.mGoogleApiClient.isConnected()) {
+            Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
+            LoginActivity.mGoogleApiClient.disconnect();
+
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+    }
 
     /**
      * Creation new document from data
@@ -286,8 +452,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPref = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
         return sharedPref.getString(prefName, defaultValue);
     }
-
-
 
 
 }
