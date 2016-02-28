@@ -1,17 +1,11 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-
-import it.gmariotti.cardslib.library.view.CardViewNative;
 
 
 public class ReportActivity extends AppCompatActivity {
@@ -31,11 +25,8 @@ public class ReportActivity extends AppCompatActivity {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
         }
-        CardViewNative mReportCardView = (CardViewNative) findViewById(R.id.report_card);
-
-
-        reportCard = new ReportCard(this, savedInstanceState, null);
-        mReportCardView.setCard(reportCard);
+        reportCard = new ReportCard(this);
+        reportCard.setup(this, savedInstanceState, null);
 
 
     }

@@ -109,6 +109,7 @@ public class TrendsChart extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.chart_trends_menu, menu);
         int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
                 .getInt("status_" + TAG, 0);
@@ -271,7 +272,7 @@ public class TrendsChart extends Fragment {
             getActivity().findViewById(R.id.emptyTrends).setVisibility(View.GONE);
             List<PointValue> values = new ArrayList<>();
             axisValues.clear();
-            int size =docData.size();
+            int size = docData.size();
             for (int j = 0; j < size; ++j) {
                 values.add(new PointValue(j, Integer.valueOf(docData.get(j)[0])));
                 axisValues.add(new AxisValue(j).setLabel(docData.get(j)[1]));
