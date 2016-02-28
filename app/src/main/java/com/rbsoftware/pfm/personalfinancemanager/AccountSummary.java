@@ -97,6 +97,7 @@ public class AccountSummary extends Fragment {
     //Create options menu
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.account_summary_menu, menu);
         int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
                 .getInt("status_" + TAG, 0);
