@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.PopupMenu;
-import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,7 +22,6 @@ import android.widget.ToggleButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -151,6 +149,7 @@ public class IncomeExpenseChart extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.chart_income_expense_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -246,14 +245,14 @@ public class IncomeExpenseChart extends Fragment {
     private void generateChartData(SparseIntArray mapSum) {
         List<SliceValue> values = new ArrayList<>();
         int total = 0;
-        int size= mapSum.size();
+        int size = mapSum.size();
         for (int i = 1 + offsetStart; i <= (size - offsetEnd); ++i) {
             total += mapSum.get(i);
         }
         if (total != 0) {
             mPieChart.setVisibility(View.VISIBLE);
             getActivity().findViewById(R.id.emptyIncomeExpense).setVisibility(View.GONE);
-            int j=0;
+            int j = 0;
             for (int i = 1 + offsetStart; i <= (size - offsetEnd); ++i) {
 
                 if (mapSum.get(i) != 0) {
@@ -274,8 +273,7 @@ public class IncomeExpenseChart extends Fragment {
             data.setCenterText2(MainActivity.defaultCurrency);
             mPieChart.setPieChartData(data);
             mPieChart.startDataAnimation();
-        }
-        else{
+        } else {
             mPieChart.setVisibility(View.GONE);
             getActivity().findViewById(R.id.emptyIncomeExpense).setVisibility(View.VISIBLE);
         }
