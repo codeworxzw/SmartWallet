@@ -7,11 +7,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.analytics.HitBuilders;
+
 
 public class ReportActivity extends AppCompatActivity {
 
     private final String TAG = "ReportActivity";
     private ReportCard reportCard;
+    private ConnectionDetector mConnectionDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +31,21 @@ public class ReportActivity extends AppCompatActivity {
         reportCard = new ReportCard(this);
         reportCard.setup(this, savedInstanceState, null);
 
+        if (mConnectionDetector == null) {
+            mConnectionDetector = new ConnectionDetector(this);
+        }
+        MainActivity.mTracker.setScreenName(TAG);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //check if network is available and send analytics tracker
+
+        if (mConnectionDetector.isConnectingToInternet()) {
+
+            MainActivity.mTracker.send(new HitBuilders.EventBuilder().setCategory("Action").setAction("Open").build());
+        }
     }
 
     @Override

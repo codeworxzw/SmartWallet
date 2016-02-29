@@ -178,7 +178,9 @@ public class ReportCard {
         return list;
     }
 
-
+    /**
+     * Generates inner card layout
+     */
     private void createLayout() {
         final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
 

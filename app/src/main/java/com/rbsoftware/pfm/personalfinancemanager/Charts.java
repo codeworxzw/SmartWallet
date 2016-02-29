@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.analytics.HitBuilders;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,11 +22,11 @@ public class Charts extends Fragment {
     private Fragment mFragment;
     private ViewPager mPager;
     private CollectionPagerAdapter adapter;
+    private ConnectionDetector mConnectionDetector;
 
     public Charts() {
         // Required empty public constructor
     }
-
 
 
     @Override
@@ -32,7 +34,7 @@ public class Charts extends Fragment {
         super.onCreate(savedInstanceState);
 
         FragmentManager FM = getChildFragmentManager();
-        if(adapter == null) {
+        if (adapter == null) {
             adapter = new CollectionPagerAdapter(FM);
         }
 
@@ -52,14 +54,37 @@ public class Charts extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[1]);
-        if(mPager == null) {
+        if (mPager == null) {
             mPager = (ViewPager) getActivity().findViewById(R.id.pager);
         }
         mPager.setAdapter(adapter);
 
+        mConnectionDetector = new ConnectionDetector(getContext());
+        mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                sendTracker(position);
+            }
+        });
         MainActivity.fab.hide();
     }
 
+    private void sendTracker(int position) {
+        if (mConnectionDetector.isConnectingToInternet()) {
+            if (position == 0) {
+                MainActivity.mTracker.setScreenName("IncomeExpenseChart");
+            }
+            if (position == 1) {
+                MainActivity.mTracker.setScreenName("TrendsChart");
+            }
+            //check if network is available and send analytics tracker
+
+
+            MainActivity.mTracker.send(new HitBuilders.EventBuilder().setCategory("Action").setAction("Open").build());
+        }
+
+    }
 
 
     private class CollectionPagerAdapter extends FragmentStatePagerAdapter {
@@ -85,7 +110,7 @@ public class Charts extends Fragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            String title="";
+            String title = "";
             if (position == 0) {
                 title = getResources().getString(R.string.overview);
             }
