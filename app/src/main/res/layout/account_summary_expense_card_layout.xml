@@ -23,8 +23,7 @@
             android:layout_marginRight="5dp"
             android:text="@string/expense"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/white"
-            android:textStyle="bold" />
+            android:textColor="@color/expense" />
 
         <TextView
             android:id="@+id/tv_expense"
@@ -34,7 +33,7 @@
             android:layout_alignParentRight="true"
             android:text="000 USD"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/white"
+            android:textColor="@color/expense"
 
             android:textStyle="bold" />
     </RelativeLayout>
@@ -52,7 +51,7 @@
             android:gravity="center_horizontal"
             android:text="@string/expense_is_empty"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/secondary_text_dark" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -79,7 +78,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:text="@string/food"
-            android:textColor="@android:color/white"
+           android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
 
         <TextView
@@ -89,7 +88,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:text="000"
-            android:textColor="@android:color/white"
+           android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -117,7 +116,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:text="@string/car_payment"
-            android:textColor="@android:color/white"
+           android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
 
         <TextView
@@ -127,7 +126,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:text="000"
-            android:textColor="@android:color/white"
+           android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -155,7 +154,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:text="@string/personal"
-            android:textColor="@android:color/white"
+           android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
 
         <TextView
@@ -165,7 +164,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:text="000"
-            android:textColor="@android:color/white"
+           android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -193,7 +192,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:text="@string/activities"
-            android:textColor="@android:color/white"
+           android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
 
         <TextView
@@ -203,7 +202,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:text="000"
-            android:textColor="@android:color/white"
+           android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -231,7 +230,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:text="@string/utilities"
-            android:textColor="@android:color/white"
+           android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
 
         <TextView
@@ -241,7 +240,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:text="000"
-            android:textColor="@android:color/white"
+           android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -269,7 +268,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:text="@string/credit_card"
-            android:textColor="@android:color/white"
+           android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
 
         <TextView
@@ -279,7 +278,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:text="000"
-            android:textColor="@android:color/white"
+           android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -307,7 +306,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:text="@string/taxes"
-            android:textColor="@android:color/white"
+           android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
 
         <TextView
@@ -317,7 +316,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:text="000"
-            android:textColor="@android:color/white"
+           android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -345,7 +344,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:text="@string/mortgage"
-            android:textColor="@android:color/white"
+           android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
 
         <TextView
@@ -355,7 +354,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:text="000"
-            android:textColor="@android:color/white"
+           android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -383,7 +382,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:text="@string/other_expense"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
 
         <TextView
@@ -393,7 +392,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:text="000"
-            android:textColor="@android:color/white"
+           android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
     </RelativeLayout>
 </LinearLayout>

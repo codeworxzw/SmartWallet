@@ -4,9 +4,9 @@
     android:id="@+id/report_wrapper"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/rounded_corners"
+    android:background="@android:drawable/dialog_holo_light_frame"
     android:layout_marginTop="6dp"
-    android:elevation="8dp"
+
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
 

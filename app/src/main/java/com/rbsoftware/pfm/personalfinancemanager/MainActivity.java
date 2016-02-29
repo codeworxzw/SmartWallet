@@ -214,7 +214,6 @@ public class MainActivity extends AppCompatActivity {
                 .withHeaderBackground(R.drawable.header)
                 .addProfiles(
                         new ProfileDrawerItem().withName(intent.getStringExtra("name"))
-                                .withEmail(intent.getStringExtra("email"))
                                 .withIcon(intent.getStringExtra("photoURL"))
                 )
                 .withSelectionListEnabledForSingleProfile(false)
