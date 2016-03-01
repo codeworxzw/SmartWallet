@@ -21,8 +21,8 @@ import it.gmariotti.cardslib.library.internal.ViewToClickToExpand;
  * Custom @link Card layout
  */
 public class HistoryCard extends Card {
-    private FinanceDocument doc;
-    private Context mContext;
+    private final FinanceDocument doc;
+    private final Context mContext;
 
     public HistoryCard(Context context, FinanceDocument doc) {
         super(context);
@@ -60,9 +60,9 @@ public class HistoryCard extends Card {
      */
 
     private class HistoryHeaderInnerCard extends CardHeader {
-        String income;
-        String expense;
-        String date;
+        private final String income;
+        private final String expense;
+        private final String date;
 
         public HistoryHeaderInnerCard(Context context, String date, int totalIncome, int totalExpense) {
             super(context, R.layout.history_list_row_inner_layout);
@@ -97,8 +97,8 @@ public class HistoryCard extends Card {
      */
 
     private class HistoryExpandCard extends CardExpand {
-        LinearLayout mLayout;
-        FinanceDocument doc;
+        private LinearLayout mLayout;
+        private final FinanceDocument doc;
 
         //Use your resource ID for your inner layout
         public HistoryExpandCard(Context context, FinanceDocument doc) {
@@ -125,7 +125,6 @@ public class HistoryCard extends Card {
                         isIncomeFieldSet = false;
                         isExpenseFieldSet = false;
                     }
-                    String output = "";
                     /* Recursion disabled in version 1.0
                     TODO enable recursion in future versions
                     if (!value.get(2).equals(mContext.getString(R.string.never))){
@@ -135,7 +134,7 @@ public class HistoryCard extends Card {
                     else{
                         output =value.get(0)+" "+value.get(1);
                     } */
-                    output = String.format(Locale.getDefault(), "%,d", Integer.valueOf(value.get(0))) + " " + value.get(1);
+                    String output = String.format(Locale.getDefault(), "%,d", Integer.valueOf(value.get(0))) + " " + value.get(1);
 
                     mLayout.addView(createNewTextView(i, output));
 

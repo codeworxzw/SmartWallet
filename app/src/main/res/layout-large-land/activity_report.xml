@@ -53,8 +53,9 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:paddingStart="8dp"
-            android:scrollbars="none">
-            android:layoutDirection="ltr"
+            android:scrollbars="none"
+            android:layoutDirection="ltr">
+
 
             <include layout="@layout/report_card_layout" />
         </ScrollView>

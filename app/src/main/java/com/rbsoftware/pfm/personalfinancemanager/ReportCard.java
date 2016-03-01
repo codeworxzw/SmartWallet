@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.internal.CardHeader;
 
 /**
  * Holds methods for edit and report layout and operations
@@ -33,7 +31,7 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
  */
 public class ReportCard {
     private final static String TAG = "ReportLayout";
-    Context mContext;
+    private final Context mContext;
     private Bundle savedInstanceState;
     private Button addNew;
     private RelativeLayout mLayout;
@@ -182,7 +180,6 @@ public class ReportCard {
      * Generates inner card layout
      */
     private void createLayout() {
-        final RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
 
 
         mLayout = (RelativeLayout) mActivity.findViewById(R.id.report_item_layout);
