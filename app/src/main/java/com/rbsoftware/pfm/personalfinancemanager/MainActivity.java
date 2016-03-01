@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         // Obtain the shared Tracker instance.
         AnalyticsTracker application = (AnalyticsTracker) getApplication();
         mTracker = application.getDefaultTracker();
+        mTracker.enableAdvertisingIdCollection(true);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
