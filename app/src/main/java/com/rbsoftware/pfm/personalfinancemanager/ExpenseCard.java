@@ -16,7 +16,7 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
  * @author Roman Burzakovskiy
  */
 public class ExpenseCard extends Card {
-    int[] expenseValues;
+    private final int[] expenseValues;
 
     public ExpenseCard(Context context, int[] expenseValues) {
         super(context);

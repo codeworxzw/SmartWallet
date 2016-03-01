@@ -338,9 +338,10 @@ public class TrendsChart extends Fragment {
                         if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
                             data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
                         } else {
+
                             data.add(new String[]{
-                                    Integer.toString(value),
-                                    doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                    Integer.toString(Integer.valueOf(data.get(i - 1)[0]) + value),
+                                            doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
                             });
                             i++;
                         }

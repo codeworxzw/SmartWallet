@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cloudant.sync.datastore.ConflictException;
+import com.google.android.gms.analytics.HitBuilders;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
     private TextView mEmptyView;
     private Context mContext;
     private Activity mActivity;
+    private ConnectionDetector mConnectionDetector;
 
     public History() {
         // Required empty public constructor
@@ -76,6 +78,10 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
         MainActivity.fab.hide();
         mContext = getContext();
         mActivity = getActivity();
+        if (mConnectionDetector == null) {
+            mConnectionDetector = new ConnectionDetector(mContext);
+        }
+        MainActivity.mTracker.setScreenName(TAG);
 
     }
 
@@ -125,6 +131,12 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
             }
         }
 
+        //check if network is available and send analytics tracker
+
+        if (mConnectionDetector.isConnectingToInternet()) {
+
+            MainActivity.mTracker.send(new HitBuilders.EventBuilder().setCategory("Action").setAction("Open").build());
+        }
     }
 
     @Override

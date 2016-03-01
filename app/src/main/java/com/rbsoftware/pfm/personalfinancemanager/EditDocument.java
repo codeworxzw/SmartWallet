@@ -7,10 +7,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.analytics.HitBuilders;
+
 public class EditDocument extends AppCompatActivity {
     private final String TAG = "EditDocument";
     private String docId;
     private ReportCard reportCard;
+    private ConnectionDetector mConnectionDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +34,23 @@ public class EditDocument extends AppCompatActivity {
         }
         reportCard = new ReportCard(this);
         reportCard.setup(this, savedInstanceState, docId);
-
+        if (mConnectionDetector == null) {
+            mConnectionDetector = new ConnectionDetector(this);
+        }
+        MainActivity.mTracker.setScreenName(TAG);
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //check if network is available and send analytics tracker
+
+        if (mConnectionDetector.isConnectingToInternet()) {
+
+            MainActivity.mTracker.send(new HitBuilders.EventBuilder().setCategory("Action").setAction("Open").build());
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

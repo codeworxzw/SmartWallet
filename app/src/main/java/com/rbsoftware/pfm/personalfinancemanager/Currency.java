@@ -18,7 +18,6 @@ import java.util.Map;
 public class Currency {
     private BasicDocumentRevision rev;
     private static final String DOC_TYPE = "CurrencyDocument";
-    private final String type = DOC_TYPE;
     private String input;
 
     private Double EUR = 1.0;
@@ -220,7 +219,7 @@ public class Currency {
         map.put("UAHtoEUR", UAHtoEUR);
         map.put("UAHtoUSD", UAHtoUSD);
         map.put("UAHtoRUB", UAHtoRUB);
-        map.put("type", type);
+        map.put("type", DOC_TYPE);
 
         return map;
     }

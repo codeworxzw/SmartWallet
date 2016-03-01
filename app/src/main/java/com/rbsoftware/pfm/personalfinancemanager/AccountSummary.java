@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,7 @@ public class AccountSummary extends Fragment {
     private CardViewNative mIncomeCardView;
     private CardViewNative mExpenseCardView;
     private List<FinanceDocument> financeDocumentList;
+    private ConnectionDetector mConnectionDetector;
 
     public AccountSummary() {
         // Required empty public constructor
@@ -62,6 +65,7 @@ public class AccountSummary extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[0]);
 
         if (mBalanceCardView == null) {
@@ -82,6 +86,10 @@ public class AccountSummary extends Fragment {
         MainActivity.fab.show();
         mContext = getContext();
         mActivity = getActivity();
+        if (mConnectionDetector == null) {
+            mConnectionDetector = new ConnectionDetector(mContext);
+        }
+        MainActivity.mTracker.setScreenName(TAG);
     }
 
     @Override
@@ -91,6 +99,12 @@ public class AccountSummary extends Fragment {
         mTextViewPeriod.setText(MainActivity.readFromSharedPreferences(getActivity(), "periodTextAccSummary", getResources().getString(R.string.this_week)));
         setValuesFromList(financeDocumentList);
 
+        //check if network is available and send analytics tracker
+
+        if (mConnectionDetector.isConnectingToInternet()) {
+
+            MainActivity.mTracker.send(new HitBuilders.EventBuilder().setCategory("Action").setAction("Open").build());
+        }
 
     }
 

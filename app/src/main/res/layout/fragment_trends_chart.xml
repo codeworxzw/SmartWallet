@@ -3,6 +3,7 @@
     android:id="@+id/trendsChartLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layoutDirection="ltr"
     android:orientation="vertical"
     tools:context="com.rbsoftware.pfm.personalfinancemanager.TrendsChart">
 
@@ -10,31 +11,34 @@
         android:id="@+id/trends_chart_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
+        android:layoutDirection="ltr"
+        android:text="chart"
         android:textAllCaps="true"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:text="chart" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv_period_trend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layoutDirection="ltr"
         android:text="@string/this_week"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layoutDirection="ltr">
 
         <lecho.lib.hellocharts.view.LineChartView
             android:id="@+id/trends_chart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true" />
 
         <TextView
             android:id="@+id/emptyTrends"
@@ -42,6 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:drawableTop="@drawable/empty_64dp"
+            android:layoutDirection="ltr"
             android:text="@string/no_data_to_show"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:visibility="gone" />

@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.plus.Plus;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -61,8 +62,12 @@ public class MainActivity extends AppCompatActivity {
     public final static int PARAM_PERSONAL = 12;
     public final static int PARAM_ACTIVITIES = 13;
     public final static int PARAM_OTHER_EXPENSE = 14;
+
     public static String defaultCurrency;
     public static FloatingActionButton fab;
+
+    public static Tracker mTracker;
+
     private List<Object> params; //List FinanceDocument constructor parameters
     private static String userID; //unique user identifier
     private AccountHeader drawerAccountHeader;
@@ -75,6 +80,10 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
+        // Obtain the shared Tracker instance.
+        AnalyticsTracker application = (AnalyticsTracker) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.enableAdvertisingIdCollection(true);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -211,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
         drawerAccountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
 
-                .withHeaderBackground(R.drawable.header)
+                .withHeaderBackground(R.drawable.account_header_background)
                 .addProfiles(
                         new ProfileDrawerItem().withName(intent.getStringExtra("name"))
                                 .withIcon(intent.getStringExtra("photoURL"))
