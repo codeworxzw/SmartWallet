@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
         drawerAccountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
 
-                .withHeaderBackground(R.drawable.header)
+                .withHeaderBackground(R.drawable.account_header_background)
                 .addProfiles(
                         new ProfileDrawerItem().withName(intent.getStringExtra("name"))
                                 .withIcon(intent.getStringExtra("photoURL"))
