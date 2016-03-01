@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layoutDirection="ltr"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -11,7 +12,8 @@
         android:layout_marginEnd="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginStart="10dp">
+        android:layout_marginStart="10dp"
+        android:layoutDirection="ltr">
 
         <TextView
             android:id="@+id/textView7"
@@ -21,6 +23,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:layoutDirection="ltr"
             android:text="@string/expense"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/expense" />
@@ -31,10 +34,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layoutDirection="ltr"
             android:text="000 USD"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/expense"
-
             android:textStyle="bold" />
     </RelativeLayout>
 
@@ -42,6 +45,7 @@
         android:id="@+id/emptyExpense"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layoutDirection="ltr"
         android:visibility="gone">
 
         <TextView
@@ -49,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center_horizontal"
+            android:layoutDirection="ltr"
             android:text="@string/expense_is_empty"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/secondary_text_dark" />
@@ -62,6 +67,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginStart="10dp"
+        android:layoutDirection="ltr"
         android:paddingBottom="2dp"
         android:paddingEnd="32dp"
         android:paddingLeft="32dp"
@@ -77,8 +83,9 @@
             android:layout_alignParentStart="true"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:layoutDirection="ltr"
             android:text="@string/food"
-           android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
 
         <TextView
@@ -87,8 +94,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layoutDirection="ltr"
             android:text="000"
-           android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -100,6 +108,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginStart="10dp"
+        android:layoutDirection="ltr"
         android:paddingBottom="2dp"
         android:paddingEnd="32dp"
         android:paddingLeft="32dp"
@@ -115,8 +124,9 @@
             android:layout_alignParentStart="true"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:layoutDirection="ltr"
             android:text="@string/car_payment"
-           android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
 
         <TextView
@@ -125,8 +135,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layoutDirection="ltr"
             android:text="000"
-           android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -138,6 +149,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginStart="10dp"
+        android:layoutDirection="ltr"
         android:paddingBottom="2dp"
         android:paddingEnd="32dp"
         android:paddingLeft="32dp"
@@ -153,8 +165,9 @@
             android:layout_alignParentStart="true"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:layoutDirection="ltr"
             android:text="@string/personal"
-           android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
 
         <TextView
@@ -163,8 +176,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layoutDirection="ltr"
             android:text="000"
-           android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -176,6 +190,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginStart="10dp"
+        android:layoutDirection="ltr"
         android:paddingBottom="2dp"
         android:paddingEnd="32dp"
         android:paddingLeft="32dp"
@@ -192,7 +207,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:text="@string/activities"
-           android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
 
         <TextView
@@ -201,8 +216,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layoutDirection="ltr"
             android:text="000"
-           android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -214,6 +230,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginStart="10dp"
+        android:layoutDirection="ltr"
         android:paddingBottom="2dp"
         android:paddingEnd="32dp"
         android:paddingLeft="32dp"
@@ -229,8 +246,9 @@
             android:layout_alignParentStart="true"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:layoutDirection="ltr"
             android:text="@string/utilities"
-           android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
 
         <TextView
@@ -239,8 +257,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layoutDirection="ltr"
             android:text="000"
-           android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -252,6 +271,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginStart="10dp"
+        android:layoutDirection="ltr"
         android:paddingBottom="2dp"
         android:paddingEnd="32dp"
         android:paddingLeft="32dp"
@@ -267,8 +287,9 @@
             android:layout_alignParentStart="true"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:layoutDirection="ltr"
             android:text="@string/credit_card"
-           android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
 
         <TextView
@@ -277,8 +298,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layoutDirection="ltr"
             android:text="000"
-           android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -290,6 +312,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginStart="10dp"
+        android:layoutDirection="ltr"
         android:paddingBottom="2dp"
         android:paddingEnd="32dp"
         android:paddingLeft="32dp"
@@ -305,8 +328,9 @@
             android:layout_alignParentStart="true"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:layoutDirection="ltr"
             android:text="@string/taxes"
-           android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
 
         <TextView
@@ -315,8 +339,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layoutDirection="ltr"
             android:text="000"
-           android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -328,6 +353,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginStart="10dp"
+        android:layoutDirection="ltr"
         android:paddingBottom="2dp"
         android:paddingEnd="32dp"
         android:paddingLeft="32dp"
@@ -343,8 +369,9 @@
             android:layout_alignParentStart="true"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:layoutDirection="ltr"
             android:text="@string/mortgage"
-           android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
 
         <TextView
@@ -353,8 +380,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layoutDirection="ltr"
             android:text="000"
-           android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
     </RelativeLayout>
 
@@ -366,6 +394,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginStart="10dp"
+        android:layoutDirection="ltr"
         android:paddingBottom="2dp"
         android:paddingEnd="32dp"
         android:paddingLeft="32dp"
@@ -381,6 +410,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:layoutDirection="ltr"
             android:text="@string/other_expense"
             android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
@@ -391,8 +421,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layoutDirection="ltr"
             android:text="000"
-           android:textColor="@android:color/secondary_text_dark"
+            android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
     </RelativeLayout>
 </LinearLayout>

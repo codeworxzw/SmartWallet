@@ -3,16 +3,18 @@
     android:id="@+id/incomeExpenseLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layoutDirection="ltr"
     tools:context="com.rbsoftware.pfm.personalfinancemanager.IncomeExpenseChart">
 
     <ToggleButton
         android:id="@+id/btn_income_expense"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?android:attr/borderlessButtonStyle"
+        android:gravity="center"
+        android:layoutDirection="ltr"
         android:textAllCaps="true"
         android:textColor="@color/expense"
-        android:gravity="center"
         android:textOff="@string/expense"
         android:textOn="@string/income"
         android:textSize="20sp"
@@ -26,7 +28,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_below="@+id/btn_income_expense"
-        android:layout_marginTop="65dp" />
+        android:layout_marginTop="65dp"
+        android:layoutDirection="ltr" />
 
     <TextView
         android:id="@+id/tv_period"
@@ -38,17 +41,20 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/btn_income_expense"
         android:gravity="center"
+        android:layoutDirection="ltr"
         android:text="@string/this_week"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+
     <TextView
         android:id="@+id/emptyIncomeExpense"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:gravity="center_horizontal"
         android:drawableTop="@drawable/empty_64dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="center_horizontal"
+        android:layoutDirection="ltr"
         android:text="@string/no_data_to_show"
-        android:visibility="gone"/>
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -3,6 +3,7 @@
     android:id="@+id/history_expand_card_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layoutDirection="ltr"
     android:orientation="vertical">
 
 </LinearLayout>
