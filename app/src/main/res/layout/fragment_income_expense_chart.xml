@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutDirection="ltr"
-    tools:context="com.rbsoftware.pfm.personalfinancemanager.IncomeExpenseChart">
+    tools:context=".charts.IncomeExpenseChart">
 
     <ToggleButton
         android:id="@+id/btn_income_expense"

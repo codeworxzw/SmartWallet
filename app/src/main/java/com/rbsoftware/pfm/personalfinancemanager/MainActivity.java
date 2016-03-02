@@ -35,6 +35,7 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
+import com.rbsoftware.pfm.personalfinancemanager.charts.Charts;
 import com.squareup.picasso.Picasso;
 
 import java.net.URISyntaxException;

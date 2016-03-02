@@ -1,4 +1,4 @@
-package com.rbsoftware.pfm.personalfinancemanager;
+package com.rbsoftware.pfm.personalfinancemanager.charts;
 
 
 import android.os.Bundle;
@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.analytics.HitBuilders;
+import com.rbsoftware.pfm.personalfinancemanager.ConnectionDetector;
+import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
+import com.rbsoftware.pfm.personalfinancemanager.R;
 
 
 /**

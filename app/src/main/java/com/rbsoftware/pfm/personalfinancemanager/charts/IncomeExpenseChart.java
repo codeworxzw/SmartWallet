@@ -1,13 +1,18 @@
-package com.rbsoftware.pfm.personalfinancemanager;
+package com.rbsoftware.pfm.personalfinancemanager.charts;
 
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +24,12 @@ import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import com.rbsoftware.pfm.personalfinancemanager.ExportData;
+import com.rbsoftware.pfm.personalfinancemanager.FinanceDocument;
+import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
+import com.rbsoftware.pfm.personalfinancemanager.R;
+import com.rbsoftware.pfm.personalfinancemanager.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,8 +52,9 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
  */
 public class IncomeExpenseChart extends Fragment {
     private final String TAG = "IncomeExpenseChart";
+
+    private final int INCOME_EXPENSE_CHART_LOADER_ID = 0;
     private RelativeLayout relativeLayout;
-    private List<FinanceDocument> financeDocumentList;
     private PieChartView mPieChart;
     private String selectedItem; //position of selected item in popup menu
     private ToggleButton mIncomeExpenseButton;
@@ -112,7 +124,8 @@ public class IncomeExpenseChart extends Fragment {
 
                 }
                 MainActivity.saveToSharedPreferences(getActivity(), "toggleButtonState", Boolean.toString(mIncomeExpenseButton.isChecked()));
-                generateChartData(getValues(financeDocumentList));
+//                generateChartData(getValues(financeDocumentList));
+                updateChart();
             }
         });
 
@@ -123,6 +136,8 @@ public class IncomeExpenseChart extends Fragment {
 
         mContext = getContext();
         mActivity = getActivity();
+
+        getLoaderManager().initLoader(INCOME_EXPENSE_CHART_LOADER_ID, null, loaderCallbacks);
 
         int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
                 .getInt("status_" + TAG, 0);
@@ -141,9 +156,7 @@ public class IncomeExpenseChart extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.readFromSharedPreferences(getActivity(), "period", "thisWeek"), MainActivity.getUserId());
         mTextViewPeriod.setText(MainActivity.readFromSharedPreferences(getActivity(), "periodText", getResources().getString(R.string.this_week)));
-        generateChartData(getValues(financeDocumentList));
     }
 
 
@@ -196,30 +209,25 @@ public class IncomeExpenseChart extends Fragment {
 
                 switch (id) {
                     case R.id.thisWeek:
-                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
                         selectedItem = "thisWeek";
                         mTextViewPeriod.setText(getResources().getString(R.string.this_week));
                         break;
                     case R.id.thisMonth:
-                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisMonth", MainActivity.getUserId());
                         selectedItem = "thisMonth";
                         mTextViewPeriod.setText(getResources().getString(R.string.this_month));
 
                         break;
                     case R.id.lastWeek:
-                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("lastWeek", MainActivity.getUserId());
                         selectedItem = "lastWeek";
                         mTextViewPeriod.setText(getResources().getString(R.string.last_week));
 
                         break;
                     case R.id.lastMonth:
-                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("lastMonth", MainActivity.getUserId());
                         selectedItem = "lastMonth";
                         mTextViewPeriod.setText(getResources().getString(R.string.last_month));
 
                         break;
                     case R.id.thisYear:
-                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId());
                         selectedItem = "thisYear";
                         mTextViewPeriod.setText(getResources().getString(R.string.this_year));
 
@@ -227,8 +235,8 @@ public class IncomeExpenseChart extends Fragment {
                 }
                 MainActivity.saveToSharedPreferences(getActivity(), "period", selectedItem);
                 MainActivity.saveToSharedPreferences(getActivity(), "periodText", mTextViewPeriod.getText().toString());
-
-                generateChartData(getValues(financeDocumentList));
+                updateChart();
+//                generateChartData(getValues(financeDocumentList));
                 return false;
             }
         });
@@ -278,68 +286,29 @@ public class IncomeExpenseChart extends Fragment {
             getActivity().findViewById(R.id.emptyIncomeExpense).setVisibility(View.VISIBLE);
         }
 
+    }
 
+    private void updateChart() {
+        Intent intent = new Intent(IncomeExpenseChartLoader.ACTION);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
 
-    /**
-     * extracts sums data of FinanceDocuments in the list
-     *
-     * @param list finance documents list
-     * @return map of data types and values
-     */
-    private SparseIntArray getValues(List<FinanceDocument> list) {
-        int salarySum = 0;
-        int rentalIncomeSum = 0;
-        int interestSum = 0;
-        int giftsSum = 0;
-        int otherIncomeSum = 0;
-        int taxesSum = 0;
-        int mortgageSum = 0;
-        int creditCardSum = 0;
-        int utilitiesSum = 0;
-        int foodSum = 0;
-        int carPaymentSum = 0;
-        int personalSum = 0;
-        int activitiesSum = 0;
-        int otherExpensesSum = 0;
-
-
-        for (FinanceDocument item : list) {
-            salarySum += item.getSalary();
-            rentalIncomeSum += item.getRentalIncome();
-            interestSum += item.getInterest();
-            giftsSum += item.getGifts();
-            otherIncomeSum += item.getOtherIncome();
-            taxesSum += item.getTaxes();
-            mortgageSum += item.getMortgage();
-            creditCardSum += item.getCreditCard();
-            utilitiesSum += item.getUtilities();
-            foodSum += item.getFood();
-            carPaymentSum += item.getCarPayment();
-            personalSum += item.getPersonal();
-            activitiesSum += item.getActivities();
-            otherExpensesSum += item.getOtherExpenses();
-
+    private LoaderManager.LoaderCallbacks<SparseIntArray> loaderCallbacks = new LoaderManager.LoaderCallbacks<SparseIntArray>() {
+        @Override
+        public Loader<SparseIntArray> onCreateLoader(int id, Bundle args) {
+            return new IncomeExpenseChartLoader(getContext());
         }
-        SparseIntArray mapSum = new SparseIntArray();
-        mapSum.put(MainActivity.PARAM_SALARY, salarySum);
-        mapSum.put(MainActivity.PARAM_RENTAL_INCOME, rentalIncomeSum);
-        mapSum.put(MainActivity.PARAM_INTEREST, interestSum);
-        mapSum.put(MainActivity.PARAM_GIFTS, giftsSum);
-        mapSum.put(MainActivity.PARAM_OTHER_INCOME, otherIncomeSum);
-        mapSum.put(MainActivity.PARAM_TAXES, taxesSum);
-        mapSum.put(MainActivity.PARAM_MORTGAGE, mortgageSum);
-        mapSum.put(MainActivity.PARAM_CREDIT_CARD, creditCardSum);
-        mapSum.put(MainActivity.PARAM_UTILITIES, utilitiesSum);
-        mapSum.put(MainActivity.PARAM_FOOD, foodSum);
-        mapSum.put(MainActivity.PARAM_CAR_PAYMENT, carPaymentSum);
-        mapSum.put(MainActivity.PARAM_PERSONAL, personalSum);
-        mapSum.put(MainActivity.PARAM_ACTIVITIES, activitiesSum);
-        mapSum.put(MainActivity.PARAM_OTHER_EXPENSE, otherExpensesSum);
 
-        return mapSum;
-    }
+        @Override
+        public void onLoadFinished(Loader<SparseIntArray> loader, SparseIntArray data) {
+            generateChartData(data);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<SparseIntArray> loader) {
+        }
+    };
 
 
     /**
