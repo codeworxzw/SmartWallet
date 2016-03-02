@@ -1,11 +1,15 @@
-package com.rbsoftware.pfm.personalfinancemanager;
+package com.rbsoftware.pfm.personalfinancemanager.accountsummary;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,6 +20,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.analytics.HitBuilders;
+import com.rbsoftware.pfm.personalfinancemanager.ConnectionDetector;
+import com.rbsoftware.pfm.personalfinancemanager.ExportData;
+import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
+import com.rbsoftware.pfm.personalfinancemanager.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +41,7 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 public class AccountSummary extends Fragment {
 
     private final String TAG = "AccountSummary";
-
+    private final int INCOME_EXPENSE_CHART_LOADER_ID = 2;
 
     private String selectedItem;
     private TextView mTextViewPeriod;
@@ -42,7 +50,6 @@ public class AccountSummary extends Fragment {
     private CardViewNative mBalanceCardView;
     private CardViewNative mIncomeCardView;
     private CardViewNative mExpenseCardView;
-    private List<FinanceDocument> financeDocumentList;
     private ConnectionDetector mConnectionDetector;
 
     public AccountSummary() {
@@ -86,6 +93,8 @@ public class AccountSummary extends Fragment {
         MainActivity.fab.show();
         mContext = getContext();
         mActivity = getActivity();
+        getLoaderManager().initLoader(INCOME_EXPENSE_CHART_LOADER_ID, null, loaderCallbacks);
+
         if (mConnectionDetector == null) {
             mConnectionDetector = new ConnectionDetector(mContext);
         }
@@ -95,10 +104,7 @@ public class AccountSummary extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.readFromSharedPreferences(getActivity(), "periodAccSummary", "thisWeek"), MainActivity.getUserId());
         mTextViewPeriod.setText(MainActivity.readFromSharedPreferences(getActivity(), "periodTextAccSummary", getResources().getString(R.string.this_week)));
-        setValuesFromList(financeDocumentList);
-
         //check if network is available and send analytics tracker
 
         if (mConnectionDetector.isConnectingToInternet()) {
@@ -167,31 +173,26 @@ public class AccountSummary extends Fragment {
 
                 switch (id) {
                     case R.id.thisWeek:
-                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisWeek", MainActivity.getUserId());
                         selectedItem = "thisWeek";
                         mTextViewPeriod.setText(getResources().getString(R.string.this_week));
 
                         break;
                     case R.id.thisMonth:
-                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisMonth", MainActivity.getUserId());
                         selectedItem = "thisMonth";
                         mTextViewPeriod.setText(getResources().getString(R.string.this_month));
 
                         break;
                     case R.id.lastWeek:
-                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("lastWeek", MainActivity.getUserId());
                         selectedItem = "lastWeek";
                         mTextViewPeriod.setText(getResources().getString(R.string.last_week));
 
                         break;
                     case R.id.lastMonth:
-                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("lastMonth", MainActivity.getUserId());
                         selectedItem = "lastMonth";
                         mTextViewPeriod.setText(getResources().getString(R.string.last_month));
 
                         break;
                     case R.id.thisYear:
-                        financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId());
                         selectedItem = "thisYear";
                         mTextViewPeriod.setText(getResources().getString(R.string.this_year));
 
@@ -199,7 +200,7 @@ public class AccountSummary extends Fragment {
                 }
                 MainActivity.saveToSharedPreferences(getActivity(), "periodAccSummary", selectedItem);
                 MainActivity.saveToSharedPreferences(getActivity(), "periodTextAccSummary", mTextViewPeriod.getText().toString());
-                setValuesFromList(financeDocumentList);
+                updateCards();
                 return false;
             }
         });
@@ -207,50 +208,17 @@ public class AccountSummary extends Fragment {
 
     }
 
-    /**
-     * Retrieves values from documents list.
-     * Calculates sums and sets them to text views
-     *
-     * @param list FinanceDocument list
-     **/
+    private void generateCardsData(List<Integer> data) {
 
-    private void setValuesFromList(List<FinanceDocument> list) {
-        int salarySum = 0;
-        int rentalIncomeSum = 0;
-        int interestSum = 0;
-        int giftsSum = 0;
-        int otherIncomeSum = 0;
-        int taxesSum = 0;
-        int mortgageSum = 0;
-        int creditCardSum = 0;
-        int utilitiesSum = 0;
-        int foodSum = 0;
-        int carPaymentSum = 0;
-        int personalSum = 0;
-        int activitiesSum = 0;
-        int otherExpensesSum = 0;
-        int totalIncome;
-        int totalExpense;
-
-        for (FinanceDocument item : list) {
-            salarySum += item.getSalary();
-            rentalIncomeSum += item.getRentalIncome();
-            interestSum += item.getInterest();
-            giftsSum += item.getGifts();
-            otherIncomeSum += item.getOtherIncome();
-            taxesSum += item.getTaxes();
-            mortgageSum += item.getMortgage();
-            creditCardSum += item.getCreditCard();
-            utilitiesSum += item.getUtilities();
-            foodSum += item.getFood();
-            carPaymentSum += item.getCarPayment();
-            personalSum += item.getPersonal();
-            activitiesSum += item.getActivities();
-            otherExpensesSum += item.getOtherExpenses();
+        int totalIncome = 0;
+        for (int i = 0; i < 5; i++) {
+            totalIncome += data.get(i);
         }
 
-        totalIncome = salarySum + rentalIncomeSum + interestSum + giftsSum + otherIncomeSum;
-        totalExpense = taxesSum + mortgageSum + creditCardSum + utilitiesSum + foodSum + carPaymentSum + personalSum + activitiesSum + otherExpensesSum;
+        int totalExpense = 0;
+        for (int i = 5; i < 14; i++) {
+            totalExpense += data.get(i);
+        }
 
         String balanceString = String.format(Locale.getDefault(), "%,d", totalIncome - totalExpense) + " " + MainActivity.defaultCurrency;
 
@@ -261,7 +229,7 @@ public class AccountSummary extends Fragment {
             mBalanceCardView.replaceCard(mBalanceCard);
         }
 
-        int[] incomeArray = {totalIncome, salarySum, rentalIncomeSum, interestSum, giftsSum, otherIncomeSum};
+        int[] incomeArray = {totalIncome, data.get(0), data.get(1), data.get(2), data.get(3), data.get(4)};
         IncomeCard mIncomeCard = new IncomeCard(mContext, incomeArray);
         if (mIncomeCardView.getCard() == null) {
             mIncomeCardView.setCard(mIncomeCard);
@@ -269,7 +237,7 @@ public class AccountSummary extends Fragment {
             mIncomeCardView.replaceCard(mIncomeCard);
         }
 
-        int[] expenseArray = {totalExpense, taxesSum, mortgageSum, creditCardSum, utilitiesSum, foodSum, carPaymentSum, personalSum, activitiesSum, otherExpensesSum};
+        int[] expenseArray = {totalExpense, data.get(5), data.get(6), data.get(7), data.get(8), data.get(9), data.get(10), data.get(11), data.get(12), data.get(13)};
         ExpenseCard mExpenseCard = new ExpenseCard(mContext, expenseArray);
         if (mExpenseCardView.getCard() == null) {
             mExpenseCardView.setCard(mExpenseCard);
@@ -278,6 +246,7 @@ public class AccountSummary extends Fragment {
         }
 
     }
+
 
     /**
      * Compiles all views data into export ready list
@@ -342,6 +311,31 @@ public class AccountSummary extends Fragment {
         return data;
     }
 
+
+    /**
+     * Sends broadcast intent to update cards
+     */
+    private void updateCards() {
+        Intent intent = new Intent(AccountSummaryLoader.ACTION);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+    }
+
+
+    private LoaderManager.LoaderCallbacks<List<Integer>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<Integer>>() {
+        @Override
+        public Loader<List<Integer>> onCreateLoader(int id, Bundle args) {
+            return new AccountSummaryLoader(getContext());
+        }
+
+        @Override
+        public void onLoadFinished(Loader<List<Integer>> loader, List<Integer> data) {
+            generateCardsData(data);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<List<Integer>> loader) {
+        }
+    };
 
     /**
      * Runs showcase presentation on fragment start

@@ -1,9 +1,12 @@
-package com.rbsoftware.pfm.personalfinancemanager;
+package com.rbsoftware.pfm.personalfinancemanager.accountsummary;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
+import com.rbsoftware.pfm.personalfinancemanager.R;
 
 import java.util.Locale;
 

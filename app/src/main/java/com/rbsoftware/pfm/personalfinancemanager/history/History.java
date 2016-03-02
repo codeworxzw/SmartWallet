@@ -1,4 +1,4 @@
-package com.rbsoftware.pfm.personalfinancemanager;
+package com.rbsoftware.pfm.personalfinancemanager.history;
 
 
 import android.app.Activity;
@@ -8,7 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +25,15 @@ import android.widget.TextView;
 
 import com.cloudant.sync.datastore.ConflictException;
 import com.google.android.gms.analytics.HitBuilders;
+import com.rbsoftware.pfm.personalfinancemanager.ConnectionDetector;
+import com.rbsoftware.pfm.personalfinancemanager.EditDocument;
+import com.rbsoftware.pfm.personalfinancemanager.ExportData;
+import com.rbsoftware.pfm.personalfinancemanager.FinanceDocument;
+import com.rbsoftware.pfm.personalfinancemanager.FinanceDocumentModel;
+import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
+import com.rbsoftware.pfm.personalfinancemanager.R;
+import com.rbsoftware.pfm.personalfinancemanager.Utils;
+import com.rbsoftware.pfm.personalfinancemanager.accountsummary.AccountSummaryLoader;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,6 +53,8 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
  */
 public class History extends Fragment implements CardHeader.OnClickCardHeaderPopupMenuListener {
     private final String TAG = "History";
+    private final int INCOME_EXPENSE_CHART_LOADER_ID = 2;
+
     private CardRecyclerView mRecyclerView;
     private HistoryCardRecyclerViewAdapter mCardArrayAdapter;
     private HistoryCard card;
@@ -78,6 +92,7 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
         MainActivity.fab.hide();
         mContext = getContext();
         mActivity = getActivity();
+        getLoaderManager().initLoader(INCOME_EXPENSE_CHART_LOADER_ID, null, loaderCallbacks);
         if (mConnectionDetector == null) {
             mConnectionDetector = new ConnectionDetector(mContext);
         }
@@ -90,16 +105,27 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
 
 
         super.onResume();
-        List<FinanceDocument> docList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId(), FinanceDocumentModel.ORDER_DESC);
-        ArrayList<HistoryCard> cards = new ArrayList<>();
 
 
-        for (int i = 0; i < docList.size(); i++) {
-            card = new HistoryCard(getContext(), docList.get(i));
-            card.setHeader();
-            card.getCardHeader().setPopupMenu(R.menu.history_card_menu, this);
-            card.setExpand();
-            cards.add(card);
+
+
+        //check if network is available and send analytics tracker
+
+        if (mConnectionDetector.isConnectingToInternet()) {
+
+            MainActivity.mTracker.send(new HitBuilders.EventBuilder().setCategory("Action").setAction("Open").build());
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    private void generateHistory(List<HistoryCard> cards){
+        for (HistoryCard historyCard : cards) {
+            historyCard.getCardHeader().setPopupMenu(R.menu.history_card_menu, this);
         }
 
         mCardArrayAdapter = new HistoryCardRecyclerViewAdapter(getActivity(), cards);
@@ -116,7 +142,7 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
         if (mRecyclerView != null) {
             mRecyclerView.setAdapter(mCardArrayAdapter);
             checkAdapterIsEmpty();
-            if (!docList.isEmpty() && docList.size() == 1) {
+            if (!cards.isEmpty() && cards.size() == 1) {
                 int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
                         .getInt("status_" + TAG, 0);
                 if (status != -1) {
@@ -131,20 +157,7 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
             }
         }
 
-        //check if network is available and send analytics tracker
-
-        if (mConnectionDetector.isConnectingToInternet()) {
-
-            MainActivity.mTracker.send(new HitBuilders.EventBuilder().setCategory("Action").setAction("Open").build());
-        }
     }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
     /**
      * Checks whether recycler view is empty
      * And switches to empty view
@@ -214,6 +227,31 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
             }
         }
     }
+
+    /**
+     * Sends broadcast intent to update history
+     */
+    private void updateHistory() {
+        Intent intent = new Intent(AccountSummaryLoader.ACTION);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+    }
+
+
+    private LoaderManager.LoaderCallbacks<List<HistoryCard>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<HistoryCard>>() {
+        @Override
+        public Loader<List<HistoryCard>> onCreateLoader(int id, Bundle args) {
+            return new HistoryLoader(getContext());
+        }
+
+        @Override
+        public void onLoadFinished(Loader<List<HistoryCard>> loader, List<HistoryCard> data) {
+            generateHistory(data);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<List<HistoryCard>> loader) {
+        }
+    };
 
     @Override
     public void onMenuItemClick(final BaseCard card, MenuItem item) {

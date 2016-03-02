@@ -1,7 +1,9 @@
-package com.rbsoftware.pfm.personalfinancemanager;
+package com.rbsoftware.pfm.personalfinancemanager.history;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+
+import com.rbsoftware.pfm.personalfinancemanager.history.HistoryCard;
 
 import java.util.ArrayList;
 import java.util.Collection;

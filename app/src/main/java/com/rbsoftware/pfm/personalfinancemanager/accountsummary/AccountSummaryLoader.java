@@ -1,4 +1,4 @@
-package com.rbsoftware.pfm.personalfinancemanager.charts;
+package com.rbsoftware.pfm.personalfinancemanager.accountsummary;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,25 +6,25 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.SparseIntArray;
 
 import com.rbsoftware.pfm.personalfinancemanager.FinanceDocument;
 import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Holds method for loading income and expense data in background
+ * Holds method for loading account summary data in background
  *
  * @author Roman Burzakovskiy
  */
-public class IncomeExpenseChartLoader extends AsyncTaskLoader<SparseIntArray> {
+public class AccountSummaryLoader extends AsyncTaskLoader<List<Integer>> {
+    public static final String ACTION = "AccountSummaryLoader.FORCELOAD";
 
-    public static final String ACTION = "IncomeExpenseChartLoader.FORCELOAD";
-
-    public IncomeExpenseChartLoader(Context context) {
+    public AccountSummaryLoader(Context context) {
         super(context);
     }
+
 
     @Override
     protected void onStartLoading() {
@@ -36,15 +36,16 @@ public class IncomeExpenseChartLoader extends AsyncTaskLoader<SparseIntArray> {
     }
 
     @Override
-    public SparseIntArray loadInBackground() {
+    public List<Integer> loadInBackground() {
 
-        List<FinanceDocument> financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.readFromSharedPreferences(getContext(), "period", "thisWeek"), MainActivity.getUserId());
+        List<FinanceDocument> financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.readFromSharedPreferences(getContext(), "periodAccSummary", "thisWeek"), MainActivity.getUserId());
 
-        return getValues(financeDocumentList);
+        return getValuesFromList(financeDocumentList);
     }
 
+
     @Override
-    public void deliverResult(SparseIntArray data) {
+    public void deliverResult(List<Integer> data) {
         super.deliverResult(data);
     }
 
@@ -61,13 +62,15 @@ public class IncomeExpenseChartLoader extends AsyncTaskLoader<SparseIntArray> {
         }
     };
 
+
     /**
-     * extracts sums data of FinanceDocuments in the list
+     * Retrieves values from documents list.
      *
-     * @param list finance documents list
-     * @return map of data types and values
-     */
-    private SparseIntArray getValues(List<FinanceDocument> list) {
+     * @param list FinanceDocument list
+     **/
+
+    private List<Integer> getValuesFromList(List<FinanceDocument> list) {
+        List<Integer> data = new ArrayList<>();
         int salarySum = 0;
         int rentalIncomeSum = 0;
         int interestSum = 0;
@@ -82,7 +85,6 @@ public class IncomeExpenseChartLoader extends AsyncTaskLoader<SparseIntArray> {
         int personalSum = 0;
         int activitiesSum = 0;
         int otherExpensesSum = 0;
-
 
         for (FinanceDocument item : list) {
             salarySum += item.getSalary();
@@ -99,24 +101,25 @@ public class IncomeExpenseChartLoader extends AsyncTaskLoader<SparseIntArray> {
             personalSum += item.getPersonal();
             activitiesSum += item.getActivities();
             otherExpensesSum += item.getOtherExpenses();
-
         }
-        SparseIntArray mapSum = new SparseIntArray();
-        mapSum.put(MainActivity.PARAM_SALARY, salarySum);
-        mapSum.put(MainActivity.PARAM_RENTAL_INCOME, rentalIncomeSum);
-        mapSum.put(MainActivity.PARAM_INTEREST, interestSum);
-        mapSum.put(MainActivity.PARAM_GIFTS, giftsSum);
-        mapSum.put(MainActivity.PARAM_OTHER_INCOME, otherIncomeSum);
-        mapSum.put(MainActivity.PARAM_TAXES, taxesSum);
-        mapSum.put(MainActivity.PARAM_MORTGAGE, mortgageSum);
-        mapSum.put(MainActivity.PARAM_CREDIT_CARD, creditCardSum);
-        mapSum.put(MainActivity.PARAM_UTILITIES, utilitiesSum);
-        mapSum.put(MainActivity.PARAM_FOOD, foodSum);
-        mapSum.put(MainActivity.PARAM_CAR_PAYMENT, carPaymentSum);
-        mapSum.put(MainActivity.PARAM_PERSONAL, personalSum);
-        mapSum.put(MainActivity.PARAM_ACTIVITIES, activitiesSum);
-        mapSum.put(MainActivity.PARAM_OTHER_EXPENSE, otherExpensesSum);
 
-        return mapSum;
+        data.add(salarySum);
+        data.add(rentalIncomeSum);
+        data.add(interestSum);
+        data.add(giftsSum);
+        data.add(otherIncomeSum);
+
+        data.add(taxesSum);
+        data.add(mortgageSum);
+        data.add(creditCardSum);
+        data.add(utilitiesSum);
+        data.add(foodSum);
+        data.add(carPaymentSum);
+        data.add(personalSum);
+        data.add(activitiesSum);
+        data.add(otherExpensesSum);
+
+        return data;
+
     }
 }

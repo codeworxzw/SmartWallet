@@ -19,7 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by burzakovskiy on 3/2/2016.
+ * Holds method for loading trends data in background
+ *
+ * @author Roman Burzakovskiy
  */
 public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
     public static final String ACTION = "TrendsChartLoader.FORCELOAD";

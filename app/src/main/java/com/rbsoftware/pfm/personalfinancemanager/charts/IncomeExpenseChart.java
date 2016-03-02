@@ -288,6 +288,9 @@ public class IncomeExpenseChart extends Fragment {
 
     }
 
+    /**
+     * Sends broadcast intent to update charts
+     */
     private void updateChart() {
         Intent intent = new Intent(IncomeExpenseChartLoader.ACTION);
         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
