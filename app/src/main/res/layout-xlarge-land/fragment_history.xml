@@ -6,20 +6,17 @@
     android:layoutDirection="ltr"
     tools:context=".History">
 
-
     <it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView
         android:id="@+id/history_card_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layoutDirection="ltr"
-        android:paddingEnd="8dp"
-
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingStart="8dp"
+        android:paddingEnd="192dp"
+        android:paddingLeft="192dp"
+        android:paddingRight="192dp"
+        android:paddingStart="192dp"
         android:scrollbars="none"
         card:list_card_layout_resourceID="@layout/native_recyclerview_card_layout" />
-
 
     <TextView
         android:id="@+id/emptyHistory"

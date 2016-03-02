@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layoutDirection="ltr"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -11,7 +12,8 @@
         android:layout_marginEnd="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginStart="10dp">
+        android:layout_marginStart="10dp"
+        android:layoutDirection="ltr">
 
         <TextView
             android:id="@+id/textView2"
@@ -21,6 +23,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:layoutDirection="ltr"
             android:text="@string/income"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/income" />
@@ -31,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layoutDirection="ltr"
             android:text="000 USD"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/income"
@@ -42,6 +46,7 @@
         android:id="@+id/emptyIncome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layoutDirection="ltr"
         android:visibility="gone">
 
         <TextView
@@ -49,6 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center_horizontal"
+            android:layoutDirection="ltr"
             android:text="@string/income_is_empty"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/secondary_text_dark" />
@@ -62,6 +68,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginStart="10dp"
+        android:layoutDirection="ltr"
         android:paddingBottom="2dp"
         android:paddingEnd="32dp"
         android:paddingLeft="32dp"
@@ -77,6 +84,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:layoutDirection="ltr"
             android:text="@string/salary"
             android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
@@ -87,6 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layoutDirection="ltr"
             android:text="000"
             android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
@@ -100,6 +109,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginStart="10dp"
+        android:layoutDirection="ltr"
         android:paddingBottom="2dp"
         android:paddingEnd="32dp"
         android:paddingLeft="32dp"
@@ -115,6 +125,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:layoutDirection="ltr"
             android:text="@string/rental_income"
             android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
@@ -125,6 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layoutDirection="ltr"
             android:text="000"
             android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
@@ -139,6 +151,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginStart="10dp"
+        android:layoutDirection="ltr"
         android:paddingBottom="2dp"
         android:paddingEnd="32dp"
         android:paddingLeft="32dp"
@@ -154,6 +167,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:layoutDirection="ltr"
             android:text="@string/interest"
             android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
@@ -164,6 +178,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layoutDirection="ltr"
             android:text="000"
             android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
@@ -177,6 +192,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginStart="10dp"
+        android:layoutDirection="ltr"
         android:paddingBottom="2dp"
         android:paddingEnd="32dp"
         android:paddingLeft="32dp"
@@ -192,6 +208,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:layoutDirection="ltr"
             android:text="@string/gifts"
             android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
@@ -202,6 +219,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layoutDirection="ltr"
             android:text="000"
             android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
@@ -215,6 +233,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginStart="10dp"
+        android:layoutDirection="ltr"
         android:paddingBottom="2dp"
         android:paddingEnd="32dp"
         android:paddingLeft="32dp"
@@ -230,6 +249,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:layoutDirection="ltr"
             android:text="@string/other_income"
             android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
@@ -240,6 +260,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layoutDirection="ltr"
             android:text="000"
             android:textColor="@android:color/secondary_text_dark"
             android:textSize="18sp" />
