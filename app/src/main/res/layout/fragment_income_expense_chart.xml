@@ -29,7 +29,8 @@
         android:layout_alignParentTop="true"
         android:layout_below="@+id/btn_income_expense"
         android:layout_marginTop="65dp"
-        android:layoutDirection="ltr" />
+        android:layoutDirection="ltr"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/tv_period"
