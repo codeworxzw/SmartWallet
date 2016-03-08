@@ -175,7 +175,9 @@ public class HistoryCard extends Card {
             String rowCategory = Utils.keyToString(getContext(), i);
             String rowData = sign + value;
             mTextViewCategory.setText(rowCategory);
+            mTextViewCategory.setTextColor(ContextCompat.getColor(mContext, R.color.grey));
             mTextViewData.setText(rowData);
+            mTextViewData.setTextColor(ContextCompat.getColor(mContext, R.color.grey));
             mRelativeLayout.addView(mTextViewCategory);
             mRelativeLayout.addView(mTextViewData);
             return mRelativeLayout;

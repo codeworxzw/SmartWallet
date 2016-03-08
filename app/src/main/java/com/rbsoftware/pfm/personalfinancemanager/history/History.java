@@ -6,10 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -29,7 +27,6 @@ import com.rbsoftware.pfm.personalfinancemanager.ConnectionDetector;
 import com.rbsoftware.pfm.personalfinancemanager.EditDocument;
 import com.rbsoftware.pfm.personalfinancemanager.ExportData;
 import com.rbsoftware.pfm.personalfinancemanager.FinanceDocument;
-import com.rbsoftware.pfm.personalfinancemanager.FinanceDocumentModel;
 import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
 import com.rbsoftware.pfm.personalfinancemanager.R;
 import com.rbsoftware.pfm.personalfinancemanager.Utils;
@@ -107,8 +104,6 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
         super.onResume();
 
 
-
-
         //check if network is available and send analytics tracker
 
         if (mConnectionDetector.isConnectingToInternet()) {
@@ -123,7 +118,7 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private void generateHistory(List<HistoryCard> cards){
+    private void generateHistory(List<HistoryCard> cards) {
         for (HistoryCard historyCard : cards) {
             historyCard.getCardHeader().setPopupMenu(R.menu.history_card_menu, this);
         }
@@ -142,22 +137,12 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
         if (mRecyclerView != null) {
             mRecyclerView.setAdapter(mCardArrayAdapter);
             checkAdapterIsEmpty();
-            if (!cards.isEmpty() && cards.size() == 1) {
-                int status = mContext.getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
-                        .getInt("status_" + TAG, 0);
-                if (status != -1) {
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            startShowcase();
-                        }
-                    }, 1000);
-                }
-            }
+
         }
 
     }
+
     /**
      * Checks whether recycler view is empty
      * And switches to empty view
@@ -170,29 +155,6 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
         }
     }
 
-    /**
-     * Runs showcase presentation on fragment start
-     */
-
-    private void startShowcase() {
-        if (card.getCardView() != null) {
-            ((View) card.getCardView()).measure(0, 0);
-            Double r = ((View) card.getCardView()).getMeasuredWidth() / 3.0;
-            ShowcaseConfig config = new ShowcaseConfig();
-            config.setDelay(500); // half second between each showcase view
-            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(mActivity, TAG);
-            sequence.setConfig(config);
-            sequence.addSequenceItem(new MaterialShowcaseView.Builder(mActivity)
-                    .setTarget(((View) card.getCardView()))
-                    .setUseAutoRadius(false)
-                    .setRadius(r.intValue())
-                    .setContentText(R.string.history_card)
-                    .setDismissText(R.string.ok)
-                    .setDismissTextColor(ContextCompat.getColor(mContext, R.color.colorAccent))
-                    .build());
-            sequence.start();
-        }
-    }
 
 
     @Override

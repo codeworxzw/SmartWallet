@@ -28,7 +28,6 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
 
     public TrendsChartLoader(Context context) {
         super(context);
-
     }
 
     @Override
