@@ -12,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,7 +25,6 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.rbsoftware.pfm.personalfinancemanager.ExportData;
-import com.rbsoftware.pfm.personalfinancemanager.FinanceDocument;
 import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
 import com.rbsoftware.pfm.personalfinancemanager.R;
 import com.rbsoftware.pfm.personalfinancemanager.Utils;

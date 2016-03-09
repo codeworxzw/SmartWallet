@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.util.SparseIntArray;
 
 import com.rbsoftware.pfm.personalfinancemanager.FinanceDocument;
 import com.rbsoftware.pfm.personalfinancemanager.FinanceDocumentModel;
