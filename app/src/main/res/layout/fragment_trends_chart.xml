@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layoutDirection="ltr"
     android:orientation="vertical"
-    tools:context="com.rbsoftware.pfm.personalfinancemanager.TrendsChart">
+    tools:context=".charts.TrendsChart">
 
     <TextView
         android:id="@+id/trends_chart_type"
@@ -38,7 +38,9 @@
             android:id="@+id/trends_chart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:layoutDirection="ltr"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/emptyTrends"
