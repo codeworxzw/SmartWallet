@@ -1,4 +1,4 @@
-package com.rbsoftware.pfm.personalfinancemanager;
+package com.rbsoftware.pfm.personalfinancemanager.history;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -7,6 +7,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.rbsoftware.pfm.personalfinancemanager.FinanceDocument;
+import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
+import com.rbsoftware.pfm.personalfinancemanager.R;
+import com.rbsoftware.pfm.personalfinancemanager.Utils;
 
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +33,8 @@ public class HistoryCard extends Card {
         super(context);
         this.mContext = context;
         this.doc = doc;
+        this.setHeader();
+        this.setExpand();
     }
 
     public FinanceDocument getDocument() {
@@ -168,7 +175,9 @@ public class HistoryCard extends Card {
             String rowCategory = Utils.keyToString(getContext(), i);
             String rowData = sign + value;
             mTextViewCategory.setText(rowCategory);
+            mTextViewCategory.setTextColor(ContextCompat.getColor(mContext, R.color.grey));
             mTextViewData.setText(rowData);
+            mTextViewData.setTextColor(ContextCompat.getColor(mContext, R.color.grey));
             mRelativeLayout.addView(mTextViewCategory);
             mRelativeLayout.addView(mTextViewData);
             return mRelativeLayout;
