@@ -15,7 +15,7 @@
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:layoutDirection="ltr"
-        android:text="chart"
+
         android:textAllCaps="true"
         android:textSize="20sp"
         android:textStyle="bold" />
