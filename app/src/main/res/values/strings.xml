@@ -9,8 +9,10 @@
         <item>Account Summary</item>
         <item>Charts</item>
         <item>History</item>
+        <item>Budget</item>
         <item>Settings</item>
         <item>Sign out</item>
+
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -75,6 +77,12 @@
         <item>RUB</item>
     </string-array>
 
+    <string-array name="budget_period_spinner">
+        <item>Weekly</item>
+        <item>Monthly</item>
+
+    </string-array>
+
     <string name="never">Never</string>
     <!-- <string-array name="report_activity_recurs_spinner">
         <item>Never</item>
@@ -132,6 +140,9 @@
     <string name="income_is_empty">Income is empty. Press (+) to create data</string>
     <string name="expense_is_empty">Expense is empty. Press (+) to create data</string>
     <string name="no_data_to_show">No data to display&#8230;</string>
+    <string name="create_budget">Create budget</string>
+    <string name="my_budget">My Budget</string>
+    <string name="budget_is_empty">Budget is empty&#8230;</string>
 
 
 </resources>

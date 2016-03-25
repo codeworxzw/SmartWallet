@@ -19,12 +19,10 @@ import java.util.TimeZone;
  */
 @SuppressWarnings("unchecked") // Suppressing unchecked cast: 'java.lang.Object' to 'java.util.ArrayList<java.lang.String>'
 public class FinanceDocument {
-    private static final String DOC_TYPE = "Finance document";
+    public static final String DOC_TYPE = "Finance document";
     private static final String TAG = "FinanceDocument";
-    private static final String MAIN_ACCOUNT = "mainAccount";
-    public static final int DATE_FORMAT_SHORT = 0;
-    public static final int DATE_FORMAT_MEDIUM = 1;
-    public static final int DATE_FORMAT_LONG = 2;
+    public static final String MAIN_ACCOUNT = "mainAccount";
+
     public static final int NUMBER_OF_CATEGORIES = 14;
 
     private List<String> salary = new ArrayList<>();
@@ -482,37 +480,7 @@ public class FinanceDocument {
         this.date = date;
     }
 
-    /**
-     * Converts unix date into human readable
-     *
-     * @param format date of the date
-     * @return human readable date
-     */
 
-    public String getNormalDate(int format) {
-        Date formatDate = new Date(Long.valueOf(date) * 1000L); // *1000 is to convert seconds to milliseconds
-        DateFormat sdf;
-        switch (format) {
-            case 0: //short
-                if (!Locale.getDefault().equals(Locale.US)) {
-                    sdf = new SimpleDateFormat("dd.MM", Locale.getDefault()); // the format of your date
-                } else {
-                    sdf = new SimpleDateFormat("MM.dd", Locale.getDefault()); // the format of your date
-                }
-                break;
-            case 1: //medium
-                sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // the format of your date
-                break;
-            case 2: // long
-                sdf = DateFormat.getDateInstance(DATE_FORMAT_LONG, Locale.getDefault());
-                break;
-            default:
-                sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // the format of your date
-                break;
-        }
-        sdf.setTimeZone(TimeZone.getDefault()); // give a timezone reference for formating (see comment at the bottom
-        return sdf.format(formatDate);
-    }
 
     /**
      * Gets total income

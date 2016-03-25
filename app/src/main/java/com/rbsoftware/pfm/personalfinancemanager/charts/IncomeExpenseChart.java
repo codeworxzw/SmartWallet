@@ -27,7 +27,7 @@ import android.widget.ToggleButton;
 import com.rbsoftware.pfm.personalfinancemanager.ExportData;
 import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
 import com.rbsoftware.pfm.personalfinancemanager.R;
-import com.rbsoftware.pfm.personalfinancemanager.Utils;
+import com.rbsoftware.pfm.personalfinancemanager.utils.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;

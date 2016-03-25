@@ -70,7 +70,7 @@ public class Charts extends Fragment {
                 sendTracker(position);
             }
         });
-        MainActivity.fab.hide();
+
     }
 
     private void sendTracker(int position) {

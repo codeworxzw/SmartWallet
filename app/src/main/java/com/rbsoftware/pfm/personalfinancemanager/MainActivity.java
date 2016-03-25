@@ -36,8 +36,10 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.rbsoftware.pfm.personalfinancemanager.accountsummary.AccountSummary;
+import com.rbsoftware.pfm.personalfinancemanager.budget.Budget;
 import com.rbsoftware.pfm.personalfinancemanager.charts.Charts;
 import com.rbsoftware.pfm.personalfinancemanager.history.History;
+import com.rbsoftware.pfm.personalfinancemanager.utils.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.net.URISyntaxException;
@@ -96,6 +98,15 @@ public class MainActivity extends AppCompatActivity {
         userID = intent.getExtras().getString("id");
         params = new ArrayList<>();
 
+        //FAB declaration and listener
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent report = new Intent(MainActivity.this, ReportActivity.class);
+                startActivityForResult(report, 1);
+            }
+        });
 
         if (savedInstanceState == null) openFragment(1);
 
@@ -115,15 +126,9 @@ public class MainActivity extends AppCompatActivity {
         //Updating currency rates
         reloadCurrency();
 
-        //FAB declaration and listener
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent report = new Intent(MainActivity.this, ReportActivity.class);
-                startActivityForResult(report, 1);
-            }
-        });
+
+
+
 
         setupNavigationDrawer(savedInstanceState, toolbar, intent);
 
@@ -245,19 +250,20 @@ public class MainActivity extends AppCompatActivity {
                         new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[0]).withIcon(GoogleMaterial.Icon.gmd_dashboard),
                         new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[1]).withIcon(GoogleMaterial.Icon.gmd_pie_chart),
                         new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[2]).withIcon(GoogleMaterial.Icon.gmd_history),
+                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[3]).withIcon(GoogleMaterial.Icon.gmd_book),
                         new DividerDrawerItem(),
-                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[3]).withSelectable(false).withIcon(GoogleMaterial.Icon.gmd_settings),
-                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[4]).withSelectable(false).withIcon(GoogleMaterial.Icon.gmd_exit_to_app)
+                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[4]).withSelectable(false).withIcon(GoogleMaterial.Icon.gmd_settings),
+                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[5]).withSelectable(false).withIcon(GoogleMaterial.Icon.gmd_exit_to_app)
                 )
 
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if (position == 5) {
+                        if (position == 6) {
                             Intent i = new Intent(MainActivity.this, SettingsActivity.class);
                             startActivityForResult(i, MainActivity.RESULT_OK);
                             return true;
-                        } else if (position == 6) {
+                        } else if (position == 7) {
                             signout();
                             return true;
 
@@ -296,7 +302,6 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch (position) {
             case 1:
-
                 if (fragmentManager.findFragmentByTag("AccountSummary") != null) {
                     //if the fragment exists, show it.
                     fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("AccountSummary")).commit();
@@ -307,7 +312,6 @@ public class MainActivity extends AppCompatActivity {
 
                 break;
             case 2:
-
                 if (fragmentManager.findFragmentByTag("Charts") != null) {
                     //if the fragment exists, show it.
                     fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("Charts")).commit();
@@ -317,13 +321,21 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case 3:
-
                 if (fragmentManager.findFragmentByTag("History") != null) {
                     //if the fragment exists, show it.
                     fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("History")).commit();
                 } else {
                     //if the fragment does not exist, add it to fragment manager.
                     fragmentManager.beginTransaction().replace(R.id.fragment_container, new History(), "History").commit();
+                }
+                break;
+            case 4:
+                if (fragmentManager.findFragmentByTag("Budget") != null) {
+                    //if the fragment exists, show it.
+                    fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("Budget")).commit();
+                } else {
+                    //if the fragment does not exist, add it to fragment manager.
+                    fragmentManager.beginTransaction().replace(R.id.fragment_container, new Budget(), "Budget").commit();
                 }
                 break;
 

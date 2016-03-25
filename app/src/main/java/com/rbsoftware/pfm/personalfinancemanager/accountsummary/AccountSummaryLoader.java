@@ -38,7 +38,7 @@ public class AccountSummaryLoader extends AsyncTaskLoader<List<Integer>> {
     @Override
     public List<Integer> loadInBackground() {
 
-        List<FinanceDocument> financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.readFromSharedPreferences(getContext(), "periodAccSummary", "thisWeek"), MainActivity.getUserId());
+        List<FinanceDocument> financeDocumentList = MainActivity.financeDocumentModel.queryFinanceDocumentsByDate(MainActivity.readFromSharedPreferences(getContext(), "periodAccSummary", "thisWeek"), MainActivity.getUserId(), FinanceDocument.DOC_TYPE);
 
         return getValuesFromList(financeDocumentList);
     }

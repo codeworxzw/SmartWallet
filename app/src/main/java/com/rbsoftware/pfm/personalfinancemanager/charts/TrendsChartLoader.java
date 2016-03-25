@@ -12,7 +12,8 @@ import com.rbsoftware.pfm.personalfinancemanager.FinanceDocument;
 import com.rbsoftware.pfm.personalfinancemanager.FinanceDocumentModel;
 import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
 import com.rbsoftware.pfm.personalfinancemanager.R;
-import com.rbsoftware.pfm.personalfinancemanager.Utils;
+import com.rbsoftware.pfm.personalfinancemanager.utils.DateUtils;
+import com.rbsoftware.pfm.personalfinancemanager.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,9 +42,10 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
     @Override
     public List<String[]> loadInBackground() {
 
-        List<FinanceDocument> financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(
+        List<FinanceDocument> financeDocumentList = MainActivity.financeDocumentModel.queryFinanceDocumentsByDate(
                 MainActivity.readFromSharedPreferences(getContext(), "periodTrend", "thisWeek"),
                 MainActivity.getUserId(),
+                FinanceDocument.DOC_TYPE,
                 FinanceDocumentModel.ORDER_ASC);
         int checkedLine = Integer.valueOf(MainActivity.readFromSharedPreferences(getContext(),
                 "checkedLine", "0"));
@@ -87,20 +89,20 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
                 for (FinanceDocument doc : docList) {
                     value = doc.getTotalIncome() - doc.getTotalExpense();
                     if (i != 0) {
-                        if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                        if (DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate()).equals(data.get(i - 1)[1])) {
                             data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
                         } else {
 
                             data.add(new String[]{
                                     Integer.toString(Integer.valueOf(data.get(i - 1)[0]) + value),
-                                    doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                    DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                             });
                             i++;
                         }
                     } else {
                         data.add(new String[]{
                                 Integer.toString(value),
-                                doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                         });
                         i++;
                     }
@@ -114,19 +116,19 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
                     value = doc.getTotalIncome();
                     if (value != 0) {
                         if (i != 0) {
-                            if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                            if (DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate()).equals(data.get(i - 1)[1])) {
                                 data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
                             } else {
                                 data.add(new String[]{
                                         Integer.toString(value),
-                                        doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                        DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                                 });
                                 i++;
                             }
                         } else {
                             data.add(new String[]{
                                     Integer.toString(value),
-                                    doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                    DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                             });
                             i++;
                         }
@@ -139,19 +141,19 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
                     value = doc.getTotalExpense();
                     if (value != 0) {
                         if (i != 0) {
-                            if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                            if (DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate()).equals(data.get(i - 1)[1])) {
                                 data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
                             } else {
                                 data.add(new String[]{
                                         Integer.toString(value),
-                                        doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                        DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                                 });
                                 i++;
                             }
                         } else {
                             data.add(new String[]{
                                     Integer.toString(value),
-                                    doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                    DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                             });
                             i++;
                         }
@@ -164,19 +166,19 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
                     value = doc.getSalary();
                     if (value != 0) {
                         if (i != 0) {
-                            if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                            if (DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate()).equals(data.get(i - 1)[1])) {
                                 data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
                             } else {
                                 data.add(new String[]{
                                         Integer.toString(value),
-                                        doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                        DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                                 });
                                 i++;
                             }
                         } else {
                             data.add(new String[]{
                                     Integer.toString(value),
-                                    doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                    DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                             });
                             i++;
                         }
@@ -188,19 +190,19 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
                 for (FinanceDocument doc : docList) {
                     value = doc.getRentalIncome();
                     if (i != 0) {
-                        if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                        if (DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate()).equals(data.get(i - 1)[1])) {
                             data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
                         } else {
                             data.add(new String[]{
                                     Integer.toString(value),
-                                    doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                    DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                             });
                             i++;
                         }
                     } else {
                         data.add(new String[]{
                                 Integer.toString(value),
-                                doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                         });
                         i++;
                     }
@@ -212,19 +214,19 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
                     value = doc.getInterest();
                     if (value != 0) {
                         if (i != 0) {
-                            if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                            if (DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate()).equals(data.get(i - 1)[1])) {
                                 data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
                             } else {
                                 data.add(new String[]{
                                         Integer.toString(value),
-                                        doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                        DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                                 });
                                 i++;
                             }
                         } else {
                             data.add(new String[]{
                                     Integer.toString(value),
-                                    doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                    DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                             });
                             i++;
                         }
@@ -238,19 +240,19 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
                     value = doc.getGifts();
                     if (value != 0) {
                         if (i != 0) {
-                            if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                            if (DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate()).equals(data.get(i - 1)[1])) {
                                 data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
                             } else {
                                 data.add(new String[]{
                                         Integer.toString(value),
-                                        doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                        DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                                 });
                                 i++;
                             }
                         } else {
                             data.add(new String[]{
                                     Integer.toString(value),
-                                    doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                    DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                             });
                             i++;
                         }
@@ -264,19 +266,19 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
                     value = doc.getOtherIncome();
                     if (value != 0) {
                         if (i != 0) {
-                            if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                            if (DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate()).equals(data.get(i - 1)[1])) {
                                 data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
                             } else {
                                 data.add(new String[]{
                                         Integer.toString(value),
-                                        doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                        DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                                 });
                                 i++;
                             }
                         } else {
                             data.add(new String[]{
                                     Integer.toString(value),
-                                    doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                    DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                             });
                             i++;
                         }
@@ -290,19 +292,19 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
                     value = doc.getTaxes();
                     if (value != 0) {
                         if (i != 0) {
-                            if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                            if (DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate()).equals(data.get(i - 1)[1])) {
                                 data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
                             } else {
                                 data.add(new String[]{
                                         Integer.toString(value),
-                                        doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                        DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                                 });
                                 i++;
                             }
                         } else {
                             data.add(new String[]{
                                     Integer.toString(value),
-                                    doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                    DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                             });
                             i++;
                         }
@@ -316,19 +318,19 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
                     value = doc.getMortgage();
                     if (value != 0) {
                         if (i != 0) {
-                            if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                            if (DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate()).equals(data.get(i - 1)[1])) {
                                 data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
                             } else {
                                 data.add(new String[]{
                                         Integer.toString(value),
-                                        doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                        DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                                 });
                                 i++;
                             }
                         } else {
                             data.add(new String[]{
                                     Integer.toString(value),
-                                    doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                    DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                             });
                             i++;
                         }
@@ -341,19 +343,19 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
                     value = doc.getCreditCard();
                     if (value != 0) {
                         if (i != 0) {
-                            if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                            if (DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate()).equals(data.get(i - 1)[1])) {
                                 data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
                             } else {
                                 data.add(new String[]{
                                         Integer.toString(value),
-                                        doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                        DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                                 });
                                 i++;
                             }
                         } else {
                             data.add(new String[]{
                                     Integer.toString(value),
-                                    doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                    DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                             });
                             i++;
                         }
@@ -366,19 +368,19 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
                     value = doc.getUtilities();
                     if (value != 0) {
                         if (i != 0) {
-                            if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                            if (DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate()).equals(data.get(i - 1)[1])) {
                                 data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
                             } else {
                                 data.add(new String[]{
                                         Integer.toString(value),
-                                        doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                        DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                                 });
                                 i++;
                             }
                         } else {
                             data.add(new String[]{
                                     Integer.toString(value),
-                                    doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                    DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                             });
                             i++;
                         }
@@ -391,19 +393,19 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
                     value = doc.getFood();
                     if (value != 0) {
                         if (i != 0) {
-                            if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                            if (DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate()).equals(data.get(i - 1)[1])) {
                                 data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
                             } else {
                                 data.add(new String[]{
                                         Integer.toString(value),
-                                        doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                        DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                                 });
                                 i++;
                             }
                         } else {
                             data.add(new String[]{
                                     Integer.toString(value),
-                                    doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                    DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                             });
                             i++;
                         }
@@ -416,19 +418,19 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
                     value = doc.getCarPayment();
                     if (value != 0) {
                         if (i != 0) {
-                            if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                            if (DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate()).equals(data.get(i - 1)[1])) {
                                 data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
                             } else {
                                 data.add(new String[]{
                                         Integer.toString(value),
-                                        doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                        DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                                 });
                                 i++;
                             }
                         } else {
                             data.add(new String[]{
                                     Integer.toString(value),
-                                    doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                    DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                             });
                             i++;
                         }
@@ -442,19 +444,19 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
                     value = doc.getPersonal();
                     if (value != 0) {
                         if (i != 0) {
-                            if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                            if (DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate()).equals(data.get(i - 1)[1])) {
                                 data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
                             } else {
                                 data.add(new String[]{
                                         Integer.toString(value),
-                                        doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                        DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                                 });
                                 i++;
                             }
                         } else {
                             data.add(new String[]{
                                     Integer.toString(value),
-                                    doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                    DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                             });
                             i++;
                         }
@@ -467,19 +469,19 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
                     value = doc.getActivities();
                     if (value != 0) {
                         if (i != 0) {
-                            if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                            if (DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate()).equals(data.get(i - 1)[1])) {
                                 data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
                             } else {
                                 data.add(new String[]{
                                         Integer.toString(value),
-                                        doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                        DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                                 });
                                 i++;
                             }
                         } else {
                             data.add(new String[]{
                                     Integer.toString(value),
-                                    doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                    DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                             });
                             i++;
                         }
@@ -492,19 +494,19 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
                     value = doc.getOtherExpenses();
                     if (value != 0) {
                         if (i != 0) {
-                            if (doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT).equals(data.get(i - 1)[1])) {
+                            if (DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate()).equals(data.get(i - 1)[1])) {
                                 data.get(i - 1)[0] = String.valueOf(Integer.valueOf(data.get(i - 1)[0]) + value);
                             } else {
                                 data.add(new String[]{
                                         Integer.toString(value),
-                                        doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                        DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                                 });
                                 i++;
                             }
                         } else {
                             data.add(new String[]{
                                     Integer.toString(value),
-                                    doc.getNormalDate(FinanceDocument.DATE_FORMAT_SHORT)
+                                    DateUtils.getNormalDate(DateUtils.DATE_FORMAT_SHORT, doc.getDate())
                             });
                             i++;
                         }

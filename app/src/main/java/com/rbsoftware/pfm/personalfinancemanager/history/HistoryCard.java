@@ -11,7 +11,8 @@ import android.widget.TextView;
 import com.rbsoftware.pfm.personalfinancemanager.FinanceDocument;
 import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
 import com.rbsoftware.pfm.personalfinancemanager.R;
-import com.rbsoftware.pfm.personalfinancemanager.Utils;
+import com.rbsoftware.pfm.personalfinancemanager.utils.DateUtils;
+import com.rbsoftware.pfm.personalfinancemanager.utils.Utils;
 
 import java.util.List;
 import java.util.Locale;
@@ -43,7 +44,7 @@ public class HistoryCard extends Card {
 
     public void setHeader() {
         //Create a CardHeader
-        HistoryHeaderInnerCard header = new HistoryHeaderInnerCard(mContext, doc.getNormalDate(FinanceDocument.DATE_FORMAT_LONG), doc.getTotalIncome(), doc.getTotalExpense());
+        HistoryHeaderInnerCard header = new HistoryHeaderInnerCard(mContext, doc.getDate(), doc.getTotalIncome(), doc.getTotalExpense());
         this.addCardHeader(header);
     }
 
@@ -73,7 +74,7 @@ public class HistoryCard extends Card {
 
         public HistoryHeaderInnerCard(Context context, String date, int totalIncome, int totalExpense) {
             super(context, R.layout.history_list_row_inner_layout);
-            this.date = date;
+            this.date = DateUtils.getNormalDate(DateUtils.DATE_FORMAT_LONG, date);
             this.income = "+" + String.format(Locale.getDefault(), "%,d", totalIncome) + " " + MainActivity.defaultCurrency;
             this.expense = "-" + String.format(Locale.getDefault(), "%,d", totalExpense) + " " + MainActivity.defaultCurrency;
         }

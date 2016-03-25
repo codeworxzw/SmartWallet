@@ -1,0 +1,113 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/report_wrapper"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dp"
+    android:background="@android:drawable/dialog_holo_light_frame"
+
+    android:layoutDirection="ltr"
+    android:orientation="vertical"
+
+    android:paddingBottom="8dp"
+    android:paddingTop="8dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingStart="8dp"
+        android:text="@string/create_budget" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/et_budget_name"
+        android:inputType="text"
+        android:hint="@string/my_budget"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/budget_period_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dialog" />
+
+        <EditText
+            android:id="@+id/et_budget_value"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:maxLength="8" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/threshold_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
+
+        <TextView
+            android:id="@+id/tv_seekbar_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_seekbar_progress" />
+
+        <TextView
+            android:id="@+id/tv_budget_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/seekBar" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:layoutDirection="ltr"
+            android:paddingEnd="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingStart="16dp"
+            android:text="@android:string/cancel"
+            android:textAllCaps="true"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_create"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:layoutDirection="ltr"
+            android:paddingEnd="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingStart="16dp"
+            android:text="@android:string/ok"
+            android:textAllCaps="true"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>

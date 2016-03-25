@@ -114,6 +114,13 @@ public class AccountSummary extends Fragment {
 
     }
 
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        MainActivity.fab.hide();
+    }
+
     //Create options menu
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

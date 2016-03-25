@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 
 import com.opencsv.CSVWriter;
+import com.rbsoftware.pfm.personalfinancemanager.utils.DateUtils;
+import com.rbsoftware.pfm.personalfinancemanager.utils.Utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -59,7 +61,7 @@ public class ExportData {
         List<String[]> data = new ArrayList<>();
         List<String> value;
 
-        data.add(new String[]{mContext.getResources().getString(R.string.document_date), document.getNormalDate(FinanceDocument.DATE_FORMAT_LONG)});
+        data.add(new String[]{mContext.getResources().getString(R.string.document_date), DateUtils.getNormalDate(DateUtils.DATE_FORMAT_LONG, document.getDate() )});
         data.add(new String[]{"", "", "", ""});
         for (int i = 1; i <= FinanceDocument.NUMBER_OF_CATEGORIES; i++) {
             value = document.getValuesMap().get(i);

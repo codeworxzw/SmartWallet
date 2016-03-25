@@ -38,7 +38,7 @@ public class IncomeExpenseChartLoader extends AsyncTaskLoader<SparseIntArray> {
     @Override
     public SparseIntArray loadInBackground() {
 
-        List<FinanceDocument> financeDocumentList = MainActivity.financeDocumentModel.queryDocumentsByDate(MainActivity.readFromSharedPreferences(getContext(), "period", "thisWeek"), MainActivity.getUserId());
+        List<FinanceDocument> financeDocumentList = MainActivity.financeDocumentModel.queryFinanceDocumentsByDate(MainActivity.readFromSharedPreferences(getContext(), "period", "thisWeek"), MainActivity.getUserId(), FinanceDocument.DOC_TYPE);
 
         return getValues(financeDocumentList);
     }
