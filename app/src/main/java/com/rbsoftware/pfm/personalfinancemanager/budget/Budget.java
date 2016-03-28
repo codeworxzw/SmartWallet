@@ -2,19 +2,22 @@ package com.rbsoftware.pfm.personalfinancemanager.budget;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -24,7 +27,9 @@ import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.cloudant.sync.datastore.ConflictException;
 import com.google.android.gms.analytics.HitBuilders;
 import com.rbsoftware.pfm.personalfinancemanager.ConnectionDetector;
 import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
@@ -34,21 +39,29 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import it.gmariotti.cardslib.library.internal.CardHeader;
+import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Holds method for displaying creation and budget editing
+ *
+ * @author Roman Burzakovskiy
  */
 public class Budget extends Fragment {
     private final static String TAG = "Budget";
-    private PopupWindow popupWindow;
-
     private final int BUDGET_LOADER_ID = 3;
-
+    private PopupWindow popupWindow;
+    private boolean isCreateBudgetPopupWindowOpen;
+    private boolean isEditBudgetPopupWindowOpen;
+    private String docId;
     private CardRecyclerView mRecyclerView;
     private BudgetCardRecyclerViewAdapter mCardArrayAdapter;
     private TextView mEmptyView;
     private ConnectionDetector mConnectionDetector;
+
+    private EditText editTextBudgetValue;
+
     public Budget() {
         // Required empty public constructor
     }
@@ -72,6 +85,32 @@ public class Budget extends Fragment {
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         getLoaderManager().initLoader(BUDGET_LOADER_ID, null, loaderCallbacks);
+
+        isCreateBudgetPopupWindowOpen = savedInstanceState != null && savedInstanceState.getBoolean("isCreateBudgetPopupWindowOpen");
+        isEditBudgetPopupWindowOpen = savedInstanceState != null && savedInstanceState.getBoolean("isEditBudgetPopupWindowOpen");
+        if (savedInstanceState != null) {
+            docId = savedInstanceState.getString("docId");
+        }
+        if (isCreateBudgetPopupWindowOpen) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showCreateBudgetPopupWindow();
+                }
+            }, 100);
+
+        }
+        if (isEditBudgetPopupWindowOpen) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showEditBudgetPopupWindow(docId);
+                }
+            }, 100);
+
+        }
+
+
         if (mConnectionDetector == null) {
             mConnectionDetector = new ConnectionDetector(getContext());
         }
@@ -81,7 +120,7 @@ public class Budget extends Fragment {
         btnCreateBudget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopupWindow();
+                showCreateBudgetPopupWindow();
 
             }
         });
@@ -102,8 +141,78 @@ public class Budget extends Fragment {
         }
     }
 
-    private void generateBudget(List<BudgetCard> cards) {
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (isCreateBudgetPopupWindowOpen || isEditBudgetPopupWindowOpen) {
+            popupWindow.dismiss();
+        }
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean("isCreateBudgetPopupWindowOpen", isCreateBudgetPopupWindowOpen);
+        outState.putBoolean("isEditBudgetPopupWindowOpen", isEditBudgetPopupWindowOpen);
+        outState.putString("docId", docId);
+        super.onSaveInstanceState(outState);
+    }
+
+    /**
+     * Generates budget cards from asynctaskloader
+     *
+     * @param cards BudgetCards
+     */
+    private void generateBudget(List<BudgetCard> cards) {
+        for (BudgetCard historyCard : cards) {
+            historyCard.getCardHeader().setPopupMenu(R.menu.history_card_menu, new CardHeader.OnClickCardHeaderPopupMenuListener() {
+                @Override
+                public void onMenuItemClick(final BaseCard card, MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.history_edit:
+                            docId = ((BudgetCard) card).getDocument().getDocumentRevision().getId();
+                            showEditBudgetPopupWindow(docId);
+                            return;
+
+                        case R.id.history_delete:
+
+                            new AlertDialog.Builder(getContext())
+                                    .setTitle(getContext().getString(R.string.delete_dialog_title))
+                                    .setMessage(getContext().getString(R.string.delete_dialog_message))
+                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            try {
+                                                MainActivity.financeDocumentModel.deleteDocument(((BudgetCard) card).getDocument());
+                                                mCardArrayAdapter.remove((BudgetCard) card);
+                                            } catch (ConflictException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    })
+                                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // do nothing
+                                        }
+                                    })
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+
+
+                            return;
+
+                        case R.id.history_share:
+
+                           /* try {
+                                ExportData.exportBudgetAsCsv(getContext(), ((BudgetCard) card).getDocument());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }*/
+                            return;
+
+                    }
+                }
+            });
+        }
 
         mCardArrayAdapter = new BudgetCardRecyclerViewAdapter(getActivity(), cards);
         //Staggered grid view
@@ -124,6 +233,7 @@ public class Budget extends Fragment {
         }
 
     }
+
     /**
      * Checks whether recycler view is empty
      * And switches to empty view
@@ -135,6 +245,7 @@ public class Budget extends Fragment {
             mEmptyView.setVisibility(View.GONE);
         }
     }
+
     /**
      * Sends broadcast intent to update history
      */
@@ -159,20 +270,23 @@ public class Budget extends Fragment {
         }
     };
 
-    private void showPopupWindow() {
+    /**
+     * Generates create budget popup window
+     */
+    private void showCreateBudgetPopupWindow() {
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View wrapperBudget = layoutInflater.inflate(R.layout.budget_create_card_layout, null);
 
-        popupWindow = new PopupWindow(wrapperBudget, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        popupWindow = new PopupWindow(wrapperBudget, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         ArrayAdapter<CharSequence> budgetPeriodSpinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.budget_period_spinner, android.R.layout.simple_spinner_item);
         budgetPeriodSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         final Spinner budgetPeriodSpinner = (Spinner) popupWindow.getContentView().findViewById(R.id.budget_period_spinner);
         budgetPeriodSpinner.setAdapter(budgetPeriodSpinnerAdapter);
         final SeekBar seekBar = (SeekBar) popupWindow.getContentView().findViewById(R.id.seekBar);
         final EditText editTextBudgetName = (EditText) popupWindow.getContentView().findViewById(R.id.et_budget_name);
-        final EditText editTextBudgetValue = (EditText) popupWindow.getContentView().findViewById(R.id.et_budget_value);
+        ((TextView) popupWindow.getContentView().findViewById(R.id.tv_budget_currency)).setText(MainActivity.defaultCurrency);
+        editTextBudgetValue = (EditText) popupWindow.getContentView().findViewById(R.id.et_budget_value);
         editTextBudgetValue.addTextChangedListener(new TextWatcher() {
-            TextView textViewBudgetValue = (TextView) popupWindow.getContentView().findViewById(R.id.tv_budget_value);
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -181,10 +295,9 @@ public class Budget extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().isEmpty()) {
+                if (!s.toString().isEmpty() && !editTextBudgetValue.getText().toString().matches("0+")) {
                     seekBar.setMax(Integer.parseInt(s.toString()));
                     seekBar.setProgress(Math.round(seekBar.getMax() * 0.75f));
-                    textViewBudgetValue.setText(s);
                 }
 
 
@@ -225,47 +338,232 @@ public class Budget extends Fragment {
             @Override
             public void onClick(View v) {
                 popupWindow.dismiss();
+                isCreateBudgetPopupWindowOpen = false;
             }
         });
         Button buttonCreateBudget = (Button) popupWindow.getContentView().findViewById(R.id.btn_create);
         buttonCreateBudget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popupWindow.dismiss();
-                Log.d(TAG, "period " + budgetPeriodSpinner.getSelectedItem().toString());
-                Log.d(TAG, "value " + editTextBudgetValue.getText().toString());
-                Log.d(TAG, "threshold " + seekBar.getProgress());
-                createNewBudgetDocument(MainActivity.getUserId(),
-                        budgetPeriodSpinner.getSelectedItem().toString(),
+                if (validateFields()) {
+                    popupWindow.dismiss();
+                    isCreateBudgetPopupWindowOpen = false;
+                    createNewBudgetDocument(MainActivity.getUserId(),
+                            budgetPeriodSpinner.getSelectedItem().toString(),
 
-                        editTextBudgetName.getText().toString(),
+                            transformBudgetName(editTextBudgetName.getText().toString()),
 
-                        new ArrayList<String>(Arrays.asList(
-                                editTextBudgetValue.getText().toString(),
-                                MainActivity.defaultCurrency)
-                        ),
-                        new ArrayList<String>(Arrays.asList(
-                                String.valueOf(seekBar.getProgress()),
-                                MainActivity.defaultCurrency
-                        )),
-                    true);
-        }
-    });
+                            new ArrayList<String>(Arrays.asList(
+                                    editTextBudgetValue.getText().toString().replaceFirst("^0+(?!$)", ""),
+                                    MainActivity.defaultCurrency)
+                            ),
+                            new ArrayList<String>(Arrays.asList(
+                                    String.valueOf(seekBar.getProgress()),
+                                    MainActivity.defaultCurrency
+                            )),
+                            true);
+                }
+            }
+        });
+
 
         popupWindow.showAtLocation(wrapperBudget, Gravity.CENTER, 0, 0);
+        isCreateBudgetPopupWindowOpen = true;
 
 
     }
 
+    /**
+     * generates edit budget popup window
+     *
+     * @param docId id of budget document
+     */
+    private void showEditBudgetPopupWindow(final String docId) {
+        BudgetDocument doc = MainActivity.financeDocumentModel.getBudgetDocument(docId);
+        LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View wrapperBudget = layoutInflater.inflate(R.layout.budget_create_card_layout, null);
+
+        popupWindow = new PopupWindow(wrapperBudget, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        ((TextView) popupWindow.getContentView().findViewById(R.id.tv_budget_create_card_title)).setText(getString(R.string.edit_budget));
+
+        ArrayAdapter<CharSequence> budgetPeriodSpinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.budget_period_spinner, android.R.layout.simple_spinner_item);
+        budgetPeriodSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        final Spinner budgetPeriodSpinner = (Spinner) popupWindow.getContentView().findViewById(R.id.budget_period_spinner);
+        budgetPeriodSpinner.setAdapter(budgetPeriodSpinnerAdapter);
+
+        if (doc.getPeriod().equals(getContext().getResources().getStringArray(R.array.budget_period_spinner)[0])) {
+            budgetPeriodSpinner.setSelection(0);
+        } else {
+            budgetPeriodSpinner.setSelection(1);
+        }
+
+        final SeekBar seekBar = (SeekBar) popupWindow.getContentView().findViewById(R.id.seekBar);
+        seekBar.setMax(doc.getValue());
+        seekBar.setProgress(doc.getThreshold());
+        final EditText editTextBudgetName = (EditText) popupWindow.getContentView().findViewById(R.id.et_budget_name);
+        editTextBudgetName.setText(doc.getName());
+        ((TextView) popupWindow.getContentView().findViewById(R.id.tv_budget_currency)).setText(MainActivity.defaultCurrency);
+        editTextBudgetValue = (EditText) popupWindow.getContentView().findViewById(R.id.et_budget_value);
+        editTextBudgetValue.setText(Integer.toString(doc.getValue()));
+        editTextBudgetValue.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!s.toString().isEmpty() && !editTextBudgetValue.getText().toString().matches("0+")) {
+                    seekBar.setMax(Integer.parseInt(s.toString()));
+                    seekBar.setProgress(Math.round(seekBar.getMax() * 0.75f));
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            TextView seekBarProgress = (TextView) popupWindow.getContentView().findViewById(R.id.tv_seekbar_progress);
+
+            @Override
+            public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser) {
+
+                int xPos = (((seekbar.getRight() - seekbar.getLeft()) * progress) /
+                        seekbar.getMax()) + seekbar.getLeft();
+                seekBarProgress.setX(xPos);
+
+                seekBarProgress.setText(Integer.toString(progress));
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        Button buttonCancel = (Button) popupWindow.getContentView().findViewById(R.id.btn_cancel);
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+                isEditBudgetPopupWindowOpen = false;
+            }
+        });
+        Button buttonCreateBudget = (Button) popupWindow.getContentView().findViewById(R.id.btn_create);
+        buttonCreateBudget.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validateFields()) {
+                    popupWindow.dismiss();
+                    isEditBudgetPopupWindowOpen = false;
+                    updateBudgetDocument(docId, MainActivity.getUserId(),
+                            budgetPeriodSpinner.getSelectedItem().toString(),
+
+                            transformBudgetName(editTextBudgetName.getText().toString()),
+
+                            new ArrayList<String>(Arrays.asList(
+                                    editTextBudgetValue.getText().toString().replaceFirst("^0+(?!$)", ""),
+                                    MainActivity.defaultCurrency)
+                            ),
+                            new ArrayList<String>(Arrays.asList(
+                                    String.valueOf(seekBar.getProgress()),
+                                    MainActivity.defaultCurrency
+                            )),
+                            true);
+                }
+            }
+        });
+
+
+        popupWindow.showAtLocation(wrapperBudget, Gravity.CENTER, 0, 0);
+        isEditBudgetPopupWindowOpen = true;
+
+
+    }
 
     /**
-     * Creation new document from data
+     * Checks if entered data is ok
+     *
+     * @return true if edit text value is ok
+     */
+    private boolean validateFields() {
+        if (editTextBudgetValue.getText().toString().isEmpty()) {
+            editTextBudgetValue.requestFocus();
+            Toast.makeText(getContext(), getContext().getString(R.string.set_value), Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (editTextBudgetValue.getText().toString().matches("0+")) {
+            editTextBudgetValue.requestFocus();
+            Toast.makeText(getContext(), getContext().getString(R.string.set_non_zero_value), Toast.LENGTH_LONG).show();
+
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Generates name for budget if field was empty
+     *
+     * @param name of budget
+     * @return string of budget name
+     */
+    private String transformBudgetName(String name) {
+        if (name.isEmpty()) {
+            int count = mCardArrayAdapter.getItemCount() + 1;
+            return getContext().getString(R.string.my_budget) + " " + count;
+        } else {
+            return name;
+        }
+    }
+
+    /**
+     * Creates new budget document
+     *
+     * @param userId    id of current user
+     * @param period    of budget
+     * @param name      of budget
+     * @param value     of budget
+     * @param threshold to notify user
+     * @param isActive  status of budget
      */
     private void createNewBudgetDocument(String userId, String period, String name, ArrayList<String> value, ArrayList<String> threshold, boolean isActive) {
         BudgetDocument budgetDocument = new BudgetDocument(userId, period, name, value, threshold, isActive);
         MainActivity.financeDocumentModel.createDocument(budgetDocument);
         updateBudget();
-       // MainActivity.financeDocumentModel.startPushReplication();
+        // MainActivity.financeDocumentModel.startPushReplication();
+
+    }
+
+    /**
+     * Updates budget document
+     *
+     * @param docId     id of old document
+     * @param userId    id of current user
+     * @param period    of budget
+     * @param name      of budget
+     * @param value     of budget
+     * @param threshold to notify user
+     * @param isActive  status of budget
+     */
+    private void updateBudgetDocument(String docId, String userId, String period, String name, ArrayList<String> value, ArrayList<String> threshold, boolean isActive) {
+        try {
+            MainActivity.financeDocumentModel.updateBudgetDocument(MainActivity.financeDocumentModel.getBudgetDocument(docId),
+                    new BudgetDocument(userId, period, name, value, threshold, isActive));
+            updateBudget();
+        } catch (ConflictException e) {
+            e.printStackTrace();
+        }
 
     }
 }

@@ -80,6 +80,9 @@
     <string name="create_budget">Создать бюджет</string>
     <string name="my_budget">Мой бюджет</string>
     <string name="budget_is_empty">Бюджет отсутствует&#8230;</string>
+    <string name="notification_threshold">Порог</string>
+    <string name="budget_exceeded">Бюджет превышен на</string>
+    <string name="edit_budget">Редактировать бюджет</string>
     <string-array name="drawer_menu">
         <item>Общая информация</item>
         <item>Графики</item>
@@ -123,6 +126,17 @@
     <string-array name="budget_period_spinner">
         <item>Недельный</item>
         <item>Месячный</item>
+
+    </string-array>
+
+    <string-array name="budget_card_periods">
+        <item>Текущая неделя</item>
+        <item>Прошлая неделя</item>
+        <item>Позапрошлая неделя</item>
+
+        <item>Текущий месяц</item>
+        <item>Прошлый месяц</item>
+        <item>Позапрошлый месяц</item>
 
     </string-array>
 </resources>

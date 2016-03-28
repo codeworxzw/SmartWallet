@@ -10,7 +10,9 @@ import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.recyclerview.internal.BaseRecyclerViewAdapter;
 
 /**
- * Created by burzakovskiy on 3/24/2016.
+ * Holds method for budget card recyclerview
+ *
+ * @author Roman Burzakovskiy
  */
 public class BudgetCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     /**

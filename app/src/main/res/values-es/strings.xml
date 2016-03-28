@@ -78,6 +78,9 @@
     <string name="create_budget">Crear presupuesto</string>
     <string name="my_budget">Mi presupuesto</string>
     <string name="budget_is_empty">No hay presupuesto&#8230;</string>
+    <string name="notification_threshold">Límite</string>
+    <string name="budget_exceeded">Presupuesto superado en un</string>
+    <string name="edit_budget">Editar presupuesto</string>
 
     <string-array name="drawer_menu">
         <item>Información  general</item>
@@ -122,6 +125,17 @@
     <string-array name="budget_period_spinner">
         <item>Semanal</item>
         <item>Mensual</item>
+
+    </string-array>
+
+    <string-array name="budget_card_periods">
+        <item>Semana actual</item>
+        <item>Semana pasada</item>
+        <item>Hace 2 semanas</item>
+
+        <item>Mes actual</item>
+        <item>Mes pasado</item>
+        <item>Hace 2 meses</item>
 
     </string-array>
 </resources>

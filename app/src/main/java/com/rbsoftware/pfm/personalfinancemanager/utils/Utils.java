@@ -283,6 +283,22 @@ public class Utils {
     }
 
     /**
+     *  Gets progress bar color
+     * @param mContext application context
+     * @param max progressbar max value
+     * @param threshold progressbar threshold
+     * @param progress progressbar current progress
+     * @return progressbar color
+     */
+    public static int getProgressColor(Context mContext, int max, int threshold, int progress){
+        int color  = ContextCompat.getColor(mContext, R.color.income);
+        if(progress < (threshold - threshold*0.05)) color= ContextCompat.getColor(mContext, R.color.income);
+        if((threshold < max) && (progress >= (threshold - threshold*0.05)) && (progress <=( max - max*0.05) )) color = ContextCompat.getColor(mContext, R.color.colorAccent);
+        if((progress >=( max - max*0.05) ) && (progress <= max)) color = ContextCompat.getColor(mContext, R.color.expense);
+        return color;
+    }
+
+    /**
      * Gets color by data type key
      *
      * @param i data type key

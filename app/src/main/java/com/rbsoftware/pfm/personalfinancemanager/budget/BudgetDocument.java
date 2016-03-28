@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by burzakovskiy on 3/22/2016.
+ * Holds method for managing budget document
+ *
+ * @author Roman Burzakovskiy
  */
 public class BudgetDocument {
     public static final String DOC_TYPE = "Budget Document";
@@ -32,6 +34,16 @@ public class BudgetDocument {
 
     }
 
+    /**
+     * Constructor of budget document
+     *
+     * @param userId    id of current user
+     * @param period    of budget
+     * @param name      of budget
+     * @param value     of budget
+     * @param threshold to notify user
+     * @param isActive  status of budget
+     */
     public BudgetDocument(String userId, String period, String name, ArrayList<String> value, ArrayList<String> threshold, boolean isActive) {
         this.userId = userId;
         Date currDate = new Date();
@@ -46,22 +58,47 @@ public class BudgetDocument {
 
     }
 
+    /**
+     * Gets budget name
+     *
+     * @return budget name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets budget name
+     *
+     * @param name of budget
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets budget period
+     *
+     * @return budget period
+     */
     public String getPeriod() {
         return period;
     }
 
+    /**
+     * Sets budget period
+     *
+     * @param period of budget
+     */
     public void setPeriod(String period) {
         this.period = period;
     }
 
+    /**
+     * Gets budget value
+     *
+     * @return budget value
+     */
     public int getValue() {
 
         if (value == null) {
@@ -75,10 +112,20 @@ public class BudgetDocument {
         }
     }
 
+    /**
+     * Sets budget value
+     *
+     * @param value of budget
+     */
     public void setValue(ArrayList<String> value) {
         this.value = value;
     }
 
+    /**
+     * Gets budget threshold
+     *
+     * @return budget threshold
+     */
     public int getThreshold() {
         if (threshold == null) {
             return 0;
@@ -91,26 +138,56 @@ public class BudgetDocument {
         }
     }
 
+    /**
+     * Sets budget threshold
+     *
+     * @param threshold of budget
+     */
     public void setThreshold(ArrayList<String> threshold) {
         this.threshold = threshold;
     }
 
+    /**
+     * Gets budget status
+     *
+     * @returntrue if budget is active
+     */
     public boolean getActive() {
         return isActive;
     }
 
+    /**
+     * Sets budget status
+     *
+     * @param isActive budget status
+     */
     public void setActive(boolean isActive) {
         this.isActive = isActive;
     }
 
+    /**
+     * Sets budget date
+     *
+     * @param date of budget creation or update
+     */
     private void setDate(String date) {
         this.date = date;
     }
 
+    /**
+     * Gets budget date
+     *
+     * @return budget date in unix format
+     */
     public String getDate() {
         return date;
     }
 
+    /**
+     * Sets document type of budget document
+     *
+     * @param type of document
+     */
     private void setType(String type) {
         this.type = type;
     }
@@ -119,7 +196,11 @@ public class BudgetDocument {
         return userId;
     }
 
-    //account
+    /**
+     * Sets users account to document
+     *
+     * @param account of user
+     */
     private void setAccount(String account) {
         this.account = account;
     }
@@ -128,10 +209,20 @@ public class BudgetDocument {
         return this.account;
     }
 
+    /**
+     * Sets userid to document
+     *
+     * @param data of user
+     */
     private void setUserId(String data) {
         this.userId = data;
     }
 
+    /**
+     * Builds map of budget document values
+     *
+     * @return map of values
+     */
     public Map<String, Object> asMap() {
         HashMap<String, Object> map = new HashMap<>();
         map.put("type", type);
@@ -147,10 +238,21 @@ public class BudgetDocument {
         return map;
     }
 
+    /**
+     * Gets document revision
+     *
+     * @return revision of document
+     */
     public BasicDocumentRevision getDocumentRevision() {
         return rev;
     }
 
+    /**
+     * Creates document from revision
+     *
+     * @param rev document revision
+     * @return budget document
+     */
     public static BudgetDocument fromRevision(BasicDocumentRevision rev) {
         BudgetDocument t = new BudgetDocument();
         t.rev = rev;

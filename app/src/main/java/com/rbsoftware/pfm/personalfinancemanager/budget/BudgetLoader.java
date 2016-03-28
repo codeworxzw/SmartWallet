@@ -16,11 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by burzakovskiy on 3/25/2016.
+ * Holds methods for loading budget data in background
+ *
+ * @author Roman Burzakovskiy
  */
 public class BudgetLoader extends AsyncTaskLoader<List<BudgetCard>> {
 
     public static final String ACTION = "BudgetLoader.FORCELOAD";
+
     public BudgetLoader(Context context) {
         super(context);
     }
@@ -66,36 +69,37 @@ public class BudgetLoader extends AsyncTaskLoader<List<BudgetCard>> {
     };
 
     /**
+     * Gets total expense data in three months period
      *
-     * @param docListFinance
-     * @return  [0] - this week
-     *          [1] - last week
-     *          [2] - 2 weeks ago
-     *          [3] - this month
-     *          [4] - last month
-     *          [5] - 2 month ago
+     * @param docListFinance list of finance documents in 3 months period
+     * @return [0] - this week
+     * [1] - last week
+     * [2] - 2 weeks ago
+     * [3] - this month
+     * [4] - last month
+     * [5] - 2 month ago
      */
-    private int[] getTotalExpenseData(List<FinanceDocument> docListFinance){
-        int[] totalExpenseData = {0,0,0,0,0,0};
-        for(FinanceDocument doc : docListFinance){
+    private int[] getTotalExpenseData(List<FinanceDocument> docListFinance) {
+        int[] totalExpenseData = {0, 0, 0, 0, 0, 0};
+        for (FinanceDocument doc : docListFinance) {
             long date = Long.valueOf(doc.getDate());
-            if (date >= DateUtils.getFirstDateOfCurrentWeek()){
-                totalExpenseData[0]+= doc.getTotalExpense();
+            if (date >= DateUtils.getFirstDateOfCurrentWeek()) {
+                totalExpenseData[0] += doc.getTotalExpense();
             }
-            if((date >= DateUtils.getFirstDateOfPreviousWeek()) && (date < DateUtils.getFirstDateOfCurrentWeek())){
-                totalExpenseData[1]+= doc.getTotalExpense();
+            if ((date >= DateUtils.getFirstDateOfPreviousWeek()) && (date < DateUtils.getFirstDateOfCurrentWeek())) {
+                totalExpenseData[1] += doc.getTotalExpense();
             }
-            if((date >= DateUtils.getFirstDateOfTwoWeeksAgo()) && (date < DateUtils.getFirstDateOfPreviousWeek())){
-                totalExpenseData[2]+= doc.getTotalExpense();
+            if ((date >= DateUtils.getFirstDateOfTwoWeeksAgo()) && (date < DateUtils.getFirstDateOfPreviousWeek())) {
+                totalExpenseData[2] += doc.getTotalExpense();
             }
-            if (date >= DateUtils.getFirstDateOfCurrentMonth()){
-                totalExpenseData[3]+= doc.getTotalExpense();
+            if (date >= DateUtils.getFirstDateOfCurrentMonth()) {
+                totalExpenseData[3] += doc.getTotalExpense();
             }
-            if((date >= DateUtils.getFirstDateOfPreviousMonth()) && (date < DateUtils.getFirstDateOfCurrentMonth())){
-                totalExpenseData[4]+= doc.getTotalExpense();
+            if ((date >= DateUtils.getFirstDateOfPreviousMonth()) && (date < DateUtils.getFirstDateOfCurrentMonth())) {
+                totalExpenseData[4] += doc.getTotalExpense();
             }
-            if((date >= DateUtils.getFirstDateOfTwoMonthsAgo()) && (date < DateUtils.getFirstDateOfPreviousMonth())){
-                totalExpenseData[5]+= doc.getTotalExpense();
+            if ((date >= DateUtils.getFirstDateOfTwoMonthsAgo()) && (date < DateUtils.getFirstDateOfPreviousMonth())) {
+                totalExpenseData[5] += doc.getTotalExpense();
             }
 
         }

@@ -83,6 +83,17 @@
 
     </string-array>
 
+    <string-array name="budget_card_periods">
+        <item>This week</item>
+        <item>Last week</item>
+        <item>2 weeks ago</item>
+
+        <item>This month</item>
+        <item>Last month</item>
+        <item>2 months ago</item>
+
+    </string-array>
+
     <string name="never">Never</string>
     <!-- <string-array name="report_activity_recurs_spinner">
         <item>Never</item>
@@ -143,6 +154,9 @@
     <string name="create_budget">Create budget</string>
     <string name="my_budget">My Budget</string>
     <string name="budget_is_empty">Budget is empty&#8230;</string>
+    <string name="notification_threshold">Threshold</string>
+    <string name="budget_exceeded">Budget exceeded by</string>
+    <string name="edit_budget">Edit budget</string>
 
 
 </resources>

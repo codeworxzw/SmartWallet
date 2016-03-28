@@ -80,6 +80,9 @@
     <string name="create_budget">Створити бюджет</string>
     <string name="my_budget">Мій бюджет</string>
     <string name="budget_is_empty">Бюджет не створено&#8230;</string>
+    <string name="notification_threshold">Поріг</string>
+    <string name="budget_exceeded">Бюджет перевищено на</string>
+    <string name="edit_budget">Редагувати бюджет</string>
 
     <string-array name="account_summary_spinner">
         <item>Поточний тиждень</item>
@@ -126,6 +129,17 @@
     <string-array name="budget_period_spinner">
         <item>Тижневий</item>
         <item>Місячний</item>
+
+    </string-array>
+
+    <string-array name="budget_card_periods">
+        <item>Поточний тиждень</item>
+        <item>Минулий тиждень</item>
+        <item>Позаминулий тиждень</item>
+
+        <item>Поточний місяць</item>
+        <item>Минулий місяць</item>
+        <item>Позаминулий місяць</item>
 
     </string-array>
 </resources>
