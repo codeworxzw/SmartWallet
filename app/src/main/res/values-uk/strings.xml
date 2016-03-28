@@ -83,6 +83,7 @@
     <string name="notification_threshold">Поріг</string>
     <string name="budget_exceeded">Бюджет перевищено на</string>
     <string name="edit_budget">Редагувати бюджет</string>
+    <string name="estimated_balance">Очікуваний баланс</string>
 
     <string-array name="account_summary_spinner">
         <item>Поточний тиждень</item>

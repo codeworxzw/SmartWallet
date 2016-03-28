@@ -12,8 +12,9 @@ import android.widget.TextView;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
 import com.rbsoftware.pfm.personalfinancemanager.R;
-import com.rbsoftware.pfm.personalfinancemanager.utils.DateUtils;
 import com.rbsoftware.pfm.personalfinancemanager.utils.Utils;
+
+import java.util.Locale;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -26,7 +27,7 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
 public class BudgetCard extends Card {
 
     private final BudgetDocument doc;
-    private int[] totalExpenseData;
+    private int[] totalExpenseIncomeData;
 
     /**
      * Counstructor of budget card
@@ -39,7 +40,7 @@ public class BudgetCard extends Card {
 
         super(context, R.layout.budget_card_main_inner_layout);
         this.doc = doc;
-        this.totalExpenseData = totalExpenseData;
+        this.totalExpenseIncomeData = totalExpenseData;
         this.setHeader(totalExpenseData);
 
     }
@@ -56,11 +57,11 @@ public class BudgetCard extends Card {
     /**
      * Adds header to card
      *
-     * @param totalExpenseData totl expense array
+     * @param totalExpenseData total expense array
      */
     public void setHeader(int[] totalExpenseData) {
         //Create a CardHeader
-        BudgetHeaderInnerCard header = new BudgetHeaderInnerCard(mContext, doc.getDate(), doc.getName(), doc.getPeriod(), doc.getValue(), doc.getThreshold(), totalExpenseData);
+        BudgetHeaderInnerCard header = new BudgetHeaderInnerCard(mContext, doc.getName(), doc.getPeriod(), doc.getValue(), doc.getThreshold(), totalExpenseData);
         this.addCardHeader(header);
     }
 
@@ -84,14 +85,14 @@ public class BudgetCard extends Card {
     private void addProgressIndicators(LinearLayout linearLayout) {
         if (doc.getPeriod().equals(getContext().getResources().getStringArray(R.array.budget_period_spinner)[0])) {
             for (int i = 0; i < 3; i++) {
-                if (totalExpenseData[i] != 0) {
-                    linearLayout.addView(createNewProgressRow(mContext.getResources().getStringArray(R.array.budget_card_periods)[i], totalExpenseData[i]));
+                if (totalExpenseIncomeData[i] != 0) {
+                    linearLayout.addView(createNewProgressRow(mContext.getResources().getStringArray(R.array.budget_card_periods)[i], totalExpenseIncomeData[i]));
                 }
             }
         } else {
-            for (int i = 3; i < 5; i++) {
-                if (totalExpenseData[i] != 0) {
-                    linearLayout.addView(createNewProgressRow(mContext.getResources().getStringArray(R.array.budget_card_periods)[i], totalExpenseData[i]));
+            for (int i = 4; i < 7; i++) {
+                if (totalExpenseIncomeData[i] != 0) {
+                    linearLayout.addView(createNewProgressRow(mContext.getResources().getStringArray(R.array.budget_card_periods)[i-1], totalExpenseIncomeData[i]));
                 }
             }
         }
@@ -130,6 +131,7 @@ public class BudgetCard extends Card {
             progressBar.setProgressTextSize(Utils.dpToPx(getContext(), 14));
             linearLayout.addView(progressBar);
         } else {
+            layoutParamsProgress.setMargins(0, Utils.dpToPx(getContext(), 8), 0, 0);
             final TextView tvBudgetExceeded = new TextView(mContext);
             tvBudgetExceeded.setLayoutParams(layoutParamsProgress);
             tvBudgetExceeded.setPadding(Utils.dpToPx(getContext(), 8), 0, Utils.dpToPx(getContext(), 8), 0);
@@ -152,19 +154,20 @@ public class BudgetCard extends Card {
 
     private class BudgetHeaderInnerCard extends CardHeader {
 
-        private final String date;
         private final String name;
         private final String period;
-        private final int value;
+        private final int budgetValue;
         private final int threshold;
+        private int[] totalExpenseIncomeData;
 
-        public BudgetHeaderInnerCard(Context context, String date, String name, String period, int value, int threshold, int[] totalExpenseData) {
+        public BudgetHeaderInnerCard(Context context,String name, String period, int value, int threshold, int[] totalExpenseIncomeData) {
             super(context, R.layout.budget_card_header_inner_layout);
-            this.date = DateUtils.getNormalDate(DateUtils.DATE_FORMAT_LONG, date);
             this.name = name;
             this.period = period;
-            this.value = value;
+            this.budgetValue = value;
             this.threshold = threshold;
+            this.totalExpenseIncomeData = totalExpenseIncomeData;
+
 
         }
 
@@ -172,9 +175,6 @@ public class BudgetCard extends Card {
         public void setupInnerViewElements(ViewGroup parent, View view) {
             super.setupInnerViewElements(parent, view);
             if (view != null) {
-                TextView dateView = (TextView) view.findViewById(R.id.tv_budget_card_header_date);
-                if (dateView != null)
-                    dateView.setText(date);
 
                 TextView nameView = (TextView) view.findViewById(R.id.tv_budget_card_header_name);
                 if (nameView != null)
@@ -186,16 +186,27 @@ public class BudgetCard extends Card {
 
                 TextView valueView = (TextView) view.findViewById(R.id.tv_budget_card_header_value);
                 if (valueView != null) {
-                    String valueText = value + " " + MainActivity.defaultCurrency;
+                    String valueText = String.format(Locale.getDefault(), "%,d",budgetValue) + " " + MainActivity.defaultCurrency;
                     valueView.setText(valueText);
                 }
 
                 TextView thresholdView = (TextView) view.findViewById(R.id.tv_budget_card_header_threshold);
                 if (thresholdView != null) {
-                    String thresholdText = threshold + " " + MainActivity.defaultCurrency;
-                    thresholdView.setText(thresholdText);
+                    thresholdView.setText(String.format(Locale.getDefault(), "%,d",threshold));
                 }
 
+                TextView estimatedBalance = (TextView) view.findViewById(R.id.tv_budget_card_header_estimated_balance);
+
+                if (doc.getPeriod().equals(getContext().getResources().getStringArray(R.array.budget_period_spinner)[0])) {
+                    int estimatedBalanceValue = totalExpenseIncomeData[3] - budgetValue;
+                    estimatedBalance.setText(String.format(Locale.getDefault(), "%,d",estimatedBalanceValue));
+                }
+                else{
+                    int estimatedBalanceValue = totalExpenseIncomeData[7] - budgetValue;
+
+                    estimatedBalance.setText(String.format(Locale.getDefault(), "%,d",estimatedBalanceValue));
+
+                }
 
             }
         }

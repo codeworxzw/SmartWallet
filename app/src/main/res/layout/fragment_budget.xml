@@ -1,17 +1,12 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="budget.Budget"
-    android:scrollbars="none">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/budget_popup_anchor"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layoutDirection="ltr">
+        android:layout_height="match_parent"
+        tools:context="budget.Budget">
 
         <it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView
             android:id="@+id/budget_card_recycler_view"
@@ -34,9 +29,10 @@
             android:layout_gravity="center"
             android:drawableTop="@drawable/empty_64dp"
             android:layoutDirection="ltr"
+            android:layout_centerInParent="true"
             android:text="@string/budget_is_empty"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
 
         <Button
@@ -45,7 +41,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/emptyBudget"
             android:background="@android:color/transparent"
             style="?android:attr/borderlessButtonStyle"
             android:textColor="@color/colorAccent"
@@ -57,6 +54,4 @@
             android:textAllCaps="true"
             android:text="@string/create_budget" />
 
-    </LinearLayout>
-
-</ScrollView>
+    </RelativeLayout>

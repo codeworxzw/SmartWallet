@@ -8,63 +8,41 @@
     android:layout_marginRight="24dp"
     android:layoutDirection="ltr">
 
-    <TextView
-        android:id="@+id/tv_budget_card_header_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
 
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layoutDirection="ltr"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Date" />
 
     <TextView
         android:id="@+id/tv_budget_card_header_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_budget_card_header_date"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/tv_budget_card_header_period"
         android:layoutDirection="ltr"
         android:text="Name"
-        android:textColor="@android:color/black"
         android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/tv_budget_card_header_period_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_budget_card_header_name"
-        android:layoutDirection="ltr"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/period" />
+
 
     <TextView
         android:id="@+id/tv_budget_card_header_period"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_budget_card_header_name"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_toEndOf="@+id/tv_budget_card_header_period_description"
-        android:layout_toRightOf="@+id/tv_budget_card_header_period_description"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+
         android:layoutDirection="ltr"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-android:text="XXX"
-        android:textColor="@android:color/black"/>
+        android:text="XXX"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
         android:id="@+id/tv_budget_card_header_threshold_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_budget_card_header_name"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_toEndOf="@+id/tv_budget_card_header_period"
-        android:layout_toRightOf="@+id/tv_budget_card_header_period"
+
         android:layoutDirection="ltr"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/notification_threshold" />
+        android:text="@string/notification_threshold"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
         android:id="@+id/tv_budget_card_header_threshold"
@@ -80,21 +58,47 @@ android:text="XXX"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/black" />
 
+    <TextView
+        android:id="@+id/tv_budget_card_header_estimated_balance_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_budget_card_header_name"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/tv_budget_card_header_threshold"
+        android:layout_toRightOf="@+id/tv_budget_card_header_threshold"
+        android:layoutDirection="ltr"
+        android:text="@string/estimated_balance"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
+    <TextView
+        android:id="@+id/tv_budget_card_header_estimated_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_budget_card_header_name"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/tv_budget_card_header_estimated_balance_description"
+        android:layout_toRightOf="@+id/tv_budget_card_header_estimated_balance_description"
+        android:layoutDirection="ltr"
+        android:text="XXX"
+        android:textColor="@android:color/black"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
     <TextView
         android:id="@+id/tv_budget_card_header_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/tv_budget_card_header_date"
+        android:layout_below="@+id/tv_budget_card_header_period"
         android:layoutDirection="ltr"
         android:text="000"
         android:textColor="@color/expense"
         android:textSize="18sp" />
-
 
 
 </RelativeLayout>

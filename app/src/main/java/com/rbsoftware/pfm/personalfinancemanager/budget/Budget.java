@@ -24,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -59,7 +60,7 @@ public class Budget extends Fragment {
     private BudgetCardRecyclerViewAdapter mCardArrayAdapter;
     private TextView mEmptyView;
     private ConnectionDetector mConnectionDetector;
-
+    private Button btnCreateBudget;
     private EditText editTextBudgetValue;
 
     public Budget() {
@@ -115,7 +116,7 @@ public class Budget extends Fragment {
             mConnectionDetector = new ConnectionDetector(getContext());
         }
         MainActivity.mTracker.setScreenName(TAG);
-        final Button btnCreateBudget = (Button) getActivity().findViewById(R.id.btn_create_budget);
+        btnCreateBudget = (Button) getActivity().findViewById(R.id.btn_create_budget);
 
         btnCreateBudget.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -241,8 +242,11 @@ public class Budget extends Fragment {
     private void checkAdapterIsEmpty() {
         if (mCardArrayAdapter.getItemCount() == 0) {
             mEmptyView.setVisibility(View.VISIBLE);
+           ((RelativeLayout.LayoutParams)btnCreateBudget.getLayoutParams()).addRule(RelativeLayout.BELOW, mEmptyView.getId());
         } else {
             mEmptyView.setVisibility(View.GONE);
+            ((RelativeLayout.LayoutParams)btnCreateBudget.getLayoutParams()).addRule(RelativeLayout.BELOW, mRecyclerView.getId());
+
         }
     }
 

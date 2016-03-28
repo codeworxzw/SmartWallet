@@ -81,6 +81,7 @@
     <string name="notification_threshold">Límite</string>
     <string name="budget_exceeded">Presupuesto superado en un</string>
     <string name="edit_budget">Editar presupuesto</string>
+    <string name="estimated_balance">Balance estimado</string>
 
     <string-array name="drawer_menu">
         <item>Información  general</item>

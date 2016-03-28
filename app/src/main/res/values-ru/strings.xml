@@ -83,6 +83,7 @@
     <string name="notification_threshold">Порог</string>
     <string name="budget_exceeded">Бюджет превышен на</string>
     <string name="edit_budget">Редактировать бюджет</string>
+    <string name="estimated_balance">Ожидаемый баланс</string>
     <string-array name="drawer_menu">
         <item>Общая информация</item>
         <item>Графики</item>

@@ -157,6 +157,7 @@
     <string name="notification_threshold">Threshold</string>
     <string name="budget_exceeded">Budget exceeded by</string>
     <string name="edit_budget">Edit budget</string>
+    <string name="estimated_balance">Estimated balance</string>
 
 
 </resources>
