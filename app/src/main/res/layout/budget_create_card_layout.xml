@@ -51,31 +51,7 @@ android:layout_gravity="center"
             android:id="@+id/tv_budget_currency"/>
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/notification_threshold"/>
-    <RelativeLayout
-        android:id="@+id/threshold_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
 
-        <TextView
-            android:id="@+id/tv_seekbar_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <SeekBar
-            android:id="@+id/seekBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_seekbar_progress" />
-
-
-    </RelativeLayout>
 
 
     <LinearLayout

@@ -163,6 +163,61 @@ public class ExportData {
 
     }
 
+
+    /**
+     * Static method to export budget data
+     *
+     * @param mContext  object context
+     * @param inputData list of budget fields
+     * @throws IOException
+     **/
+    public static void exportBudgetAsCsv(Context mContext, List<String[]> inputData) throws IOException {
+        File baseDir = mContext.getFilesDir();
+        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+
+        String fileName = "budget-" + df.format(calendar.getTimeInMillis()) + ".csv";
+        String filePath = baseDir.toString() + File.separator + fileName;
+        File summaryFile = new File(filePath);
+        CSVWriter writer;
+// File exist
+        if (summaryFile.exists() && !summaryFile.isDirectory()) {
+            FileWriter mFileWriter = new FileWriter(filePath, true);
+            writer = new CSVWriter(mFileWriter);
+        } else {
+            writer = new CSVWriter(new FileWriter(filePath));
+        }
+
+        writer.writeAll(inputData);
+
+        writer.close();
+
+        try {
+            Uri fileUri = FileProvider.getUriForFile(
+                    mContext,
+                    "com.rbsoftware.pfm.personalfinancemanager.fileprovider",
+                    summaryFile);
+
+
+            Intent sendIntent = new Intent("com.rbsoftware.pfm.personalfinancemanager.ACTION_RETURN_FILE");
+            if (fileUri != null) {
+                // Grant temporary read permission to the content URI
+                sendIntent.addFlags(
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+            sendIntent.setType("text/comma-separated-values");
+            mContext.startActivity(Intent.createChooser(sendIntent, mContext.getString(R.string.share)));
+
+        } catch (IllegalArgumentException e) {
+            Log.e("File Selector",
+                    "The selected file can't be shared: " +
+                            summaryFile.getName());
+            e.printStackTrace();
+        }
+
+    }
     /**
      * Static method to export charts data
      *

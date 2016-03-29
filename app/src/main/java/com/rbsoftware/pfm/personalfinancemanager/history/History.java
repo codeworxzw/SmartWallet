@@ -76,7 +76,7 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[2]);
+        getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[3]);
 
         mRecyclerView = (CardRecyclerView) getActivity().findViewById(R.id.history_card_recycler_view);
         mEmptyView = (TextView) getActivity().findViewById(R.id.emptyHistory);

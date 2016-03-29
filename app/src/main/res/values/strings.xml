@@ -7,9 +7,10 @@
     <string name="drawer_close">Close</string>
     <string-array name="drawer_menu">
         <item>Account Summary</item>
+        <item>Budget</item>
         <item>Charts</item>
         <item>History</item>
-        <item>Budget</item>
+
         <item>Settings</item>
         <item>Sign out</item>
 
@@ -157,7 +158,7 @@
     <string name="notification_threshold">Threshold</string>
     <string name="budget_exceeded">Budget exceeded by</string>
     <string name="edit_budget">Edit budget</string>
-    <string name="estimated_balance">Estimated balance</string>
+    <string name="estimated_balance">Expected balance</string>
 
 
 </resources>

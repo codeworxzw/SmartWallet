@@ -86,9 +86,10 @@
     <string name="estimated_balance">Ожидаемый баланс</string>
     <string-array name="drawer_menu">
         <item>Общая информация</item>
+        <item>Бюджет</item>
         <item>Графики</item>
         <item>Активность</item>
-        <item>Бюджет</item>
+
         <item>Настройки</item>
         <item>Выйти</item>
 

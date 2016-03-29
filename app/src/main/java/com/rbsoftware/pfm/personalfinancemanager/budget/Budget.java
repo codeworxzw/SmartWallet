@@ -4,10 +4,13 @@ package com.rbsoftware.pfm.personalfinancemanager.budget;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -33,12 +36,16 @@ import android.widget.Toast;
 import com.cloudant.sync.datastore.ConflictException;
 import com.google.android.gms.analytics.HitBuilders;
 import com.rbsoftware.pfm.personalfinancemanager.ConnectionDetector;
+import com.rbsoftware.pfm.personalfinancemanager.ExportData;
 import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
 import com.rbsoftware.pfm.personalfinancemanager.R;
+import com.rbsoftware.pfm.personalfinancemanager.utils.DateUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.base.BaseCard;
@@ -60,7 +67,7 @@ public class Budget extends Fragment {
     private BudgetCardRecyclerViewAdapter mCardArrayAdapter;
     private TextView mEmptyView;
     private ConnectionDetector mConnectionDetector;
-    private Button btnCreateBudget;
+    private FloatingActionButton btnCreateBudget;
     private EditText editTextBudgetValue;
 
     public Budget() {
@@ -76,10 +83,10 @@ public class Budget extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[3]);
+        getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[1]);
 
         mRecyclerView = (CardRecyclerView) getActivity().findViewById(R.id.budget_card_recycler_view);
         mEmptyView = (TextView) getActivity().findViewById(R.id.emptyBudget);
@@ -96,7 +103,7 @@ public class Budget extends Fragment {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    showCreateBudgetPopupWindow();
+                    showCreateBudgetPopupWindow(savedInstanceState);
                 }
             }, 100);
 
@@ -105,7 +112,7 @@ public class Budget extends Fragment {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    showEditBudgetPopupWindow(docId);
+                    showEditBudgetPopupWindow(savedInstanceState, docId);
                 }
             }, 100);
 
@@ -116,12 +123,12 @@ public class Budget extends Fragment {
             mConnectionDetector = new ConnectionDetector(getContext());
         }
         MainActivity.mTracker.setScreenName(TAG);
-        btnCreateBudget = (Button) getActivity().findViewById(R.id.btn_create_budget);
+        btnCreateBudget = (FloatingActionButton) getActivity().findViewById(R.id.btn_create_budget);
 
         btnCreateBudget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCreateBudgetPopupWindow();
+                showCreateBudgetPopupWindow(null);
 
             }
         });
@@ -129,10 +136,7 @@ public class Budget extends Fragment {
 
     @Override
     public void onResume() {
-
-
         super.onResume();
-
 
         //check if network is available and send analytics tracker
 
@@ -156,6 +160,11 @@ public class Budget extends Fragment {
         outState.putBoolean("isCreateBudgetPopupWindowOpen", isCreateBudgetPopupWindowOpen);
         outState.putBoolean("isEditBudgetPopupWindowOpen", isEditBudgetPopupWindowOpen);
         outState.putString("docId", docId);
+        if (popupWindow != null) {
+            outState.putInt("budgetPeriodSpinner", ((Spinner) popupWindow.getContentView().findViewById(R.id.budget_period_spinner)).getSelectedItemPosition());
+            outState.putString("editTextBudgetValue", editTextBudgetValue.getText().toString());
+            outState.putString("editTextBudgetName", ((EditText) popupWindow.getContentView().findViewById(R.id.et_budget_name)).getText().toString());
+        }
         super.onSaveInstanceState(outState);
     }
 
@@ -172,7 +181,7 @@ public class Budget extends Fragment {
                     switch (item.getItemId()) {
                         case R.id.history_edit:
                             docId = ((BudgetCard) card).getDocument().getDocumentRevision().getId();
-                            showEditBudgetPopupWindow(docId);
+                            showEditBudgetPopupWindow(null, docId);
                             return;
 
                         case R.id.history_delete:
@@ -203,11 +212,11 @@ public class Budget extends Fragment {
 
                         case R.id.history_share:
 
-                           /* try {
-                                ExportData.exportBudgetAsCsv(getContext(), ((BudgetCard) card).getDocument());
+                            try {
+                                ExportData.exportBudgetAsCsv(getContext(), prepareCsvData(((BudgetCard) card)));
                             } catch (IOException e) {
                                 e.printStackTrace();
-                            }*/
+                            }
                             return;
 
                     }
@@ -242,10 +251,8 @@ public class Budget extends Fragment {
     private void checkAdapterIsEmpty() {
         if (mCardArrayAdapter.getItemCount() == 0) {
             mEmptyView.setVisibility(View.VISIBLE);
-           ((RelativeLayout.LayoutParams)btnCreateBudget.getLayoutParams()).addRule(RelativeLayout.BELOW, mEmptyView.getId());
         } else {
             mEmptyView.setVisibility(View.GONE);
-            ((RelativeLayout.LayoutParams)btnCreateBudget.getLayoutParams()).addRule(RelativeLayout.BELOW, mRecyclerView.getId());
 
         }
     }
@@ -277,7 +284,7 @@ public class Budget extends Fragment {
     /**
      * Generates create budget popup window
      */
-    private void showCreateBudgetPopupWindow() {
+    private void showCreateBudgetPopupWindow(Bundle savedInstanceState) {
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View wrapperBudget = layoutInflater.inflate(R.layout.budget_create_card_layout, null);
 
@@ -286,56 +293,15 @@ public class Budget extends Fragment {
         budgetPeriodSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         final Spinner budgetPeriodSpinner = (Spinner) popupWindow.getContentView().findViewById(R.id.budget_period_spinner);
         budgetPeriodSpinner.setAdapter(budgetPeriodSpinnerAdapter);
-        final SeekBar seekBar = (SeekBar) popupWindow.getContentView().findViewById(R.id.seekBar);
         final EditText editTextBudgetName = (EditText) popupWindow.getContentView().findViewById(R.id.et_budget_name);
         ((TextView) popupWindow.getContentView().findViewById(R.id.tv_budget_currency)).setText(MainActivity.defaultCurrency);
         editTextBudgetValue = (EditText) popupWindow.getContentView().findViewById(R.id.et_budget_value);
-        editTextBudgetValue.addTextChangedListener(new TextWatcher() {
+        if (savedInstanceState != null) {
+            budgetPeriodSpinner.setSelection(savedInstanceState.getInt("budgetPeriodSpinner"));
+            editTextBudgetName.setText(savedInstanceState.getString("editTextBudgetName"));
+            editTextBudgetValue.setText(savedInstanceState.getString("editTextBudgetValue"));
+        }
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().isEmpty() && !editTextBudgetValue.getText().toString().matches("0+")) {
-                    seekBar.setMax(Integer.parseInt(s.toString()));
-                    seekBar.setProgress(Math.round(seekBar.getMax() * 0.75f));
-                }
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            TextView seekBarProgress = (TextView) popupWindow.getContentView().findViewById(R.id.tv_seekbar_progress);
-
-            @Override
-            public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser) {
-
-                int xPos = (((seekbar.getRight() - seekbar.getLeft()) * progress) /
-                        seekbar.getMax()) + seekbar.getLeft();
-                seekBarProgress.setX(xPos);
-
-                seekBarProgress.setText(Integer.toString(progress));
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
 
         Button buttonCancel = (Button) popupWindow.getContentView().findViewById(R.id.btn_cancel);
         buttonCancel.setOnClickListener(new View.OnClickListener() {
@@ -361,10 +327,7 @@ public class Budget extends Fragment {
                                     editTextBudgetValue.getText().toString().replaceFirst("^0+(?!$)", ""),
                                     MainActivity.defaultCurrency)
                             ),
-                            new ArrayList<String>(Arrays.asList(
-                                    String.valueOf(seekBar.getProgress()),
-                                    MainActivity.defaultCurrency
-                            )),
+
                             true);
                 }
             }
@@ -382,7 +345,7 @@ public class Budget extends Fragment {
      *
      * @param docId id of budget document
      */
-    private void showEditBudgetPopupWindow(final String docId) {
+    private void showEditBudgetPopupWindow(Bundle savedInstanceState, final String docId) {
         BudgetDocument doc = MainActivity.financeDocumentModel.getBudgetDocument(docId);
         LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View wrapperBudget = layoutInflater.inflate(R.layout.budget_create_card_layout, null);
@@ -395,66 +358,26 @@ public class Budget extends Fragment {
         final Spinner budgetPeriodSpinner = (Spinner) popupWindow.getContentView().findViewById(R.id.budget_period_spinner);
         budgetPeriodSpinner.setAdapter(budgetPeriodSpinnerAdapter);
 
-        if (doc.getPeriod().equals(getContext().getResources().getStringArray(R.array.budget_period_spinner)[0])) {
-            budgetPeriodSpinner.setSelection(0);
-        } else {
-            budgetPeriodSpinner.setSelection(1);
-        }
 
-        final SeekBar seekBar = (SeekBar) popupWindow.getContentView().findViewById(R.id.seekBar);
-        seekBar.setMax(doc.getValue());
-        seekBar.setProgress(doc.getThreshold());
         final EditText editTextBudgetName = (EditText) popupWindow.getContentView().findViewById(R.id.et_budget_name);
-        editTextBudgetName.setText(doc.getName());
+
         ((TextView) popupWindow.getContentView().findViewById(R.id.tv_budget_currency)).setText(MainActivity.defaultCurrency);
         editTextBudgetValue = (EditText) popupWindow.getContentView().findViewById(R.id.et_budget_value);
-        editTextBudgetValue.setText(Integer.toString(doc.getValue()));
-        editTextBudgetValue.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+        if (savedInstanceState != null) {
+            budgetPeriodSpinner.setSelection(savedInstanceState.getInt("budgetPeriodSpinner"));
+            editTextBudgetName.setText(savedInstanceState.getString("editTextBudgetName"));
+            editTextBudgetValue.setText(savedInstanceState.getString("editTextBudgetValue"));
+        } else {
+            if (doc.getPeriod().equals(getContext().getResources().getStringArray(R.array.budget_period_spinner)[0])) {
+                budgetPeriodSpinner.setSelection(0);
+            } else {
+                budgetPeriodSpinner.setSelection(1);
             }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().isEmpty() && !editTextBudgetValue.getText().toString().matches("0+")) {
-                    seekBar.setMax(Integer.parseInt(s.toString()));
-                    seekBar.setProgress(Math.round(seekBar.getMax() * 0.75f));
-                }
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            TextView seekBarProgress = (TextView) popupWindow.getContentView().findViewById(R.id.tv_seekbar_progress);
-
-            @Override
-            public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser) {
-
-                int xPos = (((seekbar.getRight() - seekbar.getLeft()) * progress) /
-                        seekbar.getMax()) + seekbar.getLeft();
-                seekBarProgress.setX(xPos);
-
-                seekBarProgress.setText(Integer.toString(progress));
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+            editTextBudgetName.setText(doc.getName());
+            editTextBudgetValue.setText(Integer.toString(doc.getValue()));
+        }
 
         Button buttonCancel = (Button) popupWindow.getContentView().findViewById(R.id.btn_cancel);
         buttonCancel.setOnClickListener(new View.OnClickListener() {
@@ -480,10 +403,7 @@ public class Budget extends Fragment {
                                     editTextBudgetValue.getText().toString().replaceFirst("^0+(?!$)", ""),
                                     MainActivity.defaultCurrency)
                             ),
-                            new ArrayList<String>(Arrays.asList(
-                                    String.valueOf(seekBar.getProgress()),
-                                    MainActivity.defaultCurrency
-                            )),
+
                             true);
                 }
             }
@@ -534,15 +454,14 @@ public class Budget extends Fragment {
     /**
      * Creates new budget document
      *
-     * @param userId    id of current user
-     * @param period    of budget
-     * @param name      of budget
-     * @param value     of budget
-     * @param threshold to notify user
-     * @param isActive  status of budget
+     * @param userId   id of current user
+     * @param period   of budget
+     * @param name     of budget
+     * @param value    of budget
+     * @param isActive status of budget
      */
-    private void createNewBudgetDocument(String userId, String period, String name, ArrayList<String> value, ArrayList<String> threshold, boolean isActive) {
-        BudgetDocument budgetDocument = new BudgetDocument(userId, period, name, value, threshold, isActive);
+    private void createNewBudgetDocument(String userId, String period, String name, ArrayList<String> value, boolean isActive) {
+        BudgetDocument budgetDocument = new BudgetDocument(userId, period, name, value, isActive);
         MainActivity.financeDocumentModel.createDocument(budgetDocument);
         updateBudget();
         // MainActivity.financeDocumentModel.startPushReplication();
@@ -552,22 +471,57 @@ public class Budget extends Fragment {
     /**
      * Updates budget document
      *
-     * @param docId     id of old document
-     * @param userId    id of current user
-     * @param period    of budget
-     * @param name      of budget
-     * @param value     of budget
-     * @param threshold to notify user
-     * @param isActive  status of budget
+     * @param docId    id of old document
+     * @param userId   id of current user
+     * @param period   of budget
+     * @param name     of budget
+     * @param value    of budget
+     * @param isActive status of budget
      */
-    private void updateBudgetDocument(String docId, String userId, String period, String name, ArrayList<String> value, ArrayList<String> threshold, boolean isActive) {
+    private void updateBudgetDocument(String docId, String userId, String period, String name, ArrayList<String> value, boolean isActive) {
         try {
             MainActivity.financeDocumentModel.updateBudgetDocument(MainActivity.financeDocumentModel.getBudgetDocument(docId),
-                    new BudgetDocument(userId, period, name, value, threshold, isActive));
+                    new BudgetDocument(userId, period, name, value, isActive));
             updateBudget();
         } catch (ConflictException e) {
             e.printStackTrace();
         }
 
+    }
+
+    /**
+     * Generates data for csv file
+     *
+     * @param card selected budget card
+     * @return data for csv file
+     */
+    private List<String[]> prepareCsvData(BudgetCard card) {
+        BudgetDocument doc = card.getDocument();
+        List<String[]> data = new ArrayList<>();
+        int[] totalExpenseIncomeData = card.getTotalExpenseIncomeData();
+        data.add(new String[]{getString(R.string.document_date), DateUtils.getNormalDate(DateUtils.DATE_FORMAT_LONG, doc.getDate())});
+        data.add(new String[]{"", ""});
+        data.add(new String[]{doc.getName(), ""});
+        data.add(new String[]{getString(R.string.period), doc.getPeriod()});
+        data.add(new String[]{getString(R.string.value), String.format(Locale.getDefault(), "%,d", doc.getValue()) + " " + MainActivity.defaultCurrency});
+        data.add(new String[]{getString(R.string.estimated_balance), card.getEstimatedBudgetValue()});
+        if (doc.getPeriod().equals(getContext().getResources().getStringArray(R.array.budget_period_spinner)[0])) {
+            for (int i = 0; i < 3; i++) {
+                if (totalExpenseIncomeData[i] != 0) {
+                    int percent = Math.round((float) totalExpenseIncomeData[i] / doc.getValue() * 100f);
+                    data.add(new String[]{getContext().getResources().getStringArray(R.array.budget_card_periods)[i], percent + "%"});
+                }
+            }
+        } else {
+            for (int i = 4; i < 7; i++) {
+                if (totalExpenseIncomeData[i] != 0) {
+                    int percent = Math.round((float) totalExpenseIncomeData[i - 1] / doc.getValue() * 100f);
+                    data.add(new String[]{getContext().getResources().getStringArray(R.array.budget_card_periods)[i], percent + "%"});
+                }
+            }
+        }
+
+
+        return data;
     }
 }

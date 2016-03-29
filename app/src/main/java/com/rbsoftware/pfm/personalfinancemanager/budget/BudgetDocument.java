@@ -24,7 +24,6 @@ public class BudgetDocument {
     private String type;
     private String name;
     private ArrayList<String> value = new ArrayList<>();
-    private ArrayList<String> threshold = new ArrayList<>();
     private boolean isActive;
     private String date;
     private String account;
@@ -41,17 +40,15 @@ public class BudgetDocument {
      * @param period    of budget
      * @param name      of budget
      * @param value     of budget
-     * @param threshold to notify user
      * @param isActive  status of budget
      */
-    public BudgetDocument(String userId, String period, String name, ArrayList<String> value, ArrayList<String> threshold, boolean isActive) {
+    public BudgetDocument(String userId, String period, String name, ArrayList<String> value,boolean isActive) {
         this.userId = userId;
         Date currDate = new Date();
         this.date = Long.toString(currDate.getTime() / 1000);
         this.type = DOC_TYPE;
         this.name = name;
         this.value = value;
-        this.threshold = threshold;
         this.isActive = isActive;
         this.setAccount(FinanceDocument.MAIN_ACCOUNT);
         this.period = period;
@@ -121,36 +118,13 @@ public class BudgetDocument {
         this.value = value;
     }
 
-    /**
-     * Gets budget threshold
-     *
-     * @return budget threshold
-     */
-    public int getThreshold() {
-        if (threshold == null) {
-            return 0;
-        } else if (threshold.get(1).equals(MainActivity.defaultCurrency)) {
 
-            return Integer.valueOf(threshold.get(0));
-        } else {
 
-            return CurrencyConversion.convertCurrency(Integer.valueOf(threshold.get(0)), threshold.get(1), MainActivity.defaultCurrency);
-        }
-    }
-
-    /**
-     * Sets budget threshold
-     *
-     * @param threshold of budget
-     */
-    public void setThreshold(ArrayList<String> threshold) {
-        this.threshold = threshold;
-    }
 
     /**
      * Gets budget status
      *
-     * @returntrue if budget is active
+     * @return true if budget is active
      */
     public boolean getActive() {
         return isActive;
@@ -231,7 +205,6 @@ public class BudgetDocument {
         map.put("date", date);
         map.put("name", name);
         map.put("value", value);
-        map.put("threshold", threshold);
         map.put("isActive", isActive);
         map.put("period", period);
 
@@ -265,7 +238,6 @@ public class BudgetDocument {
             t.setName((String) map.get("name"));
             t.setPeriod((String) map.get("period"));
             t.setValue((ArrayList<String>) map.get("value"));
-            t.setThreshold((ArrayList<String>) map.get("threshold"));
             t.setActive((boolean) map.get("isActive"));
             return t;
         }

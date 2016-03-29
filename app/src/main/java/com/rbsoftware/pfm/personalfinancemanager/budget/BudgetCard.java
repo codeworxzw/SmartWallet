@@ -3,7 +3,6 @@ package com.rbsoftware.pfm.personalfinancemanager.budget;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -30,11 +29,11 @@ public class BudgetCard extends Card {
     private int[] totalExpenseIncomeData;
 
     /**
-     * Counstructor of budget card
+     * Constructor of budget card
      *
      * @param context          of application
      * @param doc              budget document
-     * @param totalExpenseData expense data
+     * @param totalExpenseData expense and income data
      */
     public BudgetCard(Context context, BudgetDocument doc, int[] totalExpenseData) {
 
@@ -57,12 +56,35 @@ public class BudgetCard extends Card {
     /**
      * Adds header to card
      *
-     * @param totalExpenseData total expense array
+     * @param totalExpenseIncomeData total expense array
      */
-    public void setHeader(int[] totalExpenseData) {
+    public void setHeader(int[] totalExpenseIncomeData) {
         //Create a CardHeader
-        BudgetHeaderInnerCard header = new BudgetHeaderInnerCard(mContext, doc.getName(), doc.getPeriod(), doc.getValue(), doc.getThreshold(), totalExpenseData);
+        BudgetHeaderInnerCard header = new BudgetHeaderInnerCard(mContext, doc.getName(), doc.getValue(), totalExpenseIncomeData);
         this.addCardHeader(header);
+    }
+
+    /**
+     * Get estimated budget value
+     * @return estimated budget value
+     */
+    public String getEstimatedBudgetValue(){
+        return ((BudgetHeaderInnerCard)this.getCardHeader()).estimatedBalance.getText().toString();
+    }
+
+    /**
+     * Gets expense and income date for progress calculation
+     * @return [0] - this week
+     * [1] - last week
+     * [2] - 2 weeks ago
+     * [3] - total income this week
+     * [4] - this month
+     * [5] - last month
+     * [6] - 2 month ago
+     * [7] - total income this month
+     */
+    public int[] getTotalExpenseIncomeData(){
+        return totalExpenseIncomeData;
     }
 
     @Override
@@ -92,7 +114,7 @@ public class BudgetCard extends Card {
         } else {
             for (int i = 4; i < 7; i++) {
                 if (totalExpenseIncomeData[i] != 0) {
-                    linearLayout.addView(createNewProgressRow(mContext.getResources().getStringArray(R.array.budget_card_periods)[i-1], totalExpenseIncomeData[i]));
+                    linearLayout.addView(createNewProgressRow(mContext.getResources().getStringArray(R.array.budget_card_periods)[i - 1], totalExpenseIncomeData[i]));
                 }
             }
         }
@@ -126,8 +148,9 @@ public class BudgetCard extends Card {
             progressBar.setPadding(Utils.dpToPx(getContext(), 8), 0, Utils.dpToPx(getContext(), 8), 0);
             progressBar.setMax(doc.getValue());
             progressBar.setProgress(progress);
-            progressBar.setReachedBarColor(Utils.getProgressColor(getContext(), progressBar.getMax(), doc.getThreshold(), progressBar.getProgress()));
-            progressBar.setProgressTextColor(Utils.getProgressColor(getContext(), progressBar.getMax(), doc.getThreshold(), progressBar.getProgress()));
+            int threshold = Math.round(doc.getValue() * 0.75f);
+            progressBar.setReachedBarColor(Utils.getProgressColor(getContext(), progressBar.getMax(), threshold, progressBar.getProgress()));
+            progressBar.setProgressTextColor(Utils.getProgressColor(getContext(), progressBar.getMax(), threshold, progressBar.getProgress()));
             progressBar.setProgressTextSize(Utils.dpToPx(getContext(), 14));
             linearLayout.addView(progressBar);
         } else {
@@ -136,7 +159,6 @@ public class BudgetCard extends Card {
             tvBudgetExceeded.setLayoutParams(layoutParamsProgress);
             tvBudgetExceeded.setPadding(Utils.dpToPx(getContext(), 8), 0, Utils.dpToPx(getContext(), 8), 0);
             int exceed = Math.round((float) progress / doc.getValue() * 100f - 100.0f);
-            Log.d(TAG, exceed + "");
             String text = mContext.getString(R.string.budget_exceeded) + " " + exceed + "%";
             tvBudgetExceeded.setText(text);
             tvBudgetExceeded.setTextColor(ContextCompat.getColor(mContext, R.color.expense));
@@ -155,17 +177,15 @@ public class BudgetCard extends Card {
     private class BudgetHeaderInnerCard extends CardHeader {
 
         private final String name;
-        private final String period;
         private final int budgetValue;
-        private final int threshold;
         private int[] totalExpenseIncomeData;
 
-        public BudgetHeaderInnerCard(Context context,String name, String period, int value, int threshold, int[] totalExpenseIncomeData) {
+        private TextView estimatedBalance;
+
+        public BudgetHeaderInnerCard(Context context, String name, int value, int[] totalExpenseIncomeData) {
             super(context, R.layout.budget_card_header_inner_layout);
             this.name = name;
-            this.period = period;
             this.budgetValue = value;
-            this.threshold = threshold;
             this.totalExpenseIncomeData = totalExpenseIncomeData;
 
 
@@ -180,31 +200,36 @@ public class BudgetCard extends Card {
                 if (nameView != null)
                     nameView.setText(name);
 
-                TextView periodView = (TextView) view.findViewById(R.id.tv_budget_card_header_period);
-                if (periodView != null)
-                    periodView.setText(period);
 
                 TextView valueView = (TextView) view.findViewById(R.id.tv_budget_card_header_value);
                 if (valueView != null) {
-                    String valueText = String.format(Locale.getDefault(), "%,d",budgetValue) + " " + MainActivity.defaultCurrency;
+                    String valueText = String.format(Locale.getDefault(), "%,d", budgetValue) + " " + MainActivity.defaultCurrency;
                     valueView.setText(valueText);
                 }
 
-                TextView thresholdView = (TextView) view.findViewById(R.id.tv_budget_card_header_threshold);
-                if (thresholdView != null) {
-                    thresholdView.setText(String.format(Locale.getDefault(), "%,d",threshold));
-                }
 
-                TextView estimatedBalance = (TextView) view.findViewById(R.id.tv_budget_card_header_estimated_balance);
+                estimatedBalance = (TextView) view.findViewById(R.id.tv_budget_card_header_estimated_balance);
 
                 if (doc.getPeriod().equals(getContext().getResources().getStringArray(R.array.budget_period_spinner)[0])) {
-                    int estimatedBalanceValue = totalExpenseIncomeData[3] - budgetValue;
-                    estimatedBalance.setText(String.format(Locale.getDefault(), "%,d",estimatedBalanceValue));
-                }
-                else{
-                    int estimatedBalanceValue = totalExpenseIncomeData[7] - budgetValue;
-
-                    estimatedBalance.setText(String.format(Locale.getDefault(), "%,d",estimatedBalanceValue));
+                    int estimatedBalanceValue;
+                    if(totalExpenseIncomeData[0] < budgetValue ) {
+                        estimatedBalanceValue = totalExpenseIncomeData[3] - budgetValue;
+                    }
+                    else {
+                        estimatedBalanceValue = totalExpenseIncomeData[3] - totalExpenseIncomeData[0];
+                    }
+                    String valueText = String.format(Locale.getDefault(), "%,d", estimatedBalanceValue) + " " + MainActivity.defaultCurrency;
+                    estimatedBalance.setText(valueText);
+                } else {
+                    int estimatedBalanceValue;
+                    if(totalExpenseIncomeData[0] < budgetValue ) {
+                        estimatedBalanceValue = totalExpenseIncomeData[7] - budgetValue;
+                    }
+                    else {
+                        estimatedBalanceValue = totalExpenseIncomeData[7] - totalExpenseIncomeData[0];
+                    }
+                    String valueText = String.format(Locale.getDefault(), "%,d", estimatedBalanceValue) + " " + MainActivity.defaultCurrency;
+                    estimatedBalance.setText(valueText);
 
                 }
 

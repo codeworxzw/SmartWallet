@@ -95,9 +95,10 @@
 
     <string-array name="drawer_menu">
         <item>Загальний огляд</item>
+        <item>Бюджет</item>
         <item>Графіки</item>
         <item>Активність</item>
-        <item>Бюджет</item>
+
         <item>Налаштування</item>
         <item>Вийти</item>
 

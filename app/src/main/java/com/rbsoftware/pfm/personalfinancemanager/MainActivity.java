@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         // Obtain the shared Tracker instance.
         AnalyticsTracker application = (AnalyticsTracker) getApplication();
         mTracker = application.getDefaultTracker();
+        // Enable Advertising Features.
         mTracker.enableAdvertisingIdCollection(true);
 
         setContentView(R.layout.activity_main);
@@ -125,9 +126,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Updating currency rates
         reloadCurrency();
-
-
-
 
 
         setupNavigationDrawer(savedInstanceState, toolbar, intent);
@@ -248,9 +246,10 @@ public class MainActivity extends AppCompatActivity {
                 .withDelayDrawerClickEvent(0)
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[0]).withIcon(GoogleMaterial.Icon.gmd_dashboard),
-                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[1]).withIcon(GoogleMaterial.Icon.gmd_pie_chart),
-                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[2]).withIcon(GoogleMaterial.Icon.gmd_history),
-                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[3]).withIcon(GoogleMaterial.Icon.gmd_book),
+                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[1]).withIcon(GoogleMaterial.Icon.gmd_book),
+                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[2]).withIcon(GoogleMaterial.Icon.gmd_pie_chart),
+                        new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[3]).withIcon(GoogleMaterial.Icon.gmd_history),
+
                         new DividerDrawerItem(),
                         new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[4]).withSelectable(false).withIcon(GoogleMaterial.Icon.gmd_settings),
                         new PrimaryDrawerItem().withName(getResources().getStringArray(R.array.drawer_menu)[5]).withSelectable(false).withIcon(GoogleMaterial.Icon.gmd_exit_to_app)
@@ -312,6 +311,15 @@ public class MainActivity extends AppCompatActivity {
 
                 break;
             case 2:
+                if (fragmentManager.findFragmentByTag("Budget") != null) {
+                    //if the fragment exists, show it.
+                    fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("Budget")).commit();
+                } else {
+                    //if the fragment does not exist, add it to fragment manager.
+                    fragmentManager.beginTransaction().replace(R.id.fragment_container, new Budget(), "Budget").commit();
+                }
+                break;
+            case 3:
                 if (fragmentManager.findFragmentByTag("Charts") != null) {
                     //if the fragment exists, show it.
                     fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("Charts")).commit();
@@ -320,22 +328,13 @@ public class MainActivity extends AppCompatActivity {
                     fragmentManager.beginTransaction().replace(R.id.fragment_container, new Charts(), "Charts").commit();
                 }
                 break;
-            case 3:
+            case 4:
                 if (fragmentManager.findFragmentByTag("History") != null) {
                     //if the fragment exists, show it.
                     fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("History")).commit();
                 } else {
                     //if the fragment does not exist, add it to fragment manager.
                     fragmentManager.beginTransaction().replace(R.id.fragment_container, new History(), "History").commit();
-                }
-                break;
-            case 4:
-                if (fragmentManager.findFragmentByTag("Budget") != null) {
-                    //if the fragment exists, show it.
-                    fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag("Budget")).commit();
-                } else {
-                    //if the fragment does not exist, add it to fragment manager.
-                    fragmentManager.beginTransaction().replace(R.id.fragment_container, new Budget(), "Budget").commit();
                 }
                 break;
 
