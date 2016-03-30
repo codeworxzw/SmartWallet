@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,7 +42,8 @@ import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 public class AccountSummary extends Fragment {
 
     private final String TAG = "AccountSummary";
-    private final int INCOME_EXPENSE_CHART_LOADER_ID = 2;
+    private final int ACCOUNT_SUMMARY_CARDS = 2;
+    private final int BUDGET_ALERT_CARD = 5;
 
     private String selectedItem;
     private TextView mTextViewPeriod;
@@ -93,7 +95,8 @@ public class AccountSummary extends Fragment {
         MainActivity.fab.show();
         mContext = getContext();
         mActivity = getActivity();
-        getLoaderManager().initLoader(INCOME_EXPENSE_CHART_LOADER_ID, null, loaderCallbacks);
+        getLoaderManager().initLoader(ACCOUNT_SUMMARY_CARDS, null, loaderCallbacksAccountSummaryCards);
+        getLoaderManager().initLoader(BUDGET_ALERT_CARD, null, loaderCallbacksBudgetAlertCard);
 
         if (mConnectionDetector == null) {
             mConnectionDetector = new ConnectionDetector(mContext);
@@ -254,6 +257,19 @@ public class AccountSummary extends Fragment {
 
     }
 
+    private void generateAlertCardData(BudgetAlertCard card) {
+        if (!card.isBudgetAlertCardEmpty()) {
+            CardViewNative budgetAlertCardView = (CardViewNative) getActivity().findViewById(R.id.account_summary_budget_alert_card);
+
+            budgetAlertCardView.setVisibility(View.VISIBLE);
+            if (budgetAlertCardView.getCard() == null) {
+                budgetAlertCardView.setCard(card);
+            } else {
+                budgetAlertCardView.replaceCard(card);
+            }
+        }
+    }
+
 
     /**
      * Compiles all views data into export ready list
@@ -323,12 +339,14 @@ public class AccountSummary extends Fragment {
      * Sends broadcast intent to update cards
      */
     private void updateCards() {
-        Intent intent = new Intent(AccountSummaryLoader.ACTION);
-        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+        Intent intentAccountSummaryLoader = new Intent(AccountSummaryLoader.ACTION);
+        Intent intentBudgetAlertLoader = new Intent(BudgetAlertLoader.ACTION);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intentAccountSummaryLoader);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intentBudgetAlertLoader);
     }
 
 
-    private LoaderManager.LoaderCallbacks<List<Integer>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<Integer>>() {
+    private LoaderManager.LoaderCallbacks<List<Integer>> loaderCallbacksAccountSummaryCards = new LoaderManager.LoaderCallbacks<List<Integer>>() {
         @Override
         public Loader<List<Integer>> onCreateLoader(int id, Bundle args) {
             return new AccountSummaryLoader(getContext());
@@ -341,6 +359,22 @@ public class AccountSummary extends Fragment {
 
         @Override
         public void onLoaderReset(Loader<List<Integer>> loader) {
+        }
+    };
+
+    private LoaderManager.LoaderCallbacks<BudgetAlertCard> loaderCallbacksBudgetAlertCard = new LoaderManager.LoaderCallbacks<BudgetAlertCard>() {
+        @Override
+        public Loader<BudgetAlertCard> onCreateLoader(int id, Bundle args) {
+            return new BudgetAlertLoader(getContext());
+        }
+
+        @Override
+        public void onLoadFinished(Loader<BudgetAlertCard> loader, BudgetAlertCard data) {
+            generateAlertCardData(data);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<BudgetAlertCard> loader) {
         }
     };
 
