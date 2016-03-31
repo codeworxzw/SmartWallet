@@ -17,9 +17,9 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 public class CurrencyConversion extends AsyncTask<String, String, String> {
-    private static final String TAG = "CurrencyConvertion";
+    private static final String TAG = "CurrencyConversion";
     private HttpURLConnection urlConnection;
-    private final Context mContext;
+    private Context mContext;
 
     public CurrencyConversion(Context context) {
 
@@ -85,96 +85,98 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
      * @return converted to default currency value
      */
     public static int convertCurrency(int in, String curr, String defaultCurr) {
-        Double calcResult;
+        Double calcResult = (double) in;
         Currency convCurr = MainActivity.financeDocumentModel.getCurrencyDocument(FinanceDocumentModel.CURRENCY_ID);
-        switch (defaultCurr) {
-            case "USD": {
-                switch (curr) {
-                    case "EUR": {
-                        calcResult = in * convCurr.getEURtoUSD();
-                        return (int) Math.round(calcResult);
-                    }
-                    case "USD": {
-                        calcResult = (double) in;
-                        return (int) Math.round(calcResult);
-                    }
-                    case "RUB": {
-                        calcResult = in * convCurr.getRUBtoUSD();
-                        return (int) Math.round(calcResult);
-                    }
-                    case "UAH": {
-                        calcResult = in * convCurr.getUAHtoUSD();
-                        return (int) Math.round(calcResult);
-                    }
-                }
+        if (defaultCurr.equals("USD")) {
+            if (curr.equals("EUR")) {
+                calcResult = in * convCurr.getEURtoUSD();
             }
-
-            case "EUR": {
-                switch (curr) {
-                    case "EUR": {
-                        calcResult = (double) in;
-                        return (int) Math.round(calcResult);
-                    }
-                    case "USD": {
-                        calcResult = in * convCurr.getUSDtoEUR();
-                        return (int) Math.round(calcResult);
-                    }
-                    case "RUB": {
-                        calcResult = in * convCurr.getRUBtoEUR();
-                        return (int) Math.round(calcResult);
-                    }
-                    case "UAH": {
-                        calcResult = in * convCurr.getUAHtoEUR();
-                        return (int) Math.round(calcResult);
-                    }
-                }
+            if (curr.equals("USD")) {
+                calcResult = (double) in;
             }
-
-            case "RUB": {
-                switch (curr) {
-                    case "EUR": {
-                        calcResult = in * convCurr.getEURtoRUB();
-                        return (int) Math.round(calcResult);
-                    }
-                    case "USD": {
-                        calcResult = in * convCurr.getUSDtoRUB();
-                        return (int) Math.round(calcResult);
-                    }
-                    case "RUB": {
-                        calcResult = (double) in;
-                        return (int) Math.round(calcResult);
-                    }
-                    case "UAH": {
-                        calcResult = in * convCurr.getUAHtoRUB();
-                        return (int) Math.round(calcResult);
-                    }
-                }
+            if (curr.equals("RUB")) {
+                calcResult = in * convCurr.getRUBtoUSD();
             }
-
-            case "UAH": {
-                switch (curr) {
-                    case "EUR": {
-                        calcResult = in * convCurr.getEURtoUAH();
-                        return (int) Math.round(calcResult);
-                    }
-                    case "USD": {
-                        calcResult = in * convCurr.getUSDtoUAH();
-                        return (int) Math.round(calcResult);
-                    }
-                    case "RUB": {
-                        calcResult = in * convCurr.getRUBtoUAH();
-                        return (int) Math.round(calcResult);
-                    }
-                    case "UAH": {
-                        calcResult = (double) in;
-                        return (int) Math.round(calcResult);
-                    }
-                }
+            if (curr.equals("UAH")) {
+                calcResult = in * convCurr.getUAHtoUSD();
             }
-            default:
-                return in;
+            if (curr.equals("BTC")) {
+                calcResult = in * convCurr.getBTCtoUSD();
+            }
         }
 
+        if (defaultCurr.equals("EUR")) {
+            if (curr.equals("EUR")) {
+                calcResult = (double) in;
+            }
+            if (curr.equals("USD")) {
+                calcResult = in * convCurr.getUSDtoEUR();
+            }
+            if (curr.equals("RUB")) {
+                calcResult = in * convCurr.getRUBtoEUR();
+            }
+            if (curr.equals("UAH")) {
+                calcResult = in * convCurr.getUAHtoEUR();
+            }
+            if (curr.equals("BTC")) {
+                calcResult = in * convCurr.getBTCtoEUR();
+            }
+        }
+
+        if (defaultCurr.equals("RUB")) {
+            if (curr.equals("EUR")) {
+                calcResult = in * convCurr.getEURtoRUB();
+            }
+            if (curr.equals("USD")) {
+                calcResult = in * convCurr.getUSDtoRUB();
+            }
+            if (curr.equals("RUB")) {
+                calcResult = (double) in;
+            }
+            if (curr.equals("UAH")) {
+                calcResult = in * convCurr.getUAHtoRUB();
+            }
+            if (curr.equals("BTC")) {
+                calcResult = in * convCurr.getBTCtoRUB();
+            }
+        }
+
+        if (defaultCurr.equals("UAH")) {
+            if (curr.equals("EUR")) {
+                calcResult = in * convCurr.getEURtoUAH();
+            }
+            if (curr.equals("USD")) {
+                calcResult = in * convCurr.getUSDtoUAH();
+            }
+            if (curr.equals("RUB")) {
+                calcResult = in * convCurr.getRUBtoUAH();
+            }
+            if (curr.equals("UAH")) {
+                calcResult = (double) in;
+            }
+            if (curr.equals("BTC")) {
+                calcResult = in * convCurr.getBTCtoUAH();
+            }
+        }
+
+        if (defaultCurr.equals("BTC")) {
+            if (curr.equals("EUR")) {
+                calcResult = in * convCurr.getEURtoBTC();
+            }
+            if (curr.equals("USD")) {
+                calcResult = in * convCurr.getUSDtoBTC();
+            }
+            if (curr.equals("RUB")) {
+                calcResult = in * convCurr.getRUBtoBTC();
+            }
+            if (curr.equals("BTC")) {
+                calcResult = (double) in;
+            }
+            if (curr.equals("UAH")) {
+                calcResult = in * convCurr.getUAHtoBTC();
+            }
+        }
+        return (int) Math.round(calcResult);
     }
 
 

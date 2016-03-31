@@ -73,6 +73,7 @@
         <item>EUR</item>
         <item>UAH</item>
         <item>RUB</item>
+        <item>BTC</item>
     </string-array>
 
     <string name="never">Never</string>
