@@ -295,7 +295,7 @@ public class IncomeExpenseChart extends Fragment {
     }
 
 
-    private LoaderManager.LoaderCallbacks<SparseIntArray> loaderCallbacks = new LoaderManager.LoaderCallbacks<SparseIntArray>() {
+    private final LoaderManager.LoaderCallbacks<SparseIntArray> loaderCallbacks = new LoaderManager.LoaderCallbacks<SparseIntArray>() {
         @Override
         public Loader<SparseIntArray> onCreateLoader(int id, Bundle args) {
             return new IncomeExpenseChartLoader(getContext());

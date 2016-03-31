@@ -64,7 +64,7 @@ public class TrendsChartLoader extends AsyncTaskLoader<List<String[]>> {
     }
 
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             forceLoad();

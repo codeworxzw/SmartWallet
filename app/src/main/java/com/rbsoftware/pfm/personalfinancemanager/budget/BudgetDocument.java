@@ -8,7 +8,6 @@ import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,8 +15,12 @@ import java.util.Map;
  *
  * @author Roman Burzakovskiy
  */
+@SuppressWarnings("unchecked")
 public class BudgetDocument {
     public static final String DOC_TYPE = "Budget Document";
+    public static final String PERIOD_WEEKLY = "weekly";
+    public static final String PERIOD_MONTHLY = "monthly";
+
     private BasicDocumentRevision rev;
 
     private String userId;

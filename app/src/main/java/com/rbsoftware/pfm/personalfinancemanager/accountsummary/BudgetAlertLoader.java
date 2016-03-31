@@ -6,12 +6,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import com.rbsoftware.pfm.personalfinancemanager.FinanceDocument;
 import com.rbsoftware.pfm.personalfinancemanager.FinanceDocumentModel;
 import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
-import com.rbsoftware.pfm.personalfinancemanager.R;
 import com.rbsoftware.pfm.personalfinancemanager.budget.BudgetDocument;
 import com.rbsoftware.pfm.personalfinancemanager.utils.DateUtils;
 
@@ -19,11 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by burzakovskiy on 3/30/2016.
+ * Holds method for loading alert data in background
+ *
+ * @author Roman Burzakovskiy
  */
 public class BudgetAlertLoader extends AsyncTaskLoader<BudgetAlertCard> {
     private static final String TAG = "BudgetAlertLoader";
     public static final String ACTION = "BudgetAlertLoader.FORCELOAD";
+
     public BudgetAlertLoader(Context context) {
         super(context);
     }
@@ -40,7 +41,6 @@ public class BudgetAlertLoader extends AsyncTaskLoader<BudgetAlertCard> {
     @Override
     public BudgetAlertCard loadInBackground() {
         List<BudgetDocument> docListBudget = MainActivity.financeDocumentModel.queryBudgetDocumentsByDate(DateUtils.THIS_YEAR, MainActivity.getUserId(), BudgetDocument.DOC_TYPE, FinanceDocumentModel.ORDER_DESC);
-        Log.d(TAG, "query "+ docListBudget.size());
         List<FinanceDocument> docListFinance = MainActivity.financeDocumentModel.queryFinanceDocumentsByDate(DateUtils.THREE_MONTHS, MainActivity.getUserId(), FinanceDocument.DOC_TYPE, FinanceDocumentModel.ORDER_DESC);
         int[] expenses = getExpenses(docListFinance);
         return new BudgetAlertCard(getContext(), getAlertDocsList(docListBudget, expenses), expenses);
@@ -57,27 +57,40 @@ public class BudgetAlertLoader extends AsyncTaskLoader<BudgetAlertCard> {
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(broadcastReceiver);
     }
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             forceLoad();
         }
     };
 
-    private List<BudgetDocument> getAlertDocsList(List<BudgetDocument> docList, int[] expenses){
+    /**
+     * Filters document list
+     *
+     * @param docList  of Budget documents
+     * @param expenses filter criteria
+     * @return documents that require attention
+     */
+    private List<BudgetDocument> getAlertDocsList(List<BudgetDocument> docList, int[] expenses) {
         List<BudgetDocument> data = new ArrayList<>();
-        for(BudgetDocument doc : docList){
-            if (doc.getPeriod().equals(getContext().getResources().getStringArray(R.array.budget_period_spinner)[0]) && ((float)expenses[0] >=doc.getValue()*0.75f)) {
+        for (BudgetDocument doc : docList) {
+            if (doc.getPeriod().equals(BudgetDocument.PERIOD_WEEKLY) && ((float) expenses[0] >= doc.getValue() * 0.75f)) {
                 data.add(doc);
             }
-            if (doc.getPeriod().equals(getContext().getResources().getStringArray(R.array.budget_period_spinner)[1]) && ((float)expenses[1] >=doc.getValue()*0.75f)){
+            if (doc.getPeriod().equals(BudgetDocument.PERIOD_MONTHLY) && ((float) expenses[1] >= doc.getValue() * 0.75f)) {
                 data.add(doc);
             }
         }
-        Log.d(TAG, "output "+ data.size());
         return data;
     }
-    private int[] getExpenses(List<FinanceDocument> docList){
+
+    /**
+     * Extracts expenses data from document list
+     *
+     * @param docList of finance documents
+     * @return array with this week and this month total expenses
+     */
+    private int[] getExpenses(List<FinanceDocument> docList) {
         int[] data = {0, 0};
 
         for (FinanceDocument doc : docList) {
@@ -92,7 +105,6 @@ public class BudgetAlertLoader extends AsyncTaskLoader<BudgetAlertCard> {
 
 
         }
-        Log.d(TAG, data[0]+ " "+data[1]);
         return data;
 
     }

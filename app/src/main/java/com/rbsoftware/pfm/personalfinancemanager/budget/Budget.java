@@ -4,20 +4,16 @@ package com.rbsoftware.pfm.personalfinancemanager.budget;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -27,8 +23,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,7 +61,6 @@ public class Budget extends Fragment {
     private BudgetCardRecyclerViewAdapter mCardArrayAdapter;
     private TextView mEmptyView;
     private ConnectionDetector mConnectionDetector;
-    private FloatingActionButton btnCreateBudget;
     private EditText editTextBudgetValue;
 
     public Budget() {
@@ -123,7 +116,7 @@ public class Budget extends Fragment {
             mConnectionDetector = new ConnectionDetector(getContext());
         }
         MainActivity.mTracker.setScreenName(TAG);
-        btnCreateBudget = (FloatingActionButton) getActivity().findViewById(R.id.btn_create_budget);
+        FloatingActionButton btnCreateBudget = (FloatingActionButton) getActivity().findViewById(R.id.btn_create_budget);
 
         btnCreateBudget.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +144,7 @@ public class Budget extends Fragment {
         super.onDestroy();
         if (isCreateBudgetPopupWindowOpen || isEditBudgetPopupWindowOpen) {
             popupWindow.dismiss();
+            isCreateBudgetPopupWindowOpen = true;
         }
 
     }
@@ -265,7 +259,7 @@ public class Budget extends Fragment {
         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
-    private LoaderManager.LoaderCallbacks<List<BudgetCard>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<BudgetCard>>() {
+    private final LoaderManager.LoaderCallbacks<List<BudgetCard>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<BudgetCard>>() {
         @Override
         public Loader<List<BudgetCard>> onCreateLoader(int id, Bundle args) {
             return new BudgetLoader(getContext());
@@ -308,7 +302,6 @@ public class Budget extends Fragment {
             @Override
             public void onClick(View v) {
                 popupWindow.dismiss();
-                isCreateBudgetPopupWindowOpen = false;
             }
         });
         Button buttonCreateBudget = (Button) popupWindow.getContentView().findViewById(R.id.btn_create);
@@ -317,13 +310,12 @@ public class Budget extends Fragment {
             public void onClick(View v) {
                 if (validateFields()) {
                     popupWindow.dismiss();
-                    isCreateBudgetPopupWindowOpen = false;
                     createNewBudgetDocument(MainActivity.getUserId(),
-                            budgetPeriodSpinner.getSelectedItem().toString(),
+                            transformPeriodValue(budgetPeriodSpinner.getSelectedItemPosition()),
 
                             transformBudgetName(editTextBudgetName.getText().toString()),
 
-                            new ArrayList<String>(Arrays.asList(
+                            new ArrayList<>(Arrays.asList(
                                     editTextBudgetValue.getText().toString().replaceFirst("^0+(?!$)", ""),
                                     MainActivity.defaultCurrency)
                             ),
@@ -333,7 +325,12 @@ public class Budget extends Fragment {
             }
         });
 
-
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                isCreateBudgetPopupWindowOpen = false;
+            }
+        });
         popupWindow.showAtLocation(wrapperBudget, Gravity.CENTER, 0, 0);
         isCreateBudgetPopupWindowOpen = true;
 
@@ -370,7 +367,7 @@ public class Budget extends Fragment {
             editTextBudgetName.setText(savedInstanceState.getString("editTextBudgetName"));
             editTextBudgetValue.setText(savedInstanceState.getString("editTextBudgetValue"));
         } else {
-            if (doc.getPeriod().equals(getContext().getResources().getStringArray(R.array.budget_period_spinner)[0])) {
+            if (doc.getPeriod().equals(BudgetDocument.PERIOD_WEEKLY)) {
                 budgetPeriodSpinner.setSelection(0);
             } else {
                 budgetPeriodSpinner.setSelection(1);
@@ -384,7 +381,6 @@ public class Budget extends Fragment {
             @Override
             public void onClick(View v) {
                 popupWindow.dismiss();
-                isEditBudgetPopupWindowOpen = false;
             }
         });
         Button buttonCreateBudget = (Button) popupWindow.getContentView().findViewById(R.id.btn_create);
@@ -393,13 +389,12 @@ public class Budget extends Fragment {
             public void onClick(View v) {
                 if (validateFields()) {
                     popupWindow.dismiss();
-                    isEditBudgetPopupWindowOpen = false;
                     updateBudgetDocument(docId, MainActivity.getUserId(),
-                            budgetPeriodSpinner.getSelectedItem().toString(),
+                            transformPeriodValue(budgetPeriodSpinner.getSelectedItemPosition()),
 
                             transformBudgetName(editTextBudgetName.getText().toString()),
 
-                            new ArrayList<String>(Arrays.asList(
+                            new ArrayList<>(Arrays.asList(
                                     editTextBudgetValue.getText().toString().replaceFirst("^0+(?!$)", ""),
                                     MainActivity.defaultCurrency)
                             ),
@@ -409,7 +404,12 @@ public class Budget extends Fragment {
             }
         });
 
-
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                isEditBudgetPopupWindowOpen = false;
+            }
+        });
         popupWindow.showAtLocation(wrapperBudget, Gravity.CENTER, 0, 0);
         isEditBudgetPopupWindowOpen = true;
 
@@ -448,6 +448,40 @@ public class Budget extends Fragment {
             return getContext().getString(R.string.my_budget) + " " + count;
         } else {
             return name;
+        }
+    }
+
+    /**
+     * Converts spinner position into string
+     *
+     * @param position position of spinner
+     * @return string value depending on spinner position
+     */
+    private String transformPeriodValue(int position) {
+        switch (position) {
+            case 0:
+                return BudgetDocument.PERIOD_WEEKLY;
+            case 1:
+                return BudgetDocument.PERIOD_MONTHLY;
+            default:
+                return BudgetDocument.PERIOD_WEEKLY;
+        }
+    }
+
+    /**
+     * Translates english value from document into local language
+     *
+     * @param value in document
+     * @return value in local language
+     */
+    private String convertPeriodValueFromEnglish(String value) {
+        switch (value) {
+            case BudgetDocument.PERIOD_WEEKLY:
+                return getContext().getResources().getStringArray(R.array.budget_period_spinner)[0];
+            case BudgetDocument.PERIOD_MONTHLY:
+                return getContext().getResources().getStringArray(R.array.budget_period_spinner)[1];
+            default:
+                return getContext().getResources().getStringArray(R.array.budget_period_spinner)[0];
         }
     }
 
@@ -502,10 +536,10 @@ public class Budget extends Fragment {
         data.add(new String[]{getString(R.string.document_date), DateUtils.getNormalDate(DateUtils.DATE_FORMAT_LONG, doc.getDate())});
         data.add(new String[]{"", ""});
         data.add(new String[]{doc.getName(), ""});
-        data.add(new String[]{getString(R.string.period), doc.getPeriod()});
+        data.add(new String[]{getString(R.string.period), convertPeriodValueFromEnglish(doc.getPeriod())});
         data.add(new String[]{getString(R.string.value), String.format(Locale.getDefault(), "%,d", doc.getValue()) + " " + MainActivity.defaultCurrency});
         data.add(new String[]{getString(R.string.estimated_balance), card.getEstimatedBudgetValue()});
-        if (doc.getPeriod().equals(getContext().getResources().getStringArray(R.array.budget_period_spinner)[0])) {
+        if (doc.getPeriod().equals(BudgetDocument.PERIOD_WEEKLY)) {
             for (int i = 0; i < 3; i++) {
                 if (totalExpenseIncomeData[i] != 0) {
                     int percent = Math.round((float) totalExpenseIncomeData[i] / doc.getValue() * 100f);

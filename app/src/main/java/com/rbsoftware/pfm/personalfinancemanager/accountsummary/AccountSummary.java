@@ -11,7 +11,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -346,7 +345,7 @@ public class AccountSummary extends Fragment {
     }
 
 
-    private LoaderManager.LoaderCallbacks<List<Integer>> loaderCallbacksAccountSummaryCards = new LoaderManager.LoaderCallbacks<List<Integer>>() {
+    private final LoaderManager.LoaderCallbacks<List<Integer>> loaderCallbacksAccountSummaryCards = new LoaderManager.LoaderCallbacks<List<Integer>>() {
         @Override
         public Loader<List<Integer>> onCreateLoader(int id, Bundle args) {
             return new AccountSummaryLoader(getContext());
@@ -362,7 +361,7 @@ public class AccountSummary extends Fragment {
         }
     };
 
-    private LoaderManager.LoaderCallbacks<BudgetAlertCard> loaderCallbacksBudgetAlertCard = new LoaderManager.LoaderCallbacks<BudgetAlertCard>() {
+    private final LoaderManager.LoaderCallbacks<BudgetAlertCard> loaderCallbacksBudgetAlertCard = new LoaderManager.LoaderCallbacks<BudgetAlertCard>() {
         @Override
         public Loader<BudgetAlertCard> onCreateLoader(int id, Bundle args) {
             return new BudgetAlertLoader(getContext());

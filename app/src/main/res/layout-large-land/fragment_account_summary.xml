@@ -54,8 +54,10 @@
                     android:id="@+id/account_summary_budget_alert_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:visibility="gone"/>
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="12dp"
+                    android:visibility="gone" />
 
                 <it.gmariotti.cardslib.library.view.CardViewNative
                     android:id="@+id/account_summary_balance_card"
@@ -64,7 +66,6 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="12dp" />
-
 
 
                 <it.gmariotti.cardslib.library.view.CardViewNative

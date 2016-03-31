@@ -31,7 +31,7 @@
             android:id="@+id/account_summary_budget_alert_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="12dp"
             android:visibility="gone"/>
 
         <it.gmariotti.cardslib.library.view.CardViewNative

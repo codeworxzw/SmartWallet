@@ -3,7 +3,7 @@ package com.rbsoftware.pfm.personalfinancemanager.accountsummary;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -20,12 +20,14 @@ import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 
 /**
- * Created by burzakovskiy on 3/30/2016.
+ * Holds methods for creation budget alert card
+ *
+ * @author Roman Burzakovskiy
  */
 public class BudgetAlertCard extends Card{
 
-    private List<BudgetDocument> docList;
-    private int[] expense;
+    private final List<BudgetDocument> docList;
+    private final int[] expense;
     public BudgetAlertCard(Context context,  List<BudgetDocument> docList, int[] expense) {
         super(context, R.layout.account_summary_budget_alert_card_layout);
 
@@ -35,6 +37,10 @@ public class BudgetAlertCard extends Card{
         this.addCardHeader(new CardHeader(getContext(), R.layout.account_summary_alert_card_header_layout));
     }
 
+    /**
+     * Checks if card is empty
+     * @return true if empty
+     */
     public boolean isBudgetAlertCardEmpty(){return docList.isEmpty();}
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
@@ -55,7 +61,7 @@ public class BudgetAlertCard extends Card{
      * @param linearLayout of wrapper
      */
     private void addProgressIndicators(LinearLayout linearLayout, BudgetDocument doc) {
-        if (doc.getPeriod().equals(getContext().getResources().getStringArray(R.array.budget_period_spinner)[0])) {
+        if (doc.getPeriod().equals(BudgetDocument.PERIOD_WEEKLY)) {
                 if (expense[0] != 0) {
                     linearLayout.addView(createNewProgressRow(doc, expense[0]));
                 }
@@ -102,6 +108,7 @@ public class BudgetAlertCard extends Card{
             final TextView tvBudgetExceeded = new TextView(mContext);
             tvBudgetExceeded.setLayoutParams(layoutParamsProgress);
             tvBudgetExceeded.setPadding(Utils.dpToPx(getContext(), 8), 0, Utils.dpToPx(getContext(), 8), 0);
+            tvBudgetExceeded.setGravity(Gravity.CENTER_HORIZONTAL);
             int exceed = Math.round((float) progress / doc.getValue() * 100f - 100.0f);
             String text = mContext.getString(R.string.budget_exceeded) + " " + exceed + "%";
             tvBudgetExceeded.setText(text);

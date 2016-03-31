@@ -68,7 +68,7 @@ public class ReportCard {
      *
      * @return int getCategorySpinnerId
      */
-    public int getCategorySpinnerId() {
+    private int getCategorySpinnerId() {
         return categorySpinnerId;
     }
 
@@ -77,7 +77,7 @@ public class ReportCard {
      *
      * @return int buttonCounter
      */
-    public int getButtonCounter() {
+    private int getButtonCounter() {
         return buttonCounter;
     }
 

@@ -53,7 +53,6 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
     private HistoryCard card;
     private TextView mEmptyView;
     private Context mContext;
-    private Activity mActivity;
     private ConnectionDetector mConnectionDetector;
 
     public History() {
@@ -84,7 +83,6 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mContext = getContext();
-        mActivity = getActivity();
         getLoaderManager().initLoader(HISTORY_LOADER_ID, null, loaderCallbacks);
         if (mConnectionDetector == null) {
             mConnectionDetector = new ConnectionDetector(mContext);
@@ -195,7 +193,7 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
     }
 
 
-    private LoaderManager.LoaderCallbacks<List<HistoryCard>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<HistoryCard>>() {
+    private final LoaderManager.LoaderCallbacks<List<HistoryCard>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<HistoryCard>>() {
         @Override
         public Loader<List<HistoryCard>> onCreateLoader(int id, Bundle args) {
             return new HistoryLoader(getContext());

@@ -292,8 +292,8 @@ public class Utils {
      */
     public static int getProgressColor(Context mContext, int max, int threshold, int progress){
         int color  = ContextCompat.getColor(mContext, R.color.income);
-        if(progress < (threshold - threshold*0.05)) color= ContextCompat.getColor(mContext, R.color.income);
-        if((threshold < max) && (progress >= (threshold - threshold*0.05)) && (progress <=( max - max*0.05) )) color = ContextCompat.getColor(mContext, R.color.colorAccent);
+        if(progress < threshold) color= ContextCompat.getColor(mContext, R.color.income);
+        if((threshold < max) && (progress >= threshold) && (progress <=( max - max*0.05) )) color = ContextCompat.getColor(mContext, R.color.colorAccent);
         if((progress >=( max - max*0.05) ) && (progress <= max)) color = ContextCompat.getColor(mContext, R.color.expense);
         return color;
     }

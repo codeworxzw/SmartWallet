@@ -8,7 +8,9 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * Created by burzakovskiy on 3/25/2016.
+ * Holds utils static method to work with dates
+ *
+ * @author Roman Burzakovskiy
  */
 public class DateUtils {
 

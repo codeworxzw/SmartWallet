@@ -3,6 +3,7 @@ package com.rbsoftware.pfm.personalfinancemanager.budget;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -26,7 +27,7 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
 public class BudgetCard extends Card {
 
     private final BudgetDocument doc;
-    private int[] totalExpenseIncomeData;
+    private final int[] totalExpenseIncomeData;
 
     /**
      * Constructor of budget card
@@ -58,7 +59,7 @@ public class BudgetCard extends Card {
      *
      * @param totalExpenseIncomeData total expense array
      */
-    public void setHeader(int[] totalExpenseIncomeData) {
+    private void setHeader(int[] totalExpenseIncomeData) {
         //Create a CardHeader
         BudgetHeaderInnerCard header = new BudgetHeaderInnerCard(mContext, doc.getName(), doc.getValue(), totalExpenseIncomeData);
         this.addCardHeader(header);
@@ -105,7 +106,7 @@ public class BudgetCard extends Card {
      * @param linearLayout of wrapper
      */
     private void addProgressIndicators(LinearLayout linearLayout) {
-        if (doc.getPeriod().equals(getContext().getResources().getStringArray(R.array.budget_period_spinner)[0])) {
+        if (doc.getPeriod().equals(BudgetDocument.PERIOD_WEEKLY)) {
             for (int i = 0; i < 3; i++) {
                 if (totalExpenseIncomeData[i] != 0) {
                     linearLayout.addView(createNewProgressRow(mContext.getResources().getStringArray(R.array.budget_card_periods)[i], totalExpenseIncomeData[i]));
@@ -158,6 +159,7 @@ public class BudgetCard extends Card {
             final TextView tvBudgetExceeded = new TextView(mContext);
             tvBudgetExceeded.setLayoutParams(layoutParamsProgress);
             tvBudgetExceeded.setPadding(Utils.dpToPx(getContext(), 8), 0, Utils.dpToPx(getContext(), 8), 0);
+            tvBudgetExceeded.setGravity(Gravity.CENTER_HORIZONTAL);
             int exceed = Math.round((float) progress / doc.getValue() * 100f - 100.0f);
             String text = mContext.getString(R.string.budget_exceeded) + " " + exceed + "%";
             tvBudgetExceeded.setText(text);
@@ -178,7 +180,7 @@ public class BudgetCard extends Card {
 
         private final String name;
         private final int budgetValue;
-        private int[] totalExpenseIncomeData;
+        private final int[] totalExpenseIncomeData;
 
         private TextView estimatedBalance;
 
@@ -210,7 +212,7 @@ public class BudgetCard extends Card {
 
                 estimatedBalance = (TextView) view.findViewById(R.id.tv_budget_card_header_estimated_balance);
 
-                if (doc.getPeriod().equals(getContext().getResources().getStringArray(R.array.budget_period_spinner)[0])) {
+                if (doc.getPeriod().equals(BudgetDocument.PERIOD_WEEKLY)) {
                     int estimatedBalanceValue;
                     if(totalExpenseIncomeData[0] < budgetValue ) {
                         estimatedBalanceValue = totalExpenseIncomeData[3] - budgetValue;

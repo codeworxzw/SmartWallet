@@ -315,7 +315,7 @@ public class TrendsChart extends Fragment {
     }
 
 
-    private LoaderManager.LoaderCallbacks<List<String[]>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<String[]>>() {
+    private final LoaderManager.LoaderCallbacks<List<String[]>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<String[]>>() {
         @Override
         public Loader<List<String[]>> onCreateLoader(int id, Bundle args) {
             return new TrendsChartLoader(getContext());

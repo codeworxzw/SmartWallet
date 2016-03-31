@@ -42,13 +42,13 @@ public class HistoryCard extends Card {
         return doc;
     }
 
-    public void setHeader() {
+    private void setHeader() {
         //Create a CardHeader
         HistoryHeaderInnerCard header = new HistoryHeaderInnerCard(mContext, doc.getDate(), doc.getTotalIncome(), doc.getTotalExpense());
         this.addCardHeader(header);
     }
 
-    public void setExpand() {
+    private void setExpand() {
         HistoryExpandCard expand = new HistoryExpandCard(mContext, doc);
 
 

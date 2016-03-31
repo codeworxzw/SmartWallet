@@ -1,6 +1,7 @@
 package com.rbsoftware.pfm.personalfinancemanager.budget;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class BudgetCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     /**
      * Internal objects
      */
-    private List<BudgetCard> mCards;
+    private final List<BudgetCard> mCards;
 
     /**
      * Constructor
@@ -45,20 +46,20 @@ public class BudgetCardRecyclerViewAdapter extends BaseRecyclerViewAdapter {
     }
 
     @Override
-    public boolean add(Card card) {
+    public boolean add(@NonNull Card card) {
         boolean result = mCards.add((BudgetCard) card);
         notifyDataSetChanged();
         return result;
     }
 
     @Override
-    public void add(int index, Card card) {
+    public void add(int index, @NonNull Card card) {
         mCards.add(index, (BudgetCard) card);
         notifyItemInserted(index);
     }
 
     @Override
-    public boolean remove(Card card) {
+    public boolean remove(@NonNull Card card) {
         boolean result = mCards.remove(card);
         notifyDataSetChanged();
         return result;
