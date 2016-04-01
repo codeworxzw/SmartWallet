@@ -39,7 +39,7 @@ public class HistoryLoader extends AsyncTaskLoader<List<HistoryCard>> {
     @Override
     public List<HistoryCard> loadInBackground() {
         ArrayList<HistoryCard> cards = new ArrayList<>();
-        List<FinanceDocument> docList = MainActivity.financeDocumentModel.queryDocumentsByDate("thisYear", MainActivity.getUserId(), FinanceDocumentModel.ORDER_DESC);
+        List<FinanceDocument> docList = MainActivity.financeDocumentModel.queryFinanceDocumentsByDate("thisYear", MainActivity.getUserId(), FinanceDocument.DOC_TYPE, FinanceDocumentModel.ORDER_DESC);
         for (int i = 0; i < docList.size(); i++) {
             HistoryCard card = new HistoryCard(getContext(), docList.get(i));
             cards.add(card);
@@ -58,7 +58,7 @@ public class HistoryLoader extends AsyncTaskLoader<List<HistoryCard>> {
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(broadcastReceiver);
     }
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             forceLoad();

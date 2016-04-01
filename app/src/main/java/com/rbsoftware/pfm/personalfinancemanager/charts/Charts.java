@@ -56,7 +56,7 @@ public class Charts extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[1]);
+        getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[2]);
         if (mPager == null) {
             mPager = (ViewPager) getActivity().findViewById(R.id.pager);
         }
@@ -70,7 +70,7 @@ public class Charts extends Fragment {
                 sendTracker(position);
             }
         });
-        MainActivity.fab.hide();
+
     }
 
     private void sendTracker(int position) {

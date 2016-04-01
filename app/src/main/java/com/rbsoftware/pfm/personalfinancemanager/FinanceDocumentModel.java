@@ -22,6 +22,8 @@ import com.cloudant.sync.query.QueryResult;
 import com.cloudant.sync.replication.Replicator;
 import com.cloudant.sync.replication.ReplicatorBuilder;
 import com.google.common.eventbus.Subscribe;
+import com.rbsoftware.pfm.personalfinancemanager.budget.BudgetDocument;
+import com.rbsoftware.pfm.personalfinancemanager.utils.DateUtils;
 
 import java.io.File;
 import java.net.URI;
@@ -32,7 +34,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 /**
  * Created by burzakovskiy on 11/24/2015.
@@ -50,12 +51,7 @@ public class FinanceDocumentModel {
     private static final String SETTINGS_CLOUDANT_API_SECRET = "293c6b466286c6aed7216e47f491f59a1ce6a6e0";
     private static final String FINANCE_DOCUMENT_INDEX_LIST = "FinanceDocumentIndexList";
 
-    //Query time frames
-    private static final String THIS_WEEK = "thisWeek";
-    private static final String LAST_WEEK = "lastWeek";
-    private static final String THIS_MONTH = "thisMonth";
-    private static final String LAST_MONTH = "lastMonth";
-    private static final String THIS_YEAR = "thisYear";
+
     private Calendar cal;
 
     public static final String ORDER_ASC = "asc";
@@ -133,20 +129,23 @@ public class FinanceDocumentModel {
     // Document query methods
 
     /**
-     * Queries documents by time period
+     * Queries finance documents by time period
      *
      * @param timeFrame "thisWeek"
      *                  "lastWeek"
+     *                  "threeWeeks"
      *                  "thisMonth"
      *                  "lastMonth"
+     *                  "threeMonths"
      *                  "Jan" - "Dec"
      *                  "thisYear"
      * @param userId    id of current user
+     * @param docType   document type
      * @return list of the documents
      **/
 
 
-    public List<FinanceDocument> queryDocumentsByDate(String timeFrame, String userId) {
+    public List<FinanceDocument> queryFinanceDocumentsByDate(String timeFrame, String userId, String docType) {
         List<FinanceDocument> list = new ArrayList<>();
         cal = Calendar.getInstance();
         long currDate = cal.getTimeInMillis() / 1000;
@@ -166,7 +165,13 @@ public class FinanceDocumentModel {
         eqUserId.put("$eq", userId);                                       //*
         userIdClause.put("userId", eqUserId);                              //**********************
 
-        query.put("$and", Arrays.<Object>asList(startClause, endClause, userIdClause)); //query
+        Map<String, Object> eqType = new HashMap<>();       //Query by type
+        Map<String, Object> typeClause = new HashMap<>();               //*
+        eqType.put("$eq", docType);                                       //*
+        typeClause.put("type", eqType);                              //**********************
+
+
+        query.put("$and", Arrays.<Object>asList(startClause, endClause, userIdClause, typeClause)); //query
 
 
         QueryResult result = im.find(query);
@@ -184,20 +189,23 @@ public class FinanceDocumentModel {
     }
 
     /**
-     * Queries documents by time period and sort
+     * Queries finance documents by time period and sort
      *
      * @param timeFrame "thisWeek"
      *                  "lastWeek"
+     *                  "threeWeeks"
      *                  "thisMonth"
      *                  "lastMonth"
+     *                  "threeMonths"
      *                  "Jan" - "Dec"
      *                  "thisYear"
      * @param userId    id of current user
+     * @param docType   document type
      * @param order     asc or desc
      * @return list of the documents
      **/
 
-    public List<FinanceDocument> queryDocumentsByDate(String timeFrame, String userId, String order) {
+    public List<FinanceDocument> queryFinanceDocumentsByDate(String timeFrame, String userId, String docType, String order) {
         List<FinanceDocument> list = new ArrayList<>();
         cal = Calendar.getInstance();
         long currDate = cal.getTimeInMillis() / 1000;
@@ -217,7 +225,14 @@ public class FinanceDocumentModel {
         eqUserId.put("$eq", userId);                                       //*
         userIdClause.put("userId", eqUserId);                              //**********************
 
-        query.put("$and", Arrays.<Object>asList(startClause, endClause, userIdClause)); //query
+
+        Map<String, Object> eqType = new HashMap<>();       //Query by type
+        Map<String, Object> typeClause = new HashMap<>();               //*
+        eqType.put("$eq", docType);                                       //*
+        typeClause.put("type", eqType);                              //**********************
+
+
+        query.put("$and", Arrays.<Object>asList(startClause, endClause, userIdClause, typeClause)); //query
 
         //Sorting documents
         List<Map<String, String>> sortDocument = new ArrayList<>();
@@ -245,116 +260,76 @@ public class FinanceDocumentModel {
     }
 
     /**
-     * Calculates the first day of current month
+     * Queries budget documents by time period and sort
      *
-     * @return the first day of current month
-     */
-    private Long getFirstDateOfCurrentMonth() {
-        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+     * @param timeFrame "thisWeek"
+     *                  "lastWeek"
+     *                  "threeWeeks"
+     *                  "thisMonth"
+     *                  "lastMonth"
+     *                  "threeMonths"
+     *                  "Jan" - "Dec"
+     *                  "thisYear"
+     * @param userId    id of current user
+     * @param docType   document type
+     * @param order     asc or desc
+     * @return list of the documents
+     **/
 
-        cal.set(Calendar.DAY_OF_MONTH, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH));
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis() / 1000;
+    public List<BudgetDocument> queryBudgetDocumentsByDate(String timeFrame, String userId, String docType, String order) {
+        List<BudgetDocument> list = new ArrayList<>();
+        cal = Calendar.getInstance();
+        long currDate = cal.getTimeInMillis() / 1000;
+        Map<String, Object> query = new HashMap<>();
+
+        Map<String, Object> gteDate = new HashMap<>();                    // Start of the period
+        Map<String, Object> startClause = new HashMap<>();                //*
+        gteDate.put("$gte", startDateBuilder(currDate, timeFrame));        //*
+        startClause.put("date", gteDate);
+        //*********
+        Map<String, Object> lteDate = new HashMap<>();      // End of t/he period
+        Map<String, Object> endClause = new HashMap<>();                 // *
+        lteDate.put("$lte", endDateBuilder(currDate, timeFrame));         //*
+        endClause.put("date", lteDate);                                   //*********
+        Map<String, Object> eqUserId = new HashMap<>();       //Query by userId
+        Map<String, Object> userIdClause = new HashMap<>();               //*
+        eqUserId.put("$eq", userId);                                       //*
+        userIdClause.put("userId", eqUserId);                              //**********************
+
+
+        Map<String, Object> eqType = new HashMap<>();       //Query by type
+        Map<String, Object> typeClause = new HashMap<>();               //*
+        eqType.put("$eq", docType);                                       //*
+        typeClause.put("type", eqType);                              //**********************
+
+
+        query.put("$and", Arrays.<Object>asList(startClause, endClause, userIdClause, typeClause)); //query
+
+        //Sorting documents
+        List<Map<String, String>> sortDocument = new ArrayList<>();
+        Map<String, String> sortByDate = new HashMap<>();
+        if (order.equals(ORDER_ASC)) {
+
+            sortByDate.put("date", "asc");  //sorting by date
+
+        } else {
+            sortByDate.put("date", "desc");  //sorting by date
+        }
+        sortDocument.add(sortByDate);
+        QueryResult result = im.find(query, 0, 0, null, sortDocument);
+        if (result != null) {
+            for (DocumentRevision rev : result) {
+                list.add(getBudgetDocument(rev.getId()));
+
+                // The returned revision object contains all fields for
+                // the object. You cannot project certain fields in the
+                // current implementation.
+            }
+
+        }
+        return list;
     }
 
-    /**
-     * Calculates the first day of current week
-     *
-     * @return the first day of current week
-     */
-    private Long getFirstDateOfCurrentWeek() {
-        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
-        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis() / 1000;
-    }
-
-    /**
-     * Calculates the first day of current year
-     *
-     * @return the first day of current year
-     */
-    private Long getFirstDateOfCurrentYear() {
-        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
-        cal.setTimeZone(cal.getTimeZone());
-        cal.set(Calendar.DAY_OF_YEAR, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_YEAR));
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis() / 1000;
-    }
-
-    /**
-     * Calculates the first day of last month
-     *
-     * @return the first day of last month
-     */
-    private Long getFirstDateOfPreviousMonth() {
-        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
-        cal.set(Calendar.DATE, 1);
-        cal.add(Calendar.MONTH, -1);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis() / 1000;
-    }
-
-    /**
-     * Calculates the last day of last month
-     *
-     * @return the last day of last month
-     */
-    private Long getLastDateOfPreviousMonth() {
-        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
-        cal.set(Calendar.DATE, 1);
-        cal.add(Calendar.DAY_OF_MONTH, -1);
-        cal.set(Calendar.HOUR_OF_DAY, 23);
-        cal.set(Calendar.MINUTE, 59);
-        cal.set(Calendar.SECOND, 59);
-        cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis() / 1000;
-    }
-
-    /**
-     * Calculates the first day of last week
-     *
-     * @return the first day of last week
-     */
-    private Long getFirstDateOfPreviousWeek() {
-        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
-        cal.add(Calendar.WEEK_OF_YEAR, -1);
-        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
-
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis() / 1000;
-    }
-
-    /**
-     * Calculates the last day of last week
-     *
-     * @return the last day of last week
-     */
-    private Long getLastDateOfPreviousWeek() {
-        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
-        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
-        cal.add(Calendar.DAY_OF_YEAR, -1);
-        cal.set(Calendar.HOUR_OF_DAY, 23);
-        cal.set(Calendar.MINUTE, 59);
-        cal.set(Calendar.SECOND, 59);
-        cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis() / 1000;
-    }
 
     /**
      * Calculates start date for query
@@ -364,26 +339,32 @@ public class FinanceDocumentModel {
      * @return start date for query
      */
     private long startDateBuilder(long currDate, String timeFrame) {
-        long startDate = 0;
         switch (timeFrame) {
-            case THIS_WEEK:
-                startDate = getFirstDateOfCurrentWeek();
-                break;
-            case THIS_MONTH:
-                startDate = getFirstDateOfCurrentMonth();
-                break;
-            case THIS_YEAR:
-                startDate = getFirstDateOfCurrentYear();
-                break;
-            case LAST_WEEK:
-                startDate = getFirstDateOfPreviousWeek();
-                break;
-            case LAST_MONTH:
-                startDate = getFirstDateOfPreviousMonth();
-                break;
+            case DateUtils.THIS_WEEK:
+                return DateUtils.getFirstDateOfCurrentWeek();
+
+            case DateUtils.THIS_MONTH:
+                return DateUtils.getFirstDateOfCurrentMonth();
+
+            case DateUtils.THIS_YEAR:
+                return DateUtils.getFirstDateOfCurrentYear();
+
+            case DateUtils.LAST_WEEK:
+                return DateUtils.getFirstDateOfPreviousWeek();
+
+            case DateUtils.THREE_WEEKS:
+                return DateUtils.getFirstDateOfTwoWeeksAgo();
+
+            case DateUtils.LAST_MONTH:
+                return DateUtils.getFirstDateOfPreviousMonth();
+
+            case DateUtils.THREE_MONTHS:
+                return DateUtils.getFirstDateOfTwoMonthsAgo();
+
+            default:
+                return 0;
 
         }
-        return startDate;
     }
 
     /**
@@ -394,28 +375,29 @@ public class FinanceDocumentModel {
      * @return end date for query
      */
     private long endDateBuilder(long currDate, String timeFrame) {
-        long endDate = 0;
+
 
         switch (timeFrame) {
-            case THIS_WEEK:
-                endDate = currDate;
-                break;
-            case THIS_MONTH:
-                endDate = currDate;
-                break;
-            case THIS_YEAR:
-                endDate = currDate;
-                break;
-            case LAST_WEEK:
-                endDate = getLastDateOfPreviousWeek();
-                break;
-            case LAST_MONTH:
-                endDate = getLastDateOfPreviousMonth();
-                break;
+            case DateUtils.THIS_WEEK:
+                return currDate;
+            case DateUtils.THIS_MONTH:
+                return currDate;
+            case DateUtils.THIS_YEAR:
+                return currDate;
+            case DateUtils.LAST_WEEK:
+                return DateUtils.getLastDateOfPreviousWeek();
+            case DateUtils.THREE_WEEKS:
+                return currDate;
+            case DateUtils.LAST_MONTH:
+                return DateUtils.getLastDateOfPreviousMonth();
+            case DateUtils.THREE_MONTHS:
+                return currDate;
+            default:
+                return currDate;
 
         }
 
-        return endDate;
+
     }
 
 
@@ -424,7 +406,7 @@ public class FinanceDocumentModel {
     //
 
     /**
-     * Creates a task, assigning an ID.
+     * Creates a finance document, assigning an ID.
      *
      * @param document task to create
      * @return new revision of the document
@@ -445,7 +427,7 @@ public class FinanceDocumentModel {
     }
 
     /**
-     * Creates a task, assigning an ID.
+     * Creates a currency document, assigning an ID.
      *
      * @param document task to create
      * @return new revision of the document
@@ -458,6 +440,27 @@ public class FinanceDocumentModel {
             BasicDocumentRevision created = this.mDatastore.createDocumentFromRevision(rev);
 
             return Currency.fromRevision(created);
+
+        } catch (DocumentException de) {
+            Log.e("Doc", "document was not created");
+            return null;
+        }
+    }
+
+    /**
+     * Creates a budget document, assigning an ID.
+     *
+     * @param document budget to create
+     * @return new revision of the document
+     */
+    public BudgetDocument createDocument(BudgetDocument document) {
+        MutableDocumentRevision rev = new MutableDocumentRevision();
+
+        rev.body = DocumentBodyFactory.create(document.asMap());
+        try {
+            BasicDocumentRevision created = this.mDatastore.createDocumentFromRevision(rev);
+
+            return BudgetDocument.fromRevision(created);
 
         } catch (DocumentException de) {
             Log.e("Doc", "document was not created");
@@ -502,6 +505,25 @@ public class FinanceDocumentModel {
         return Currency.fromRevision(retrieved);
     }
 
+    /**
+     * Retrieves document by id.
+     *
+     * @param docId task to create
+     * @return revision of the document
+     */
+    public BudgetDocument getBudgetDocument(String docId) {
+
+        BasicDocumentRevision retrieved;
+        try {
+            retrieved = mDatastore.getDocument(docId);
+        } catch (DocumentNotFoundException e) {
+            //e.printStackTrace();
+            Log.e("Doc", "document was not found");
+            return null;
+        }
+        return BudgetDocument.fromRevision(retrieved);
+    }
+
 
     /**
      * Updates a Document document within the datastore.
@@ -543,15 +565,46 @@ public class FinanceDocumentModel {
         }
     }
 
+    /**
+     * Updates a Document document within the datastore.
+     *
+     * @param oldDocument document to update
+     * @param newDocument new document
+     * @return the updated revision of the Task
+     * @throws ConflictException if the document passed in has a rev which doesn't
+     *                           match the current rev in the datastore.
+     */
+    public BudgetDocument updateBudgetDocument(BudgetDocument oldDocument, BudgetDocument newDocument) throws ConflictException {
+        MutableDocumentRevision rev = oldDocument.getDocumentRevision().mutableCopy();
+        rev.body = DocumentBodyFactory.create(newDocument.asMap());
+        try {
+            BasicDocumentRevision updated = this.mDatastore.updateDocumentFromRevision(rev);
+            return BudgetDocument.fromRevision(updated);
+        } catch (DocumentException de) {
+            return null;
+        }
+    }
+
 
     /**
-     * Deletes a Task document within the datastore.
+     * Deletes a Finance document within the datastore.
      *
      * @param doc task to delete
      * @throws ConflictException if the task passed in has a rev which doesn't
      *                           match the current rev in the datastore.
      */
     public void deleteDocument(FinanceDocument doc) throws ConflictException {
+        this.mDatastore.deleteDocumentFromRevision(doc.getDocumentRevision());
+    }
+
+    /**
+     * Deletes a Budget document within the datastore.
+     *
+     * @param doc task to delete
+     * @throws ConflictException if the task passed in has a rev which doesn't
+     *                           match the current rev in the datastore.
+     */
+    public void deleteDocument(BudgetDocument doc) throws ConflictException {
         this.mDatastore.deleteDocumentFromRevision(doc.getDocumentRevision());
     }
 

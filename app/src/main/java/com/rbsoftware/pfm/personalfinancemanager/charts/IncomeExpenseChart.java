@@ -27,7 +27,7 @@ import android.widget.ToggleButton;
 import com.rbsoftware.pfm.personalfinancemanager.ExportData;
 import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
 import com.rbsoftware.pfm.personalfinancemanager.R;
-import com.rbsoftware.pfm.personalfinancemanager.Utils;
+import com.rbsoftware.pfm.personalfinancemanager.utils.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -295,7 +295,7 @@ public class IncomeExpenseChart extends Fragment {
     }
 
 
-    private LoaderManager.LoaderCallbacks<SparseIntArray> loaderCallbacks = new LoaderManager.LoaderCallbacks<SparseIntArray>() {
+    private final LoaderManager.LoaderCallbacks<SparseIntArray> loaderCallbacks = new LoaderManager.LoaderCallbacks<SparseIntArray>() {
         @Override
         public Loader<SparseIntArray> onCreateLoader(int id, Bundle args) {
             return new IncomeExpenseChartLoader(getContext());

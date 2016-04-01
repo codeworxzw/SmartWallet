@@ -77,6 +77,13 @@
     <string name="income_is_empty">Доходи порожні. Натисніть (+) для створення даних</string>
     <string name="expense_is_empty">Витрати порожні. Натисніть (+) для створення даних</string>
     <string name="no_data_to_show">Немає даних для відображення&#8230;</string>
+    <string name="create_budget">Створити бюджет</string>
+    <string name="my_budget">Мій бюджет</string>
+    <string name="budget_is_empty">Бюджет не створено&#8230;</string>
+    <string name="notification_threshold">Поріг</string>
+    <string name="budget_exceeded">Бюджет перевищено на</string>
+    <string name="edit_budget">Редагувати бюджет</string>
+    <string name="estimated_balance">Очікуваний баланс</string>
 
     <string-array name="account_summary_spinner">
         <item>Поточний тиждень</item>
@@ -88,10 +95,13 @@
 
     <string-array name="drawer_menu">
         <item>Загальний огляд</item>
+        <item>Бюджет</item>
         <item>Графіки</item>
         <item>Активність</item>
+
         <item>Налаштування</item>
         <item>Вийти</item>
+
     </string-array>
 
 
@@ -116,5 +126,22 @@
         <item>EUR</item>
         <item>UAH</item>
         <item>RUB</item>
+    </string-array>
+
+    <string-array name="budget_period_spinner">
+        <item>Тижневий</item>
+        <item>Місячний</item>
+
+    </string-array>
+
+    <string-array name="budget_card_periods">
+        <item>Поточний тиждень</item>
+        <item>Минулий тиждень</item>
+        <item>Позаминулий тиждень</item>
+
+        <item>Поточний місяць</item>
+        <item>Минулий місяць</item>
+        <item>Позаминулий місяць</item>
+
     </string-array>
 </resources>

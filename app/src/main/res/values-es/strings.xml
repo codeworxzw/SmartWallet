@@ -27,7 +27,7 @@
     <string name="gifts">Regalos</string>
     <string name="got_it">Entendído</string>
     <string name="history_card">Haga clic en la tarjeta para ver los detalles de la operación</string>
-    <string name="history_is_empty">No hay actividad…</string>
+    <string name="history_is_empty">No hay actividad&#8230;</string>
     <string name="income">Ingresos</string>
     <string name="income_expense_switch">Haga clic para cambiar entre las gráficas de ingresos y gastos</string>
     <string name="interest">Intereses</string>
@@ -75,13 +75,23 @@
     <string name="income_is_empty">Ingresos está vacía. Pulse (+) para crear datos de</string>
     <string name="expense_is_empty">Gastos está vacía. Pulse (+) para crear datos de</string>
     <string name="no_data_to_show">No hay información para mostrar&#8230;</string>
+    <string name="create_budget">Crear presupuesto</string>
+    <string name="my_budget">Mi presupuesto</string>
+    <string name="budget_is_empty">No hay presupuesto&#8230;</string>
+    <string name="notification_threshold">Límite</string>
+    <string name="budget_exceeded">Presupuesto superado en un</string>
+    <string name="edit_budget">Editar presupuesto</string>
+    <string name="estimated_balance">Balance esperado</string>
 
     <string-array name="drawer_menu">
         <item>Información  general</item>
+        <item>Presupuesto</item>
         <item>Gráficas</item>
         <item>Actividad</item>
+
         <item>Ajustes</item>
         <item>Desconectar</item>
+
     </string-array>
     <string-array name="account_summary_spinner">
         <item>Semana actual</item>
@@ -112,5 +122,22 @@
         <item>EUR</item>
         <item>UAH</item>
         <item>RUB</item>
+    </string-array>
+
+    <string-array name="budget_period_spinner">
+        <item>Semanal</item>
+        <item>Mensual</item>
+
+    </string-array>
+
+    <string-array name="budget_card_periods">
+        <item>Semana actual</item>
+        <item>Semana pasada</item>
+        <item>Hace 2 semanas</item>
+
+        <item>Mes actual</item>
+        <item>Mes pasado</item>
+        <item>Hace 2 meses</item>
+
     </string-array>
 </resources>
