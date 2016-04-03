@@ -120,6 +120,7 @@
     <string-array name="report_activity_currency_spinner">
         <item>USD</item>
         <item>EUR</item>
+        <item>GBP</item>
         <item>UAH</item>
         <item>RUB</item>
         <item>BTC</item>

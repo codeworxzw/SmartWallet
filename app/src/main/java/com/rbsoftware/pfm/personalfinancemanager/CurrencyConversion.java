@@ -32,7 +32,7 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
         StringBuilder result = new StringBuilder();
 
         try {
-            URL url = new URL("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=3");
+            URL url = new URL("https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=12");
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 
@@ -110,6 +110,10 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
                         calcResult = in * convCurr.getBTCtoUSD();
                         return (int) Math.round(calcResult);
                     }
+                    case "GBP": {
+                        calcResult = in * convCurr.getGBPtoUSD();
+                        return (int) Math.round(calcResult);
+                    }
                 }
             }
 
@@ -133,6 +137,10 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
                     }
                     case "BTC": {
                         calcResult = in * convCurr.getBTCtoEUR();
+                        return (int) Math.round(calcResult);
+                    }
+                    case "GBP": {
+                        calcResult = in * convCurr.getGBPtoEUR();
                         return (int) Math.round(calcResult);
                     }
                 }
@@ -160,6 +168,10 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
                         calcResult = in * convCurr.getBTCtoRUB();
                         return (int) Math.round(calcResult);
                     }
+                    case "GBP": {
+                        calcResult = in * convCurr.getGBPtoRUB();
+                        return (int) Math.round(calcResult);
+                    }
                 }
             }
 
@@ -185,6 +197,10 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
                         calcResult = in * convCurr.getBTCtoUAH();
                         return (int) Math.round(calcResult);
                     }
+                    case "GBP": {
+                        calcResult = in * convCurr.getGBPtoUAH();
+                        return (int) Math.round(calcResult);
+                    }
                 }
             }
 
@@ -208,6 +224,39 @@ public class CurrencyConversion extends AsyncTask<String, String, String> {
                     }
                     case "UAH": {
                         calcResult = in * convCurr.getUAHtoBTC();
+                        return (int) Math.round(calcResult);
+                    }
+                    case "GBP": {
+                        calcResult = in * convCurr.getGBPtoBTC();
+                        return (int) Math.round(calcResult);
+                    }
+                }
+            }
+
+            case "GBP": {
+                switch (curr) {
+                    case "EUR": {
+                        calcResult = in * convCurr.getEURtoGBP();
+                        return (int) Math.round(calcResult);
+                    }
+                    case "USD": {
+                        calcResult = in * convCurr.getUSDtoGBP();
+                        return (int) Math.round(calcResult);
+                    }
+                    case "RUB": {
+                        calcResult = in * convCurr.getRUBtoGBP();
+                        return (int) Math.round(calcResult);
+                    }
+                    case "GBP": {
+                        calcResult = (double) in;
+                        return (int) Math.round(calcResult);
+                    }
+                    case "UAH": {
+                        calcResult = in * convCurr.getUAHtoGBP();
+                        return (int) Math.round(calcResult);
+                    }
+                    case "BTC": {
+                        calcResult = in * convCurr.getBTCtoGBP();
                         return (int) Math.round(calcResult);
                     }
                 }

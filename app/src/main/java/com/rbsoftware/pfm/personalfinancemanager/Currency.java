@@ -24,36 +24,51 @@ public class Currency {
     private Double USD = 1.0;
     private Double RUB = 1.0;
     private Double BTC = 1.0;
+    private Double GBP = 1.0;
 
     //UAH
     private String EURtoUAH;
     private String USDtoUAH;
     private String RUBtoUAH;
     private String BTCtoUAH;
+    private String GBPtoUAH;
 
     //USD
     private String EURtoUSD;   // if I want to sell EUR and buy USD then I need to use EURtoUSD
     private String RUBtoUSD;
     private String UAHtoUSD;   // if I want to sell UAH and buy USD then I need to use UAHtoUSD
     private String BTCtoUSD;
+    private String GBPtoUSD;
 
     //EUR
     private String USDtoEUR;
     private String RUBtoEUR;
     private String UAHtoEUR;
     private String BTCtoEUR;
+    private String GBPtoEUR;
 
     //RUB
     private String EURtoRUB;
     private String USDtoRUB;
     private String UAHtoRUB;
     private String BTCtoRUB;
+    private String GBPtoRUB;
 
     //BTC
     private String EURtoBTC;
     private String USDtoBTC;
     private String UAHtoBTC;
     private String RUBtoBTC;
+    private String GBPtoBTC;
+
+    //GBP
+    private String EURtoGBP;
+    private String USDtoGBP;
+    private String UAHtoGBP;
+    private String RUBtoGBP;
+    private String BTCtoGBP;
+
+
 
     private Currency() {
     }
@@ -80,6 +95,10 @@ public class Currency {
         this.EURtoBTC = EURtoBTC;
     }
 
+    private void setEURtoGBP(String EURtoGBP) {
+        this.EURtoGBP = EURtoGBP;
+    }
+
     private void setUSDtoEUR(String USDtoEUR) {
         this.USDtoEUR = USDtoEUR;
     }
@@ -94,6 +113,10 @@ public class Currency {
 
     private void setUSDtoBTC(String USDtoBTC) {
         this.USDtoBTC = USDtoBTC;
+    }
+
+    private void setUSDtoGBP(String USDtoGBP) {
+        this.USDtoGBP = USDtoGBP;
     }
 
     private void setRUBtoEUR(String RUBtoEUR) {
@@ -112,6 +135,10 @@ public class Currency {
         this.RUBtoBTC = RUBtoBTC;
     }
 
+    private void setRUBtoGBP(String RUBtoGBP) {
+        this.RUBtoGBP = RUBtoGBP;
+    }
+
     private void setUAHtoEUR(String UAHtoEUR) {
         this.UAHtoEUR = UAHtoEUR;
     }
@@ -126,6 +153,10 @@ public class Currency {
 
     private void setUAHtoBTC(String UAHtoBTC) {
         this.UAHtoBTC = UAHtoBTC;
+    }
+
+    private void setUAHtoGBP(String UAHtoGBP) {
+        this.UAHtoGBP = UAHtoGBP;
     }
 
     private void setBTCtoEUR(String BTCtoEUR) {
@@ -144,6 +175,30 @@ public class Currency {
         this.BTCtoUAH = BTCtoUAH;
     }
 
+    private void setBTCtoGBP(String BTCtoGBP) {
+        this.BTCtoGBP = BTCtoGBP;
+    }
+
+    private void setGBPtoUSD(String GBPtoUSD) {
+        this.GBPtoUSD = GBPtoUSD;
+    }
+
+    private void setGBPtoEUR(String GBPtoEUR) {
+        this.GBPtoEUR = GBPtoEUR;
+    }
+
+    private void setGBPtoRUB(String GBPtoRUB) {
+        this.GBPtoRUB = GBPtoRUB;
+    }
+
+    private void setGBPtoUAH(String GBPtoUAH) {
+        this.GBPtoUAH = GBPtoUAH;
+    }
+
+    private void setGBPtoBTC(String GBPtoBTC) {
+        this.GBPtoBTC = GBPtoBTC;
+    }
+
     public Double getEURtoUSD() {
         return Double.valueOf(EURtoUSD);
     }
@@ -158,6 +213,10 @@ public class Currency {
 
     public Double getEURtoBTC() {
         return Double.valueOf(EURtoBTC);
+    }
+
+    public Double getEURtoGBP() {
+        return Double.valueOf(EURtoGBP);
     }
 
     public Double getUSDtoEUR() {
@@ -176,6 +235,10 @@ public class Currency {
         return Double.valueOf(USDtoBTC);
     }
 
+    public Double getUSDtoGBP() {
+        return Double.valueOf(USDtoGBP);
+    }
+
     public Double getRUBtoEUR() {
         return Double.valueOf(RUBtoEUR);
     }
@@ -190,6 +253,10 @@ public class Currency {
 
     public Double getRUBtoBTC() {
         return Double.valueOf(RUBtoBTC);
+    }
+
+    public Double getRUBtoGBP() {
+        return Double.valueOf(RUBtoGBP);
     }
 
     public Double getUAHtoEUR() {
@@ -208,6 +275,10 @@ public class Currency {
         return Double.valueOf(UAHtoBTC);
     }
 
+    public Double getUAHtoGBP() {
+        return Double.valueOf(UAHtoGBP);
+    }
+
     public Double getBTCtoEUR() {
         return Double.valueOf(BTCtoEUR);
     }
@@ -222,6 +293,30 @@ public class Currency {
 
     public Double getBTCtoUAH() {
         return Double.valueOf(BTCtoUAH);
+    }
+
+    public Double getBTCtoGBP() {
+        return Double.valueOf(BTCtoGBP);
+    }
+
+    public Double getGBPtoUSD() {
+        return Double.valueOf(GBPtoUSD);
+    }
+
+    public Double getGBPtoEUR() {
+        return Double.valueOf(GBPtoEUR);
+    }
+
+    public Double getGBPtoRUB() {
+        return Double.valueOf(GBPtoRUB);
+    }
+
+    public Double getGBPtoUAH() {
+        return Double.valueOf(GBPtoUAH);
+    }
+
+    public Double getGBPtoBTC() {
+        return Double.valueOf(GBPtoBTC);
     }
 
     private void parser() {
@@ -253,6 +348,9 @@ public class Currency {
                 if (ccy.equals("BTC")) {
                     BTC = (sale + buy) / 2;
                 }
+                if (ccy.equals("GBP")) {
+                    GBP = (sale + buy) / 2;
+                }
             } // End Loop
         } catch (JSONException e) {
             Log.e("JSONException", "Error: " + e.toString());
@@ -260,41 +358,39 @@ public class Currency {
 
 
 
-
         EURtoUAH = Double.toString(EUR);
         USDtoUAH = Double.toString(USD);
         RUBtoUAH = Double.toString(RUB);
+        GBPtoUAH = Double.toString(GBP);
         EURtoUSD = Double.toString(EUR / USD);
         RUBtoUSD = Double.toString(RUB / USD);
+        GBPtoUSD = Double.toString(GBP / USD);
         UAHtoUSD = Double.toString(1 / USD);
         USDtoEUR = Double.toString(USD / EUR);
         RUBtoEUR = Double.toString(RUB / EUR);
+        GBPtoEUR = Double.toString(GBP / EUR);
         UAHtoEUR = Double.toString(1 / EUR);
         EURtoRUB = Double.toString(EUR / RUB);
         USDtoRUB = Double.toString(USD / RUB);
+        GBPtoRUB = Double.toString(GBP / RUB);
         UAHtoRUB = Double.toString(1 / RUB);
+        USDtoGBP = Double.toString(USD / GBP);
+        RUBtoGBP = Double.toString(RUB / GBP);
+        EURtoGBP = Double.toString(EUR / GBP);
+        UAHtoGBP = Double.toString(1 / GBP);
 
         //BTC
         BTCtoUSD = Double.toString(BTC);
         USDtoBTC = Double.toString(1 / BTC);
-
         EURtoBTC = Double.toString((1 / BTC)*(USD / EUR));
         BTCtoEUR = Double.toString((BTC)*(USD / EUR));
-
+        GBPtoBTC = Double.toString((1 / BTC)*(USD / GBP));
+        BTCtoGBP = Double.toString((BTC)*(USD / GBP));
         RUBtoBTC = Double.toString((1 /BTC)*(RUB / USD));
         BTCtoRUB = Double.toString((BTC)*(USD / RUB));
-
         UAHtoBTC = Double.toString((1 / (BTC * USD))); // 1/(410*26)
         BTCtoUAH = Double.toString((BTC)*(USD)); // 1 BTC = 410*26 = 10K UAH
 
-        Log.d("TAG", "USDtoBTC" + USDtoBTC + "\n"
-                + "EURtoBTC" + EURtoBTC + "\n"
-                + "RUBtoBTC" + RUBtoBTC + "\n"
-                + "UAHtoBTC" + UAHtoBTC + "\n"
-                + "BTCtoUSD" + BTCtoUSD + "\n"
-                + "BTCtoEUR" + BTCtoEUR + "\n"
-                + "BTCtoRUB" + BTCtoRUB + "\n"
-                + "BTCtoUAH" + BTCtoUAH + "\n");
     } // public void parser()
 
     /**
@@ -308,22 +404,32 @@ public class Currency {
         map.put("EURtoRUB", EURtoRUB);
         map.put("EURtoUAH", EURtoUAH);
         map.put("EURtoBTC", EURtoBTC);
+        map.put("EURtoGBP", EURtoGBP);
         map.put("USDtoEUR", USDtoEUR);
         map.put("USDtoRUB", USDtoRUB);
         map.put("USDtoUAH", USDtoUAH);
         map.put("USDtoBTC", USDtoBTC);
+        map.put("USDtoGBP", USDtoGBP);
         map.put("RUBtoEUR", RUBtoEUR);
         map.put("RUBtoUSD", RUBtoUSD);
         map.put("RUBtoUAH", RUBtoUAH);
         map.put("RUBtoBTC", RUBtoBTC);
+        map.put("RUBtoGBP", RUBtoGBP);
         map.put("UAHtoEUR", UAHtoEUR);
         map.put("UAHtoUSD", UAHtoUSD);
         map.put("UAHtoRUB", UAHtoRUB);
         map.put("UAHtoBTC", UAHtoBTC);
+        map.put("UAHtoGBP", UAHtoGBP);
         map.put("BTCtoEUR", BTCtoEUR);
         map.put("BTCtoUSD", BTCtoUSD);
         map.put("BTCtoRUB", BTCtoRUB);
         map.put("BTCtoUAH", BTCtoUAH);
+        map.put("BTCtoGBP", BTCtoGBP);
+        map.put("GBPtoUSD", GBPtoUSD);
+        map.put("GBPtoEUR", GBPtoEUR);
+        map.put("GBPtoRUB", GBPtoRUB);
+        map.put("GBPtoUAH", GBPtoUAH);
+        map.put("GBPtoBTC", GBPtoBTC);
         map.put("type", DOC_TYPE);
 
         return map;
@@ -344,22 +450,33 @@ public class Currency {
             t.setEURtoRUB((String) map.get("EURtoRUB"));
             t.setEURtoUAH((String) map.get("EURtoUAH"));
             t.setEURtoBTC((String) map.get("EURtoBTC"));
+            t.setEURtoGBP((String) map.get("EURtoGBP"));
             t.setUSDtoEUR((String) map.get("USDtoEUR"));
             t.setUSDtoRUB((String) map.get("USDtoRUB"));
             t.setUSDtoUAH((String) map.get("USDtoUAH"));
             t.setUSDtoBTC((String) map.get("USDtoBTC"));
+            t.setUSDtoGBP((String) map.get("USDtoGBP"));
             t.setRUBtoEUR((String) map.get("RUBtoEUR"));
             t.setRUBtoUSD((String) map.get("RUBtoUSD"));
             t.setRUBtoUAH((String) map.get("RUBtoUAH"));
             t.setRUBtoBTC((String) map.get("RUBtoBTC"));
+            t.setRUBtoGBP((String) map.get("RUBtoGBP"));
             t.setUAHtoEUR((String) map.get("UAHtoEUR"));
             t.setUAHtoUSD((String) map.get("UAHtoUSD"));
             t.setUAHtoRUB((String) map.get("UAHtoRUB"));
             t.setUAHtoBTC((String) map.get("UAHtoBTC"));
+            t.setUAHtoGBP((String) map.get("UAHtoGBP"));
             t.setBTCtoEUR((String) map.get("BTCtoEUR"));
             t.setBTCtoUSD((String) map.get("BTCtoUSD"));
             t.setBTCtoRUB((String) map.get("BTCtoRUB"));
             t.setBTCtoUAH((String) map.get("BTCtoUAH"));
+            t.setBTCtoGBP((String) map.get("BTCtoGBP"));
+            t.setGBPtoEUR((String) map.get("GBPtoEUR"));
+            t.setGBPtoUSD((String) map.get("GBPtoUSD"));
+            t.setGBPtoRUB((String) map.get("GBPtoRUB"));
+            t.setGBPtoUAH((String) map.get("GBPtoUAH"));
+            t.setGBPtoBTC((String) map.get("GBPtoBTC"));
+
 
             return t;
         }
