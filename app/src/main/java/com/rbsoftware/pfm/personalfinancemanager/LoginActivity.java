@@ -5,14 +5,17 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 
 
 import com.google.android.gms.common.ConnectionResult;
@@ -46,8 +49,7 @@ public class LoginActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Button listeners
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+
         // [START build_client]
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
@@ -62,8 +64,11 @@ public class LoginActivity extends AppCompatActivity implements
         // [END build_client]
 
         signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_WIDE);
-        signInButton.setVisibility(View.GONE);
+        if(signInButton != null) {
+            signInButton.setOnClickListener(this);
+            signInButton.setSize(SignInButton.SIZE_WIDE);
+            signInButton.setVisibility(View.GONE);
+        }
         // [END customize_button]
         mConnectionDetector = new ConnectionDetector(getApplicationContext());
     }
@@ -181,20 +186,60 @@ public class LoginActivity extends AppCompatActivity implements
     private void handleResult() {
         if(mGoogleApiClient.isConnected()) {
             if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-                Person acct = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra("name", acct.getDisplayName());
-                intent.putExtra("id", acct.getId());
-                intent.putExtra("email", Plus.AccountApi.getAccountName(mGoogleApiClient));
-                intent.putExtra("photoURL", acct.getImage().getUrl());
-                startActivity(intent);
-                finish();
+                if(Boolean.valueOf(MainActivity.readFromSharedPreferences(this, "firstStart", "true"))) {
+                    showSelectCurrencyDialog();
+                }
+                else {
+                   finishSignIn();
+                }
             }
         }
         else{
             mGoogleApiClient.connect();
         }
 
+    }
+
+    /**
+     * Starts MainActivity and passes user's data there
+     */
+    private void finishSignIn(){
+        Person acct = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("name", acct.getDisplayName());
+        intent.putExtra("id", acct.getId());
+        intent.putExtra("email", Plus.AccountApi.getAccountName(mGoogleApiClient));
+        intent.putExtra("photoURL", acct.getImage().getUrl());
+        startActivity(intent);
+        finish();
+    }
+
+    /**
+     * Shows dialog for default currency selection
+     */
+    private void showSelectCurrencyDialog(){
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.default_currency))
+                .setCancelable(false)
+                .setSingleChoiceItems(
+                        new ArrayAdapter<>(this,
+                                R.layout.select_default_currency_list_item,
+                                getResources().getStringArray(R.array.report_activity_currency_spinner)),
+                        0,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.putString("defaultCurrency", getResources().getStringArray(R.array.report_activity_currency_spinner)[which]);
+                                editor.apply();
+                                dialog.dismiss();
+                                finishSignIn();
+
+                            }
+                        }
+                )
+                .show();
     }
 
     /**

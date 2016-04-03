@@ -1,4 +1,4 @@
-package com.rbsoftware.pfm.personalfinancemanager;
+package com.rbsoftware.pfm.personalfinancemanager.utils;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -6,6 +6,9 @@ import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+
+import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
+import com.rbsoftware.pfm.personalfinancemanager.R;
 
 import java.util.ArrayList;
 
@@ -277,6 +280,22 @@ public class Utils {
                 return Color.WHITE;
 
         }
+    }
+
+    /**
+     *  Gets progress bar color
+     * @param mContext application context
+     * @param max progressbar max value
+     * @param threshold progressbar threshold
+     * @param progress progressbar current progress
+     * @return progressbar color
+     */
+    public static int getProgressColor(Context mContext, int max, int threshold, int progress){
+        int color  = ContextCompat.getColor(mContext, R.color.income);
+        if(progress < threshold) color= ContextCompat.getColor(mContext, R.color.income);
+        if((threshold < max) && (progress >= threshold) && (progress <=( max - max*0.05) )) color = ContextCompat.getColor(mContext, R.color.colorAccent);
+        if((progress >=( max - max*0.05) ) && (progress <= max)) color = ContextCompat.getColor(mContext, R.color.expense);
+        return color;
     }
 
     /**

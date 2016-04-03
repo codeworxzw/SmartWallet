@@ -24,7 +24,7 @@ import android.widget.TextView;
 import com.rbsoftware.pfm.personalfinancemanager.ExportData;
 import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
 import com.rbsoftware.pfm.personalfinancemanager.R;
-import com.rbsoftware.pfm.personalfinancemanager.Utils;
+import com.rbsoftware.pfm.personalfinancemanager.utils.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -315,7 +315,7 @@ public class TrendsChart extends Fragment {
     }
 
 
-    private LoaderManager.LoaderCallbacks<List<String[]>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<String[]>>() {
+    private final LoaderManager.LoaderCallbacks<List<String[]>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<String[]>>() {
         @Override
         public Loader<List<String[]>> onCreateLoader(int id, Bundle args) {
             return new TrendsChartLoader(getContext());

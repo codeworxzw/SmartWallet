@@ -29,8 +29,7 @@ import com.rbsoftware.pfm.personalfinancemanager.ExportData;
 import com.rbsoftware.pfm.personalfinancemanager.FinanceDocument;
 import com.rbsoftware.pfm.personalfinancemanager.MainActivity;
 import com.rbsoftware.pfm.personalfinancemanager.R;
-import com.rbsoftware.pfm.personalfinancemanager.Utils;
-import com.rbsoftware.pfm.personalfinancemanager.accountsummary.AccountSummaryLoader;
+import com.rbsoftware.pfm.personalfinancemanager.utils.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,14 +46,13 @@ import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
  */
 public class History extends Fragment implements CardHeader.OnClickCardHeaderPopupMenuListener {
     private final String TAG = "History";
-    private final int INCOME_EXPENSE_CHART_LOADER_ID = 2;
+    private final int HISTORY_LOADER_ID = 2;
 
     private CardRecyclerView mRecyclerView;
     private HistoryCardRecyclerViewAdapter mCardArrayAdapter;
     private HistoryCard card;
     private TextView mEmptyView;
     private Context mContext;
-    private Activity mActivity;
     private ConnectionDetector mConnectionDetector;
 
     public History() {
@@ -77,16 +75,15 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[2]);
+        getActivity().setTitle(getResources().getStringArray(R.array.drawer_menu)[3]);
 
         mRecyclerView = (CardRecyclerView) getActivity().findViewById(R.id.history_card_recycler_view);
         mEmptyView = (TextView) getActivity().findViewById(R.id.emptyHistory);
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        MainActivity.fab.hide();
+
         mContext = getContext();
-        mActivity = getActivity();
-        getLoaderManager().initLoader(INCOME_EXPENSE_CHART_LOADER_ID, null, loaderCallbacks);
+        getLoaderManager().initLoader(HISTORY_LOADER_ID, null, loaderCallbacks);
         if (mConnectionDetector == null) {
             mConnectionDetector = new ConnectionDetector(mContext);
         }
@@ -191,12 +188,12 @@ public class History extends Fragment implements CardHeader.OnClickCardHeaderPop
      * Sends broadcast intent to update history
      */
     private void updateHistory() {
-        Intent intent = new Intent(AccountSummaryLoader.ACTION);
+        Intent intent = new Intent(HistoryLoader.ACTION);
         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
 
-    private LoaderManager.LoaderCallbacks<List<HistoryCard>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<HistoryCard>>() {
+    private final LoaderManager.LoaderCallbacks<List<HistoryCard>> loaderCallbacks = new LoaderManager.LoaderCallbacks<List<HistoryCard>>() {
         @Override
         public Loader<List<HistoryCard>> onCreateLoader(int id, Bundle args) {
             return new HistoryLoader(getContext());
