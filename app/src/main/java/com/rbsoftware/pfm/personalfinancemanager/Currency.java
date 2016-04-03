@@ -288,13 +288,13 @@ public class Currency {
         BTCtoUAH = Double.toString((BTC)*(USD)); // 1 BTC = 410*26 = 10K UAH
 
         Log.d("TAG", "USDtoBTC" + USDtoBTC + "\n"
-        + "EURtoBTC" + EURtoBTC + "\n"
-        + "RUBtoBTC" + RUBtoBTC + "\n"
-        + "UAHtoBTC" + UAHtoBTC + "\n"
-        + "BTCtoUSD" + BTCtoUSD + "\n"
-        + "BTCtoEUR" + BTCtoEUR + "\n"
-        + "BTCtoRUB" + BTCtoRUB + "\n"
-        + "BTCtoUAH" + BTCtoUAH + "\n");
+                + "EURtoBTC" + EURtoBTC + "\n"
+                + "RUBtoBTC" + RUBtoBTC + "\n"
+                + "UAHtoBTC" + UAHtoBTC + "\n"
+                + "BTCtoUSD" + BTCtoUSD + "\n"
+                + "BTCtoEUR" + BTCtoEUR + "\n"
+                + "BTCtoRUB" + BTCtoRUB + "\n"
+                + "BTCtoUAH" + BTCtoUAH + "\n");
     } // public void parser()
 
     /**
