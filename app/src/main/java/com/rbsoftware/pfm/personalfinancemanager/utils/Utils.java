@@ -97,10 +97,14 @@ public class Utils {
                 return 0;
             case "EUR":
                 return 1;
-            case "UAH":
+            case "GBP":
                 return 2;
-            case "RUB":
+            case "UAH":
                 return 3;
+            case "RUB":
+                return 4;
+            case "BTC":
+                return 5;
             default:
                 return 0;
         }
