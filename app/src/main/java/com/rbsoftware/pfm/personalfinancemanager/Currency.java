@@ -381,15 +381,16 @@ public class Currency {
 
         //BTC
         BTCtoUSD = Double.toString(BTC);
-        USDtoBTC = Double.toString(1 / BTC);
-        EURtoBTC = Double.toString((1 / BTC)*(USD / EUR));
         BTCtoEUR = Double.toString((BTC)*(USD / EUR));
-        GBPtoBTC = Double.toString((1 / BTC)*(USD / GBP));
         BTCtoGBP = Double.toString((BTC)*(USD / GBP));
-        RUBtoBTC = Double.toString((1 /BTC)*(RUB / USD));
         BTCtoRUB = Double.toString((BTC)*(USD / RUB));
-        UAHtoBTC = Double.toString((1 / (BTC * USD))); // 1/(410*26)
         BTCtoUAH = Double.toString((BTC)*(USD)); // 1 BTC = 410*26 = 10K UAH
+
+        USDtoBTC = Double.toString(1 / BTC);
+        EURtoBTC = Double.toString(EUR / (BTC*USD));
+        GBPtoBTC = Double.toString(GBP / (BTC*USD));
+        RUBtoBTC = Double.toString(RUB /(BTC*USD));
+        UAHtoBTC = Double.toString((1 / (BTC * USD))); // 1/(410*26)
 
     } // public void parser()
 
