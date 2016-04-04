@@ -161,6 +161,7 @@
     <string name="budget_exceeded">Budget exceeded by</string>
     <string name="edit_budget">Edit budget</string>
     <string name="estimated_balance">Expected balance</string>
+    <string name="budget_showcase">Create budget and track execution</string>
 
 
 </resources>

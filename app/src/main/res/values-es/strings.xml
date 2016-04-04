@@ -82,6 +82,7 @@
     <string name="budget_exceeded">Presupuesto superado en un</string>
     <string name="edit_budget">Editar presupuesto</string>
     <string name="estimated_balance">Balance esperado</string>
+    <string name="budget_showcase">Crear presupuesto y la ejecución de pista</string>
 
     <string-array name="drawer_menu">
         <item>Información  general</item>

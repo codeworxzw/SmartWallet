@@ -84,6 +84,7 @@
     <string name="budget_exceeded">Бюджет превышен на</string>
     <string name="edit_budget">Редактировать бюджет</string>
     <string name="estimated_balance">Ожидаемый баланс</string>
+    <string name="budget_showcase">Создайте бюджет и следите за его выполнением</string>
     <string-array name="drawer_menu">
         <item>Общая информация</item>
         <item>Бюджет</item>

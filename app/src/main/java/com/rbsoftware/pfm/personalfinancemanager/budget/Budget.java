@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -44,6 +45,8 @@ import java.util.Locale;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 /**
  * Holds method for displaying creation and budget editing
@@ -125,6 +128,18 @@ public class Budget extends Fragment {
 
             }
         });
+
+        int status = getContext().getSharedPreferences("material_showcaseview_prefs", Context.MODE_PRIVATE)
+                .getInt("status_" + TAG, 0);
+        if (status != -1) {
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startShowcase();
+                }
+            }, 500);
+        }
     }
 
     @Override
@@ -557,5 +572,20 @@ public class Budget extends Fragment {
 
 
         return data;
+    }
+
+    /**
+     * Runs showcase presentation on fragment start
+     **/
+    private void startShowcase() {
+        if (getActivity().findViewById(R.id.btn_create_budget) != null) {
+            ShowcaseConfig config = new ShowcaseConfig();
+            config.setDelay(500); // half second between each showcase view
+            config.setDismissTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+            MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(getActivity(), TAG);
+            sequence.setConfig(config);
+            sequence.addSequenceItem(getActivity().findViewById(R.id.btn_create_budget), getString(R.string.budget_showcase), getString(R.string.ok));
+            sequence.start();
+        }
     }
 }
