@@ -57,6 +57,7 @@ public class Budget extends Fragment {
     private final static String TAG = "Budget";
     private final int BUDGET_LOADER_ID = 3;
     private PopupWindow popupWindow;
+    private FloatingActionButton btnCreateBudget;
     private boolean isCreateBudgetPopupWindowOpen;
     private boolean isEditBudgetPopupWindowOpen;
     private String docId;
@@ -119,8 +120,8 @@ public class Budget extends Fragment {
             mConnectionDetector = new ConnectionDetector(getContext());
         }
         MainActivity.mTracker.setScreenName(TAG);
-        FloatingActionButton btnCreateBudget = (FloatingActionButton) getActivity().findViewById(R.id.btn_create_budget);
-
+        btnCreateBudget = (FloatingActionButton) getActivity().findViewById(R.id.btn_create_budget);
+        btnCreateBudget.show();
         btnCreateBudget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,10 +158,12 @@ public class Budget extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        btnCreateBudget.hide();
         if (isCreateBudgetPopupWindowOpen || isEditBudgetPopupWindowOpen) {
             popupWindow.dismiss();
             isCreateBudgetPopupWindowOpen = true;
         }
+
 
     }
 
