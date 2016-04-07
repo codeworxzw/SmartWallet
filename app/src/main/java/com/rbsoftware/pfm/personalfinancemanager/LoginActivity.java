@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity implements
         View.OnClickListener {
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
-
+    private  SignInButton signInButton;
     public static GoogleApiClient mGoogleApiClient;
 
     // Connection detector class
@@ -52,16 +52,13 @@ public class LoginActivity extends AppCompatActivity implements
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                /*.addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN)
-                .addScope(Plus.SCOPE_PLUS_PROFILE)*/
+                .enableAutoManage(this , this /* OnConnectionFailedListener */)
+
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        //mGoogleApiClient.connect();
         // [END build_client]
 
-        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         if (signInButton != null) {
             signInButton.setOnClickListener(this);
             signInButton.setSize(SignInButton.SIZE_WIDE);
@@ -166,6 +163,7 @@ public class LoginActivity extends AppCompatActivity implements
     private void handleResult(GoogleSignInResult result) {
 
         if (result.isSuccess()) {
+            signInButton.setVisibility(View.GONE);
             if (Boolean.valueOf(MainActivity.readFromSharedPreferences(this, "firstStart", "true"))) {
                 showSelectCurrencyDialog(result.getSignInAccount());
             } else {
