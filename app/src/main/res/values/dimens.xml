@@ -8,6 +8,9 @@
     <dimen name="card_base_empty_height">0dp</dimen>
     <dimen name="nav_drawer_width_large">320dp</dimen>
 
+
+    <dimen name="native_recyclerview_card_margin_bottom">0dp</dimen>
+    <dimen name="native_recyclerview_card_margin_top">1dp</dimen>
     <dimen name="card_main_content_native_default_paddingTop">0dp</dimen>
     <dimen name="card_main_content_native_default_paddingBottom">0dp</dimen>
 

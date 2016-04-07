@@ -4,11 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="6dp"
-    android:background="@android:drawable/dialog_holo_light_frame"
-
     android:layoutDirection="ltr"
     android:orientation="vertical"
-
+    android:background="@drawable/report_card_background"
     android:paddingBottom="8dp"
     android:paddingTop="8dp">
 

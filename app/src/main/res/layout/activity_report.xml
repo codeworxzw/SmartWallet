@@ -26,10 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/report_appbar_layout"
         android:layoutDirection="ltr"
-        android:paddingEnd="8dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingStart="8dp"
+
         android:scrollbars="none">
 
         <include layout="@layout/report_card_layout" />
