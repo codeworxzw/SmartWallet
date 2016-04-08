@@ -63,6 +63,7 @@ public class LoginActivity extends AppCompatActivity implements
             signInButton.setOnClickListener(this);
             signInButton.setSize(SignInButton.SIZE_WIDE);
             signInButton.setScopes(gso.getScopeArray());
+            signInButton.setVisibility(View.GONE);
         }
         // [END customize_button]
         mConnectionDetector = new ConnectionDetector(getApplicationContext());
@@ -81,9 +82,14 @@ public class LoginActivity extends AppCompatActivity implements
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
             // single sign-on will occur in this branch.
+
+
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
                 public void onResult(@NonNull GoogleSignInResult googleSignInResult) {
+                    if(!googleSignInResult.isSuccess()){
+                        signInButton.setVisibility(View.VISIBLE);
+                    }
                     handleResult(googleSignInResult);
                 }
             });
@@ -102,9 +108,13 @@ public class LoginActivity extends AppCompatActivity implements
                 GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
                 handleResult(result);
             }
+            else{
+                signInButton.setVisibility(View.VISIBLE);
+            }
 
 
             if (!mGoogleApiClient.isConnecting()) {
+
                 mGoogleApiClient.connect();
             }
         }
@@ -123,6 +133,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult result) {
+        signInButton.setVisibility(View.VISIBLE);
         mGoogleApiClient.reconnect();
 
 
