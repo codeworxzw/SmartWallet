@@ -8,7 +8,9 @@ import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +25,9 @@ import android.widget.Toast;
 
 
 import com.google.android.gms.analytics.Tracker;
-import com.google.android.gms.plus.Plus;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -207,12 +211,21 @@ public class MainActivity extends AppCompatActivity {
      * @param intent             received after login
      */
     private void setupNavigationDrawer(Bundle savedInstanceState, Toolbar toolbar, Intent intent) {
-
+        ProfileDrawerItem profileDrawerItem;
+        if(intent.getStringExtra("photoURL") != null){
+            profileDrawerItem = new ProfileDrawerItem().withName(intent.getStringExtra("name"))
+                    .withIcon(intent.getStringExtra("photoURL"));
+        }
+        else{
+            profileDrawerItem = new ProfileDrawerItem().withName(intent.getStringExtra("name"));
+        }
         //Set up image loading through Picasso
         DrawerImageLoader.init(new AbstractDrawerImageLoader() {
             @Override
             public void set(ImageView imageView, Uri uri, Drawable placeholder) {
-                Picasso.with(imageView.getContext()).load(uri).placeholder(placeholder).into(imageView);
+                if(uri !=null) {
+                    Picasso.with(imageView.getContext()).load(uri).placeholder(placeholder).into(imageView);
+                }
             }
 
             @Override
@@ -228,8 +241,7 @@ public class MainActivity extends AppCompatActivity {
 
                 .withHeaderBackground(R.drawable.account_header_background)
                 .addProfiles(
-                        new ProfileDrawerItem().withName(intent.getStringExtra("name"))
-                                .withIcon(intent.getStringExtra("photoURL"))
+                        profileDrawerItem
                 )
                 .withSelectionListEnabledForSingleProfile(false)
 
@@ -348,15 +360,36 @@ public class MainActivity extends AppCompatActivity {
      * Sign out from application
      */
     private void signout() {
-        if (LoginActivity.mGoogleApiClient.isConnected()) {
-            Plus.AccountApi.clearDefaultAccount(LoginActivity.mGoogleApiClient);
-            LoginActivity.mGoogleApiClient.disconnect();
+          if(LoginActivity.mGoogleApiClient.isConnected()){
+              finishSignout();
+          }
+        else{
+              LoginActivity.mGoogleApiClient.connect();
+              new Handler().postDelayed(new Runnable() {
+                  @Override
+                  public void run() {
+                      finishSignout();
+                  }
+              }, 1000);
 
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
 
+          }
+
+
+    }
+
+    private void finishSignout(){
+        Auth.GoogleSignInApi.signOut(LoginActivity.mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(@NonNull Status status) {
+                        LoginActivity.mGoogleApiClient.disconnect();
+
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
     }
 
     /**

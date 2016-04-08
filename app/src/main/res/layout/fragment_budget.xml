@@ -13,11 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layoutDirection="ltr"
-            android:paddingEnd="8dp"
 
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingStart="8dp"
             android:scrollbars="none"
 
             card:list_card_layout_resourceID="@layout/native_recyclerview_card_layout" />
@@ -39,7 +35,7 @@
             android:id="@+id/btn_create_budget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:visibility="gone"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             android:src="@drawable/ic_add_white_24dp" />

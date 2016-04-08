@@ -1,72 +1,68 @@
 package com.rbsoftware.pfm.personalfinancemanager;
 
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.plus.Plus;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.plus.model.people.Person;
 
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
-        ConnectionCallbacks,
         View.OnClickListener {
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
-
+    private  SignInButton signInButton;
     public static GoogleApiClient mGoogleApiClient;
 
     // Connection detector class
     private ConnectionDetector mConnectionDetector;
-    private boolean mIntentInProgress;
-    private SignInButton signInButton;
-    private boolean mSignInClicked;
-
-    private ConnectionResult mConnectionResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Configure sign-in to request the user's ID, email address, and basic
+// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestId()
+                .requestProfile()
+                .build();
 
         // [START build_client]
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN)
-                .addScope(Plus.SCOPE_PLUS_PROFILE)
+                .enableAutoManage(this , this /* OnConnectionFailedListener */)
+
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        //mGoogleApiClient.connect();
         // [END build_client]
 
         signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        if(signInButton != null) {
+        if (signInButton != null) {
             signInButton.setOnClickListener(this);
             signInButton.setSize(SignInButton.SIZE_WIDE);
+            signInButton.setScopes(gso.getScopeArray());
             signInButton.setVisibility(View.GONE);
         }
         // [END customize_button]
@@ -76,25 +72,31 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     public void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        if (opr.isDone()) {
+            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+            // and the GoogleSignInResult will be available instantly.
+            GoogleSignInResult result = opr.get();
+            handleResult(result);
+        } else {
+            // If the user has not previously signed in on this device or the sign-in has expired,
+            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
+            // single sign-on will occur in this branch.
 
-    }
 
-
-    /**
-     * Method to resolve any signin errors
-     */
-    private void resolveSignInError() {
-        if (mConnectionResult.hasResolution()) {
-            try {
-                mIntentInProgress = true;
-                mConnectionResult.startResolutionForResult(this, RC_SIGN_IN);
-            } catch (IntentSender.SendIntentException e) {
-                mIntentInProgress = false;
-                mGoogleApiClient.connect();
-            }
+            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                @Override
+                public void onResult(@NonNull GoogleSignInResult googleSignInResult) {
+                    if(!googleSignInResult.isSuccess()){
+                        signInButton.setVisibility(View.VISIBLE);
+                    }
+                    handleResult(googleSignInResult);
+                }
+            });
         }
+
     }
+
 
     // [START onActivityResult]
     @Override
@@ -103,12 +105,16 @@ public class LoginActivity extends AppCompatActivity implements
 
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
-                mSignInClicked = false;
+                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+                handleResult(result);
+            }
+            else{
+                signInButton.setVisibility(View.VISIBLE);
             }
 
-            mIntentInProgress = false;
 
             if (!mGoogleApiClient.isConnecting()) {
+
                 mGoogleApiClient.connect();
             }
         }
@@ -118,10 +124,8 @@ public class LoginActivity extends AppCompatActivity implements
 
     // [START signIn]
     private void signIn() {
-        if (!mGoogleApiClient.isConnecting()) {
-            mSignInClicked = true;
-            resolveSignInError();
-        }
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
 
     }
     // [END signIn]
@@ -129,38 +133,22 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult result) {
-        if (!result.hasResolution()) {
-            GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), this,
-                    RC_SIGN_IN).show();
-            return;
-        }
+        signInButton.setVisibility(View.VISIBLE);
+        mGoogleApiClient.reconnect();
 
-        if (!mIntentInProgress) {
-            // Store the ConnectionResult for later usage
-            mConnectionResult = result;
-            signInButton.setVisibility(View.VISIBLE);
-            if (mSignInClicked) {
-                // The user has already clicked 'sign-in' so we attempt to
-                // resolve all
-                // errors until the user is signed in, or they cancel.
-                resolveSignInError();
-            }
-        }
+
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.sign_in_button:
-                if (mConnectionDetector.isConnectingToInternet()) {
-                    signIn();
-                } else {
-                    showNoNetworkDialog();
-                }
-                break;
 
+        if (mConnectionDetector.isConnectingToInternet()) {
+            signIn();
+        } else {
+            showNoNetworkDialog();
         }
+
     }
 
     /**
@@ -183,33 +171,31 @@ public class LoginActivity extends AppCompatActivity implements
     /**
      * Fetches profile data and starts MainActivity
      */
-    private void handleResult() {
-        if(mGoogleApiClient.isConnected()) {
-            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-                if(Boolean.valueOf(MainActivity.readFromSharedPreferences(this, "firstStart", "true"))) {
-                    showSelectCurrencyDialog();
-                }
-                else {
-                   finishSignIn();
-                }
+    private void handleResult(GoogleSignInResult result) {
+
+        if (result.isSuccess()) {
+            signInButton.setVisibility(View.GONE);
+            if (Boolean.valueOf(MainActivity.readFromSharedPreferences(this, "firstStart", "true"))) {
+                showSelectCurrencyDialog(result.getSignInAccount());
+            } else {
+                finishSignIn(result.getSignInAccount());
             }
         }
-        else{
-            mGoogleApiClient.connect();
-        }
+
 
     }
 
     /**
      * Starts MainActivity and passes user's data there
      */
-    private void finishSignIn(){
-        Person acct = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+    private void finishSignIn(GoogleSignInAccount acct) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("name", acct.getDisplayName());
         intent.putExtra("id", acct.getId());
-        intent.putExtra("email", Plus.AccountApi.getAccountName(mGoogleApiClient));
-        intent.putExtra("photoURL", acct.getImage().getUrl());
+        intent.putExtra("email", acct.getEmail());
+        if (acct.getPhotoUrl() != null) {
+            intent.putExtra("photoURL", acct.getPhotoUrl());
+        }
         startActivity(intent);
         finish();
     }
@@ -217,7 +203,7 @@ public class LoginActivity extends AppCompatActivity implements
     /**
      * Shows dialog for default currency selection
      */
-    private void showSelectCurrencyDialog(){
+    private void showSelectCurrencyDialog(final GoogleSignInAccount acct) {
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.default_currency))
                 .setCancelable(false)
@@ -234,7 +220,7 @@ public class LoginActivity extends AppCompatActivity implements
                                 editor.putString("defaultCurrency", getResources().getStringArray(R.array.report_activity_currency_spinner)[which]);
                                 editor.apply();
                                 dialog.dismiss();
-                                finishSignIn();
+                                finishSignIn(acct);
 
                             }
                         }
@@ -242,86 +228,5 @@ public class LoginActivity extends AppCompatActivity implements
                 .show();
     }
 
-    /**
-     * Requests GET_ACCOUNTS permission
-     */
-    private void requestGetAccountsPermission() {
 
-
-        // No explanation needed, we can request the permission.
-
-        ActivityCompat.requestPermissions(LoginActivity.this,
-                new String[]{Manifest.permission.GET_ACCOUNTS},
-                0);
-
-
-    }
-
-    /**
-     * Shows explanation why GET_ACCOUNTS required
-     */
-    private void showExplanationDialog() {
-        AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
-        alertDialog.setTitle(getString(R.string.permission_required));
-        alertDialog.setMessage(getString(R.string.permission_getaccounts_explanation));
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(android.R.string.ok),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        alertDialog.show();
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case 0: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    handleResult();
-
-                } else {
-                    signInButton.setVisibility(View.VISIBLE);
-                    if (mGoogleApiClient.isConnected()) {
-                        Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-                        mGoogleApiClient.disconnect();
-
-
-                    }
-
-                    showExplanationDialog();
-
-                }
-                break;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        if (ContextCompat.checkSelfPermission(LoginActivity.this,
-                Manifest.permission.GET_ACCOUNTS)
-                != PackageManager.PERMISSION_GRANTED) {
-            requestGetAccountsPermission();
-        } else {
-            mSignInClicked = false;
-
-            handleResult();
-        }
-
-    }
-
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        mGoogleApiClient.connect();
-    }
 }
